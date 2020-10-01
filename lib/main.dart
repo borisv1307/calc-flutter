@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:open_calc/bridge/graph_bridge.dart';
 import 'dart:ffi';
 
 import 'package:open_calc/home_screen.dart';
@@ -18,15 +19,6 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    final DynamicLibrary addNative = Platform.isAndroid
-        ? DynamicLibrary.open("libadder_ffi.so")
-        : DynamicLibrary.process();
-
-    final Add add = addNative
-        .lookup<NativeFunction<add_func>>("add")
-        .asFunction();
-
-  print(add(2,2));
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(

@@ -4,6 +4,8 @@ import 'dart:ui' as ui;
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:open_calc/bridge/graph_bridge.dart';
+import 'package:open_calc/graph_display.dart';
 import 'package:open_calc/pixel_map.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -16,19 +18,17 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  int _counter = 0;
   final List<int> cursorLocation = [50,50];
+  GraphBridge bridge = GraphBridge();
 
 
   Future<ui.Image> _makeImage(){
-    Color oldGreen = Color.fromRGBO(170, 200, 154, 1);
-    int width = 1080;
-    int height = 650;
     final c = Completer<ui.Image>();
-    PixelMap pixelMap = PixelMap(1080, 650, oldGreen);
-    pixelMap.addLegend(cursorLocation);
+    bridge.retrieve();
 
-    decodeImageFromPixels(pixelMap.asList(), pixelMap.width, pixelMap.height, PixelFormat.rgba8888, c.complete);
+    GraphDisplay display = GraphDisplay(360,216,3);
+    display.displayLegend(cursorLocation);
+    display.render(c.complete);
 
     return c.future;
   }
@@ -36,13 +36,13 @@ class _HomeScreenState extends State<HomeScreen> {
   void moveCursor(String direction){
     setState(() {
       if(direction == "UP"){
-        cursorLocation[1] += 10;
+        cursorLocation[1] += 3;
       }else if(direction == "DOWN"){
-        cursorLocation[1] -= 10;
+        cursorLocation[1] -= 3;
       }else if(direction == "RIGHT"){
-        cursorLocation[0] += 10;
+        cursorLocation[0] += 3;
       }else if(direction == "LEFT"){
-        cursorLocation[0] -= 10;
+        cursorLocation[0] -= 3;
       }
     });
   }
