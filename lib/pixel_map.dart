@@ -16,7 +16,9 @@ class PixelMap{
 
   void updatePixel(int x, int y, Color color){
     int pixel = (width * height) - (width - x) - (y*width);
-    _pixels[pixel] = color.value;
+    if(pixel < (width*height) && pixel > 0) {
+      _pixels[pixel] = color.value;
+    }
   }
 
   void render(ImageDecoderCallback callback){

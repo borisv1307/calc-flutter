@@ -21,13 +21,20 @@ class _HomeScreenState extends State<HomeScreen> {
   final List<int> cursorLocation = [50,50];
   GraphBridge bridge = GraphBridge();
 
-
   Future<ui.Image> _makeImage(){
+    int width = 270;
+    int height = 162;
     final c = Completer<ui.Image>();
-    bridge.retrieve();
 
-    GraphDisplay display = GraphDisplay(360,216,3);
+    GraphDisplay display = GraphDisplay(width,height,4);
     display.displayLegend(cursorLocation);
+
+    List<List<double>> points = bridge.retrieve((width/2)*-1,(width/2),(height/2)*-1,(height/2),1);
+    print(points);
+    for(List<double> coordinates in points){
+      display.plotCoordinates(coordinates[0], coordinates[1], Colors.black);
+    }
+
     display.render(c.complete);
 
     return c.future;

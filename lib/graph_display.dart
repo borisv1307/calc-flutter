@@ -1,3 +1,4 @@
+import 'dart:collection';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -12,7 +13,7 @@ class GraphDisplay{
   GraphDisplay(this.width, this.height, this.scale):
       pixelMap = PixelMap(width*scale,height*scale, Color.fromRGBO(170, 200, 154, 1));
 
-  void updatePosition(int x, int y, Color color){
+  void _updatePosition(int x, int y, Color color){
     for(int i = x*scale;i<((x+1)*scale);i++){
       for(int j = y*scale;j<((y+1)*scale);j++){
         pixelMap.updatePixel(i, j, color);
@@ -20,32 +21,44 @@ class GraphDisplay{
     }
   }
 
+  void plotCoordinates(double x, double y, Color color){
+    int xMid = (width/2).round();
+    int yMid = (height/2).round();
+
+    int xPosition = xMid + (x*scale).round();
+    int yPosition = yMid + (y*scale).round();
+
+    _updatePosition(xPosition, yPosition, color);
+  }
+
   void displayLegend(cursorLocation){
     int horizontalMiddle = (height/2).round();
     int verticalMiddle = (width/2).round();
 
     for(int i = 0; i<width; i++){
-        updatePosition(i, horizontalMiddle, Colors.black);
+        _updatePosition(i, horizontalMiddle, Colors.grey[700]);
     }
 
     for(int i = 0; i<height; i++){
-      updatePosition(verticalMiddle, i, Colors.black);
+      _updatePosition(verticalMiddle, i, Colors.grey[700]);
     }
 
     _updateCursor(cursorLocation);
   }
 
   void _updateCursor(cursorLocation){
-    for(int i = cursorLocation[0]-8; i<cursorLocation[0]+8; i++){
-        updatePosition(i, cursorLocation[1], Colors.red);
+    int width = (24/scale).round();
+    for(int i = cursorLocation[0]-width; i<cursorLocation[0]+width; i++){
+        _updatePosition(i, cursorLocation[1], Colors.red);
     }
 
-    for(int i = cursorLocation[1]-8; i<cursorLocation[1]+8; i++){
-      updatePosition(cursorLocation[0], i, Colors.red);
+    for(int i = cursorLocation[1]-width; i<cursorLocation[1]+width; i++){
+      _updatePosition(cursorLocation[0], i, Colors.red);
     }
   }
 
   void render(ImageDecoderCallback callback){
+
     pixelMap.render(callback);
   }
 }
