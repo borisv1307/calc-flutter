@@ -30,7 +30,6 @@ class _HomeScreenState extends State<HomeScreen> {
     display.displayLegend(cursorLocation);
 
     List<List<double>> points = bridge.retrieve((width/2)*-1,(width/2),(height/2)*-1,(height/2),1);
-    print(points);
     for(List<double> coordinates in points){
       display.plotCoordinates(coordinates[0], coordinates[1], Colors.black);
     }
