@@ -15,8 +15,8 @@ class PixelMap{
 
 
   void updatePixel(int x, int y, Color color){
-    int pixel = (width * height) - (width - x) - (y*width);
-    if(pixel < (width*height) && pixel > 0) {
+    int pixel = ((width * height) - (width - x) - (y*width));
+    if(pixel < (width*height) && pixel >= 0) {
       _pixels[pixel] = color.value;
     }
   }
@@ -27,6 +27,6 @@ class PixelMap{
         _pixels[i] = _backgroundColor.value;
       }
     }
-    decodeImageFromPixels(_pixels.buffer.asUint8List(), width, height, PixelFormat.rgba8888, callback);
+    decodeImageFromPixels(_pixels.buffer.asUint8List(), width, height, PixelFormat.bgra8888, callback);
   }
 }
