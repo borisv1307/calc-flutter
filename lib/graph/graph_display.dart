@@ -2,8 +2,8 @@ import 'dart:collection';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'file:///C:/Users/Greg/IdeaProjects/se-calc/calc-flutter/lib/graph/pixel_map.dart';
 import 'package:open_calc/graph/coordinates.dart';
+import 'package:open_calc/graph/pixel_map.dart';
 
 class GraphDisplay{
   final int scale;
