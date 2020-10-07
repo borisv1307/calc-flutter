@@ -27,7 +27,6 @@ class PixelMap{
         _pixels[i] = _backgroundColor.value;
       }
     }
-
     decodeImageFromPixels(_pixels.buffer.asUint8List(), width, height, PixelFormat.rgba8888, callback);
   }
 }

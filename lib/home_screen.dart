@@ -5,8 +5,8 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:open_calc/bridge/graph_bridge.dart';
-import 'package:open_calc/graph_display.dart';
-import 'package:open_calc/pixel_map.dart';
+import 'package:open_calc/graph/coordinates.dart';
+import 'package:open_calc/graph/graph_display.dart';
 
 class HomeScreen extends StatefulWidget {
   HomeScreen({Key key, this.title}) : super(key: key);
@@ -26,12 +26,14 @@ class _HomeScreenState extends State<HomeScreen> {
     int height = 162;
     final c = Completer<ui.Image>();
 
-    GraphDisplay display = GraphDisplay(width,height,4);
+    GraphDisplay display = GraphDisplay(width+1,height+1,4);
     display.displayLegend(cursorLocation);
 
-    List<List<double>> points = bridge.retrieve((width/2)*-1,(width/2),(height/2)*-1,(height/2),1);
-    for(List<double> coordinates in points){
-      display.plotCoordinates(coordinates[0], coordinates[1], Colors.black);
+    List<Coordinates> allCoordinates = bridge.retrieve((width/2)*-1,(width/2),(height/2)*-1,(height/2),1);
+    allCoordinates = bridge.retrieve((width/2)*-1,(width/2),(height/2)*-1,(height/2),1);
+
+    for(int i = 0; i< allCoordinates.length-1;i++){
+      display.plotSegment(allCoordinates[i],allCoordinates[i+1], Colors.black);
     }
 
     display.render(c.complete);
