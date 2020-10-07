@@ -24,7 +24,6 @@ class GraphBridge {
 
   CalcPoints _retrieveFunction(){
      if(_add == null){
-       print('new');
       final DynamicLibrary addNative = Platform.isAndroid
           ? DynamicLibrary.open("libcalc_2.so")
           : DynamicLibrary.process();
