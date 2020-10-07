@@ -7,13 +7,9 @@ import 'dart:ffi';
 import 'package:open_calc/home_screen.dart';
 
 void main() {
+  print('running');
   runApp(MyApp());
 }
-
-// For C/Rust
-typedef add_func = Int64 Function(Int64 a, Int64 b);
-// For Dart
-typedef Add = int Function(int a, int b);
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
