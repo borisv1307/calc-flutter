@@ -7,9 +7,13 @@ import 'dart:typed_data';
 
 import 'package:open_calc/graph/coordinates.dart';
 
-typedef calc_points = Pointer<Pointer<Float>> Function(Float xl, Float xu,Float yl, Float yu, Float p);
-// For Dart
-typedef CalcPoints = Pointer<Pointer<Float>> Function(double xl, double xu,double yl, double yu, double p);
+class CoordPair extends Struct{
+  Pointer<Float> x_ptr;
+  Pointer<Float> y_ptr;
+}
+
+typedef calc_points = Pointer<CoordPair> Function(Float xl, Float xu,Float yl, Float yu, Float xp,Float yp);
+typedef CalcPoints = Pointer<CoordPair> Function(double xl, double xu,double yl, double yu, double xp, double yp);
 
 class GraphBridge {
   CalcPoints _add;
@@ -34,13 +38,13 @@ class GraphBridge {
     }
     return _add;
   }
-
-  List<Coordinates> retrieve(double minX, double maxX, double minY, double maxY, double precision){
+  
+  List<Coordinates> retrieve(double minX, double maxX, double minY, double maxY, [double xPrecision=1, double yPrecision=1]){
     final CalcPoints calcPoints = _retrieveFunction();
-    var points = calcPoints(minX,maxX,minY,maxY,precision);
+    Pointer<CoordPair> points = calcPoints(minX,maxX,minY,maxY,xPrecision,yPrecision);
     int listSize = ((maxX- minX) +1).round();
-    Float32List xCoords = points.elementAt(0).value.asTypedList(listSize);
-    Float32List yCoords = points.elementAt(1).value.asTypedList(listSize);
+    Float32List xCoords = points.ref.x_ptr.asTypedList(listSize);
+    Float32List yCoords = points.ref.y_ptr.asTypedList(listSize);
 
     List<Coordinates> coordinates = [];
     for(int i=0;i<listSize;i++){
