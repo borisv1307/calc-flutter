@@ -29,8 +29,7 @@ class _HomeScreenState extends State<HomeScreen> {
     GraphDisplay display = GraphDisplay(width+1,height+1,4);
     display.displayLegend(cursorLocation);
 
-    List<Coordinates> allCoordinates = bridge.retrieve((width/2)*-1,(width/2),(height/2)*-1,(height/2),1);
-    allCoordinates = bridge.retrieve((width/2)*-1,(width/2),(height/2)*-1,(height/2),1);
+    List<Coordinates> allCoordinates = bridge.retrieve((width/2)*-1,(width/2),(height/2)*-1,(height/2));
 
     for(int i = 0; i< allCoordinates.length-1;i++){
       display.plotSegment(allCoordinates[i],allCoordinates[i+1], Colors.black);
