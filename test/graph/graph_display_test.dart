@@ -10,6 +10,16 @@ class MockPixelMap extends Mock implements PixelMap{}
 
 void main() {
 
+  group('Input validation', (){
+    test('should mandate larger max x than min x',(){
+      expect(() => GraphDisplay.bounds(2,1,-2,2,2), throwsAssertionError);
+    });
+
+    test('should mandate larger max y than min y',(){
+      expect(() => GraphDisplay.bounds(0,1,2,1,2), throwsAssertionError);
+    });
+  });
+
   group('Underlying Pixel Map', (){
     GraphDisplay graphDisplay;
     setUpAll((){
