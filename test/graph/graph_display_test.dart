@@ -15,15 +15,15 @@ void main() {
   group('Underlying Pixel Map', (){
     GraphDisplay graphDisplay;
     setUpAll((){
-      graphDisplay = GraphDisplay.bounds(Bounds(-1,1,-2,2),DisplaySize(6,8),2);
+      graphDisplay = GraphDisplay.bounds(Bounds(-1,1,-2,2),DisplaySize(5,15),2);
     });
 
-    test('should have scaled width', () {
-      expect(graphDisplay.pixelMap.width,6);
+    test('should have specified width', () {
+      expect(graphDisplay.pixelMap.width,5);
     });
 
-    test('should have scaled height', () {
-      expect(graphDisplay.pixelMap.height,10);
+    test('should have specified height', () {
+      expect(graphDisplay.pixelMap.height,15);
     });
   });
 
@@ -168,7 +168,7 @@ void main() {
   group('Device display size allows for increased precision',(){
     GraphDisplay graphDisplay;
     setUp((){
-      graphDisplay = GraphDisplay.bounds(Bounds(-1,1,-2,2),DisplaySize(6,20),1);
+      graphDisplay = GraphDisplay.bounds(Bounds(-1,1,-2,2),DisplaySize(5,17),1);
     });
 
     test('should calculate x precision',(){
@@ -177,6 +177,12 @@ void main() {
 
     test('should calculate y precision',(){
       expect(graphDisplay.yPrecision,0.25);
+    });
+    
+    group('should allow more precise plotting',(){
+      setUp((){
+        //graphDisplay.plotSegment(start, end, color)
+      });
     });
   });
 }
