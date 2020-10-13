@@ -5,6 +5,7 @@ import 'package:open_calc/graph/coordinates.dart';
 import 'package:open_calc/graph/graph_display.dart';
 import 'package:open_calc/graph/pixel_map.dart';
 
+
 class MockPixelMap extends Mock implements PixelMap{}
 
 void main() {
@@ -12,7 +13,7 @@ void main() {
   group('Underlying Pixel Map', (){
     GraphDisplay graphDisplay;
     setUpAll((){
-      graphDisplay = GraphDisplay(3,4,2);
+      graphDisplay = GraphDisplay.bounds(-1,1,-2,2,2);
     });
 
     test('should have scaled width', () {
@@ -20,7 +21,7 @@ void main() {
     });
 
     test('should have scaled height', () {
-      expect(graphDisplay.pixelMap.height,8);
+      expect(graphDisplay.pixelMap.height,10);
     });
   });
 
@@ -28,7 +29,7 @@ void main() {
     GraphDisplay graphDisplay;
     MockPixelMap mockPixelMap;
     setUp((){
-      graphDisplay = GraphDisplay(3,3,1);
+      graphDisplay = GraphDisplay.bounds(-1,1,-1,1,1);
       mockPixelMap = MockPixelMap();
       graphDisplay.pixelMap = mockPixelMap;
       graphDisplay.plotSegment(Coordinates(0,0), Coordinates(0,1), Colors.black);
@@ -54,7 +55,7 @@ void main() {
   group('Adjacent segment plotting scaled',(){
     MockPixelMap mockPixelMap;
     setUp((){
-      GraphDisplay graphDisplay = GraphDisplay(3,3,2);
+      GraphDisplay graphDisplay = GraphDisplay.bounds(-1,1,-1,1,2);
       mockPixelMap = MockPixelMap();
       graphDisplay.pixelMap = mockPixelMap;
       graphDisplay.plotSegment(Coordinates(0,0), Coordinates(0,1), Colors.black);
@@ -79,7 +80,7 @@ void main() {
 
   group('Segment connection',(){
     MockPixelMap plotSegment(Coordinates start, Coordinates end){
-      GraphDisplay graphDisplay = GraphDisplay(5, 5, 1);
+      GraphDisplay graphDisplay = GraphDisplay.bounds(-2,2,-2,2,1);
       MockPixelMap mockPixelMap = MockPixelMap();
       graphDisplay.pixelMap = mockPixelMap;
       graphDisplay.plotSegment(start, end, Colors.black);

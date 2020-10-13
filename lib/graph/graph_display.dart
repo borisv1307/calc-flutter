@@ -1,4 +1,3 @@
-import 'dart:collection';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -6,19 +5,21 @@ import 'package:open_calc/graph/coordinates.dart';
 import 'package:open_calc/graph/pixel_map.dart';
 
 class GraphDisplay{
-  final int scale;
+  final int density;
   final int xSpan;
   final int ySpan;
   PixelMap pixelMap;
 
-  GraphDisplay(int width, int height, this.scale):
-      pixelMap = PixelMap(width*scale,height*scale, Color.fromRGBO(170, 200, 154, 1)),
-      this.xSpan = ((width-1)/2).round(),
-      this.ySpan = ((height-1)/2).round();
+  GraphDisplay.bounds(int minX, int maxX, int minY, int maxY, this.density):
+        assert(maxX > minX, 'Maximum x must be greater than minimum x'),
+        assert(maxY > minY, 'Maximum y must be greater than minimum y'),
+        pixelMap = PixelMap(((maxX-minX) + 1) * density,((maxY-minY) + 1) * density, Color.fromRGBO(170, 200, 154, 1)),
+        this.xSpan = minX.abs(),
+        this.ySpan = minY.abs();
 
   void _updatePosition(int x, int y, Color color){
-    for(int i = x*scale;i<((x+1)*scale);i++){
-      for(int j = y*scale;j<((y+1)*scale);j++){
+    for(int i = x*density;i<((x+1)*density);i++){
+      for(int j = y*density;j<((y+1)*density);j++){
         pixelMap.updatePixel(i, j, color);
       }
     }
@@ -47,18 +48,18 @@ class GraphDisplay{
     }
   }
 
-  void displayLegend(){
+  void displayLegend(Color color){
     for(int i = (-1)*xSpan; i<xSpan + 1; i++){
-      _plotCoordinates(Coordinates(i.toDouble(),0), Colors.grey[700]);
+      _plotCoordinates(Coordinates(i.toDouble(),0), color);
     }
 
     for(int i = (-1)*ySpan; i<ySpan + 1; i++){
-      _plotCoordinates(Coordinates(0,i.toDouble()), Colors.grey[700]);
+      _plotCoordinates(Coordinates(0,i.toDouble()), color);
     }
   }
 
   void displayCursor(Coordinates cursorLocation){
-    int width = (24/scale).round();
+    int width = (24/density).round();
     for(int i = (cursorLocation.x-width).toInt(); i<(cursorLocation.x+width).toInt(); i++){
         _updatePosition(i, cursorLocation.y.toInt(), Colors.blue);
     }
