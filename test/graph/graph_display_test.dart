@@ -3,8 +3,9 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:open_calc/cartesian_graph/bounds.dart';
 import 'package:open_calc/cartesian_graph/coordinates.dart';
-import 'package:open_calc/cartesian_graph/graph_display.dart';
-import 'package:open_calc/cartesian_graph/pixel_map.dart';
+import 'package:open_calc/cartesian_graph/display/display_size.dart';
+import 'package:open_calc/cartesian_graph/display/graph_display.dart';
+import 'package:open_calc/cartesian_graph/display/pixel_map.dart';
 
 
 class MockPixelMap extends Mock implements PixelMap{}
@@ -14,7 +15,7 @@ void main() {
   group('Underlying Pixel Map', (){
     GraphDisplay graphDisplay;
     setUpAll((){
-      graphDisplay = GraphDisplay.bounds(Bounds(-1,1,-2,2),2);
+      graphDisplay = GraphDisplay.bounds(Bounds(-1,1,-2,2),DisplaySize(6,8),2);
     });
 
     test('should have scaled width', () {
@@ -30,7 +31,7 @@ void main() {
     GraphDisplay graphDisplay;
     MockPixelMap mockPixelMap;
     setUp((){
-      graphDisplay = GraphDisplay.bounds(Bounds(-1,1,-1,1),1);
+      graphDisplay = GraphDisplay.bounds(Bounds(-1,1,-1,1),DisplaySize(3,3),1);
       mockPixelMap = MockPixelMap();
       graphDisplay.pixelMap = mockPixelMap;
       graphDisplay.plotSegment(Coordinates(0,0), Coordinates(0,1), Colors.black);
@@ -56,7 +57,7 @@ void main() {
   group('Adjacent segment plotting scaled',(){
     MockPixelMap mockPixelMap;
     setUp((){
-      GraphDisplay graphDisplay = GraphDisplay.bounds(Bounds(-1,1,-1,1),2);
+      GraphDisplay graphDisplay = GraphDisplay.bounds(Bounds(-1,1,-1,1),DisplaySize(6,6),2);
       mockPixelMap = MockPixelMap();
       graphDisplay.pixelMap = mockPixelMap;
       graphDisplay.plotSegment(Coordinates(0,0), Coordinates(0,1), Colors.black);
@@ -81,7 +82,7 @@ void main() {
 
   group('Segment connection',(){
     MockPixelMap plotSegment(Coordinates start, Coordinates end){
-      GraphDisplay graphDisplay = GraphDisplay.bounds(Bounds(-2,2,-2,2),1);
+      GraphDisplay graphDisplay = GraphDisplay.bounds(Bounds(-2,2,-2,2),DisplaySize(5,5),1);
       MockPixelMap mockPixelMap = MockPixelMap();
       graphDisplay.pixelMap = mockPixelMap;
       graphDisplay.plotSegment(start, end, Colors.black);
@@ -161,6 +162,21 @@ void main() {
         });
       });
 
+    });
+  });
+
+  group('Device display size allows for increased precision',(){
+    GraphDisplay graphDisplay;
+    setUp((){
+      graphDisplay = GraphDisplay.bounds(Bounds(-1,1,-2,2),DisplaySize(6,20),1);
+    });
+
+    test('should calculate x precision',(){
+      expect(graphDisplay.xPrecision,0.5);
+    });
+
+    test('should calculate y precision',(){
+      expect(graphDisplay.yPrecision,0.25);
     });
   });
 }

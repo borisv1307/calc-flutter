@@ -3,18 +3,36 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:open_calc/cartesian_graph/bounds.dart';
 import 'package:open_calc/cartesian_graph/coordinates.dart';
-import 'package:open_calc/cartesian_graph/pixel_map.dart';
+import 'package:open_calc/cartesian_graph/display/display_size.dart';
+import 'package:open_calc/cartesian_graph/display/pixel_map.dart';
 
 class GraphDisplay{
   final int density;
-  final int xSpan;
-  final int ySpan;
+  final int xOffset;
+  final int yOffset;
   PixelMap pixelMap;
+  final double xPrecision;
+  final double yPrecision;
 
-  GraphDisplay.bounds(Bounds bounds, this.density):
-        pixelMap = PixelMap(((bounds.xMax-bounds.xMin) + 1) * density,((bounds.yMax-bounds.yMin) + 1) * density, Color.fromRGBO(170, 200, 154, 1)),
-        this.xSpan = bounds.xMin.abs(),
-        this.ySpan = bounds.yMin.abs();
+  GraphDisplay._internal(this.xOffset,this.yOffset,this.pixelMap, this.density, this.xPrecision, this.yPrecision);
+
+  factory GraphDisplay.bounds(Bounds bounds, DisplaySize displaySize, int density){
+        int minXPixels = _calculatePixels(bounds.xMin,bounds.xMax,density);
+        int minYPixels = _calculatePixels(bounds.yMin,bounds.yMax,density);
+
+        double xPrecision = minXPixels/displaySize.width;
+        double yPrecision = minYPixels/displaySize.height;
+
+        PixelMap pixelMap = PixelMap(minXPixels,minYPixels, Color.fromRGBO(170, 200, 154, 1));
+        int xSpan = bounds.xMin.abs();
+        int ySpan = bounds.yMin.abs();
+        return GraphDisplay._internal(xSpan, ySpan, pixelMap, density,xPrecision,yPrecision);
+  }
+
+  static int _calculatePixels(int min, int max, int density){
+    int range = (max - min) + 1;
+    return range * density;
+  }
 
   void _updatePosition(int x, int y, Color color){
     for(int i = x*density;i<((x+1)*density);i++){
@@ -25,8 +43,8 @@ class GraphDisplay{
   }
 
   void _plotCoordinates(Coordinates coordinates, Color color){
-    int xPosition = xSpan + (coordinates.x).round();
-    int yPosition = ySpan + (coordinates.y).round();
+    int xPosition = xOffset + (coordinates.x).round();
+    int yPosition = yOffset + (coordinates.y).round();
 
     _updatePosition(xPosition, yPosition, color);
   }
@@ -48,11 +66,11 @@ class GraphDisplay{
   }
 
   void displayLegend(Color color){
-    for(int i = (-1)*xSpan; i<xSpan + 1; i++){
+    for(int i = (-1)*xOffset; i<xOffset + 1; i++){
       _plotCoordinates(Coordinates(i.toDouble(),0), color);
     }
 
-    for(int i = (-1)*ySpan; i<ySpan + 1; i++){
+    for(int i = (-1)*yOffset; i<yOffset + 1; i++){
       _plotCoordinates(Coordinates(0,i.toDouble()), color);
     }
   }

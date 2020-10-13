@@ -6,7 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'dart:ui' as ui;
 
-import 'package:open_calc/cartesian_graph/pixel_map.dart';
+import 'package:open_calc/cartesian_graph/display/pixel_map.dart';
+
 
 
 Color colorFromBGRA(int raw){
