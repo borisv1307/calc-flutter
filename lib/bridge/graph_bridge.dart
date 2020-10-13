@@ -5,7 +5,8 @@ import 'dart:io';
 
 import 'dart:typed_data';
 
-import 'package:open_calc/graph/coordinates.dart';
+import 'package:open_calc/cartesian_graph/coordinates.dart';
+
 
 class CoordPair extends Struct{
   Pointer<Float> x_ptr;

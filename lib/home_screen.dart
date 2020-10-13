@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:open_calc/bridge/graph_bridge.dart';
-import 'package:open_calc/graph/cartesian_graph.dart';
-import 'package:open_calc/graph/coordinates.dart';
+import 'package:open_calc/cartesian_graph/cartesian_graph.dart';
+import 'package:open_calc/cartesian_graph/coordinates.dart';
 
 class HomeScreen extends StatefulWidget {
   HomeScreen({Key key, this.title}) : super(key: key);
@@ -54,8 +54,6 @@ class _HomeScreenState extends State<HomeScreen> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
               CartesianGraph(
-                width: this.width,
-                height:this.height,
                 coordinates: _retrieveCoordinates(),
                 cursorLocation: this.cursorLocation,
               ),

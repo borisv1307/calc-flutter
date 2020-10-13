@@ -1,8 +1,9 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:open_calc/graph/coordinates.dart';
-import 'package:open_calc/graph/pixel_map.dart';
+import 'package:open_calc/cartesian_graph/bounds.dart';
+import 'package:open_calc/cartesian_graph/coordinates.dart';
+import 'package:open_calc/cartesian_graph/pixel_map.dart';
 
 class GraphDisplay{
   final int density;
@@ -10,12 +11,10 @@ class GraphDisplay{
   final int ySpan;
   PixelMap pixelMap;
 
-  GraphDisplay.bounds(int minX, int maxX, int minY, int maxY, this.density):
-        assert(maxX > minX, 'Maximum x must be greater than minimum x'),
-        assert(maxY > minY, 'Maximum y must be greater than minimum y'),
-        pixelMap = PixelMap(((maxX-minX) + 1) * density,((maxY-minY) + 1) * density, Color.fromRGBO(170, 200, 154, 1)),
-        this.xSpan = minX.abs(),
-        this.ySpan = minY.abs();
+  GraphDisplay.bounds(Bounds bounds, this.density):
+        pixelMap = PixelMap(((bounds.xMax-bounds.xMin) + 1) * density,((bounds.yMax-bounds.yMin) + 1) * density, Color.fromRGBO(170, 200, 154, 1)),
+        this.xSpan = bounds.xMin.abs(),
+        this.ySpan = bounds.yMin.abs();
 
   void _updatePosition(int x, int y, Color color){
     for(int i = x*density;i<((x+1)*density);i++){
