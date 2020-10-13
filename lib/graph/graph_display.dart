@@ -47,7 +47,7 @@ class GraphDisplay{
     }
   }
 
-  void displayLegend(cursorLocation){
+  void displayLegend(){
     for(int i = (-1)*xSpan; i<xSpan + 1; i++){
       _plotCoordinates(Coordinates(i.toDouble(),0), Colors.grey[700]);
     }
@@ -55,18 +55,16 @@ class GraphDisplay{
     for(int i = (-1)*ySpan; i<ySpan + 1; i++){
       _plotCoordinates(Coordinates(0,i.toDouble()), Colors.grey[700]);
     }
-
-    _updateCursor(cursorLocation);
   }
 
-  void _updateCursor(cursorLocation){
+  void displayCursor(Coordinates cursorLocation){
     int width = (24/scale).round();
-    for(int i = cursorLocation[0]-width; i<cursorLocation[0]+width; i++){
-        _updatePosition(i, cursorLocation[1], Colors.blue);
+    for(int i = (cursorLocation.x-width).toInt(); i<(cursorLocation.x+width).toInt(); i++){
+        _updatePosition(i, cursorLocation.y.toInt(), Colors.blue);
     }
 
-    for(int i = cursorLocation[1]-width; i<cursorLocation[1]+width; i++){
-      _updatePosition(cursorLocation[0], i, Colors.blue);
+    for(int i = (cursorLocation.y-width).toInt(); i<(cursorLocation.y+width).toInt(); i++){
+      _updatePosition(cursorLocation.x.toInt(), i, Colors.blue);
     }
   }
 
