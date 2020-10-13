@@ -1,12 +1,7 @@
-import 'dart:async';
-import 'dart:typed_data';
-import 'dart:ui' as ui;
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:open_calc/bridge/graph_bridge.dart';
+import 'package:open_calc/graph/cartesian_graph.dart';
 import 'package:open_calc/graph/coordinates.dart';
-import 'package:open_calc/graph/graph_display.dart';
 
 class HomeScreen extends StatefulWidget {
   HomeScreen({Key key, this.title}) : super(key: key);
@@ -18,39 +13,30 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final List<int> cursorLocation = [50,50];
+  Coordinates cursorLocation = Coordinates(50,50);
   GraphBridge bridge = GraphBridge();
+  int width = 270;
+  int height = 162;
 
-  Future<ui.Image> _makeImage(){
-    int width = 270;
-    int height = 162;
-    final c = Completer<ui.Image>();
-
-    GraphDisplay display = GraphDisplay(width+1,height+1,4);
-    display.displayLegend(cursorLocation);
-
+  List<Coordinates> _retrieveCoordinates(){
     List<Coordinates> allCoordinates = bridge.retrieve((width/2)*-1,(width/2),(height/2)*-1,(height/2));
-
-    for(int i = 0; i< allCoordinates.length-1;i++){
-      display.plotSegment(allCoordinates[i],allCoordinates[i+1], Colors.black);
-    }
-
-    display.render(c.complete);
-
-    return c.future;
+    return allCoordinates;
   }
 
   void moveCursor(String direction){
     setState(() {
+      double updatedX = cursorLocation.x;
+      double updatedY = cursorLocation.y;
       if(direction == "UP"){
-        cursorLocation[1] += 3;
+        updatedY += 3;
       }else if(direction == "DOWN"){
-        cursorLocation[1] -= 3;
+        updatedY -= 3;
       }else if(direction == "RIGHT"){
-        cursorLocation[0] += 3;
+        updatedX += 3;
       }else if(direction == "LEFT"){
-        cursorLocation[0] -= 3;
+        updatedX -= 3;
       }
+      this.cursorLocation = Coordinates(updatedX,updatedY);
     });
   }
 
@@ -67,18 +53,12 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-              FutureBuilder<ui.Image>(
-                future: _makeImage(),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    return RawImage(
-                      image: snapshot.data,
-                    );
-                  } else {
-                    return Center(child: CircularProgressIndicator());
-                  }
-                },
-            ),
+              CartesianGraph(
+                width: this.width,
+                height:this.height,
+                coordinates: _retrieveCoordinates(),
+                cursorLocation: this.cursorLocation,
+              ),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [Column(
