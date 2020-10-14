@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
-import 'package:open_calc/graph/coordinates.dart';
-import 'package:open_calc/graph/graph_display.dart';
-import 'package:open_calc/graph/pixel_map.dart';
+import 'package:open_calc/cartesian_graph/bounds.dart';
+import 'package:open_calc/cartesian_graph/coordinates.dart';
+import 'package:open_calc/cartesian_graph/display/display_size.dart';
+import 'package:open_calc/cartesian_graph/display/graph_display.dart';
+import 'package:open_calc/cartesian_graph/display/pixel_map.dart';
+
 
 class MockPixelMap extends Mock implements PixelMap{}
 
@@ -12,15 +15,15 @@ void main() {
   group('Underlying Pixel Map', (){
     GraphDisplay graphDisplay;
     setUpAll((){
-      graphDisplay = GraphDisplay(3,4,2);
+      graphDisplay = GraphDisplay.bounds(Bounds(-1,1,-2,2),DisplaySize(5,15),2);
     });
 
-    test('should have scaled width', () {
-      expect(graphDisplay.pixelMap.width,6);
+    test('should have specified width', () {
+      expect(graphDisplay.pixelMap.width,5);
     });
 
-    test('should have scaled height', () {
-      expect(graphDisplay.pixelMap.height,8);
+    test('should have specified height', () {
+      expect(graphDisplay.pixelMap.height,15);
     });
   });
 
@@ -28,7 +31,7 @@ void main() {
     GraphDisplay graphDisplay;
     MockPixelMap mockPixelMap;
     setUp((){
-      graphDisplay = GraphDisplay(3,3,1);
+      graphDisplay = GraphDisplay.bounds(Bounds(-1,1,-1,1),DisplaySize(3,3),1);
       mockPixelMap = MockPixelMap();
       graphDisplay.pixelMap = mockPixelMap;
       graphDisplay.plotSegment(Coordinates(0,0), Coordinates(0,1), Colors.black);
@@ -54,7 +57,7 @@ void main() {
   group('Adjacent segment plotting scaled',(){
     MockPixelMap mockPixelMap;
     setUp((){
-      GraphDisplay graphDisplay = GraphDisplay(3,3,2);
+      GraphDisplay graphDisplay = GraphDisplay.bounds(Bounds(-1,1,-1,1),DisplaySize(6,6),2);
       mockPixelMap = MockPixelMap();
       graphDisplay.pixelMap = mockPixelMap;
       graphDisplay.plotSegment(Coordinates(0,0), Coordinates(0,1), Colors.black);
@@ -79,7 +82,7 @@ void main() {
 
   group('Segment connection',(){
     MockPixelMap plotSegment(Coordinates start, Coordinates end){
-      GraphDisplay graphDisplay = GraphDisplay(5, 5, 1);
+      GraphDisplay graphDisplay = GraphDisplay.bounds(Bounds(-2,2,-2,2),DisplaySize(5,5),1);
       MockPixelMap mockPixelMap = MockPixelMap();
       graphDisplay.pixelMap = mockPixelMap;
       graphDisplay.plotSegment(start, end, Colors.black);
@@ -157,6 +160,49 @@ void main() {
           call.called(1);
           expect(call.captured[0].value, Colors.black.value);
         });
+      });
+
+    });
+  });
+
+  group('Device display size allows for increased precision',(){
+    GraphDisplay graphDisplay;
+    setUp((){
+      graphDisplay = GraphDisplay.bounds(Bounds(-1,1,-2,2),DisplaySize(5,17),1);
+    });
+
+    test('should calculate x precision',(){
+      expect(graphDisplay.xPrecision,0.5);
+    });
+
+    test('should calculate y precision',(){
+      expect(graphDisplay.yPrecision,0.25);
+    });
+    
+    group('allows for more precise plotting',(){
+      MockPixelMap mockPixelMap;
+      setUp((){
+        mockPixelMap = MockPixelMap();
+        graphDisplay.pixelMap = mockPixelMap;
+        graphDisplay.plotSegment(Coordinates(0.5,0), Coordinates(1,0.5), Colors.black);
+      });
+
+      test('should plot start point',(){
+        var call = verify(mockPixelMap.updatePixel(3,8,captureAny));
+        call.called(1);
+        expect(call.captured[0].value,Colors.purple.value);
+      });
+
+      test('should plot end point',(){
+        var call = verify(mockPixelMap.updatePixel(4,10,captureAny));
+        call.called(1);
+        expect(call.captured[0].value,Colors.purple.value);
+      });
+
+      test('should plot connection',(){
+        var call = verify(mockPixelMap.updatePixel(4,9,captureAny));
+        call.called(1);
+        expect(call.captured[0].value,Colors.black.value);
       });
 
     });
