@@ -21,7 +21,7 @@ class CartesianGraph extends StatelessWidget{
 
   Future<ui.Image> _makeImage(double containerWidth, double containerHeight){
     final c = Completer<ui.Image>();
-    GraphDisplay display = createGraphDisplay(this.bounds,DisplaySize(containerWidth,652),density);
+    GraphDisplay display = createGraphDisplay(this.bounds,DisplaySize(containerWidth,containerHeight),density);
     display.displayLegend(legendColor);
     if(cursorLocation != null){
       display.displayCursor(cursorLocation);
@@ -44,22 +44,24 @@ class CartesianGraph extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     double devicePixelRatio = MediaQuery.of(context).devicePixelRatio;
-    double width = MediaQuery.of(context).size.width * devicePixelRatio;
-    double height = MediaQuery.of(context).size.height * devicePixelRatio;
 
-    return Container(
-        child: FutureBuilder<ui.Image>(
-          future: _makeImage(width,height),
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              return RawImage(
-                image: snapshot.data,
-              );
-            } else {
-              return Center(child: CircularProgressIndicator());
-            }
-          },
-        )
+    return LayoutBuilder(
+      builder: (BuildContext context, BoxConstraints constraints){
+        return Container(
+            child: FutureBuilder<ui.Image>(
+              future: _makeImage(constraints.maxWidth * devicePixelRatio,constraints.maxHeight),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return RawImage(
+                    image: snapshot.data,
+                  );
+                } else {
+                  return Center(child: CircularProgressIndicator());
+                }
+              },
+            )
+        );
+      }
     );
   }
 
