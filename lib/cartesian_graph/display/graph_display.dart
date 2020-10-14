@@ -8,13 +8,15 @@ import 'package:open_calc/cartesian_graph/display/pixel_map.dart';
 
 class GraphDisplay{
   final int density;
-  final int _xOffset;
-  final int _yOffset;
+  final int _xLowerOffset;
+  final int _yLowerOffset;
+  final int _xUpperOffset;
+  final int _yUpperOffset;
   PixelMap pixelMap;
   final double xPrecision;
   final double yPrecision;
 
-  GraphDisplay._internal(this._xOffset,this._yOffset,this.pixelMap, this.density, this.xPrecision, this.yPrecision);
+  GraphDisplay._internal(this._xLowerOffset,this._xUpperOffset, this._yLowerOffset, this._yUpperOffset, this.pixelMap, this.density, this.xPrecision, this.yPrecision);
 
   factory GraphDisplay.bounds(Bounds bounds, DisplaySize displaySize, int density){
         int minXPixels = _calculatePixels(bounds.xMin,bounds.xMax,density);
@@ -24,9 +26,11 @@ class GraphDisplay{
         double yPrecision = (minYPixels/(displaySize.height-density));
 
         PixelMap pixelMap = PixelMap(displaySize.width.toInt(),displaySize.height.toInt(), Color.fromRGBO(170, 200, 154, 1));
-        int xSpan = (bounds.xMin.abs()/xPrecision).round();
-        int ySpan = (bounds.yMin.abs()/yPrecision).round();
-        return GraphDisplay._internal(xSpan, ySpan, pixelMap, density,xPrecision,yPrecision);
+        int xLowerOffset = (bounds.xMin.abs()/xPrecision).round();
+        int xUpperOffset = (bounds.xMax.abs()/xPrecision).round();
+        int yLowerOffset = (bounds.yMin.abs()/yPrecision).round();
+        int yUpperOffset = (bounds.yMax.abs()/yPrecision).round();
+        return GraphDisplay._internal(xLowerOffset, xUpperOffset, yLowerOffset, yUpperOffset, pixelMap, density,xPrecision,yPrecision);
   }
 
   static int _calculatePixels(int min, int max, int density){
@@ -43,8 +47,8 @@ class GraphDisplay{
   }
 
   void _plotCoordinates(Coordinates coordinates, Color color){
-    int xPosition = _xOffset + (coordinates.x/xPrecision).round();
-    int yPosition = _yOffset + (coordinates.y/yPrecision).round();
+    int xPosition = _xLowerOffset + (coordinates.x/xPrecision).round();
+    int yPosition = _yLowerOffset + (coordinates.y/yPrecision).round();
 
     _updatePosition(xPosition, yPosition, color);
   }
@@ -65,12 +69,12 @@ class GraphDisplay{
     }
   }
 
-  void displayLegend(Color color){
-    for(int i = (-1)*_xOffset; i<_xOffset + 1; i++){
+  void displayAxes(Color color){
+    for(int i = (-1)*_xLowerOffset; i<_xUpperOffset + 1; i++){
       _plotCoordinates(Coordinates(i.toDouble(),0), color);
     }
 
-    for(int i = (-1)*_yOffset; i<_yOffset + 1; i++){
+    for(int i = (-1)*_yLowerOffset; i<_yUpperOffset + 1; i++){
       _plotCoordinates(Coordinates(0,i.toDouble()), color);
     }
   }

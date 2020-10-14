@@ -7,7 +7,6 @@ import 'package:open_calc/cartesian_graph/display/display_size.dart';
 import 'package:open_calc/cartesian_graph/display/graph_display.dart';
 import 'package:open_calc/cartesian_graph/display/pixel_map.dart';
 
-
 class MockPixelMap extends Mock implements PixelMap{}
 
 void main() {
@@ -225,6 +224,78 @@ void main() {
         expect(call.captured[0].value,Colors.black.value);
       });
 
+    });
+  });
+  group('Displaying axes',(){
+    group('Centered axes',(){
+      MockPixelMap mockPixelMap;
+      setUpAll((){
+        GraphDisplay graphDisplay = GraphDisplay.bounds(Bounds(-1,1,-1,1),DisplaySize(3,3),1);
+        mockPixelMap = MockPixelMap();
+        graphDisplay.pixelMap = mockPixelMap;
+        graphDisplay.displayAxes(Colors.black);
+      });
+
+      test('should display intersection',(){
+        var center = verify(mockPixelMap.updatePixel(1,1,captureAny));
+        expect(center.captured[0].value,Colors.black.value);
+      });
+
+      test('should display x axis',(){
+        var left = verify(mockPixelMap.updatePixel(0,1,captureAny));
+
+        var right = verify(mockPixelMap.updatePixel(2,1,captureAny));
+
+        expect(left.captured[0].value,Colors.black.value);
+        expect(right.captured[0].value,Colors.black.value);
+      });
+
+      test('should display y axis',(){
+        var left = verify(mockPixelMap.updatePixel(1,0,captureAny));
+        var right = verify(mockPixelMap.updatePixel(1,2,captureAny));
+
+        expect(left.captured[0].value,Colors.black.value);
+        expect(right.captured[0].value,Colors.black.value);
+      });
+
+      test('should not display other points',(){
+        verifyNever(mockPixelMap.updatePixel(any,any,any));
+      });
+    });
+
+    group('Off centered axes',(){
+      MockPixelMap mockPixelMap;
+      setUpAll((){
+        GraphDisplay graphDisplay = GraphDisplay.bounds(Bounds(0,2,-2,0),DisplaySize(3,3),1);
+        mockPixelMap = MockPixelMap();
+        graphDisplay.pixelMap = mockPixelMap;
+        graphDisplay.displayAxes(Colors.black);
+      });
+
+      test('should display intersection',(){
+        var center = verify(mockPixelMap.updatePixel(0,2,captureAny));
+        expect(center.captured[0].value,Colors.black.value);
+      });
+
+      test('should display x axis',(){
+        var left = verify(mockPixelMap.updatePixel(1,2,captureAny));
+        var right = verify(mockPixelMap.updatePixel(2,2,captureAny));
+
+        expect(left.captured[0].value,Colors.black.value);
+        expect(right.captured[0].value,Colors.black.value);
+      });
+
+      test('should display y axis',(){
+        var left = verify(mockPixelMap.updatePixel(0,0,captureAny));
+        var right = verify(mockPixelMap.updatePixel(0,1,captureAny));
+
+        expect(left.captured[0].value,Colors.black.value);
+        expect(right.captured[0].value,Colors.black.value);
+      });
+
+      test('should not display other points',(){
+        verifyNever(mockPixelMap.updatePixel(any,any,any));
+      });
     });
   });
 }
