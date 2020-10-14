@@ -29,11 +29,17 @@ class MockImage extends Mock implements ui.Image{}
 
 class TestableCartesianGraph extends CartesianGraph{
   final GraphDisplay _graphDisplay;
+  Bounds bounds;
+  DisplaySize displaySize;
+  int density;
 
   TestableCartesianGraph(Bounds bounds, this._graphDisplay): super(bounds);
 
   @override
   GraphDisplay createGraphDisplay(Bounds bounds, DisplaySize displaySize, int density){
+    this.bounds = bounds;
+    this.displaySize = displaySize;
+    this.density = density;
     return _graphDisplay;
   }
 }
@@ -48,6 +54,10 @@ void main() {
     ui.Image image = await recorder.endRecording().toImage(5, 5);
     return image;
   }
+
+  group('Graph Display is created', (){
+
+  });
 
   testWidgets(('Cartesian Graph initially shows progress indicator'), (WidgetTester tester) async{
     MockGraphDisplay mockGraphDisplay = MockGraphDisplay(await _createMockImage());
