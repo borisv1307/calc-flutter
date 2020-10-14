@@ -165,6 +165,26 @@ void main() {
     });
   });
 
+  group('Inexact pixel fit to bounds', (){
+    GraphDisplay graphDisplay;
+    MockPixelMap mockPixelMap;
+    setUp((){
+      graphDisplay = GraphDisplay.bounds(Bounds(-1,1,-72,72),DisplaySize(5,134),1);
+      mockPixelMap = MockPixelMap();
+      graphDisplay.pixelMap = mockPixelMap;
+    });
+
+    test('should draw finite downward line',(){
+      graphDisplay.plotSegment(Coordinates(1,2), Coordinates(0,0), Colors.black);
+      verify(mockPixelMap.updatePixel(any, any, any)).called(3);
+    });
+
+    test('should draw finite upward line',(){
+      graphDisplay.plotSegment(Coordinates(0,0), Coordinates(1,2), Colors.black);
+      verify(mockPixelMap.updatePixel(any, any, any)).called(3);
+    });
+  });
+
   group('Device display size allows for increased precision',(){
     GraphDisplay graphDisplay;
     setUp((){

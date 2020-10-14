@@ -60,7 +60,7 @@ class GraphDisplay{
 
     double yDirection = closeY < farY ? yPrecision : -1 * yPrecision;
 
-    for(double i=closeY+yDirection;i<farY;i+= yDirection){
+    for(double i=closeY+yDirection;(yDirection > 0 && i<farY) || (yDirection < 0 && i>farY);i+= yDirection){
       _plotCoordinates(Coordinates(farX, i.toDouble()), color);
     }
   }
