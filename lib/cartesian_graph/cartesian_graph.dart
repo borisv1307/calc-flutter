@@ -22,7 +22,7 @@ class CartesianGraph extends StatelessWidget{
     int width = 270;
     int height = 162;
     final c = Completer<ui.Image>();
-    GraphDisplay display = GraphDisplay.bounds(Bounds(-135,135,-81,81),DisplaySize(containerWidth,containerHeight),density);
+    GraphDisplay display = createGraphDisplay(Bounds(-135,135,-81,81),DisplaySize(containerWidth,containerHeight),density);
     display.displayLegend(legendColor);
     if(cursorLocation != null){
       display.displayCursor(cursorLocation);
@@ -35,6 +35,10 @@ class CartesianGraph extends StatelessWidget{
     display.render(c.complete);
 
     return c.future;
+  }
+
+  GraphDisplay createGraphDisplay(Bounds bounds, DisplaySize displaySize, int density){
+    return GraphDisplay.bounds(bounds,displaySize,density);
   }
 
 
