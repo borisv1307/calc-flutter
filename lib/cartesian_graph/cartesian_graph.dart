@@ -20,8 +20,6 @@ class CartesianGraph extends StatelessWidget{
       this.coordinates = coordinates ?? [];
 
   Future<ui.Image> _makeImage(double containerWidth, double containerHeight){
-    int width = 270;
-    int height = 162;
     final c = Completer<ui.Image>();
     GraphDisplay display = createGraphDisplay(this.bounds,DisplaySize(containerWidth,652),density);
     display.displayLegend(legendColor);
