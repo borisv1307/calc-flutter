@@ -15,9 +15,10 @@ class CartesianGraph extends StatelessWidget{
   final Color legendColor;
   final Color lineColor;
   final Bounds bounds;
+  final List<Coordinates> Function(double xPrecision,double yPrecision) coordinatesBuilder;
 
-  CartesianGraph(this.bounds, {List<Coordinates> coordinates, this.cursorLocation, this.legendColor = Colors.blueGrey, this.lineColor = Colors.black, List<Coordinates> Function(double xPrecision,double yPrecision) coordinateBuilder}):
-      this.coordinates = coordinates ?? [];
+  CartesianGraph(this.bounds, {this.coordinates, this.cursorLocation, this.legendColor = Colors.blueGrey, this.lineColor = Colors.black, this.coordinatesBuilder}):
+      assert(!(coordinates != null && coordinatesBuilder != null));
 
   Future<ui.Image> _makeImage(double containerWidth, double containerHeight){
     final c = Completer<ui.Image>();
@@ -26,6 +27,12 @@ class CartesianGraph extends StatelessWidget{
     if(cursorLocation != null){
       display.displayCursor(cursorLocation);
     }
+
+    List<Coordinates> coordinates = this.coordinates;
+    if(coordinatesBuilder != null){
+      coordinates = coordinatesBuilder(display.xPrecision,display.yPrecision);
+    }
+    coordinates ??= [];
 
     for(int i = 0; i< coordinates.length-1;i++){
       display.plotSegment(coordinates[i],coordinates[i+1], lineColor);
