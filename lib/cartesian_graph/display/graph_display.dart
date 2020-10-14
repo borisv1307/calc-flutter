@@ -8,13 +8,13 @@ import 'package:open_calc/cartesian_graph/display/pixel_map.dart';
 
 class GraphDisplay{
   final int density;
-  final int xOffset;
-  final int yOffset;
+  final int _xOffset;
+  final int _yOffset;
   PixelMap pixelMap;
   final double xPrecision;
   final double yPrecision;
 
-  GraphDisplay._internal(this.xOffset,this.yOffset,this.pixelMap, this.density, this.xPrecision, this.yPrecision);
+  GraphDisplay._internal(this._xOffset,this._yOffset,this.pixelMap, this.density, this.xPrecision, this.yPrecision);
 
   factory GraphDisplay.bounds(Bounds bounds, DisplaySize displaySize, int density){
         int minXPixels = _calculatePixels(bounds.xMin,bounds.xMax,density);
@@ -24,8 +24,8 @@ class GraphDisplay{
         double yPrecision = minYPixels/(displaySize.height-density);
 
         PixelMap pixelMap = PixelMap(displaySize.width.toInt(),displaySize.height.toInt(), Color.fromRGBO(170, 200, 154, 1));
-        int xSpan = bounds.xMin.abs();
-        int ySpan = bounds.yMin.abs();
+        int xSpan = (bounds.xMin.abs()/xPrecision).round();
+        int ySpan = (bounds.yMin.abs()/yPrecision).round();
         return GraphDisplay._internal(xSpan, ySpan, pixelMap, density,xPrecision,yPrecision);
   }
 
@@ -43,8 +43,8 @@ class GraphDisplay{
   }
 
   void _plotCoordinates(Coordinates coordinates, Color color){
-    int xPosition = xOffset + (coordinates.x).round();
-    int yPosition = yOffset + (coordinates.y).round();
+    int xPosition = _xOffset + (coordinates.x/xPrecision).round();
+    int yPosition = _yOffset + (coordinates.y/yPrecision).round();
 
     _updatePosition(xPosition, yPosition, color);
   }
@@ -58,19 +58,19 @@ class GraphDisplay{
     _plotCoordinates(start, Colors.purple);
     _plotCoordinates(end, Colors.purple);
 
-    int yDirection = closeY < farY ? 1 : -1;
+    double yDirection = closeY < farY ? yPrecision : -1 * yPrecision;
 
-    for(int i=closeY.toInt()+yDirection;i!=farY.toInt();i+= yDirection){
+    for(double i=closeY+yDirection;i!=farY;i+= yDirection){
       _plotCoordinates(Coordinates(farX, i.toDouble()), color);
     }
   }
 
   void displayLegend(Color color){
-    for(int i = (-1)*xOffset; i<xOffset + 1; i++){
+    for(int i = (-1)*_xOffset; i<_xOffset + 1; i++){
       _plotCoordinates(Coordinates(i.toDouble(),0), color);
     }
 
-    for(int i = (-1)*yOffset; i<yOffset + 1; i++){
+    for(int i = (-1)*_yOffset; i<_yOffset + 1; i++){
       _plotCoordinates(Coordinates(0,i.toDouble()), color);
     }
   }

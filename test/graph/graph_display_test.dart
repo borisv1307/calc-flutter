@@ -179,10 +179,32 @@ void main() {
       expect(graphDisplay.yPrecision,0.25);
     });
     
-    group('should allow more precise plotting',(){
+    group('allows for more precise plotting',(){
+      MockPixelMap mockPixelMap;
       setUp((){
-        //graphDisplay.plotSegment(start, end, color)
+        mockPixelMap = MockPixelMap();
+        graphDisplay.pixelMap = mockPixelMap;
+        graphDisplay.plotSegment(Coordinates(0.5,0), Coordinates(1,0.5), Colors.black);
       });
+
+      test('should plot start point',(){
+        var call = verify(mockPixelMap.updatePixel(3,8,captureAny));
+        call.called(1);
+        expect(call.captured[0].value,Colors.purple.value);
+      });
+
+      test('should plot end point',(){
+        var call = verify(mockPixelMap.updatePixel(4,10,captureAny));
+        call.called(1);
+        expect(call.captured[0].value,Colors.purple.value);
+      });
+
+      test('should plot connection',(){
+        var call = verify(mockPixelMap.updatePixel(4,9,captureAny));
+        call.called(1);
+        expect(call.captured[0].value,Colors.black.value);
+      });
+
     });
   });
 }
