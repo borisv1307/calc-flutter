@@ -22,7 +22,7 @@ class CartesianGraph extends StatelessWidget{
   Future<ui.Image> _makeImage(double containerWidth, double containerHeight){
     final c = Completer<ui.Image>();
     GraphDisplay display = createGraphDisplay(this.bounds,DisplaySize(containerWidth,containerHeight),density);
-    display.displayLegend(legendColor);
+    display.displayAxes(legendColor);
     if(cursorLocation != null){
       display.displayCursor(cursorLocation);
     }
