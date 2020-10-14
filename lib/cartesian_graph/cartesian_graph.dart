@@ -15,7 +15,7 @@ class CartesianGraph extends StatelessWidget{
   final Color legendColor;
   final Color lineColor;
 
-  CartesianGraph({List<Coordinates> coordinates, this.cursorLocation, this.legendColor = Colors.blueGrey, this.lineColor = Colors.black, List<Coordinates> Function(int) coordinateBuilder}):
+  CartesianGraph({List<Coordinates> coordinates, this.cursorLocation, this.legendColor = Colors.blueGrey, this.lineColor = Colors.black, List<Coordinates> Function(double xPrecision,double yPrecision) coordinateBuilder}):
       this.coordinates = coordinates ?? [];
 
   Future<ui.Image> _makeImage(double containerWidth, double containerHeight){
