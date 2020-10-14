@@ -20,8 +20,8 @@ class GraphDisplay{
         int minXPixels = _calculatePixels(bounds.xMin,bounds.xMax,density);
         int minYPixels = _calculatePixels(bounds.yMin,bounds.yMax,density);
 
-        double xPrecision = minXPixels/(displaySize.width-density);
-        double yPrecision = minYPixels/(displaySize.height-density);
+        double xPrecision = double.parse((minXPixels/(displaySize.width-density)).toStringAsFixed(2));
+        double yPrecision = double.parse((minYPixels/(displaySize.height-density)).toStringAsFixed(2));
 
         PixelMap pixelMap = PixelMap(displaySize.width.toInt(),displaySize.height.toInt(), Color.fromRGBO(170, 200, 154, 1));
         int xSpan = (bounds.xMin.abs()/xPrecision).round();

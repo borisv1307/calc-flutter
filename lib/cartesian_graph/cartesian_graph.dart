@@ -14,15 +14,16 @@ class CartesianGraph extends StatelessWidget{
   final int density = 4;
   final Color legendColor;
   final Color lineColor;
+  final Bounds bounds;
 
-  CartesianGraph({List<Coordinates> coordinates, this.cursorLocation, this.legendColor = Colors.blueGrey, this.lineColor = Colors.black, List<Coordinates> Function(double xPrecision,double yPrecision) coordinateBuilder}):
+  CartesianGraph(this.bounds, {List<Coordinates> coordinates, this.cursorLocation, this.legendColor = Colors.blueGrey, this.lineColor = Colors.black, List<Coordinates> Function(double xPrecision,double yPrecision) coordinateBuilder}):
       this.coordinates = coordinates ?? [];
 
   Future<ui.Image> _makeImage(double containerWidth, double containerHeight){
     int width = 270;
     int height = 162;
     final c = Completer<ui.Image>();
-    GraphDisplay display = createGraphDisplay(Bounds(-135,135,-81,81),DisplaySize(containerWidth,containerHeight),density);
+    GraphDisplay display = createGraphDisplay(this.bounds,DisplaySize(containerWidth,652),density);
     display.displayLegend(legendColor);
     if(cursorLocation != null){
       display.displayCursor(cursorLocation);

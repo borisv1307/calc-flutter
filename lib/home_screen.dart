@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:open_calc/bridge/graph_bridge.dart';
+import 'package:open_calc/cartesian_graph/bounds.dart';
 import 'package:open_calc/cartesian_graph/cartesian_graph.dart';
 import 'package:open_calc/cartesian_graph/coordinates.dart';
 
@@ -54,6 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
               CartesianGraph(
+                Bounds(-135,135,-81,81),
                 coordinates: _retrieveCoordinates(),
                 cursorLocation: this.cursorLocation,
               ),
