@@ -1,8 +1,8 @@
+import 'package:cartesian_graph/bounds.dart';
+import 'package:cartesian_graph/cartesian_graph.dart';
+import 'package:cartesian_graph/coordinates.dart';
 import 'package:flutter/material.dart';
 import 'package:open_calc/bridge/graph_bridge.dart';
-import 'package:open_calc/cartesian_graph/bounds.dart';
-import 'package:open_calc/cartesian_graph/cartesian_graph.dart';
-import 'package:open_calc/cartesian_graph/coordinates.dart';
 
 class HomeScreen extends StatefulWidget {
   HomeScreen({Key key, this.title}) : super(key: key);
