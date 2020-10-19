@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cartesian_graph/bounds.dart';
 import 'package:cartesian_graph/cartesian_graph.dart';
 import 'package:cartesian_graph/coordinates.dart';
@@ -51,6 +53,10 @@ class _HomeScreenState extends State<HomeScreen> {
   void _closeDrawer() {
     Navigator.of(context).pop();
   }
+
+  final formKey = GlobalKey<FormState>();
+  // Scale Value, Range and Domain of x and y will be set and saved in these variable
+  String _xMin, _xMax, _yMin, _yMax, _xScl, _yScl, _xRes;
 
   @override
   Widget build(BuildContext context) {
@@ -114,120 +120,63 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       endDrawer: ClipRRect(
         borderRadius: BorderRadius.vertical(
-            top: Radius.circular(15), bottom: Radius.circular(15)),
+            top: Radius.circular(10), bottom: Radius.circular(10)),
         child: Container(
-          width: 200,
-          height: 470,
-          child: Drawer(
-            child: ListView(
-              padding: EdgeInsets.zero,
-              children: <Widget>[
-                ListTile(
-                  title: Row(
-                    children: <Widget>[
-                      Expanded(child: Text('X min:')),
-                      Expanded(
-                        flex: 2,
-                        child: TextField(
-                          keyboardType: TextInputType.number,
-                          textAlign: TextAlign.end,
-                        ),
-                      ),
-                    ],
+          color: Colors.white,
+          width: 150,
+          height: 500,
+          child: Padding(
+            padding: EdgeInsets.all(8.0),
+            child: Form(
+              key: formKey,
+              child: Column(
+                children: <Widget>[
+                  TextFormField(
+                    keyboardType: TextInputType.number,
+                    decoration: InputDecoration(labelText: 'X max:'),
+                    onSaved: (input) => {_xMax = input, log('x_Max: ' + input)},
                   ),
-                ),
-                ListTile(
-                  title: Row(
-                    children: <Widget>[
-                      Expanded(child: Text('X max:')),
-                      Expanded(
-                        flex: 2,
-                        child: TextField(
-                          keyboardType: TextInputType.number,
-                          textAlign: TextAlign.end,
-                        ),
-                      ),
-                    ],
+                  TextFormField(
+                    keyboardType: TextInputType.number,
+                    decoration: InputDecoration(labelText: 'X min:'),
+                    onSaved: (input) => {_xMin = input, log('x_Min: ' + input)},
                   ),
-                ),
-                ListTile(
-                  title: Row(
-                    children: <Widget>[
-                      Expanded(child: Text('X scale:')),
-                      Expanded(
-                        flex: 2,
-                        child: TextField(
-                          keyboardType: TextInputType.number,
-                          textAlign: TextAlign.end,
-                        ),
-                      ),
-                    ],
+                  TextFormField(
+                    keyboardType: TextInputType.number,
+                    decoration: InputDecoration(labelText: 'X scale:'),
+                    onSaved: (input) => {_xScl = input, log('x_Scl: ' + input)},
                   ),
-                ),
-                ListTile(
-                  title: Row(
-                    children: <Widget>[
-                      Expanded(child: Text('Y min:')),
-                      Expanded(
-                        flex: 2,
-                        child: TextField(
-                          keyboardType: TextInputType.number,
-                          textAlign: TextAlign.end,
-                        ),
-                      ),
-                    ],
+                  TextFormField(
+                    keyboardType: TextInputType.number,
+                    decoration: InputDecoration(labelText: 'Y max:'),
+                    onSaved: (input) => {_yMax = input, log('y_Max: ' + input)},
                   ),
-                ),
-                ListTile(
-                  title: Row(
-                    children: <Widget>[
-                      Expanded(child: Text('Y max:')),
-                      Expanded(
-                        flex: 2,
-                        child: TextField(
-                          keyboardType: TextInputType.number,
-                          textAlign: TextAlign.end,
-                        ),
-                      ),
-                    ],
+                  TextFormField(
+                    keyboardType: TextInputType.number,
+                    decoration: InputDecoration(labelText: 'Y min:'),
+                    onSaved: (input) => {_yMin = input, log('y_Min: ' + input)},
                   ),
-                ),
-                ListTile(
-                  title: Row(
-                    children: <Widget>[
-                      Expanded(child: Text('Y scale:')),
-                      Expanded(
-                        flex: 2,
-                        child: TextField(
-                          keyboardType: TextInputType.number,
-                          textAlign: TextAlign.end,
-                        ),
-                      ),
-                    ],
+                  TextFormField(
+                    keyboardType: TextInputType.number,
+                    decoration: InputDecoration(labelText: 'Y scale:'),
+                    onSaved: (input) => {_yScl = input, log('y_Min: ' + input)},
                   ),
-                ),
-                ListTile(
-                  title: Row(
-                    children: <Widget>[
-                      Expanded(child: Text('X res:')),
-                      Expanded(
-                        flex: 2,
-                        child: TextField(
-                          keyboardType: TextInputType.number,
-                          textAlign: TextAlign.end,
-                        ),
-                      ),
-                    ],
+                  TextFormField(
+                    keyboardType: TextInputType.number,
+                    decoration: InputDecoration(labelText: 'X res:'),
+                    onSaved: (input) => {_xRes = input, log('x_Res: ' + input)},
                   ),
-                ),
-                SizedBox(
-                  height: 5,
-                ),
-                ElevatedButton(
-                  onPressed: _closeDrawer,
-                  child: Text("Save Changes"),
-                ),
-              ],
+                  SizedBox(
+                    height: 5,
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      formKey.currentState.save();
+                    },
+                    child: Text("Save Changes"),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
