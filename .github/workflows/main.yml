@@ -27,7 +27,7 @@ jobs:
       #checkout cartesian graph
       - uses: actions/checkout@v2
         with:
-          repository: https://github.com/SE-691-Graphing-Calculator/cartesian_graph.git
+          repository: calc-flutter/https://github.com/SE-691-Graphing-Calculator/cartesian_graph.git
           path: cartesian_graph 
       # Setup the flutter environment.
       - uses: subosito/flutter-action@v1
