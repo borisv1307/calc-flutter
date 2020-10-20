@@ -1,5 +1,5 @@
 import 'package:test/test.dart';
-import '../../lib/input_validation/validate_function.dart';
+import 'package:open_calc/input_validation/validate_function.dart';
 
 validateFunction tester = new validateFunction();
 void main(){
