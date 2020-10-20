@@ -4,6 +4,10 @@ import 'package:open_calc/input_validation/state.dart';
 
 class validateFunction {
   state currentState;
+  
+  validateFunction(){
+    currentState= new start_state(this);
+  }
 
   void setCurrentState(state currentState) {
     this.currentState = currentState;
@@ -14,7 +18,6 @@ class validateFunction {
   }
 
   bool testFunction(String input){
-    currentState= new start_state(this); //how to refer 'this' in dart? -- Test fails here
     // Copy character by character into array
     for (int i = 0; i < input.length; i++) {
       currentState.getNextState(input[i]);
