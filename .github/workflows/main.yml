@@ -9,6 +9,10 @@ on:
   pull_request:
     branches: [ master ]
 
+defaults:
+  run:
+    working-directory: calc-flutter
+
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
@@ -20,6 +24,8 @@ jobs:
     steps:
       # Setup Java environment in order to build the Android app.
       - uses: actions/checkout@v2
+        with:
+          path: calc-flutter 
       - uses: actions/setup-java@v1
         with:
           java-version: '12.x'
