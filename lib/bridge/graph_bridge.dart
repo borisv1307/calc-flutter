@@ -1,12 +1,8 @@
 import 'dart:ffi';
-
 import 'dart:io';
-
 import 'dart:typed_data';
 
-import 'package:open_calc/cartesian_graph/coordinates.dart';
-
-
+import 'package:cartesian_graph/coordinates.dart';
 
 
 class CoordPair extends Struct{

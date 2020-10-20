@@ -23,7 +23,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  equatable: 1.2.5
+  cartesian_graph:
+    path: ../cartesian_graph
 
 
   # The following adds the Cupertino Icons font to your application.
