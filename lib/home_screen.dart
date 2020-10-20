@@ -251,7 +251,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       InkWell(
                         child: Text('  =  ', style: TextStyle(fontSize:40,)),
-                        onTap: (){setLabelInput('1111111111111111111');}
+                        onTap: (){setLabelInput('1');}
                       )
                   ],
                   )),
