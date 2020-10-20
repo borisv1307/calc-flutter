@@ -3,6 +3,8 @@ import 'package:cartesian_graph/cartesian_graph.dart';
 import 'package:cartesian_graph/coordinates.dart';
 import 'package:flutter/material.dart';
 import 'package:open_calc/bridge/graph_bridge.dart';
+import 'package:open_calc/calculator_display/calculator_display.dart';
+import 'package:open_calc/calculator_display/display_history.dart';
 
 class HomeScreen extends StatefulWidget {
   HomeScreen({Key key, this.title}) : super(key: key);
@@ -16,6 +18,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   Coordinates cursorLocation = Coordinates(50, 50);
   GraphBridge bridge = GraphBridge();
+  List<DisplayHistory> history = [];
   int width = 270;
   int height = 162;
 
@@ -46,7 +49,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void setLabelInput(String keypadInput){
     setState(() {
-
       if(keypadInput == "C"){
         userInputString = '';
       }else{
@@ -130,44 +132,10 @@ class _HomeScreenState extends State<HomeScreen> {
         Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-          Expanded(
-            flex: 5,
-            child:
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Expanded(
-                child:
-                Container(
-                  height: 500,
-                  margin: const EdgeInsets.all(15.0),
-                  padding: const EdgeInsets.all(10.0),
-                  decoration: BoxDecoration(
-                    color: Color.fromRGBO(170, 200, 154, 1),
-                    border: Border.all(
-                      color: Colors.black,
-                      width: 3,
-                    ),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Expanded(
-                        
-                        child:
-                        Text(
-                          userInputString,
-                          style: TextStyle(fontSize:40,),
-                          textAlign: TextAlign.left,
-                        )
-                      )
-                    ],
-                  )
-                )
-              )
-            ]
-          ),
-          ),
+            SizedBox(
+              height:652/MediaQuery.of(context).devicePixelRatio,
+              child: CalculatorDisplay(userInputString,history),
+            ),
           Expanded(
             flex: 5,
             child: DefaultTabController(length: 3, 
@@ -283,7 +251,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       InkWell(
                         child: Text('  =  ', style: TextStyle(fontSize:40,)),
-                        onTap: (){setLabelInput('1');}
+                        onTap: (){setLabelInput('1111111111111111111');}
                       )
                   ],
                   )),
