@@ -132,10 +132,7 @@ class _HomeScreenState extends State<HomeScreen> {
         Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-            SizedBox(
-              height:652/MediaQuery.of(context).devicePixelRatio,
-              child: CalculatorDisplay(userInputString,history),
-            ),
+          CalculatorDisplay(8,inputLine:userInputString,history:history),
           Expanded(
             flex: 5,
             child: DefaultTabController(length: 3, 
