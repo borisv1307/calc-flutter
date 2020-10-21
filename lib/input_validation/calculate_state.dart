@@ -4,9 +4,9 @@ import 'package:open_calc/input_validation/state.dart';
 import 'package:open_calc/input_validation/validate_function.dart';
 
 
-class calculate_state extends state {
+class CalculateState extends State {
   //--Constructor--
-  calculate_state(validateFunction context) : super(context);
+  CalculateState(ValidateFunction context) : super(context);
 
   //--Methods--
 
@@ -25,7 +25,7 @@ class calculate_state extends state {
       // context.expressionTree = new Operator(null);
       // context.setOperator(null);
       // context.setSecondOperand(null);
-      context.setCurrentState(new first_operand_state(context));
+      context.setCurrentState(new FirstOperandState(context));
     }
     else {
       //update calculator view and reset to start state
@@ -35,7 +35,7 @@ class calculate_state extends state {
       // context.trackOperation = new ArrayList<OperationModel>();
       // context.subExpressionTree.setValue(null);
       // context.expressionTree.setValue(null);
-      context.setCurrentState(new start_state(context));
+      context.setCurrentState(new StartState(context));
       //context.calculator.setOutput("");
     }
   }

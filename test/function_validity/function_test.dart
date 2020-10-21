@@ -1,7 +1,7 @@
 import 'package:test/test.dart';
 import 'package:open_calc/input_validation/validate_function.dart';
 
-validateFunction tester = new validateFunction();
+ValidateFunction tester = new ValidateFunction();
 void main(){
   group('input strings fail when not a valid math function', () {
     
@@ -148,6 +148,33 @@ void main(){
       test('no empty parentheses', () {
         var string = '2*()';
         expect(tester.testFunction(string), equals(false));
+      });
+    });
+
+    group('pass on valid operators', () {
+      test('+', (){
+        var string = '2+2';
+        expect(tester.testFunction(string), equals(true));
+      });
+
+      test('-', (){
+        var string = '2-2';
+        expect(tester.testFunction(string), equals(true));
+      });
+
+      test('/', (){
+        var string = '2/2';
+        expect(tester.testFunction(string), equals(true));
+      });
+
+      test('*', (){
+        var string = '2*2';
+        expect(tester.testFunction(string), equals(true));
+      });
+
+      test('valid parentheses', (){
+        var string = '(2+2)-2';
+        expect(tester.testFunction(string), equals(true));
       });
     });
   });

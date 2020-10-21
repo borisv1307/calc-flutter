@@ -2,18 +2,18 @@ import 'package:open_calc/input_validation/error_state.dart';
 import 'package:open_calc/input_validation/start_state.dart';
 import 'package:open_calc/input_validation/state.dart';
 
-class validateFunction {
-  state currentState;
+class ValidateFunction {
+  State currentState;
   
-  validateFunction(){
-    currentState= new start_state(this);
+  ValidateFunction(){
+    currentState= new StartState(this);
   }
 
-  void setCurrentState(state currentState) {
+  void setCurrentState(State currentState) {
     this.currentState = currentState;
   }
 
-  state getCurrentState() {
+  State getCurrentState() {
     return currentState;
   }
 
@@ -22,7 +22,7 @@ class validateFunction {
     for (int i = 0; i < input.length; i++) {
       currentState.getNextState(input[i]);
 
-      if(currentState is error_state){
+      if(currentState is ErrorState){
         return false;
       }
     }

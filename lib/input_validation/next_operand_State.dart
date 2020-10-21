@@ -3,9 +3,9 @@ import 'package:open_calc/input_validation/second_operand_state.dart';
 import 'package:open_calc/input_validation/state.dart';
 import 'package:open_calc/input_validation/validate_function.dart';
 
-class next_operand_state extends state {
+class NextOperandState extends State {
   //--Constructor--
-  next_operand_state(validateFunction context) : super(context);
+  NextOperandState(ValidateFunction context) : super(context);
 
   //--Methods--
 
@@ -20,11 +20,11 @@ class next_operand_state extends state {
 
       //update calculator view and state
       //context.calculator.setOutput(context.calculator.getOutput() + value);
-      context.setCurrentState(new second_operand_state(context));
+      context.setCurrentState(new SecondOperandState(context));
     }
     else if(value.startsWith(RegExp(r'[+-/*]'))){
       //update calculator view and state
-      context.setCurrentState(new error_state(context));
+      context.setCurrentState(new ErrorState(context));
       //context.calculator.setOutput("ERROR");
     }
     else if(value.startsWith("C")){

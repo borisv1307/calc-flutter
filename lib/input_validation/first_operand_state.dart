@@ -4,9 +4,9 @@ import 'package:open_calc/input_validation/start_state.dart';
 import 'package:open_calc/input_validation/state.dart';
 import 'package:open_calc/input_validation/validate_function.dart';
 
-class first_operand_state extends state {
+class FirstOperandState extends State {
   //--Constructor--
-  first_operand_state(validateFunction context) : super(context);
+  FirstOperandState(ValidateFunction context) : super(context);
 
   //--Methods--
 
@@ -31,7 +31,7 @@ class first_operand_state extends state {
       // //update calculator view and state
       // String newValue= context.getFirstOperand() + value;
       // context.calculator.setOutput(newValue);
-      context.setCurrentState(new next_operand_state(context));
+      context.setCurrentState(new NextOperandState(context));
     }
     else if(value.startsWith("C")){
       //update calculator view and reset to start state
@@ -41,13 +41,13 @@ class first_operand_state extends state {
       // context.trackOperation = new ArrayList<OperationModel>();
       // context.subExpressionTree = new Operator(null);
       // context.expressionTree = new Operator(null);
-      context.setCurrentState(new start_state(context));
+      context.setCurrentState(new StartState(context));
       // context.calculator.setOutput("");
     }
     else if(value.startsWith("=")){
       //update state
       //context.calculator.setOutput("ERROR");
-      context.setCurrentState(new error_state(context));
+      context.setCurrentState(new ErrorState(context));
     }
   }
 }
