@@ -52,12 +52,21 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void setLabelInput(String keypadInput){
     setState(() {
-      if(keypadInput == "C"){
-        userInputString = '';
-      }else{
         userInputString = (userInputString + keypadInput);
-      }
     });
+  }
+
+  void clearOnce(){
+    setState(() {
+      userInputString = '';
+    });
+  }
+
+  void clearTwice(){
+    setState(() {
+      userInputString = '';
+    });
+    history.clear();
   }
 
   //evaluates a function and adds the input to the history
@@ -66,6 +75,10 @@ class _HomeScreenState extends State<HomeScreen> {
     //temporary results until merge with backend
     String results = (tester.testFunction(string)).toString();
     DisplayHistory newEntry = new DisplayHistory(string, results);
+    setState((){
+      userInputString = '';
+    });
+
     history.add(newEntry);
 
   }
@@ -219,7 +232,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   Column(children: [
                       InkWell(
                         child: Text('  C  ', style: TextStyle(fontSize:40,)),
-                        onTap: (){setLabelInput('C');}
+                        onTap: (){clearOnce();},
+                        onDoubleTap: (){clearTwice();},
                       ),
                       InkWell(
                         child: Text('  3  ', style: TextStyle(fontSize:40,)),
