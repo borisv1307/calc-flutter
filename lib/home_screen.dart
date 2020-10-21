@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:open_calc/bridge/graph_bridge.dart';
 import 'package:open_calc/calculator_display/calculator_display.dart';
 import 'package:open_calc/calculator_display/display_history.dart';
+import 'package:open_calc/input_validation/validate_function.dart';
 
 class HomeScreen extends StatefulWidget {
   HomeScreen({Key key, this.title}) : super(key: key);
@@ -27,6 +28,8 @@ class _HomeScreenState extends State<HomeScreen> {
         (width / 2) * -1, (width / 2), (height / 2) * -1, (height / 2));
     return allCoordinates;
   }
+
+  ValidateFunction tester = new ValidateFunction();
 
   void moveCursor(String direction) {
     setState(() {
@@ -55,6 +58,16 @@ class _HomeScreenState extends State<HomeScreen> {
         userInputString = (userInputString + keypadInput);
       }
     });
+  }
+
+  //evaluates a function and adds the input to the history
+  void collectInput(String string) {
+
+    //temporary results until merge with backend
+    String results = (tester.testFunction(string)).toString();
+    DisplayHistory newEntry = new DisplayHistory(string, results);
+    history.add(newEntry);
+
   }
 
   @override
@@ -251,7 +264,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       InkWell(
                         child: Text('  =  ', style: TextStyle(fontSize:40,)),
-                        onTap: (){setLabelInput('1');}
+                        onTap: (){collectInput(userInputString);}
                       )
                   ],
                   )),
