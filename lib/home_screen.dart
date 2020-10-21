@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cartesian_graph/bounds.dart';
 import 'package:cartesian_graph/cartesian_graph.dart';
 import 'package:cartesian_graph/coordinates.dart';
@@ -75,72 +77,168 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     // than having to individually change instances of widgets.
     return MaterialApp(
-        key: _scaffoldKey,
         home: DefaultTabController(
             length: 3,
             child: Scaffold(
                 appBar: AppBar(
-                    title: Text(widget.title),
-                    actions: <Widget>[
-                      // for hiding the drawer button
-                      Container(),
+                  title: Text(widget.title),
+                  actions: <Widget>[
+                    // for hiding the drawer button
+                    Container(),
+                  ],
+                  bottom: TabBar(
+                    tabs: [
+                      Tab(icon: Icon(Icons.call_missed_outgoing)),
+                      Tab(text: "y="),
+                      Tab(icon: Icon(Icons.calculate)),
                     ],
-                    bottom: TabBar(
-                      tabs: [
-                        Tab(icon: Icon(Icons.call_missed_outgoing)),
-                        Tab(text: "y="),
-                        Tab(icon: Icon(Icons.calculate)),
-                      ],
-                    )),
+                  ),
+                ),
                 body: TabBarView(children: [
                   //TAB1------------------------------------------------------------
-                  ListView(
-                    shrinkWrap: true,
-                    children: <Widget>[
-                      ConstrainedBox(
-                        constraints: BoxConstraints(
-                          maxHeight: 652,
-                        ),
-                        child: CartesianGraph(
-                          Bounds(-135, 135, -81, 81),
-                          coordinates: _retrieveCoordinates(),
-                          cursorLocation: this.cursorLocation,
-                        ),
-                      ),
-                      Row(mainAxisAlignment: MainAxisAlignment.end, children: [
-                        Column(
-                          children: [
-                            InkWell(
-                                onTap: () {
-                                  moveCursor('UP');
-                                },
-                                child: Icon(Icons.arrow_upward)),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Padding(
-                                    padding: EdgeInsets.only(right: 25),
-                                    child: InkWell(
-                                        onTap: () {
-                                          moveCursor('LEFT');
-                                        },
-                                        child: Icon(Icons.arrow_back))),
-                                InkWell(
-                                    onTap: () {
-                                      moveCursor('RIGHT');
-                                    },
-                                    child: Icon(Icons.arrow_forward))
+                  Scaffold(
+                    key: _scaffoldKey,
+                    endDrawer: ClipRRect(
+                      borderRadius: BorderRadius.vertical(
+                          top: Radius.circular(15),
+                          bottom: Radius.circular(15)),
+                      child: Container(
+                        color: Colors.white,
+                        width: 200,
+                        height: 500,
+                        child: Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Form(
+                            key: formKey,
+                            child: Column(
+                              children: <Widget>[
+                                TextFormField(
+                                  keyboardType: TextInputType.number,
+                                  decoration:
+                                      InputDecoration(labelText: 'X max:'),
+                                  onSaved: (input) =>
+                                      {_xMax = input, log('x_Max: ' + input)},
+                                ),
+                                TextFormField(
+                                  keyboardType: TextInputType.number,
+                                  decoration:
+                                      InputDecoration(labelText: 'X min:'),
+                                  onSaved: (input) =>
+                                      {_xMin = input, log('x_Min: ' + input)},
+                                ),
+                                TextFormField(
+                                  keyboardType: TextInputType.number,
+                                  decoration:
+                                      InputDecoration(labelText: 'X scale:'),
+                                  onSaved: (input) =>
+                                      {_xScl = input, log('x_Scl: ' + input)},
+                                ),
+                                TextFormField(
+                                  keyboardType: TextInputType.number,
+                                  decoration:
+                                      InputDecoration(labelText: 'Y max:'),
+                                  onSaved: (input) =>
+                                      {_yMax = input, log('y_Max: ' + input)},
+                                ),
+                                TextFormField(
+                                  keyboardType: TextInputType.number,
+                                  decoration:
+                                      InputDecoration(labelText: 'Y min:'),
+                                  onSaved: (input) =>
+                                      {_yMin = input, log('y_Min: ' + input)},
+                                ),
+                                TextFormField(
+                                  keyboardType: TextInputType.number,
+                                  decoration:
+                                      InputDecoration(labelText: 'Y scale:'),
+                                  onSaved: (input) =>
+                                      {_yScl = input, log('y_Min: ' + input)},
+                                ),
+                                TextFormField(
+                                  keyboardType: TextInputType.number,
+                                  decoration:
+                                      InputDecoration(labelText: 'X res:'),
+                                  onSaved: (input) =>
+                                      {_xRes = input, log('x_Res: ' + input)},
+                                ),
+                                SizedBox(
+                                  height: 5,
+                                ),
+                                ElevatedButton(
+                                  onPressed: () {
+                                    formKey.currentState.save();
+                                  },
+                                  child: Text("Save Changes"),
+                                ),
                               ],
                             ),
-                            InkWell(
-                                onTap: () {
-                                  moveCursor('DOWN');
-                                },
-                                child: Icon(Icons.arrow_downward)),
+                          ),
+                        ),
+                      ),
+                    ),
+                    body: Column(
+                      children: <Widget>[
+                        ListView(
+                          shrinkWrap: true,
+                          children: <Widget>[
+                            ConstrainedBox(
+                              constraints: BoxConstraints(
+                                maxHeight: 652,
+                              ),
+                              child: CartesianGraph(
+                                Bounds(-135, 135, -81, 81),
+                                coordinates: _retrieveCoordinates(),
+                                cursorLocation: this.cursorLocation,
+                              ),
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Column(
+                                  children: [
+                                    InkWell(
+                                        onTap: () {
+                                          moveCursor('UP');
+                                        },
+                                        child: Icon(Icons.arrow_upward)),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Padding(
+                                            padding: EdgeInsets.only(right: 25),
+                                            child: InkWell(
+                                                onTap: () {
+                                                  moveCursor('LEFT');
+                                                },
+                                                child: Icon(Icons.arrow_back))),
+                                        InkWell(
+                                            onTap: () {
+                                              moveCursor('RIGHT');
+                                            },
+                                            child: Icon(Icons.arrow_forward))
+                                      ],
+                                    ),
+                                    InkWell(
+                                        onTap: () {
+                                          moveCursor('DOWN');
+                                        },
+                                        child: Icon(Icons.arrow_downward)),
+                                  ],
+                                )
+                              ],
+                            ),
                           ],
-                        )
-                      ])
-                    ],
+                        ),
+                      ],
+                    ),
+                    floatingActionButton: FloatingActionButton.extended(
+                      onPressed: () {
+                        _openDrawer();
+                      },
+                      label: Text('Scale'),
+                      icon: Icon(Icons.crop),
+                    ),
                   ),
 
                   //TAB2------------------------------------------------------------
