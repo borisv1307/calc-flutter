@@ -1,8 +1,4 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:open_calc/bridge/graph_bridge.dart';
-import 'dart:ffi';
 
 import 'package:open_calc/home_screen.dart';
 

@@ -6,7 +6,9 @@ import 'package:cartesian_graph/coordinates.dart';
 
 
 class CoordPair extends Struct{
+  // ignore: non_constant_identifier_names
   Pointer<Float> x_ptr;
+  // ignore: non_constant_identifier_names
   Pointer<Float> y_ptr;
 }
 
