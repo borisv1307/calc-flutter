@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:cartesian_graph/bounds.dart';
 import 'package:cartesian_graph/cartesian_graph.dart';
 import 'package:cartesian_graph/coordinates.dart';
@@ -63,11 +61,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
   String userInputString = '';
 
-  void setLabelInput(String keypadInput){
+  void setLabelInput(String keypadInput) {
     setState(() {
-      if(keypadInput == "C"){
+      if (keypadInput == "C") {
         userInputString = '';
-      }else{
+      } else {
         userInputString = (userInputString + keypadInput);
       }
     });
@@ -76,242 +74,331 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     // than having to individually change instances of widgets.
-    return Scaffold(
-      key: _scaffoldKey,
     return MaterialApp(
-      home: DefaultTabController(
-        length: 3,
-        child: Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-        actions: <Widget>[
-          // for hiding the drawer button
-          Container(),
-        ],
-        bottom: TabBar(
-          tabs: [
-            Tab(icon: Icon(Icons.call_missed_outgoing)),
-            Tab(text: "y="),
-            Tab(icon: Icon(Icons.calculate)),
-          ],
-        )
-      ),
-    body: TabBarView(
-        children: [
-          //TAB1------------------------------------------------------------
-        ListView(
-          shrinkWrap: true,
-          children: <Widget>[
-            ConstrainedBox(
-              constraints: BoxConstraints(
-              maxHeight: 652,
-            ),
-            child: CartesianGraph(
-              Bounds(-135, 135, -81, 81),
-              coordinates: _retrieveCoordinates(),
-              cursorLocation: this.cursorLocation,
-            ),
-          ),
-            Row(mainAxisAlignment: MainAxisAlignment.end, children: [
-              Column(
-                children: [
-                  InkWell(
-                      onTap: () {
-                        moveCursor('UP');
-                      },
-                      child: Icon(Icons.arrow_upward)),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Padding(
-                          padding: EdgeInsets.only(right: 25),
-                          child: InkWell(
-                              onTap: () {
-                                moveCursor('LEFT');
-                              },
-                              child: Icon(Icons.arrow_back))),
-                      InkWell(
-                          onTap: () {
-                            moveCursor('RIGHT');
-                          },
-                          child: Icon(Icons.arrow_forward))
+        key: _scaffoldKey,
+        home: DefaultTabController(
+            length: 3,
+            child: Scaffold(
+                appBar: AppBar(
+                    title: Text(widget.title),
+                    actions: <Widget>[
+                      // for hiding the drawer button
+                      Container(),
+                    ],
+                    bottom: TabBar(
+                      tabs: [
+                        Tab(icon: Icon(Icons.call_missed_outgoing)),
+                        Tab(text: "y="),
+                        Tab(icon: Icon(Icons.calculate)),
+                      ],
+                    )),
+                body: TabBarView(children: [
+                  //TAB1------------------------------------------------------------
+                  ListView(
+                    shrinkWrap: true,
+                    children: <Widget>[
+                      ConstrainedBox(
+                        constraints: BoxConstraints(
+                          maxHeight: 652,
+                        ),
+                        child: CartesianGraph(
+                          Bounds(-135, 135, -81, 81),
+                          coordinates: _retrieveCoordinates(),
+                          cursorLocation: this.cursorLocation,
+                        ),
+                      ),
+                      Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+                        Column(
+                          children: [
+                            InkWell(
+                                onTap: () {
+                                  moveCursor('UP');
+                                },
+                                child: Icon(Icons.arrow_upward)),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Padding(
+                                    padding: EdgeInsets.only(right: 25),
+                                    child: InkWell(
+                                        onTap: () {
+                                          moveCursor('LEFT');
+                                        },
+                                        child: Icon(Icons.arrow_back))),
+                                InkWell(
+                                    onTap: () {
+                                      moveCursor('RIGHT');
+                                    },
+                                    child: Icon(Icons.arrow_forward))
+                              ],
+                            ),
+                            InkWell(
+                                onTap: () {
+                                  moveCursor('DOWN');
+                                },
+                                child: Icon(Icons.arrow_downward)),
+                          ],
+                        )
+                      ])
                     ],
                   ),
-                  InkWell(
-                      onTap: () {
-                        moveCursor('DOWN');
-                      },
-                      child: Icon(Icons.arrow_downward)),
-                ],
-              )
-            ])
-          ],
-        ),
 
-          //TAB2------------------------------------------------------------
-        Column(),
-          //TAB3------------------------------------------------------------
-        Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            SizedBox(
-              height:652/MediaQuery.of(context).devicePixelRatio,
-              child: CalculatorDisplay(userInputString,history),
-            ),
-          Expanded(
-            flex: 5,
-            child: DefaultTabController(length: 3,
-              child: Scaffold(appBar: PreferredSize( preferredSize: Size.fromHeight(50.0),
-                child: AppBar(bottom: TabBar(tabs: [
-                  Tab(text: 'Basic'),
-                  Tab(text: 'TBD'),
-                  Tab(text: 'TBD'),
-              ],),),),
-              body: TabBarView(children: [
-                Row(children: [
-                  Expanded(
-                    flex: 1,
-                    child: Row(children: [
-                  Expanded(
-                    flex:20,
-                    child:
+                  //TAB2------------------------------------------------------------
+                  Column(),
+                  //TAB3------------------------------------------------------------
                   Column(
-                      children: [
-                        InkWell(
-                          child: Text('  (  ', style: TextStyle(fontSize:40,)),
-                          onTap: (){setLabelInput('(');}
-                        ),
-                        InkWell(
-                          child: Text('  1  ', style: TextStyle(fontSize:40,)),
-                          onTap: (){setLabelInput('1');}
-                        ),
-                        InkWell(
-                          child: Text('  4  ', style: TextStyle(fontSize:40,)),
-                          onTap: (){setLabelInput('4');}
-                        ),
-                        InkWell(
-                          child: Text('  7  ', style: TextStyle(fontSize:40,)),
-                          onTap: (){setLabelInput('7');}
-                        ),
-                        InkWell(
-                          child: Text(' +/- ', style: TextStyle(fontSize:40,)),
-                          onTap: (){setLabelInput('1');}
-                        )
-                      ],
-                  )),
-                  Expanded(
-                    flex:20,
-                    child:
-                  Column(children: [
-                      InkWell(
-                        child: Text('  )  ', style: TextStyle(fontSize:40,)),
-                        onTap: (){setLabelInput(')');}
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                      SizedBox(
+                        height: 652 / MediaQuery.of(context).devicePixelRatio,
+                        child: CalculatorDisplay(userInputString, history),
                       ),
-                      InkWell(
-                        child: Text('  2  ', style: TextStyle(fontSize:40,)),
-                        onTap: (){setLabelInput('2');}
-                      ),
-                      InkWell(
-                        child: Text('  5  ', style: TextStyle(fontSize:40,)),
-                        onTap: (){setLabelInput('5');}
-                      ),
-                      InkWell(
-                        child: Text('  8  ', style: TextStyle(fontSize:40,)),
-                        onTap: (){setLabelInput('8');}
-                      ),
-                      InkWell(
-                        child: Text('  0  ', style: TextStyle(fontSize:40,)),
-                        onTap: (){setLabelInput('0');}
-                      )
-                  ],
-                  )),
-                  Expanded(
-                    flex:20,
-                    child:
-                  Column(children: [
-                      InkWell(
-                        child: Text('  C  ', style: TextStyle(fontSize:40,)),
-                        onTap: (){setLabelInput('C');}
-                      ),
-                      InkWell(
-                        child: Text('  3  ', style: TextStyle(fontSize:40,)),
-                        onTap: (){setLabelInput('3');}
-                      ),
-                      InkWell(
-                        child: Text('  6  ', style: TextStyle(fontSize:40,)),
-                        onTap: (){setLabelInput('6');}
-                      ),
-                      InkWell(
-                        child: Text('  9  ', style: TextStyle(fontSize:40,)),
-                        onTap: (){setLabelInput('9');}
-                      ),
-                      InkWell(
-                        child: Text('  .  ', style: TextStyle(fontSize:40,)),
-                        onTap: (){setLabelInput('.');}
-                      )
-                  ],
-                  )),
-                  Expanded(
-                    flex:20,
-                    child:
-                  Column(children: [
-                      InkWell(
-                        child: Text('  /  ', style: TextStyle(fontSize:40,)),
-                        onTap: (){setLabelInput('/');}
-                      ),
-                      InkWell(
-                        child: Text('  x  ', style: TextStyle(fontSize:40,)),
-                        onTap: (){setLabelInput('*');}
-                      ),
-                      InkWell(
-                        child: Text('  -  ', style: TextStyle(fontSize:40,)),
-                        onTap: (){setLabelInput('-');}
-                      ),
-                      InkWell(
-                        child: Text('  +  ', style: TextStyle(fontSize:40,)),
-                        onTap: (){setLabelInput('+');}
-                      ),
-                      InkWell(
-                        child: Text('  =  ', style: TextStyle(fontSize:40,)),
-                        onTap: (){setLabelInput('1');}
-                      )
-                  ],
-                  )),
-                  Expanded(
-                    flex:20,
-                    child:
-                  Column(children: [
-                      InkWell(
-                        child: Text('  ^  ', style: TextStyle(fontSize:40,)),
-                        onTap: (){setLabelInput('^');}
-                      ),
-                      InkWell(
-                        child: Text('log(', style: TextStyle(fontSize:40,)),
-                        onTap: (){setLabelInput('log(');}
-                      ),
-                      InkWell(
-                        child: Text('ln(', style: TextStyle(fontSize:40,)),
-                        onTap: (){setLabelInput('ln(');}
-                      ),
-                  ],
-                  )),
-                  ]
-                  )
-                  )
-                ]
-                ),
-                Row(),
-                Row(),
-              ],)
-              ),
-            )
-        ),
-        ],
-        ),
-      ]
-    )
-    )
-    )
-  );
+                      Expanded(
+                          flex: 5,
+                          child: DefaultTabController(
+                            length: 3,
+                            child: Scaffold(
+                                appBar: PreferredSize(
+                                  preferredSize: Size.fromHeight(50.0),
+                                  child: AppBar(
+                                    bottom: TabBar(
+                                      tabs: [
+                                        Tab(text: 'Basic'),
+                                        Tab(text: 'TBD'),
+                                        Tab(text: 'TBD'),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                body: TabBarView(
+                                  children: [
+                                    Row(children: [
+                                      Expanded(
+                                          flex: 1,
+                                          child: Row(children: [
+                                            Expanded(
+                                                flex: 20,
+                                                child: Column(
+                                                  children: [
+                                                    InkWell(
+                                                        child: Text('  (  ',
+                                                            style: TextStyle(
+                                                              fontSize: 40,
+                                                            )),
+                                                        onTap: () {
+                                                          setLabelInput('(');
+                                                        }),
+                                                    InkWell(
+                                                        child: Text('  1  ',
+                                                            style: TextStyle(
+                                                              fontSize: 40,
+                                                            )),
+                                                        onTap: () {
+                                                          setLabelInput('1');
+                                                        }),
+                                                    InkWell(
+                                                        child: Text('  4  ',
+                                                            style: TextStyle(
+                                                              fontSize: 40,
+                                                            )),
+                                                        onTap: () {
+                                                          setLabelInput('4');
+                                                        }),
+                                                    InkWell(
+                                                        child: Text('  7  ',
+                                                            style: TextStyle(
+                                                              fontSize: 40,
+                                                            )),
+                                                        onTap: () {
+                                                          setLabelInput('7');
+                                                        }),
+                                                    InkWell(
+                                                        child: Text(' +/- ',
+                                                            style: TextStyle(
+                                                              fontSize: 40,
+                                                            )),
+                                                        onTap: () {
+                                                          setLabelInput('1');
+                                                        })
+                                                  ],
+                                                )),
+                                            Expanded(
+                                                flex: 20,
+                                                child: Column(
+                                                  children: [
+                                                    InkWell(
+                                                        child: Text('  )  ',
+                                                            style: TextStyle(
+                                                              fontSize: 40,
+                                                            )),
+                                                        onTap: () {
+                                                          setLabelInput(')');
+                                                        }),
+                                                    InkWell(
+                                                        child: Text('  2  ',
+                                                            style: TextStyle(
+                                                              fontSize: 40,
+                                                            )),
+                                                        onTap: () {
+                                                          setLabelInput('2');
+                                                        }),
+                                                    InkWell(
+                                                        child: Text('  5  ',
+                                                            style: TextStyle(
+                                                              fontSize: 40,
+                                                            )),
+                                                        onTap: () {
+                                                          setLabelInput('5');
+                                                        }),
+                                                    InkWell(
+                                                        child: Text('  8  ',
+                                                            style: TextStyle(
+                                                              fontSize: 40,
+                                                            )),
+                                                        onTap: () {
+                                                          setLabelInput('8');
+                                                        }),
+                                                    InkWell(
+                                                        child: Text('  0  ',
+                                                            style: TextStyle(
+                                                              fontSize: 40,
+                                                            )),
+                                                        onTap: () {
+                                                          setLabelInput('0');
+                                                        })
+                                                  ],
+                                                )),
+                                            Expanded(
+                                                flex: 20,
+                                                child: Column(
+                                                  children: [
+                                                    InkWell(
+                                                        child: Text('  C  ',
+                                                            style: TextStyle(
+                                                              fontSize: 40,
+                                                            )),
+                                                        onTap: () {
+                                                          setLabelInput('C');
+                                                        }),
+                                                    InkWell(
+                                                        child: Text('  3  ',
+                                                            style: TextStyle(
+                                                              fontSize: 40,
+                                                            )),
+                                                        onTap: () {
+                                                          setLabelInput('3');
+                                                        }),
+                                                    InkWell(
+                                                        child: Text('  6  ',
+                                                            style: TextStyle(
+                                                              fontSize: 40,
+                                                            )),
+                                                        onTap: () {
+                                                          setLabelInput('6');
+                                                        }),
+                                                    InkWell(
+                                                        child: Text('  9  ',
+                                                            style: TextStyle(
+                                                              fontSize: 40,
+                                                            )),
+                                                        onTap: () {
+                                                          setLabelInput('9');
+                                                        }),
+                                                    InkWell(
+                                                        child: Text('  .  ',
+                                                            style: TextStyle(
+                                                              fontSize: 40,
+                                                            )),
+                                                        onTap: () {
+                                                          setLabelInput('.');
+                                                        })
+                                                  ],
+                                                )),
+                                            Expanded(
+                                                flex: 20,
+                                                child: Column(
+                                                  children: [
+                                                    InkWell(
+                                                        child: Text('  /  ',
+                                                            style: TextStyle(
+                                                              fontSize: 40,
+                                                            )),
+                                                        onTap: () {
+                                                          setLabelInput('/');
+                                                        }),
+                                                    InkWell(
+                                                        child: Text('  x  ',
+                                                            style: TextStyle(
+                                                              fontSize: 40,
+                                                            )),
+                                                        onTap: () {
+                                                          setLabelInput('*');
+                                                        }),
+                                                    InkWell(
+                                                        child: Text('  -  ',
+                                                            style: TextStyle(
+                                                              fontSize: 40,
+                                                            )),
+                                                        onTap: () {
+                                                          setLabelInput('-');
+                                                        }),
+                                                    InkWell(
+                                                        child: Text('  +  ',
+                                                            style: TextStyle(
+                                                              fontSize: 40,
+                                                            )),
+                                                        onTap: () {
+                                                          setLabelInput('+');
+                                                        }),
+                                                    InkWell(
+                                                        child: Text('  =  ',
+                                                            style: TextStyle(
+                                                              fontSize: 40,
+                                                            )),
+                                                        onTap: () {
+                                                          setLabelInput('1');
+                                                        })
+                                                  ],
+                                                )),
+                                            Expanded(
+                                                flex: 20,
+                                                child: Column(
+                                                  children: [
+                                                    InkWell(
+                                                        child: Text('  ^  ',
+                                                            style: TextStyle(
+                                                              fontSize: 40,
+                                                            )),
+                                                        onTap: () {
+                                                          setLabelInput('^');
+                                                        }),
+                                                    InkWell(
+                                                        child: Text('log(',
+                                                            style: TextStyle(
+                                                              fontSize: 40,
+                                                            )),
+                                                        onTap: () {
+                                                          setLabelInput('log(');
+                                                        }),
+                                                    InkWell(
+                                                        child: Text('ln(',
+                                                            style: TextStyle(
+                                                              fontSize: 40,
+                                                            )),
+                                                        onTap: () {
+                                                          setLabelInput('ln(');
+                                                        }),
+                                                  ],
+                                                )),
+                                          ]))
+                                    ]),
+                                    Row(),
+                                    Row(),
+                                  ],
+                                )),
+                          )),
+                    ],
+                  ),
+                ]))));
   }
 }
