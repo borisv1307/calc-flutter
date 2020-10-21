@@ -5,6 +5,8 @@ import 'package:cartesian_graph/cartesian_graph.dart';
 import 'package:cartesian_graph/coordinates.dart';
 import 'package:flutter/material.dart';
 import 'package:open_calc/bridge/graph_bridge.dart';
+import 'package:open_calc/calculator_display/calculator_display.dart';
+import 'package:open_calc/calculator_display/display_history.dart';
 
 class HomeScreen extends StatefulWidget {
   HomeScreen({Key key, this.title}) : super(key: key);
@@ -18,6 +20,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   Coordinates cursorLocation = Coordinates(50, 50);
   GraphBridge bridge = GraphBridge();
+  List<DisplayHistory> history = [];
   int width = 270;
   int height = 162;
 
@@ -58,23 +61,49 @@ class _HomeScreenState extends State<HomeScreen> {
   // Scale Value, Range and Domain of x and y will be set and saved in these variable
   String _xMin, _xMax, _yMin, _yMax, _xScl, _yScl, _xRes;
 
+  String userInputString = '';
+
+  void setLabelInput(String keypadInput){
+    setState(() {
+      if(keypadInput == "C"){
+        userInputString = '';
+      }else{
+        userInputString = (userInputString + keypadInput);
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     // than having to individually change instances of widgets.
     return Scaffold(
       key: _scaffoldKey,
+    return MaterialApp(
+      home: DefaultTabController(
+        length: 3,
+        child: Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
         actions: <Widget>[
           // for hiding the drawer button
           Container(),
         ],
+        bottom: TabBar(
+          tabs: [
+            Tab(icon: Icon(Icons.call_missed_outgoing)),
+            Tab(text: "y="),
+            Tab(icon: Icon(Icons.calculate)),
+          ],
+        )
       ),
-      body: ListView(
-        shrinkWrap: true,
-        children: <Widget>[
-          ConstrainedBox(
-            constraints: BoxConstraints(
+    body: TabBarView(
+        children: [
+          //TAB1------------------------------------------------------------
+        ListView(
+          shrinkWrap: true,
+          children: <Widget>[
+            ConstrainedBox(
+              constraints: BoxConstraints(
               maxHeight: 652,
             ),
             child: CartesianGraph(
@@ -83,111 +112,206 @@ class _HomeScreenState extends State<HomeScreen> {
               cursorLocation: this.cursorLocation,
             ),
           ),
-          Row(mainAxisAlignment: MainAxisAlignment.end, children: [
-            Column(
-              children: [
-                InkWell(
-                    onTap: () {
-                      moveCursor('UP');
-                    },
-                    child: Icon(Icons.arrow_upward)),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Padding(
-                        padding: EdgeInsets.only(right: 25),
-                        child: InkWell(
-                            onTap: () {
-                              moveCursor('LEFT');
-                            },
-                            child: Icon(Icons.arrow_back))),
-                    InkWell(
-                        onTap: () {
-                          moveCursor('RIGHT');
-                        },
-                        child: Icon(Icons.arrow_forward))
-                  ],
-                ),
-                InkWell(
-                    onTap: () {
-                      moveCursor('DOWN');
-                    },
-                    child: Icon(Icons.arrow_downward)),
-              ],
-            )
-          ])
-        ],
-      ),
-      endDrawer: ClipRRect(
-        borderRadius: BorderRadius.vertical(
-            top: Radius.circular(10), bottom: Radius.circular(10)),
-        child: Container(
-          color: Colors.white,
-          width: 150,
-          height: 500,
-          child: Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Form(
-              key: formKey,
-              child: Column(
-                children: <Widget>[
-                  TextFormField(
-                    keyboardType: TextInputType.number,
-                    decoration: InputDecoration(labelText: 'X max:'),
-                    onSaved: (input) => {_xMax = input, log('x_Max: ' + input)},
+            Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+              Column(
+                children: [
+                  InkWell(
+                      onTap: () {
+                        moveCursor('UP');
+                      },
+                      child: Icon(Icons.arrow_upward)),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Padding(
+                          padding: EdgeInsets.only(right: 25),
+                          child: InkWell(
+                              onTap: () {
+                                moveCursor('LEFT');
+                              },
+                              child: Icon(Icons.arrow_back))),
+                      InkWell(
+                          onTap: () {
+                            moveCursor('RIGHT');
+                          },
+                          child: Icon(Icons.arrow_forward))
+                    ],
                   ),
-                  TextFormField(
-                    keyboardType: TextInputType.number,
-                    decoration: InputDecoration(labelText: 'X min:'),
-                    onSaved: (input) => {_xMin = input, log('x_Min: ' + input)},
-                  ),
-                  TextFormField(
-                    keyboardType: TextInputType.number,
-                    decoration: InputDecoration(labelText: 'X scale:'),
-                    onSaved: (input) => {_xScl = input, log('x_Scl: ' + input)},
-                  ),
-                  TextFormField(
-                    keyboardType: TextInputType.number,
-                    decoration: InputDecoration(labelText: 'Y max:'),
-                    onSaved: (input) => {_yMax = input, log('y_Max: ' + input)},
-                  ),
-                  TextFormField(
-                    keyboardType: TextInputType.number,
-                    decoration: InputDecoration(labelText: 'Y min:'),
-                    onSaved: (input) => {_yMin = input, log('y_Min: ' + input)},
-                  ),
-                  TextFormField(
-                    keyboardType: TextInputType.number,
-                    decoration: InputDecoration(labelText: 'Y scale:'),
-                    onSaved: (input) => {_yScl = input, log('y_Min: ' + input)},
-                  ),
-                  TextFormField(
-                    keyboardType: TextInputType.number,
-                    decoration: InputDecoration(labelText: 'X res:'),
-                    onSaved: (input) => {_xRes = input, log('x_Res: ' + input)},
-                  ),
-                  SizedBox(
-                    height: 5,
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      formKey.currentState.save();
-                    },
-                    child: Text("Save Changes"),
-                  ),
+                  InkWell(
+                      onTap: () {
+                        moveCursor('DOWN');
+                      },
+                      child: Icon(Icons.arrow_downward)),
                 ],
-              ),
-            ),
-          ),
+              )
+            ])
+          ],
         ),
-      ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          _openDrawer();
-        },
-        label: Text('Scale'),
-        icon: Icon(Icons.crop),
-      ),
-    );
+
+          //TAB2------------------------------------------------------------
+        Column(),
+          //TAB3------------------------------------------------------------
+        Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            SizedBox(
+              height:652/MediaQuery.of(context).devicePixelRatio,
+              child: CalculatorDisplay(userInputString,history),
+            ),
+          Expanded(
+            flex: 5,
+            child: DefaultTabController(length: 3,
+              child: Scaffold(appBar: PreferredSize( preferredSize: Size.fromHeight(50.0),
+                child: AppBar(bottom: TabBar(tabs: [
+                  Tab(text: 'Basic'),
+                  Tab(text: 'TBD'),
+                  Tab(text: 'TBD'),
+              ],),),),
+              body: TabBarView(children: [
+                Row(children: [
+                  Expanded(
+                    flex: 1,
+                    child: Row(children: [
+                  Expanded(
+                    flex:20,
+                    child:
+                  Column(
+                      children: [
+                        InkWell(
+                          child: Text('  (  ', style: TextStyle(fontSize:40,)),
+                          onTap: (){setLabelInput('(');}
+                        ),
+                        InkWell(
+                          child: Text('  1  ', style: TextStyle(fontSize:40,)),
+                          onTap: (){setLabelInput('1');}
+                        ),
+                        InkWell(
+                          child: Text('  4  ', style: TextStyle(fontSize:40,)),
+                          onTap: (){setLabelInput('4');}
+                        ),
+                        InkWell(
+                          child: Text('  7  ', style: TextStyle(fontSize:40,)),
+                          onTap: (){setLabelInput('7');}
+                        ),
+                        InkWell(
+                          child: Text(' +/- ', style: TextStyle(fontSize:40,)),
+                          onTap: (){setLabelInput('1');}
+                        )
+                      ],
+                  )),
+                  Expanded(
+                    flex:20,
+                    child:
+                  Column(children: [
+                      InkWell(
+                        child: Text('  )  ', style: TextStyle(fontSize:40,)),
+                        onTap: (){setLabelInput(')');}
+                      ),
+                      InkWell(
+                        child: Text('  2  ', style: TextStyle(fontSize:40,)),
+                        onTap: (){setLabelInput('2');}
+                      ),
+                      InkWell(
+                        child: Text('  5  ', style: TextStyle(fontSize:40,)),
+                        onTap: (){setLabelInput('5');}
+                      ),
+                      InkWell(
+                        child: Text('  8  ', style: TextStyle(fontSize:40,)),
+                        onTap: (){setLabelInput('8');}
+                      ),
+                      InkWell(
+                        child: Text('  0  ', style: TextStyle(fontSize:40,)),
+                        onTap: (){setLabelInput('0');}
+                      )
+                  ],
+                  )),
+                  Expanded(
+                    flex:20,
+                    child:
+                  Column(children: [
+                      InkWell(
+                        child: Text('  C  ', style: TextStyle(fontSize:40,)),
+                        onTap: (){setLabelInput('C');}
+                      ),
+                      InkWell(
+                        child: Text('  3  ', style: TextStyle(fontSize:40,)),
+                        onTap: (){setLabelInput('3');}
+                      ),
+                      InkWell(
+                        child: Text('  6  ', style: TextStyle(fontSize:40,)),
+                        onTap: (){setLabelInput('6');}
+                      ),
+                      InkWell(
+                        child: Text('  9  ', style: TextStyle(fontSize:40,)),
+                        onTap: (){setLabelInput('9');}
+                      ),
+                      InkWell(
+                        child: Text('  .  ', style: TextStyle(fontSize:40,)),
+                        onTap: (){setLabelInput('.');}
+                      )
+                  ],
+                  )),
+                  Expanded(
+                    flex:20,
+                    child:
+                  Column(children: [
+                      InkWell(
+                        child: Text('  /  ', style: TextStyle(fontSize:40,)),
+                        onTap: (){setLabelInput('/');}
+                      ),
+                      InkWell(
+                        child: Text('  x  ', style: TextStyle(fontSize:40,)),
+                        onTap: (){setLabelInput('*');}
+                      ),
+                      InkWell(
+                        child: Text('  -  ', style: TextStyle(fontSize:40,)),
+                        onTap: (){setLabelInput('-');}
+                      ),
+                      InkWell(
+                        child: Text('  +  ', style: TextStyle(fontSize:40,)),
+                        onTap: (){setLabelInput('+');}
+                      ),
+                      InkWell(
+                        child: Text('  =  ', style: TextStyle(fontSize:40,)),
+                        onTap: (){setLabelInput('1');}
+                      )
+                  ],
+                  )),
+                  Expanded(
+                    flex:20,
+                    child:
+                  Column(children: [
+                      InkWell(
+                        child: Text('  ^  ', style: TextStyle(fontSize:40,)),
+                        onTap: (){setLabelInput('^');}
+                      ),
+                      InkWell(
+                        child: Text('log(', style: TextStyle(fontSize:40,)),
+                        onTap: (){setLabelInput('log(');}
+                      ),
+                      InkWell(
+                        child: Text('ln(', style: TextStyle(fontSize:40,)),
+                        onTap: (){setLabelInput('ln(');}
+                      ),
+                  ],
+                  )),
+                  ]
+                  )
+                  )
+                ]
+                ),
+                Row(),
+                Row(),
+              ],)
+              ),
+            )
+        ),
+        ],
+        ),
+      ]
+    )
+    )
+    )
+  );
   }
 }
