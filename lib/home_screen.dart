@@ -199,7 +199,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                         InkWell(
                           child: Text(' +/- ', style: TextStyle(fontSize:40,)),
-                          onTap: (){setLabelInput('1');}
+                          onTap: (){setLabelInput('-');}
                         )
                       ],
                   )),
@@ -270,11 +270,11 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       InkWell(
                         child: Text('  -  ', style: TextStyle(fontSize:40,)),
-                        onTap: (){setLabelInput('-');}
+                        onTap: (){setLabelInput(' - ');}
                       ),
                       InkWell(
                         child: Text('  +  ', style: TextStyle(fontSize:40,)),
-                        onTap: (){setLabelInput('+');}
+                        onTap: (){setLabelInput(' + ');}
                       ),
                       InkWell(
                         child: Text('  =  ', style: TextStyle(fontSize:40,)),
