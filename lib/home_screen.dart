@@ -59,7 +59,13 @@ class _HomeScreenState extends State<HomeScreen> {
 
   final formKey = GlobalKey<FormState>();
   // Scale Value, Range and Domain of x and y will be set and saved in these variable
-  String _xMin, _xMax, _yMin, _yMax, _xScl, _yScl, _xRes;
+  int _xMin = -100,
+      _xMax = 100,
+      _yMin = -81,
+      _yMax = 81,
+      _xScl = 1,
+      _yScl = 2,
+      _xRes = 1;
 
   String userInputString = '';
 
@@ -100,77 +106,101 @@ class _HomeScreenState extends State<HomeScreen> {
                     key: _scaffoldKey,
                     endDrawer: ClipRRect(
                       borderRadius: BorderRadius.vertical(
-                          top: Radius.circular(15),
-                          bottom: Radius.circular(15)),
-                      child: Container(
-                        color: Colors.white,
-                        width: 200,
-                        height: 500,
-                        child: Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Form(
-                            key: formKey,
-                            child: Column(
-                              children: <Widget>[
-                                TextFormField(
-                                  keyboardType: TextInputType.number,
-                                  decoration:
-                                      InputDecoration(labelText: 'X max:'),
-                                  onSaved: (input) =>
-                                      {_xMax = input, log('x_Max: ' + input)},
-                                ),
-                                TextFormField(
-                                  keyboardType: TextInputType.number,
-                                  decoration:
-                                      InputDecoration(labelText: 'X min:'),
-                                  onSaved: (input) =>
-                                      {_xMin = input, log('x_Min: ' + input)},
-                                ),
-                                TextFormField(
-                                  keyboardType: TextInputType.number,
-                                  decoration:
-                                      InputDecoration(labelText: 'X scale:'),
-                                  onSaved: (input) =>
-                                      {_xScl = input, log('x_Scl: ' + input)},
-                                ),
-                                TextFormField(
-                                  keyboardType: TextInputType.number,
-                                  decoration:
-                                      InputDecoration(labelText: 'Y max:'),
-                                  onSaved: (input) =>
-                                      {_yMax = input, log('y_Max: ' + input)},
-                                ),
-                                TextFormField(
-                                  keyboardType: TextInputType.number,
-                                  decoration:
-                                      InputDecoration(labelText: 'Y min:'),
-                                  onSaved: (input) =>
-                                      {_yMin = input, log('y_Min: ' + input)},
-                                ),
-                                TextFormField(
-                                  keyboardType: TextInputType.number,
-                                  decoration:
-                                      InputDecoration(labelText: 'Y scale:'),
-                                  onSaved: (input) =>
-                                      {_yScl = input, log('y_Min: ' + input)},
-                                ),
-                                TextFormField(
-                                  keyboardType: TextInputType.number,
-                                  decoration:
-                                      InputDecoration(labelText: 'X res:'),
-                                  onSaved: (input) =>
-                                      {_xRes = input, log('x_Res: ' + input)},
-                                ),
-                                SizedBox(
-                                  height: 5,
-                                ),
-                                ElevatedButton(
-                                  onPressed: () {
-                                    formKey.currentState.save();
-                                  },
-                                  child: Text("Save Changes"),
-                                ),
-                              ],
+                          top: Radius.circular(10),
+                          bottom: Radius.circular(10)),
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.vertical,
+                        child: Container(
+                          color: Colors.white,
+                          width: 200,
+                          height: 485,
+                          child: Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Form(
+                              key: formKey,
+                              child: Column(
+                                children: <Widget>[
+                                  TextFormField(
+                                    keyboardType: TextInputType.number,
+                                    initialValue: '$_xMax',
+                                    decoration:
+                                        InputDecoration(labelText: 'X max:'),
+                                    onSaved: (input) => {
+                                      _xMax = int.parse(input),
+                                      log('x_Max: ' + input)
+                                    },
+                                  ),
+                                  TextFormField(
+                                    keyboardType: TextInputType.number,
+                                    initialValue: '$_xMin',
+                                    decoration:
+                                        InputDecoration(labelText: 'X min:'),
+                                    onSaved: (input) => {
+                                      _xMin = int.parse(input),
+                                      log('x_Min: ' + input)
+                                    },
+                                  ),
+                                  TextFormField(
+                                    keyboardType: TextInputType.number,
+                                    initialValue: '$_xScl',
+                                    decoration:
+                                        InputDecoration(labelText: 'X scale:'),
+                                    onSaved: (input) => {
+                                      _xScl = int.parse(input),
+                                      log('x_Scl: ' + input)
+                                    },
+                                  ),
+                                  TextFormField(
+                                    keyboardType: TextInputType.number,
+                                    initialValue: '$_yMax',
+                                    decoration:
+                                        InputDecoration(labelText: 'Y max:'),
+                                    onSaved: (input) => {
+                                      _yMax = int.parse(input),
+                                      log('y_Max: ' + input)
+                                    },
+                                  ),
+                                  TextFormField(
+                                    keyboardType: TextInputType.number,
+                                    initialValue: '$_yMin',
+                                    decoration:
+                                        InputDecoration(labelText: 'Y min:'),
+                                    onSaved: (input) => {
+                                      _yMin = int.parse(input),
+                                      log('y_Min: ' + input)
+                                    },
+                                  ),
+                                  TextFormField(
+                                    keyboardType: TextInputType.number,
+                                    initialValue: '$_yScl',
+                                    decoration:
+                                        InputDecoration(labelText: 'Y scale:'),
+                                    onSaved: (input) => {
+                                      _yScl = int.parse(input),
+                                      log('y_Min: ' + input)
+                                    },
+                                  ),
+                                  TextFormField(
+                                    keyboardType: TextInputType.number,
+                                    initialValue: '$_xRes',
+                                    decoration:
+                                        InputDecoration(labelText: 'X res:'),
+                                    onSaved: (input) => {
+                                      _xRes = int.parse(input),
+                                      log('x_Res: ' + input)
+                                    },
+                                  ),
+                                  SizedBox(
+                                    height: 5,
+                                  ),
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      formKey.currentState.save();
+                                    },
+                                    child: Text("Save Changes"),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ),
@@ -186,7 +216,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 maxHeight: 652,
                               ),
                               child: CartesianGraph(
-                                Bounds(-135, 135, -81, 81),
+                                Bounds(_xMin, _xMax, -81, 81),
                                 coordinates: _retrieveCoordinates(),
                                 cursorLocation: this.cursorLocation,
                               ),
