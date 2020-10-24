@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:open_calc/bridge/graph_bridge.dart';
 import 'package:open_calc/calculator_display/calculator_display.dart';
 import 'package:open_calc/calculator_display/display_history.dart';
+import 'package:open_calc/input_pad/input_pad.dart';
 import 'package:open_calc/input_validation/validate_function.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -58,17 +59,19 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
-  void clearOnce() {
-    setState(() {
-      userInputString = '';
-    });
-  }
-
-  void clearTwice() {
-    setState(() {
-      userInputString = '';
-    });
-    history.clear();
+  void executeCommand(String command){
+    if(command == 'enter'){
+      collectInput(userInputString);
+    }else if(command =='del'){
+      setState(() {
+        userInputString = userInputString.substring(0,userInputString.length-1);
+      });
+    }else if(command =='clear'){
+      setState(() {
+        userInputString = '';
+        history=[];
+      });
+    }
   }
 
   //evaluates a function and adds the input to the history
