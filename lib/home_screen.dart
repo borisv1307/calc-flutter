@@ -24,7 +24,7 @@ class _HomeScreenState extends State<HomeScreen> {
   int height = 162;
 
   List<Coordinates> _retrieveCoordinates() {
-    List<Coordinates> allCoordinates = bridge.retrieve(
+    List<Coordinates> allCoordinates = bridge.retrieveGraph(
         (width / 2) * -1, (width / 2), (height / 2) * -1, (height / 2));
     return allCoordinates;
   }
@@ -50,7 +50,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   String userInputString = '';
 
-  void setLabelInput(String keypadInput){
+  void setLabelInput(String keypadInput) {
     setState(() {
         userInputString = (userInputString + keypadInput);
     });
@@ -70,12 +70,15 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   //evaluates a function and adds the input to the history
-  void collectInput(String string) {
-
-    //temporary results until merge with backend
-    String results = (tester.testFunction(string)).toString();
-    DisplayHistory newEntry = new DisplayHistory(string, results);
-    setState((){
+  void collectInput(String expression) {
+    String results;
+    if (tester.testFunction(expression)) {
+      results = bridge.retrieveCalculatorResult(expression);  // call to backend evaluator
+    } else {
+      results = "Syntax Error";
+    }
+    DisplayHistory newEntry = new DisplayHistory(expression, results);
+    setState(() {
       userInputString = '';
     });
 
@@ -196,7 +199,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                         InkWell(
                           child: Text(' +/- ', style: TextStyle(fontSize:40,)),
-                          onTap: (){setLabelInput('1');}
+                          onTap: (){setLabelInput('-');}
                         )
                       ],
                   )),
@@ -267,11 +270,11 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       InkWell(
                         child: Text('  -  ', style: TextStyle(fontSize:40,)),
-                        onTap: (){setLabelInput('-');}
+                        onTap: (){setLabelInput(' - ');}
                       ),
                       InkWell(
                         child: Text('  +  ', style: TextStyle(fontSize:40,)),
-                        onTap: (){setLabelInput('+');}
+                        onTap: (){setLabelInput(' + ');}
                       ),
                       InkWell(
                         child: Text('  =  ', style: TextStyle(fontSize:40,)),
