@@ -157,7 +157,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         InputDecoration(labelText: 'X max:'),
                                     onSaved: (input) => {
                                       _xMax = int.parse(input),
-                                      log('x_Max: ' + input)
+                                      print('x_Max: ' + input)
                                     },
                                   ),
                                   TextFormField(
@@ -167,7 +167,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         InputDecoration(labelText: 'X min:'),
                                     onSaved: (input) => {
                                       _xMin = int.parse(input),
-                                      log('x_Min: ' + input)
+                                      print('x_Min: ' + input)
                                     },
                                   ),
                                   TextFormField(
@@ -177,7 +177,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         InputDecoration(labelText: 'X scale:'),
                                     onSaved: (input) => {
                                       _xScl = int.parse(input),
-                                      log('x_Scl: ' + input)
+                                      print('x_Scl: ' + input)
                                     },
                                   ),
                                   TextFormField(
@@ -187,7 +187,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         InputDecoration(labelText: 'Y max:'),
                                     onSaved: (input) => {
                                       _yMax = int.parse(input),
-                                      log('y_Max: ' + input)
+                                      print('y_Max: ' + input)
                                     },
                                   ),
                                   TextFormField(
@@ -197,7 +197,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         InputDecoration(labelText: 'Y min:'),
                                     onSaved: (input) => {
                                       _yMin = int.parse(input),
-                                      log('y_Min: ' + input)
+                                      print('y_Min: ' + input)
                                     },
                                   ),
                                   TextFormField(
@@ -207,7 +207,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         InputDecoration(labelText: 'Y scale:'),
                                     onSaved: (input) => {
                                       _yScl = int.parse(input),
-                                      log('y_Min: ' + input)
+                                      print('y_Min: ' + input)
                                     },
                                   ),
                                   TextFormField(
@@ -217,7 +217,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         InputDecoration(labelText: 'X res:'),
                                     onSaved: (input) => {
                                       _xRes = int.parse(input),
-                                      log('x_Res: ' + input)
+                                      print('x_Res: ' + input)
                                     },
                                   ),
                                   SizedBox(
@@ -297,7 +297,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             children: <Widget>[
                               TextFormField(
                                 decoration: InputDecoration(labelText: 'y = '),
-                                onSaved: (input) => {log(input)},
+                                onSaved: (input) => {print(input)},
                               ),
                               ElevatedButton(
                                   onPressed: null,
