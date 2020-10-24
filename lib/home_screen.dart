@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:open_calc/bridge/graph_bridge.dart';
 import 'package:open_calc/calculator_display/calculator_display.dart';
 import 'package:open_calc/calculator_display/display_history.dart';
+import 'package:open_calc/input_validation/validate_function.dart';
 
 class HomeScreen extends StatefulWidget {
   HomeScreen({Key key, this.title}) : super(key: key);
@@ -25,10 +26,12 @@ class _HomeScreenState extends State<HomeScreen> {
   int height = 162;
 
   List<Coordinates> _retrieveCoordinates() {
-    List<Coordinates> allCoordinates = bridge.retrieve(
+    List<Coordinates> allCoordinates = bridge.retrieveGraph(
         (width / 2) * -1, (width / 2), (height / 2) * -1, (height / 2));
     return allCoordinates;
   }
+
+  ValidateFunction tester = new ValidateFunction();
 
   void moveCursor(String direction) {
     setState(() {
@@ -71,12 +74,38 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void setLabelInput(String keypadInput) {
     setState(() {
-      if (keypadInput == "C") {
-        userInputString = '';
-      } else {
-        userInputString = (userInputString + keypadInput);
-      }
+      userInputString = (userInputString + keypadInput);
     });
+  }
+
+  void clearOnce() {
+    setState(() {
+      userInputString = '';
+    });
+  }
+
+  void clearTwice() {
+    setState(() {
+      userInputString = '';
+    });
+    history.clear();
+  }
+
+  //evaluates a function and adds the input to the history
+  void collectInput(String expression) {
+    String results;
+    if (tester.testFunction(expression)) {
+      results = bridge
+          .retrieveCalculatorResult(expression); // call to backend evaluator
+    } else {
+      results = "Syntax Error";
+    }
+    DisplayHistory newEntry = new DisplayHistory(expression, results);
+    setState(() {
+      userInputString = '';
+    });
+
+    history.add(newEntry);
   }
 
   @override
@@ -292,10 +321,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
-                      SizedBox(
-                        height: 652 / MediaQuery.of(context).devicePixelRatio,
-                        child: CalculatorDisplay(userInputString, history),
-                      ),
+                      CalculatorDisplay(8,
+                          inputLine: userInputString, history: history),
                       Expanded(
                           flex: 5,
                           child: DefaultTabController(
@@ -361,7 +388,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                               fontSize: 40,
                                                             )),
                                                         onTap: () {
-                                                          setLabelInput('1');
+                                                          setLabelInput('-');
                                                         })
                                                   ],
                                                 )),
@@ -416,13 +443,17 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 child: Column(
                                                   children: [
                                                     InkWell(
-                                                        child: Text('  C  ',
-                                                            style: TextStyle(
-                                                              fontSize: 40,
-                                                            )),
-                                                        onTap: () {
-                                                          setLabelInput('C');
-                                                        }),
+                                                      child: Text('  C  ',
+                                                          style: TextStyle(
+                                                            fontSize: 40,
+                                                          )),
+                                                      onTap: () {
+                                                        clearOnce();
+                                                      },
+                                                      onDoubleTap: () {
+                                                        clearTwice();
+                                                      },
+                                                    ),
                                                     InkWell(
                                                         child: Text('  3  ',
                                                             style: TextStyle(
@@ -483,7 +514,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                               fontSize: 40,
                                                             )),
                                                         onTap: () {
-                                                          setLabelInput('-');
+                                                          setLabelInput(' - ');
                                                         }),
                                                     InkWell(
                                                         child: Text('  +  ',
@@ -491,7 +522,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                               fontSize: 40,
                                                             )),
                                                         onTap: () {
-                                                          setLabelInput('+');
+                                                          setLabelInput(' + ');
                                                         }),
                                                     InkWell(
                                                         child: Text('  =  ',
@@ -499,7 +530,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                               fontSize: 40,
                                                             )),
                                                         onTap: () {
-                                                          setLabelInput('1');
+                                                          collectInput(
+                                                              userInputString);
                                                         })
                                                   ],
                                                 )),

@@ -5,60 +5,70 @@ import 'package:flutter/scheduler.dart';
 import 'package:open_calc/calculator_display/display_history.dart';
 
 class CalculatorDisplay extends StatefulWidget {
+  final int numLines;
   final String inputLine;
   final List<DisplayHistory> history;
-  CalculatorDisplay(this.inputLine, this.history);
+  CalculatorDisplay(this.numLines, {this.inputLine='', this.history= const []}):
+      assert(numLines>1);
 
   @override
   State<StatefulWidget> createState() => _CalculatorDisplayState();
 }
 
 class _CalculatorDisplayState extends State<CalculatorDisplay> {
-  String display;
+  String _display;
+  static const int CURSOR_INTERVAL = 500;
   static const String CURSOR = '█';
   static const String BLANK = '⠀';
-  Timer cursorTimer;
+  static const double LINE_HEIGHT = 1.2;
+  static const double FONT_SIZE = 22;
+  static const TextStyle TEXT_STYLE = TextStyle(height:LINE_HEIGHT,fontSize: FONT_SIZE);
+  Timer _cursorTimer;
 
 
   @override
   void initState() {
     super.initState();
-    this.display = this.widget.inputLine + CURSOR;
+    this._display = this.widget.inputLine + CURSOR;
     startCursor();
   }
 
   @override
   void didUpdateWidget(CalculatorDisplay oldWidget) {
     super.didUpdateWidget(oldWidget);
-    cursorTimer.cancel();
-    this.display = this.widget.inputLine + CURSOR;
+    _cursorTimer.cancel();
+    this._display = this.widget.inputLine + CURSOR;
     startCursor();
   }
 
   @override
   void dispose(){
-    cursorTimer.cancel();
+    _cursorTimer.cancel();
     super.dispose();
   }
 
   void startCursor(){
-    cursorTimer = Timer.periodic(Duration(milliseconds: 500), (timer) {
+    _cursorTimer = Timer.periodic(Duration(milliseconds: CURSOR_INTERVAL), (timer) {
       setState(() {
-        if(display.contains(CURSOR)){
-          display = display.replaceAll(CURSOR, BLANK);
+        if(_display.contains(CURSOR)){
+          _display = _display.replaceAll(CURSOR, BLANK);
         }else{
-          display = display.replaceAll(BLANK, CURSOR);
+          _display = _display.replaceAll(BLANK, CURSOR);
         }
       });
     });
   }
 
+  Widget _buildText(String text, Alignment alignment){
+    return Align(alignment:alignment,child: Text(text, style: TEXT_STYLE));
+  }
+
   List<Widget> generateRows(DisplayHistory history){
     List<Widget> rows = [
-      if(history.input != null)
-        Align(alignment:Alignment.centerLeft,child: Text(history.input, style: TextStyle(height:1.2,fontSize: 24),)),
+      if(history.input != null && history.input.isNotEmpty)
+        _buildText(history.input, Alignment.centerLeft),
       if(history.result != null)
-        Align(alignment:Alignment.centerRight,child: Text(history.result, style: TextStyle(height:1.2,fontSize: 24),))
+        _buildText(history.result, Alignment.centerRight)
     ];
 
     return rows;
@@ -67,8 +77,7 @@ class _CalculatorDisplayState extends State<CalculatorDisplay> {
   @override
   Widget build(BuildContext context) {
     List<Widget> history = this.widget.history.map(generateRows).expand((i) => i).toList();
-    history.add(Align(alignment:Alignment.centerLeft,child: Text(display, style: TextStyle(height:1.2,fontSize: 24),)));
-
+    history.add( _buildText(_display, Alignment.centerLeft));
     ScrollController controller = ScrollController();
 
     SchedulerBinding.instance.addPostFrameCallback((_) {
@@ -77,13 +86,14 @@ class _CalculatorDisplayState extends State<CalculatorDisplay> {
 
     return Container(
         color: Color.fromRGBO(170, 200, 154, 1),
+        padding: EdgeInsets.all(12),
         child:SizedBox(
-          width:double.maxFinite,
-          child: SingleChildScrollView(
+            height: LINE_HEIGHT * FONT_SIZE * this.widget.numLines,
+            child: SingleChildScrollView(
+              //reverse: true,
               controller: controller,
               physics: NeverScrollableScrollPhysics(),
               child:Container(
-                padding: EdgeInsets.all(12),
                 child:
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
