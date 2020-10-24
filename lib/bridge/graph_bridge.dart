@@ -56,7 +56,7 @@ class GraphBridge {
 
   List<Coordinates> retrieveGraph(double minX, double maxX, double minY, double maxY, [double xPrecision = 1, double yPrecision = 1]) {
     final GraphFunction calcPoints = _retrieveGraphFunction();
-    String expression = "x^3";  // hard-coded
+    String expression = "0.05 * x^2 - 50";  // hard-coded
     Pointer<CoordPair> points = calcPoints(Utf8.toUtf8(expression), minX, maxX, minY, maxY, xPrecision, yPrecision);
     int listSize = ((maxX - minX) + 1).round();
     Float32List xCoords = points.ref.x_ptr.asTypedList(listSize);
