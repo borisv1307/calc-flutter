@@ -216,7 +216,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 maxHeight: 652,
                               ),
                               child: CartesianGraph(
-                                Bounds(_xMin, _xMax, -81, 81),
+                                Bounds(_xMin, _xMax, _yMin, _yMax),
                                 coordinates: _retrieveCoordinates(),
                                 cursorLocation: this.cursorLocation,
                               ),
@@ -259,6 +259,21 @@ class _HomeScreenState extends State<HomeScreen> {
                               ],
                             ),
                           ],
+                        ),
+                        Container(
+                          margin: EdgeInsets.symmetric(
+                              vertical: 10, horizontal: 10),
+                          child: Column(
+                            children: <Widget>[
+                              TextFormField(
+                                decoration: InputDecoration(labelText: 'y = '),
+                                onSaved: (input) => {log(input)},
+                              ),
+                              ElevatedButton(
+                                  onPressed: null,
+                                  child: Text("Generate Graph"))
+                            ],
+                          ),
                         ),
                       ],
                     ),
