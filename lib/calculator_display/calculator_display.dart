@@ -65,7 +65,7 @@ class _CalculatorDisplayState extends State<CalculatorDisplay> {
 
   List<Widget> generateRows(DisplayHistory history){
     List<Widget> rows = [
-      if(history.input != null && history.input.isNotEmpty)
+      if(history.input != null)
         _buildText(history.input, Alignment.centerLeft),
       if(history.result != null)
         _buildText(history.result, Alignment.centerRight)

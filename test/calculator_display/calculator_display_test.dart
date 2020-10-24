@@ -36,10 +36,6 @@ void main(){
       await tester.pumpWidget(MaterialApp(home:CalculatorDisplay(3, inputLine:'2+2',history:[DisplayHistory.result('6')])));
       expect(find.text('6'),findsNWidgets(1));
     });
-    testWidgets('Result with blank input',(WidgetTester tester) async{
-      await tester.pumpWidget(MaterialApp(home:CalculatorDisplay(3, inputLine:'2+2',history:[DisplayHistory('','6')])));
-      expect(find.text('6'),findsNWidgets(1));
-    });
   });
 
   group('Widget updates',(){

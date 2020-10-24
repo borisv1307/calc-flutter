@@ -18,8 +18,6 @@ class ValidateFunction {
   }
 
   bool testFunction(String input){
-    input = input + "=";
-    currentState= new StartState(this);
     // Copy character by character into array
     for (int i = 0; i < input.length; i++) {
       currentState.getNextState(input[i]);

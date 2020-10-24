@@ -1,5 +1,5 @@
+import 'package:open_calc/input_validation/calculate_state.dart';
 import 'package:open_calc/input_validation/next_operand_State.dart';
-import 'package:open_calc/input_validation/start_state.dart';
 import 'package:open_calc/input_validation/state.dart';
 import 'package:open_calc/input_validation/validate_function.dart';
 
@@ -14,17 +14,34 @@ class SecondOperandState extends State {
   @override
   void getNextState(String value) {
     if(value.startsWith(RegExp(r'[0-9]'))){
-      // remain in the same state
+      //set the second operand value
+      // String newValue= context.getSecondOperand() + value;
+      // context.calculator.setOutput(context.calculator.getOutput() + value);
+
+      //update calculator view and state
+      // context.setSecondOperand(newValue);
+      // context.trackOperation.set(context.trackOperation.size()-1, new Operand(newValue));
     }
-    else if(value.startsWith(RegExp(r'[+-/*^]'))){
+    else if(value.startsWith(RegExp(r'[+-/*]'))){
+      //update calculator view and state
+      // context.calculator.setOutput(context.calculator.getOutput() + value);
+      // context.trackOperation.add(new Operator(value));
       context.setCurrentState(new NextOperandState(context));
     }
-    else if(value.startsWith("=")){
-      //Reaching here signifies a valid input expression
-      context.setCurrentState(new StartState(context));
+    else if(value.startsWith("C")){
+      //update calculator view and reset to start state
+      // context.setFirstOperand(null);
+      // context.setOperator(null);
+      // context.setSecondOperand(null);
+      // context.trackOperation = new ArrayList<OperationModel>();
+      // context.subExpressionTree = new Operator(null);
+      // context.expressionTree = new Operator(null);
+      // context.setCurrentState(new StartState(context));
+      // context.calculator.setOutput("");
     }
-    // else if(value.startsWith(")")){
-    //   context.setCurrentState(new CloseSubExpressionState(context));
-    // }
+    else if(value.startsWith("=")){
+      //update state
+      context.setCurrentState(new CalculateState(context));
+    }
   }
 }
