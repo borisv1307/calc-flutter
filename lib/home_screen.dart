@@ -64,8 +64,8 @@ class _HomeScreenState extends State<HomeScreen> {
   // Scale Value, Range and Domain of x and y will be set and saved in these variable
   int _xMin = -100,
       _xMax = 100,
-      _yMin = -81,
-      _yMax = 81,
+      _yMin = -80,
+      _yMax = 80,
       _xScl = 1,
       _yScl = 2,
       _xRes = 1;
