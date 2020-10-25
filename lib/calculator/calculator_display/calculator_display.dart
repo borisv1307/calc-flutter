@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:open_calc/calculator_display/display_history.dart';
+import 'package:open_calc/calculator/calculator_display/display_history.dart';
 
 class CalculatorDisplay extends StatefulWidget {
   final int numLines;

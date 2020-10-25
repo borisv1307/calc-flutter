@@ -4,10 +4,7 @@ import 'package:cartesian_graph/cartesian_graph.dart';
 import 'package:cartesian_graph/coordinates.dart';
 import 'package:flutter/material.dart';
 import 'package:open_calc/bridge/graph_bridge.dart';
-import 'package:open_calc/calculator_display/calculator_display.dart';
-import 'package:open_calc/calculator_display/display_history.dart';
-import 'package:open_calc/input_pad/input_pad.dart';
-import 'package:open_calc/input_validation/validate_function.dart';
+import 'package:open_calc/calculator/calculator.dart';
 
 class HomeScreen extends StatefulWidget {
   HomeScreen({Key key, this.title}) : super(key: key);
@@ -21,7 +18,6 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   Coordinates cursorLocation = Coordinates(50, 50);
   GraphBridge bridge = GraphBridge();
-  List<DisplayHistory> history = [];
   int width = 270;
   int height = 162;
 
@@ -30,8 +26,6 @@ class _HomeScreenState extends State<HomeScreen> {
         (width / 2) * -1, (width / 2), (height / 2) * -1, (height / 2));
     return allCoordinates;
   }
-
-  ValidateFunction tester = new ValidateFunction();
 
   void moveCursor(String direction) {
     setState(() {
@@ -70,45 +64,7 @@ class _HomeScreenState extends State<HomeScreen> {
       _yScl = 2,
       _xRes = 1;
 
-  String userInputString = '';
 
-  void setLabelInput(String keypadInput) {
-    setState(() {
-        userInputString = (userInputString + keypadInput);
-    });
-  }
-
-  void executeCommand(String command){
-    if(command == 'enter'){
-      collectInput(userInputString);
-    }else if(command =='del'){
-      setState(() {
-        userInputString = userInputString.substring(0,userInputString.length-1);
-      });
-    }else if(command =='clear'){
-      setState(() {
-        userInputString = '';
-        history=[];
-      });
-    }
-  }
-
-  //evaluates a function and adds the input to the history
-  void collectInput(String expression) {
-    String results;
-    if (tester.testFunction(expression)) {
-      results = bridge.retrieveCalculatorResult(expression);  // call to backend evaluator
-    } else {
-      results = "Syntax Error";
-    }
-    DisplayHistory newEntry = new DisplayHistory(expression, results);
-    setState(() {
-      userInputString = '';
-    });
-
-    history.add(newEntry);
-
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -320,13 +276,7 @@ class _HomeScreenState extends State<HomeScreen> {
           //TAB2------------------------------------------------------------
         Column(),
           //TAB3------------------------------------------------------------
-        Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-          CalculatorDisplay(8,inputLine:userInputString,history:history),
-          Expanded(child:InputPad(setLabelInput,executeCommand)),
-        ],
-        ),
+        Calculator()
       ]  
     )
     )
