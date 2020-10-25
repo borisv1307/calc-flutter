@@ -5,12 +5,12 @@ import 'package:open_calc/calculator/calculator_display/display_history.dart';
 import 'package:open_calc/calculator/input_pad/input_pad.dart';
 import 'package:open_calc/calculator/input_validation/validate_function.dart';
 
-class Calculator extends StatefulWidget {
+class CalculatorScreen extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() => CalculatorState();
+  State<StatefulWidget> createState() => CalculatorScreenState();
 }
 
-class CalculatorState extends State<Calculator>{
+class CalculatorScreenState extends State<CalculatorScreen>{
   String userInputString = '';
   GraphBridge bridge = GraphBridge();
   List<DisplayHistory> history = [];
