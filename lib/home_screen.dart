@@ -49,6 +49,26 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
+  // Add a Drawer for scale window
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  void _openDrawer() {
+    _scaffoldKey.currentState.openEndDrawer();
+  }
+
+  void _closeDrawer() {
+    Navigator.of(context).pop();
+  }
+
+  final formKey = GlobalKey<FormState>();
+  // Scale Value, Range and Domain of x and y will be set and saved in these variable
+  int _xMin = -100,
+      _xMax = 100,
+      _yMin = -80,
+      _yMax = 80,
+      _xScl = 1,
+      _yScl = 2,
+      _xRes = 1;
+
   String userInputString = '';
 
   void setLabelInput(String keypadInput) {
