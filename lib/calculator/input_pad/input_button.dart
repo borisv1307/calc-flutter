@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:open_calc/input_pad/input_button_style.dart';
+import 'package:open_calc/calculator/input_pad/input_button_style.dart';
 
 class InputButton extends StatelessWidget{
   final String text;

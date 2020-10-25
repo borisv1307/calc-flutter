@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:open_calc/calculator_display/calculator_display.dart';
-import 'package:open_calc/calculator_display/display_history.dart';
+import 'package:open_calc/calculator/calculator_display/calculator_display.dart';
+import 'package:open_calc/calculator/calculator_display/display_history.dart';
 
 void main(){
 
