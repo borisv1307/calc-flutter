@@ -24,7 +24,7 @@ class InputPad extends StatelessWidget{
     double availableHeight = MediaQuery.of(context).size.height;
     return Container(
         color:Colors.black38,
-        alignment: Alignment.bottomCenter,
+        alignment: Alignment.center,
         child:GridView.count(
           shrinkWrap: true,
           crossAxisCount: 5,
