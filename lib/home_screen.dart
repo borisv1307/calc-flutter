@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'package:cartesian_graph/bounds.dart';
 import 'package:cartesian_graph/cartesian_graph.dart';
 import 'package:cartesian_graph/coordinates.dart';
