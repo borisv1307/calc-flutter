@@ -1,7 +1,8 @@
-import 'package:open_calc/input_validation/error_state.dart';
-import 'package:open_calc/input_validation/second_operand_state.dart';
-import 'package:open_calc/input_validation/state.dart';
-import 'package:open_calc/input_validation/validate_function.dart';
+
+import 'package:open_calc/calculator/input_validation/error_state.dart';
+import 'package:open_calc/calculator/input_validation/second_operand_state.dart';
+import 'package:open_calc/calculator/input_validation/state.dart';
+import 'package:open_calc/calculator/input_validation/validate_function.dart';
 
 class NextOperandState extends State {
   //--Constructor--
