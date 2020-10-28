@@ -3,14 +3,22 @@ import 'package:open_calc/bridge/graph_bridge.dart';
 import 'package:open_calc/calculator/calculator_display/calculator_display.dart';
 import 'package:open_calc/calculator/calculator_display/display_history.dart';
 import 'package:open_calc/calculator/input_pad/input_pad.dart';
+import 'package:open_calc/calculator/input_pad/input_variables.dart';
 import 'package:open_calc/calculator/input_validation/validate_function.dart';
 
 class CalculatorScreen extends StatefulWidget {
+  final VariableStorage storage;
+
+  CalculatorScreen(this.storage);
   @override
-  State<StatefulWidget> createState() => CalculatorScreenState();
+  State<StatefulWidget> createState() => CalculatorScreenState(storage);
 }
 
 class CalculatorScreenState extends State<CalculatorScreen>{
+
+  final VariableStorage storage;
+  CalculatorScreenState(this.storage);
+
   String userInputString = '';
   GraphBridge bridge = GraphBridge();
   List<DisplayHistory> history = [];
@@ -34,6 +42,17 @@ class CalculatorScreenState extends State<CalculatorScreen>{
         userInputString = '';
         history=[];
       });
+    }else if(command =='sto'){
+      var toSto = userInputString.split('(');
+      var keyNum = toSto[0];
+      
+      storage.addVariable(keyNum, toSto[1]);
+
+      print(storage.variableMap);
+
+      setState((){
+        userInputString = '';
+      });
     }
   }
 
@@ -53,7 +72,7 @@ class CalculatorScreenState extends State<CalculatorScreen>{
     history.add(newEntry);
 
   }
-
+  
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -61,9 +80,8 @@ class CalculatorScreenState extends State<CalculatorScreen>{
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
               CalculatorDisplay(8,inputLine:userInputString,history:history),
-              Expanded(child:InputPad(setLabelInput,executeCommand)),
+              Expanded(child:InputPad(storage,setLabelInput,executeCommand)),
             ],)
     );
   }
-
 }
