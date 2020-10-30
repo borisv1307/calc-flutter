@@ -31,7 +31,7 @@ class GraphScreenState extends State<GraphScreen>{
 
   List<Coordinates> _retrieveCoordinates() {
     List<Coordinates> allCoordinates = bridge.retrieveGraph(
-        (width / 2) * -1, (width / 2), (height / 2) * -1, (height / 2));
+        "0.05 * x^2 - 50", (width / 2) * -1, (width / 2), (height / 2) * -1, (height / 2)); // hard-coded
     return allCoordinates;
   }
 

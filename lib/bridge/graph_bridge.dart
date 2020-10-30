@@ -12,9 +12,10 @@ class CoordPair extends Struct {
   Pointer<Float> y_ptr;
 }
 
-typedef graph_function = Pointer<CoordPair> Function(Pointer<Utf8> expr, Float xl, Float xu, Float yl, Float yu, Float xp, Float yp);
+typedef graph_func = Pointer<CoordPair> Function(Pointer<Utf8> expr, Double xl, Double xu, Double yl, Double yu, Double xp, Double yp);
 typedef GraphFunction = Pointer<CoordPair> Function(Pointer<Utf8> expr, double xl, double xu, double yl, double yu, double xp, double yp);
-typedef CalcFunction = Pointer<Utf8> Function(Pointer<Utf8>);
+typedef calc_func = Double Function(Pointer<Utf8>);
+typedef CalcFunction = double Function(Pointer<Utf8>);
 
 class GraphBridge {
   GraphFunction _add;
@@ -35,8 +36,8 @@ class GraphBridge {
           : DynamicLibrary.process();
 
       _add = addNative
-          .lookup<NativeFunction<graph_function>>("coord_vector_maker")
-          .asFunction();
+          .lookup<NativeFunction<graph_func>>("coord_vector_maker")
+          .asFunction<GraphFunction>();
     }
     return _add;
   }
@@ -48,16 +49,15 @@ class GraphBridge {
           : DynamicLibrary.process();
 
       _result = addNative
-          .lookup<NativeFunction<CalcFunction>>("calculate")
-          .asFunction();
+          .lookup<NativeFunction<calc_func>>("calculate")
+          .asFunction<CalcFunction>();
     }
     return _result;
   }
 
-  List<Coordinates> retrieveGraph(double minX, double maxX, double minY, double maxY, [double xPrecision = 1, double yPrecision = 1]) {
+  List<Coordinates> retrieveGraph(String expr, double minX, double maxX, double minY, double maxY, [double xPrecision = 1, double yPrecision = 1]) {
     final GraphFunction calcPoints = _retrieveGraphFunction();
-    String expression = "0.05 * x^2 - 50";  // hard-coded
-    Pointer<CoordPair> points = calcPoints(Utf8.toUtf8(expression), minX, maxX, minY, maxY, xPrecision, yPrecision);
+    Pointer<CoordPair> points = calcPoints(Utf8.toUtf8(expr), minX, maxX, minY, maxY, xPrecision, yPrecision);
     int listSize = ((maxX - minX) + 1).round();
     Float32List xCoords = points.ref.x_ptr.asTypedList(listSize);
     Float32List yCoords = points.ref.y_ptr.asTypedList(listSize);
@@ -72,12 +72,11 @@ class GraphBridge {
     return coordinates;
   }
 
-  String retrieveCalculatorResult(String expression) {
+  double retrieveCalculatorResult(String expression) {
     print(expression);
     final CalcFunction calcExpression = _retrieveCalcFunction();
     Pointer<Utf8> exprPtr = Utf8.toUtf8(expression);
-    Pointer<Utf8> resultPtr = calcExpression(exprPtr);
-    String result = Utf8.fromUtf8(resultPtr);
+    double result = calcExpression(exprPtr);
     return result;
   }
 }

@@ -58,13 +58,14 @@ class CalculatorScreenState extends State<CalculatorScreen>{
 
   //evaluates a function and adds the input to the history
   void collectInput(String expression) {
-    String results;
+    String resultString;
     if (tester.testFunction(expression)) {
-      results = bridge.retrieveCalculatorResult(expression);  // call to backend evaluator
+      double results = bridge.retrieveCalculatorResult(expression);  // call to backend evaluator
+      resultString = results.toString();
     } else {
-      results = "Syntax Error";
+      resultString = "Syntax Error";
     }
-    DisplayHistory newEntry = new DisplayHistory(expression, results);
+    DisplayHistory newEntry = new DisplayHistory(expression, resultString);
     setState(() {
       userInputString = '';
     });
