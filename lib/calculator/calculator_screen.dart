@@ -61,7 +61,9 @@ class CalculatorScreenState extends State<CalculatorScreen>{
   // evaluates a function and adds the input to the history
   void evaluate(String expression) {
     String resultString;
-    if (tester.testFunction(expression)) {
+    if (expression == "") {
+      resultString = history.last.result;
+    } else if (tester.testFunction(expression)) {
       double results = bridge.retrieveCalculatorResult(expression);  // call to backend evaluator
       resultString = results.toString();
     } else {

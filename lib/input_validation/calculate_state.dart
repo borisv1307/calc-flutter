@@ -1,7 +1,7 @@
-import 'package:open_calc/input_validation/first_operand_state.dart';
-import 'package:open_calc/input_validation/start_state.dart';
-import 'package:open_calc/input_validation/state.dart';
-import 'package:open_calc/input_validation/validate_function.dart';
+import 'package:open_calc/calculator/input_validation/first_operand_state.dart';
+import 'package:open_calc/calculator/input_validation/start_state.dart';
+import 'package:open_calc/calculator/input_validation/state.dart';
+import 'package:open_calc/calculator/input_validation/validate_function.dart';
 
 
 class CalculateState extends State {

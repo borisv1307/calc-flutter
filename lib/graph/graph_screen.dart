@@ -34,6 +34,12 @@ class GraphScreenState extends State<GraphScreen>{
   String _y1 = "0.05 * x^2 - 50";
   List<Coordinates> coordinates;
 
+  @override
+  void initState() {
+    super.initState();
+    this._updateCoordinates();
+  }
+
   void _updateCoordinates() {
     setState(() {
       coordinates = bridge.retrieveGraph(
