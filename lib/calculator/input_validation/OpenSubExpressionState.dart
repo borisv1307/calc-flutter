@@ -1,13 +1,13 @@
-import 'package:open_calc/calculator/input_validation/OpenSubExpressionState.dart';
 import 'package:open_calc/calculator/input_validation/error_state.dart';
+import 'package:open_calc/calculator/input_validation/next_operand_State.dart';
 import 'package:open_calc/calculator/input_validation/state.dart';
 import 'package:open_calc/calculator/input_validation/validate_function.dart';
 
 import 'first_operand_state.dart';
 
-class StartState extends State {
+class OpenSubExpressionState extends State {
   //--Constructor--
-  StartState(ValidateFunction context) : super(context);
+  OpenSubExpressionState(ValidateFunction context) : super(context);
 
   //--Methods--
 
@@ -15,16 +15,19 @@ class StartState extends State {
   // and used for transitioning from one state to another
   @override
   int getNextState(String value, int counter){
-    if(value.startsWith(RegExp(r'[0-9]'))){
+    if(value == "("){
+      // remain in the same state
+      counter = counter + 1;
+    }
+    else if(value.startsWith(RegExp(r'[0-9]'))){
       //update state
       context.setCurrentState(new FirstOperandState(context));
     }
-    else if(value == "("){
-      counter = counter + 1;
+    else if(value.startsWith(RegExp(r'[+-]'))){
       //update state
-      context.setCurrentState(new OpenSubExpressionState(context));
+      context.setCurrentState(new NextOperandState(context));
     }
-    else {
+    else if(value.startsWith(RegExp(r'[)^*/=]'))){
       //update state
       context.setCurrentState(new ErrorState(context));
     }

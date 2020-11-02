@@ -78,9 +78,9 @@ class InputPadOne extends InputPad{
                 },
               )),
             ),
-            _buildInputButton('sin',InputButtonStyle.TERTIARY,value:' sin ('),
-            _buildInputButton('cos',InputButtonStyle.TERTIARY,value:' cos ('),
-            _buildInputButton('tan',InputButtonStyle.TERTIARY,value:' tan ('),
+            _buildInputButton('sin',InputButtonStyle.TERTIARY,value:' sin ( '),
+            _buildInputButton('cos',InputButtonStyle.TERTIARY,value:' cos ( '),
+            _buildInputButton('tan',InputButtonStyle.TERTIARY,value:' tan ( '),
             _buildCommandButton('del',InputButtonStyle.TERTIARY),
             _buildCommandButton('clear',InputButtonStyle.TERTIARY),
             _buildInputButton('𝑥 ²',InputButtonStyle.TERTIARY, value:' ^ 2 '),
@@ -92,12 +92,12 @@ class InputPadOne extends InputPad{
             _buildInputButton('8',InputButtonStyle.PRIMARY, value:' 8 '),
             _buildInputButton('9',InputButtonStyle.PRIMARY, value:' 9 '),
             _buildInputButton('x',InputButtonStyle.SECONDARY, value:' * '),
-            _buildInputButton('log',InputButtonStyle.TERTIARY,value:' log ( '),
+            _buildInputButton('log',InputButtonStyle.TERTIARY,value:' log ('),
             _buildInputButton('4',InputButtonStyle.PRIMARY, value:' 4 '),
             _buildInputButton('5',InputButtonStyle.PRIMARY, value:' 5 '),
             _buildInputButton('6',InputButtonStyle.PRIMARY, value:' 6 '),
             _buildInputButton('-',InputButtonStyle.SECONDARY, value:' - '),
-            _buildInputButton('ln',InputButtonStyle.TERTIARY,value:' ln ('),
+            _buildInputButton('ln',InputButtonStyle.TERTIARY,value:' ln ( '),
             _buildInputButton('1',InputButtonStyle.PRIMARY, value:' 1 '),
             _buildInputButton('2',InputButtonStyle.PRIMARY, value:' 2 '),
             _buildInputButton('3',InputButtonStyle.PRIMARY, value:' 3 '),
@@ -116,7 +116,6 @@ class InputPadOne extends InputPad{
 class InputPadTwo extends InputPad{
 
   InputPadTwo(storage,input, command) : super(storage,input, command);
-
 
   @override
   Widget build(BuildContext context) {

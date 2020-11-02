@@ -62,7 +62,10 @@ class CalculatorScreenState extends State<CalculatorScreen>{
   void collectInput(String expression) {
     String results;
     if(expression != null || expression.isNotEmpty) {
-      if (tester.testFunction(expression)) {
+      bool validInput = tester.testFunction(expression);
+      debugPrint("UI validation Check: $validInput");
+
+      if (validInput) {
         results = bridge.retrieveCalculatorResult(
             expression); // call to backend evaluator
       } else {

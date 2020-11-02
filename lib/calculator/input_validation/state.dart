@@ -4,7 +4,6 @@ import 'validate_function.dart';
 abstract class State {
   //--Attributes--
   ValidateFunction context;
-  String previousState="none";
 
   //--Constructor--
   State(ValidateFunction context) {
@@ -21,5 +20,5 @@ abstract class State {
   }
 
   //--abstract methods--
-  void getNextState(String value);
+  int getNextState(String value, int counter);
 }

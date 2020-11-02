@@ -5,6 +5,7 @@ import 'package:open_calc/calculator/input_validation/state.dart';
 
 class ValidateFunction {
   State currentState;
+  int counter = 0;
   List<String> lengthTwoFunc = ["ln"];
   List<String> lengthThreeFunc = ["log","sin","cos","tan"];
 
@@ -29,15 +30,17 @@ class ValidateFunction {
         inputString.removeAt(i);
       }
     }
+
     currentState= new StartState(this);
     for(int i = 0; i < inputString.length; i++){
       if(inputString[i].length == 1){
-        currentState.getNextState(inputString[i]);
+        this.counter = currentState.getNextState(inputString[i], counter);
 
         if(currentState is ErrorState){
           return false;
         }
-      }else if(inputString[i].length == 2){
+      }
+      else if(inputString[i].length == 2){
         if(lengthTwoFunc.contains(inputString[i]) == false){
           return false;
         }
@@ -48,15 +51,6 @@ class ValidateFunction {
         }
       }
     }
-    //currentState= new StartState(this);
-    // Copy character by character into array
-    // for (int i = 0; i < inputString.length; i++) {
-    //   currentState.getNextState(inputString[i]);
-    //
-    //   if(currentState is ErrorState){
-    //     return false;
-    //   }
-    // }
 
     return true;
   }
