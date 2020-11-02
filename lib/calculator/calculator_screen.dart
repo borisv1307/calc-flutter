@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/cupertino.dart';
 import 'package:open_calc/bridge/graph_bridge.dart';
 import 'package:open_calc/calculator/calculator_display/calculator_display.dart';
@@ -59,9 +61,14 @@ class CalculatorScreenState extends State<CalculatorScreen>{
   //evaluates a function and adds the input to the history
   void collectInput(String expression) {
     String results;
-    if (tester.testFunction(expression)) {
-      results = bridge.retrieveCalculatorResult(expression);  // call to backend evaluator
-    } else {
+    if(expression != null || expression.isNotEmpty) {
+      if (tester.testFunction(expression)) {
+        results = bridge.retrieveCalculatorResult(
+            expression); // call to backend evaluator
+      } else {
+        results = "Syntax Error";
+      }
+    }else {
       results = "Syntax Error";
     }
     DisplayHistory newEntry = new DisplayHistory(expression, results);

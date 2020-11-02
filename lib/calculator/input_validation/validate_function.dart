@@ -5,7 +5,9 @@ import 'package:open_calc/calculator/input_validation/state.dart';
 
 class ValidateFunction {
   State currentState;
-  
+  List<String> lengthTwoFunc = ["ln"];
+  List<String> lengthThreeFunc = ["log","sin","cos","tan"];
+
   ValidateFunction(){
     currentState= new StartState(this);
   }
@@ -19,16 +21,42 @@ class ValidateFunction {
   }
 
   bool testFunction(String input){
-    input = input + "=";
-    currentState= new StartState(this);
-    // Copy character by character into array
-    for (int i = 0; i < input.length; i++) {
-      currentState.getNextState(input[i]);
+    input = input + " = ";
+    List<String> inputString = input.split(" ");
 
-      if(currentState is ErrorState){
-        return false;
+    for(int i = 0; i < inputString.length; i++){
+      if(inputString[i].isEmpty){
+        inputString.removeAt(i);
       }
     }
+    currentState= new StartState(this);
+    for(int i = 0; i < inputString.length; i++){
+      if(inputString[i].length == 1){
+        currentState.getNextState(inputString[i]);
+
+        if(currentState is ErrorState){
+          return false;
+        }
+      }else if(inputString[i].length == 2){
+        if(lengthTwoFunc.contains(inputString[i]) == false){
+          return false;
+        }
+      }
+      else if(inputString.length == 3){
+        if(lengthThreeFunc.contains(inputString[i]) == false){
+          return false;
+        }
+      }
+    }
+    //currentState= new StartState(this);
+    // Copy character by character into array
+    // for (int i = 0; i < inputString.length; i++) {
+    //   currentState.getNextState(inputString[i]);
+    //
+    //   if(currentState is ErrorState){
+    //     return false;
+    //   }
+    // }
 
     return true;
   }
