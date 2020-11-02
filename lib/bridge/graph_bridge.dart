@@ -7,9 +7,9 @@ import 'package:cartesian_graph/coordinates.dart';
 
 class CoordPair extends Struct {
   // ignore: non_constant_identifier_names
-  Pointer<Float> x_ptr;
+  Pointer<Double> x_ptr;
   // ignore: non_constant_identifier_names
-  Pointer<Float> y_ptr;
+  Pointer<Double> y_ptr;
 }
 
 typedef graph_func = Pointer<CoordPair> Function(Pointer<Utf8> expr, Double xl, Double xu, Double yl, Double yu, Double xp, Double yp);
@@ -59,8 +59,8 @@ class GraphBridge {
     final GraphFunction calcPoints = _retrieveGraphFunction();
     Pointer<CoordPair> points = calcPoints(Utf8.toUtf8(expr), minX, maxX, minY, maxY, xPrecision, yPrecision);
     int listSize = ((maxX - minX) + 1).round();
-    Float32List xCoords = points.ref.x_ptr.asTypedList(listSize);
-    Float32List yCoords = points.ref.y_ptr.asTypedList(listSize);
+    Float64List xCoords = points.ref.x_ptr.asTypedList(listSize);
+    Float64List yCoords = points.ref.y_ptr.asTypedList(listSize);
 
     List<Coordinates> coordinates = [];
     for (int i = 0; i < listSize; i++) {
