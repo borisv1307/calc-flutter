@@ -23,6 +23,7 @@ class GraphScreenState extends State<GraphScreen>{
       _xScl = 1,
       _yScl = 2,
       _xRes = 1;
+  String _funcY = "0.05 * x^2";
 
   int width = 270;
   int height = 162;
@@ -31,7 +32,7 @@ class GraphScreenState extends State<GraphScreen>{
 
   List<Coordinates> _retrieveCoordinates() {
     List<Coordinates> allCoordinates = bridge.retrieveGraph(
-        (width / 2) * -1, (width / 2), (height / 2) * -1, (height / 2));
+        (width / 2) * -1, (width / 2), (height / 2) * -1, (height / 2), _funcY);
     return allCoordinates;
   }
 
@@ -153,6 +154,7 @@ class GraphScreenState extends State<GraphScreen>{
                     ElevatedButton(
                       onPressed: () {
                         formKey.currentState.save();
+                        setState(() {});
                       },
                       child: Text("Save Changes"),
                     ),
@@ -220,17 +222,25 @@ class GraphScreenState extends State<GraphScreen>{
           Container(
             margin: EdgeInsets.symmetric(
                 vertical: 10, horizontal: 10),
-            child: Column(
-              children: <Widget>[
-                TextFormField(
-                  decoration: InputDecoration(labelText: 'y = '),
-                  onSaved: (input) => {log(input)},
-                ),
-                ElevatedButton(
-                    onPressed: null,
-                    child: Text("Generate Graph"))
-              ],
-            ),
+            child: Form(
+              key: formKey,
+              child: Column(
+
+                children: <Widget>[
+                  TextFormField(
+                    decoration: InputDecoration(labelText: 'y = '),
+                    initialValue: _funcY,
+                    onSaved: (input) => {_funcY = input},
+                  ),
+                  ElevatedButton(
+                      onPressed: () {
+                        formKey.currentState.save();
+                        setState(() {});
+                      },
+                      child: Text("Generate Graph"))
+                ],
+              ),
+            )
           ),
         ],
       ),
