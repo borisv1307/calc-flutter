@@ -1,5 +1,5 @@
 
-import 'package:open_calc/calculator/input_validation/CloseSubExpressionState.dart';
+import 'package:open_calc/calculator/input_validation/close_subexpression_state.dart';
 import 'package:open_calc/calculator/input_validation/error_state.dart';
 import 'package:open_calc/calculator/input_validation/next_operand_State.dart';
 import 'package:open_calc/calculator/input_validation/state.dart';

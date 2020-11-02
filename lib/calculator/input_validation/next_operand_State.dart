@@ -1,4 +1,4 @@
-import 'package:open_calc/calculator/input_validation/OpenSubExpressionState.dart';
+import 'package:open_calc/calculator/input_validation/open_subexpression_state.dart';
 import 'package:open_calc/calculator/input_validation/error_state.dart';
 import 'package:open_calc/calculator/input_validation/second_operand_state.dart';
 import 'package:open_calc/calculator/input_validation/state.dart';
