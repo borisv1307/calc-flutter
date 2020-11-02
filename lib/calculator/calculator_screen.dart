@@ -24,16 +24,18 @@ class CalculatorScreenState extends State<CalculatorScreen>{
   List<DisplayHistory> history = [];
   ValidateFunction tester = new ValidateFunction();
 
-  void setLabelInput(String keypadInput) {
+  // updates state to display new input on the calc screen
+  void displayInput(String keypadInput) {
     setState(() {
       userInputString = (userInputString + keypadInput);
     });
   }
 
-  void executeCommand(String command){
-    if(command == 'enter'){
-      collectInput(userInputString);
-    }else if(command =='del'){
+  // updates state to perform special button commands
+  void executeCommand(String command) {
+    if (command == 'enter') {
+      evaluate(userInputString);
+    } else if (command =='del') {
       setState(() {
         userInputString = userInputString.substring(0,userInputString.length-1);
       });
@@ -56,8 +58,8 @@ class CalculatorScreenState extends State<CalculatorScreen>{
     }
   }
 
-  //evaluates a function and adds the input to the history
-  void collectInput(String expression) {
+  // evaluates a function and adds the input to the history
+  void evaluate(String expression) {
     String resultString;
     if (tester.testFunction(expression)) {
       double results = bridge.retrieveCalculatorResult(expression);  // call to backend evaluator
@@ -77,12 +79,19 @@ class CalculatorScreenState extends State<CalculatorScreen>{
   @override
   Widget build(BuildContext context) {
     return Container(
-        child:Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-              CalculatorDisplay(8,inputLine:userInputString,history:history),
-              Expanded(child:InputPad(storage,setLabelInput,executeCommand)),
-            ],)
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: <Widget>[
+          CalculatorDisplay(
+            numLines: 8, 
+            inputLine: userInputString, 
+            history: history
+          ),
+          Expanded(
+            child: InputPad(storage, displayInput, executeCommand)
+          ),
+        ],
+      )
     );
   }
 }

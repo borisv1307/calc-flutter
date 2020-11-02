@@ -13,8 +13,10 @@ class GraphScreen extends StatefulWidget {
 }
 
 class GraphScreenState extends State<GraphScreen>{
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  final formKey = GlobalKey<FormState>();
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
+  final _scaleFormKey = GlobalKey<FormState>();
+  final _exprFormKey = GlobalKey<FormFieldState>();
+
   // Scale Value, Range and Domain of x and y will be set and saved in these variable
   int _xMin = -100,
       _xMax = 100,
@@ -24,15 +26,23 @@ class GraphScreenState extends State<GraphScreen>{
       _yScl = 2,
       _xRes = 1;
 
-  int width = 270;
-  int height = 162;
+  int width = 270,
+    height = 162;
+       
   GraphBridge bridge = GraphBridge();
   Coordinates cursorLocation = Coordinates(50, 50);
+  String _y1 = "0.05 * x^2 - 50";
+  List<Coordinates> coordinates;
 
-  List<Coordinates> _retrieveCoordinates() {
-    List<Coordinates> allCoordinates = bridge.retrieveGraph(
-        "0.05 * x^2 - 50", (width / 2) * -1, (width / 2), (height / 2) * -1, (height / 2)); // hard-coded
-    return allCoordinates;
+  void _updateCoordinates() {
+    setState(() {
+      coordinates = bridge.retrieveGraph(
+          _y1, (width / 2) * -1, (width / 2), (height / 2) * -1, (height / 2));
+    });
+  }
+  
+  List<Coordinates> _getCoordinates() {
+    return coordinates;
   }
 
   void moveCursor(String direction) {
@@ -74,7 +84,7 @@ class GraphScreenState extends State<GraphScreen>{
             child: Padding(
               padding: EdgeInsets.all(8.0),
               child: Form(
-                key: formKey,
+                key: _scaleFormKey,
                 child: Column(
                   children: <Widget>[
                     TextFormField(
@@ -152,7 +162,8 @@ class GraphScreenState extends State<GraphScreen>{
                     ),
                     ElevatedButton(
                       onPressed: () {
-                        formKey.currentState.save();
+                        _scaleFormKey.currentState.save();
+                        _updateCoordinates();
                       },
                       child: Text("Save Changes"),
                     ),
@@ -174,7 +185,7 @@ class GraphScreenState extends State<GraphScreen>{
                 ),
                 child: CartesianGraph(
                   Bounds(_xMin, _xMax, _yMin, _yMax),
-                  coordinates: _retrieveCoordinates(),
+                  coordinates: _getCoordinates(),
                   cursorLocation: this.cursorLocation,
                 ),
               ),
@@ -223,11 +234,17 @@ class GraphScreenState extends State<GraphScreen>{
             child: Column(
               children: <Widget>[
                 TextFormField(
+                  key: _exprFormKey,
                   decoration: InputDecoration(labelText: 'y = '),
-                  onSaved: (input) => {log(input)},
+                  onSaved: (input) => {
+                    _y1 = input
+                  },
                 ),
                 ElevatedButton(
-                    onPressed: null,
+                    onPressed: () {
+                      _exprFormKey.currentState.save();
+                      _updateCoordinates();
+                    },
                     child: Text("Generate Graph"))
               ],
             ),

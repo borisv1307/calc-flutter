@@ -8,8 +8,11 @@ class CalculatorDisplay extends StatefulWidget {
   final int numLines;
   final String inputLine;
   final List<DisplayHistory> history;
-  CalculatorDisplay(this.numLines, {this.inputLine='', this.history= const []}):
-      assert(numLines>1);
+  CalculatorDisplay({
+    this.numLines,
+    this.inputLine = '',
+    this.history = const []
+  }) : assert(numLines>1);
 
   @override
   State<StatefulWidget> createState() => _CalculatorDisplayState();
@@ -85,21 +88,22 @@ class _CalculatorDisplayState extends State<CalculatorDisplay> {
     });
 
     return Container(
-        color: Color.fromRGBO(170, 200, 154, 1),
-        padding: EdgeInsets.all(12),
-        child:SizedBox(
-            height: LINE_HEIGHT * FONT_SIZE * this.widget.numLines,
-            child: SingleChildScrollView(
-              //reverse: true,
-              controller: controller,
-              physics: NeverScrollableScrollPhysics(),
-              child:Container(
-                child:
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children:history
-                  )
-              ))
-          ));
+      color: Color.fromRGBO(170, 200, 154, 1),
+      padding: EdgeInsets.all(12),
+      child: SizedBox(
+        height: LINE_HEIGHT * FONT_SIZE * this.widget.numLines,
+        child: SingleChildScrollView(
+          //reverse: true,
+          controller: controller,
+          physics: NeverScrollableScrollPhysics(),
+          child: Container(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: history
+            )
+          )
+        )
+      )
+    );
   }
 }
