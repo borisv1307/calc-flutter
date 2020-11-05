@@ -15,13 +15,13 @@ class StartState extends State {
   @override
   void getNextState(String value){
     if(value.startsWith(RegExp(r'[0-9]'))){
-      //update state
+      //set the first operand value
+      //context.setFirstOperand(value);
+      //context.trackOperation.add(new Operand(value));
+
+      //update calculator view and state
       context.setCurrentState(new FirstOperandState(context));
     }
-    // if(value.startsWith("(")){
-    //   //update state
-    //   context.setCurrentState(new OpenSubExpressionState(context));
-    // }
     else {
       //update state
       context.setCurrentState(new ErrorState(context));
