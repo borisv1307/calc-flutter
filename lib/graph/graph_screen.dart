@@ -137,7 +137,7 @@ class GraphScreenState extends State<GraphScreen>{
                       keyboardType: TextInputType.number,
                       initialValue: '$_yMin',
                       decoration:
-                      InputDecoration(labelText: 'Y min:'),
+                      decoration: InputDecoration(labelText: 'Y min:'),
                       onSaved: (input) => {
                         _yMin = int.parse(input),
                         log('y_Min: ' + input)
@@ -247,23 +247,119 @@ class GraphScreenState extends State<GraphScreen>{
                   },
                 ),
                 ElevatedButton(
-                    onPressed: () {
-                      _exprFormKey.currentState.save();
-                      _updateCoordinates();
-                    },
-                    child: Text("Generate Graph"))
+                  onPressed: () {
+                    _exprFormKey.currentState.save();
+                    _updateCoordinates();
+                  },
+                  child: Text("Generate Graph")
+                ),
               ],
             ),
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          _openDrawer();
-        },
-        label: Text('Scale'),
-        icon: Icon(Icons.crop),
-      ),
+      floatingActionButton: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          
+          Container(
+            margin: EdgeInsets.only(left: 35),
+            child: FloatingActionButton.extended(
+            
+            backgroundColor: Colors.green,
+            label: Text('Table'),
+            icon: Icon(Icons.menu_book),
+            heroTag: 1,
+            onPressed: () {
+              showModalBottomSheet<void>(
+                context: context,
+                builder: (BuildContext context) {
+                  return Container(
+                    height: 500,
+                    child: Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          Center(child: Container(
+                            padding: EdgeInsets.fromLTRB(25,8,8,8),
+                            // color: Colors.blue[200],
+                            height: 60,
+                            child: Row(
+                              children: <Widget>[
+                                Flexible(
+                                  child: ListTile(
+                                    title: Text("x", style: TextStyle(fontSize: 24))
+                                  ),
+                                ),
+                                Flexible(
+                                  child: ListTile(
+                                    title: Text("y₁", style: TextStyle(fontSize: 24))
+                                  ),
+                                ),
+                                Flexible(
+                                  child: ListTile(
+                                    title: Text("y₂", style: TextStyle(fontSize: 24))
+                                  ),
+                                ),
+                                Flexible(
+                                  child: ListTile(
+                                    title: Text("y₃", style: TextStyle(fontSize: 24))
+                                  ),
+                                ),
+                                
+                            ])
+                          )),
+                          Divider(thickness: 1.5),
+                          Expanded(
+                            child: Container(
+                              child: ListView.separated(
+                                // controller: ScrollController(initialScrollOffset: 135*72.1),
+                                shrinkWrap: true,
+                                padding: const EdgeInsets.all(8),
+                                itemCount: coordinates.length,
+                                itemBuilder: (context, int index) {
+                                  return Row(
+                                    children: <Widget>[
+                                      Flexible(
+                                        // height: 20, width 30,
+                                        child: ListTile(
+                                          title: Text('${coordinates[index].x.toInt()}', style: TextStyle(fontSize: 20))
+                                        ),
+                                      ),
+                                      Flexible(
+                                        // height: 20, width 30,
+                                        child: ListTile(
+                                          title: Text('${coordinates[index].y}', style: TextStyle(fontSize: 20))
+                                        ),
+                                      ),
+                                      Spacer(flex: 2)
+                                  ]); 
+                                },
+                                separatorBuilder: (BuildContext context, int index) => Divider(thickness: 1.5),
+                              ))),
+                          ElevatedButton(
+                            child: const Text('Close Table'),
+                            onPressed: () => Navigator.pop(context),
+                          )
+                        ],
+                      ),
+                    ),
+                  );
+                });
+            },
+          )),
+          FloatingActionButton.extended(
+            onPressed: () {
+              _openDrawer();
+            },
+            label: Text('Scale'),
+            icon: Icon(Icons.crop),
+            heroTag: 2
+          ),
+        ],
+      )
     );
   }
 
