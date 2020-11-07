@@ -1,17 +1,16 @@
 import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:open_calc/calculator/calculator_display/calculator_display_controller.dart';
 import 'package:open_calc/calculator/calculator_display/display_history.dart';
 
 class CalculatorDisplay extends StatefulWidget {
   final int numLines;
-  final String inputLine;
-  final List<DisplayHistory> history;
-  CalculatorDisplay({
-    this.numLines,
-    this.inputLine = '',
-    this.history = const []
+  final CalculatorDisplayController controller;
+  CalculatorDisplay(this.controller,{
+    this.numLines = 8,
   }) : assert(numLines>1);
 
   @override
@@ -19,20 +18,29 @@ class CalculatorDisplay extends StatefulWidget {
 }
 
 class _CalculatorDisplayState extends State<CalculatorDisplay> {
-  String _display;
   static const int CURSOR_INTERVAL = 500;
   static const String CURSOR = '█';
   static const String BLANK = '⠀';
   static const double LINE_HEIGHT = 1.2;
   static const double FONT_SIZE = 22;
-  static const TextStyle TEXT_STYLE = TextStyle(height:LINE_HEIGHT,fontSize: FONT_SIZE);
+  static const TextStyle TEXT_STYLE = TextStyle(height:LINE_HEIGHT,fontSize: FONT_SIZE, color:Colors.black);
+  static const Color GREEN = Color.fromRGBO(170, 200, 154, 1);
   Timer _cursorTimer;
+  TextEditingController inputLineController = TextEditingController();
+  int cursorLocation = -1;
 
+
+  void _updateInputLine(){
+    setState(() {
+      this.inputLineController.text = this.widget.controller.inputLine + CURSOR;
+    });
+  }
 
   @override
   void initState() {
     super.initState();
-    this._display = this.widget.inputLine + CURSOR;
+    this.inputLineController.text = this.widget.controller.inputLine + CURSOR;
+    widget.controller?.addListener(_updateInputLine);
     startCursor();
   }
 
@@ -40,12 +48,17 @@ class _CalculatorDisplayState extends State<CalculatorDisplay> {
   void didUpdateWidget(CalculatorDisplay oldWidget) {
     super.didUpdateWidget(oldWidget);
     _cursorTimer.cancel();
-    this._display = this.widget.inputLine + CURSOR;
+    this.inputLineController.text = this.widget.controller.inputLine + CURSOR;
     startCursor();
+    if(oldWidget.controller != widget.controller) {
+      oldWidget.controller?.removeListener(_updateInputLine);
+      widget.controller?.addListener(_updateInputLine);
+    }
   }
 
   @override
   void dispose(){
+    widget.controller?.removeListener(_updateInputLine);
     _cursorTimer.cancel();
     super.dispose();
   }
@@ -53,10 +66,10 @@ class _CalculatorDisplayState extends State<CalculatorDisplay> {
   void startCursor(){
     _cursorTimer = Timer.periodic(Duration(milliseconds: CURSOR_INTERVAL), (timer) {
       setState(() {
-        if(_display.contains(CURSOR)){
-          _display = _display.replaceAll(CURSOR, BLANK);
+        if(inputLineController.text.contains(CURSOR)){
+          inputLineController.text = inputLineController.text.replaceAll(CURSOR, BLANK);
         }else{
-          _display = _display.replaceAll(BLANK, CURSOR);
+          inputLineController.text = inputLineController.text.replaceAll(BLANK, CURSOR);
         }
       });
     });
@@ -79,8 +92,26 @@ class _CalculatorDisplayState extends State<CalculatorDisplay> {
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> history = this.widget.history.map(generateRows).expand((i) => i).toList();
-    history.add( _buildText(_display, Alignment.centerLeft));
+    List<Widget> history = this.widget.controller.history.map(generateRows).expand((i) => i).toList();
+    history.add(Align(alignment:Alignment.centerLeft,
+        child: Material(
+          color: GREEN,
+          child:TextField(
+            readOnly: true,
+            showCursor: false,
+            textInputAction: TextInputAction.none,
+            controller: inputLineController,
+            onTap: (){
+              //update cursor
+            },
+            decoration: InputDecoration(
+                isCollapsed: true,
+                border: InputBorder.none,
+            ),
+            style: TEXT_STYLE)
+        )
+      )
+    );
     ScrollController controller = ScrollController();
 
     SchedulerBinding.instance.addPostFrameCallback((_) {
@@ -88,7 +119,7 @@ class _CalculatorDisplayState extends State<CalculatorDisplay> {
     });
 
     return Container(
-      color: Color.fromRGBO(170, 200, 154, 1),
+      color: GREEN,
       padding: EdgeInsets.all(12),
       child: SizedBox(
         height: LINE_HEIGHT * FONT_SIZE * this.widget.numLines,
