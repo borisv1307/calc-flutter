@@ -15,7 +15,7 @@ class NextOperandState extends State {
   // and used for transitioning from one state to another
   @override
   int getNextState(String value, int counter) {
-    if(value.startsWith(RegExp(r'[+-/*^]'))){
+    if(RegExp(r'^[+-/*^]$').hasMatch(value)){
       context.setCurrentState(new OperatorState(context));
     }
     else if(value == "="){
@@ -31,9 +31,6 @@ class NextOperandState extends State {
     else if(value.startsWith(")")){
       counter = counter - 1;
       context.setCurrentState(new CloseSubExpressionState(context));
-    }
-    else if(value == "("){
-      context.setCurrentState(new ErrorState(context));
     }
     else {
       context.setCurrentState(new ErrorState(context));

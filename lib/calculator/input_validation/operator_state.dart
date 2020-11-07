@@ -23,7 +23,7 @@ class OperatorState extends State {
       //context.calculator.setOutput(context.calculator.getOutput() + value);
       context.setCurrentState(new NextOperandState(context));
     }
-    else if(value.startsWith(RegExp(r'[+-/*^=)]'))){
+    else if(RegExp(r'^[+-/*^=)]$').hasMatch(value)){
       context.setCurrentState(new ErrorState(context));
       //context.calculator.setOutput("ERROR");
     }

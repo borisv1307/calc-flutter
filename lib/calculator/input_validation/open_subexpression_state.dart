@@ -20,15 +20,9 @@ class OpenSubExpressionState extends State {
       counter = counter + 1;
     }
     else if(RegExp(r'^-?[0-9]+(.[0-9]+)?$').hasMatch(value)){
-      //update state
       context.setCurrentState(new FirstOperandState(context));
     }
-    else if(value.startsWith(RegExp(r'[+-]'))){
-      //update state
-      context.setCurrentState(new OperatorState(context));
-    }
-    else if(value.startsWith(RegExp(r'[)^*/=]'))){
-      //update state
+    else if(RegExp(r'^[)^*/=]$').hasMatch(value)){
       context.setCurrentState(new ErrorState(context));
     }
     else {

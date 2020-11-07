@@ -15,12 +15,7 @@ class CloseSubExpressionState extends State {
   // and used for transitioning from one state to another
   @override
   int getNextState(String value, int counter){
-    if(value == "("){
-      counter = counter + 1;
-      //update state
-      context.setCurrentState(new OpenSubExpressionState(context));
-    }
-    else if(value == ")"){
+    if(value == ")"){
       if(counter >= 1){
         counter = counter - 1;
         //remain in the same state
@@ -29,7 +24,7 @@ class CloseSubExpressionState extends State {
         context.setCurrentState(new ErrorState(context));
       }
     }
-    else if(value.startsWith(RegExp(r'[+-/*^]'))){
+    else if(RegExp(r'^[+-/*^]$').hasMatch(value)){
       //update state
       context.setCurrentState(new OperatorState(context));
     }

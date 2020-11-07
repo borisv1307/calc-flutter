@@ -15,7 +15,7 @@ class FirstOperandState extends State {
   // and used for transitioning from one state to another
   @override
   int getNextState(String value, int counter) {
-    if(value.startsWith(RegExp(r'[+-/*^]'))){
+    if(RegExp(r'^[+-/*^]$').hasMatch(value)){
       context.setCurrentState(new OperatorState(context));
     }
     else if(value == "="){
@@ -27,7 +27,7 @@ class FirstOperandState extends State {
         context.setCurrentState(new StartState(context)); 
       }
     }
-    else if(value.startsWith(RegExp(r'[(]'))){
+    else if(value == "("){
       context.setCurrentState(new ErrorState(context)); 
     }
     else if(value == ")"){
