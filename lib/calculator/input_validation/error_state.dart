@@ -13,10 +13,8 @@ class ErrorState extends State {
   //The method is used to determine the next state for a given value
   // and used for transitioning from one state to another
   @override
-  void getNextState(String value) {
-    // if(value.startsWith("C")){
-    //   context.setCurrentState(new StartState(context));
-    // }
+  int getNextState(String value, int counter) {
+    return counter;
   }
 
 }
