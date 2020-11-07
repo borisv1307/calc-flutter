@@ -28,8 +28,8 @@ void main(){
 
   group('History is displayed',(){
     testWidgets('Prior input with result',(WidgetTester tester) async{
-      await tester.pumpWidget(MaterialApp(home:CalculatorDisplay(numLines: 3,inputLine:'2+2',history:[DisplayHistory('3+3', '6')])));
-      expect(find.text('3+3'),findsNWidgets(1));
+      await tester.pumpWidget(MaterialApp(home:CalculatorDisplay(numLines: 3,inputLine:'2+2',history:[DisplayHistory('3+3', '3 + 3', '6')])));
+      expect(find.text('3 + 3'),findsNWidgets(1));
       expect(find.text('6'),findsNWidgets(1));
     });
     testWidgets('Result without specific input',(WidgetTester tester) async{
@@ -37,7 +37,7 @@ void main(){
       expect(find.text('6'),findsNWidgets(1));
     });
     testWidgets('Result with blank input',(WidgetTester tester) async{
-      await tester.pumpWidget(MaterialApp(home:CalculatorDisplay(numLines: 3, inputLine:'2+2',history:[DisplayHistory('','6')])));
+      await tester.pumpWidget(MaterialApp(home:CalculatorDisplay(numLines: 3, inputLine:'2+2',history:[DisplayHistory('', '', '6')])));
       expect(find.text('6'),findsNWidgets(1));
     });
   });
@@ -60,12 +60,12 @@ void main(){
 
   group('Ensure layout',(){
     testWidgets('standard layout',(WidgetTester tester) async{
-      await tester.pumpWidget(MaterialApp(home:CalculatorDisplay(numLines: 6,inputLine:'2+2',history:[DisplayHistory('3+3', '6')])));
+      await tester.pumpWidget(MaterialApp(home:CalculatorDisplay(numLines: 6,inputLine:'2+2',history:[DisplayHistory('3+3', '3 + 3', '6')])));
       await expectLater(find.byType(CalculatorDisplay),matchesGoldenFile('standard.png'));
     });
 
     testWidgets('scrolled to bottom',(WidgetTester tester) async{
-      List<DisplayHistory> history = Iterable<int>.generate(100).toList().map((i)=> DisplayHistory('3+3', '6')).toList();
+      List<DisplayHistory> history = Iterable<int>.generate(100).toList().map((i)=> DisplayHistory('3+3', '3 + 3', '6')).toList();
       await tester.pumpWidget(MaterialApp(home:CalculatorDisplay(numLines: 6, inputLine:'2',history:history)));
       await tester.pumpAndSettle();
       await expectLater(find.byType(CalculatorDisplay),matchesGoldenFile('scrolled.png'));
