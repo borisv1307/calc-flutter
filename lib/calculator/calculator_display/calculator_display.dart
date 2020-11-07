@@ -32,14 +32,14 @@ class _CalculatorDisplayState extends State<CalculatorDisplay> {
 
   void _updateInputLine(){
     setState(() {
-      this.inputLineController.text = this.widget.controller.inputLine + CURSOR;
+      this.inputLineController.text = _inputLineWithCursor();
     });
   }
 
   @override
   void initState() {
     super.initState();
-    this.inputLineController.text = this.widget.controller.inputLine + CURSOR;
+    this.inputLineController.text = _inputLineWithCursor();
     widget.controller?.addListener(_updateInputLine);
     startCursor();
   }
@@ -48,7 +48,7 @@ class _CalculatorDisplayState extends State<CalculatorDisplay> {
   void didUpdateWidget(CalculatorDisplay oldWidget) {
     super.didUpdateWidget(oldWidget);
     _cursorTimer.cancel();
-    this.inputLineController.text = this.widget.controller.inputLine + CURSOR;
+    this.inputLineController.text = _inputLineWithCursor();
     startCursor();
     if(oldWidget.controller != widget.controller) {
       oldWidget.controller?.removeListener(_updateInputLine);
@@ -67,12 +67,18 @@ class _CalculatorDisplayState extends State<CalculatorDisplay> {
     _cursorTimer = Timer.periodic(Duration(milliseconds: CURSOR_INTERVAL), (timer) {
       setState(() {
         if(inputLineController.text.contains(CURSOR)){
-          inputLineController.text = inputLineController.text.replaceAll(CURSOR, BLANK);
+          inputLineController.text = widget.controller.inputLine + BLANK;
         }else{
-          inputLineController.text = inputLineController.text.replaceAll(BLANK, CURSOR);
+          inputLineController.text = _inputLineWithCursor();
         }
       });
     });
+  }
+
+  String _inputLineWithCursor(){
+    String cursored = this.widget.controller.inputLine + BLANK;
+    cursored = cursored.replaceRange(this.widget.controller.cursorIndex, this.widget.controller.cursorIndex + 1, CURSOR);
+    return cursored;
   }
 
   Widget _buildText(String text, Alignment alignment){

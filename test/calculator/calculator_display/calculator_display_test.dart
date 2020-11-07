@@ -10,7 +10,6 @@ void main(){
     CalculatorDisplayController controller = CalculatorDisplayController();
     controller.inputLine = inputLine;
     controller.history = history;
-
     return controller;
   }
 
@@ -24,14 +23,38 @@ void main(){
   });
 
   group('Input line is displayed',(){
-    testWidgets('initially with cursor',(WidgetTester tester) async{
-      await tester.pumpWidget(MaterialApp(home:CalculatorDisplay(_buildController('2+2'),numLines: 2)));
-      expect(find.text('2+2█'),findsNWidgets(1));
-    });
-    testWidgets('with blinking cursor',(WidgetTester tester) async{
-      await tester.pumpWidget(MaterialApp(home:CalculatorDisplay(_buildController('2+2'), numLines: 2)));
-      await tester.pump(Duration(milliseconds: 500));
-      expect(find.text('2+2⠀'),findsNWidgets(1));
+    group('with cursor',(){
+      testWidgets('initially displayed',(WidgetTester tester) async{
+        await tester.pumpWidget(MaterialApp(home:CalculatorDisplay(_buildController('2+2'),numLines: 2)));
+        expect(find.text('2+2█'),findsNWidgets(1));
+      });
+      testWidgets('blinking off',(WidgetTester tester) async{
+        await tester.pumpWidget(MaterialApp(home:CalculatorDisplay(_buildController('2+2'), numLines: 2)));
+        await tester.pump(Duration(milliseconds: 500));
+        expect(find.text('2+2⠀'),findsNWidgets(1));
+      });
+
+      testWidgets('blinking on',(WidgetTester tester) async{
+        await tester.pumpWidget(MaterialApp(home:CalculatorDisplay(_buildController('2+2'), numLines: 2)));
+        await tester.pump(Duration(milliseconds: 1000));
+        expect(find.text('2+2█'),findsNWidgets(1));
+      });
+      testWidgets('with cursor at specified location',(WidgetTester tester) async{
+        CalculatorDisplayController controller = _buildController('2+2');
+        controller.cursorIndex = 0;
+
+        await tester.pumpWidget(MaterialApp(home:CalculatorDisplay(controller, numLines: 2)));
+        expect(find.text('█+2⠀'),findsNWidgets(1));
+      });
+
+      testWidgets('with cursor blinking at specified location',(WidgetTester tester) async{
+        CalculatorDisplayController controller = _buildController('2+2');
+        controller.cursorIndex = 0;
+
+        await tester.pumpWidget(MaterialApp(home:CalculatorDisplay(controller, numLines: 2)));
+        await tester.pump(Duration(milliseconds: 500));
+        expect(find.text('2+2⠀'),findsNWidgets(1));
+      });
     });
     testWidgets('after controller updates',(WidgetTester tester) async{
       CalculatorDisplayController controller = _buildController('2+2');

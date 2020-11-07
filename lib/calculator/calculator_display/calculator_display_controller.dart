@@ -4,6 +4,7 @@ import 'package:open_calc/calculator/calculator_display/display_history.dart';
 class CalculatorDisplayController extends ChangeNotifier{
   String _inputLine='';
   List<DisplayHistory> _history = [];
+  int _cursorIndex = 0;
 
   List<DisplayHistory> get history{
     return _history;
@@ -20,6 +21,24 @@ class CalculatorDisplayController extends ChangeNotifier{
 
   set inputLine(String text){
     this._inputLine = text;
+    this._cursorIndex = text.length;
+    notifyListeners();
+  }
+
+  int get cursorIndex{
+    return _cursorIndex;
+  }
+
+  set cursorIndex(int cursorIndex){
+    this._cursorIndex = cursorIndex;
+    notifyListeners();
+  }
+
+  void input(String token){
+    String startToken = this._inputLine.substring(0,_cursorIndex);
+    String endToken = this._inputLine.substring(_cursorIndex);
+    this._inputLine = startToken + token + endToken;
+    this._cursorIndex ++;
     notifyListeners();
   }
 }
