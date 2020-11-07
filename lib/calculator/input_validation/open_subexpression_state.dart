@@ -1,5 +1,5 @@
 import 'package:open_calc/calculator/input_validation/error_state.dart';
-import 'package:open_calc/calculator/input_validation/next_operand_State.dart';
+import 'package:open_calc/calculator/input_validation/operator_state.dart';
 import 'package:open_calc/calculator/input_validation/state.dart';
 import 'package:open_calc/calculator/input_validation/validate_function.dart';
 
@@ -19,16 +19,19 @@ class OpenSubExpressionState extends State {
       // remain in the same state
       counter = counter + 1;
     }
-    else if(value.startsWith(RegExp(r'[0-9]'))){
+    else if(RegExp(r'^-?[0-9]+(.[0-9]+)?$').hasMatch(value)){
       //update state
       context.setCurrentState(new FirstOperandState(context));
     }
     else if(value.startsWith(RegExp(r'[+-]'))){
       //update state
-      context.setCurrentState(new NextOperandState(context));
+      context.setCurrentState(new OperatorState(context));
     }
     else if(value.startsWith(RegExp(r'[)^*/=]'))){
       //update state
+      context.setCurrentState(new ErrorState(context));
+    }
+    else {
       context.setCurrentState(new ErrorState(context));
     }
 

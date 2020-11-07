@@ -22,6 +22,7 @@ class ValidateFunction {
   }
 
   bool testFunction(String input){
+    this.counter = 0;
     input = input + " = ";
     List<String> inputString = input.split(" ");
 
@@ -32,8 +33,9 @@ class ValidateFunction {
     }
 
     currentState= new StartState(this);
+
     for(int i = 0; i < inputString.length; i++){
-      if(inputString[i].length == 1){
+      if(RegExp(r'^-?[0-9]+(.[0-9]+)?$').hasMatch(inputString[i]) || inputString[i].length == 1) {  // numbers or operands
         this.counter = currentState.getNextState(inputString[i], counter);
 
         if(currentState is ErrorState){
@@ -45,10 +47,13 @@ class ValidateFunction {
           return false;
         }
       }
-      else if(inputString.length == 3){
+      else if(inputString[i].length == 3){
         if(lengthThreeFunc.contains(inputString[i]) == false){
           return false;
         }
+      }
+      else {
+        return false;
       }
     }
 

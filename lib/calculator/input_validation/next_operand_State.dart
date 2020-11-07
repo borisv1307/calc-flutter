@@ -1,11 +1,12 @@
-import 'package:open_calc/calculator/input_validation/open_subexpression_state.dart';
+import 'package:open_calc/calculator/input_validation/close_subexpression_state.dart';
 import 'package:open_calc/calculator/input_validation/error_state.dart';
-import 'package:open_calc/calculator/input_validation/second_operand_state.dart';
+import 'package:open_calc/calculator/input_validation/operator_state.dart';
+import 'package:open_calc/calculator/input_validation/start_state.dart';
 import 'package:open_calc/calculator/input_validation/state.dart';
 import 'package:open_calc/calculator/input_validation/validate_function.dart';
 
 class NextOperandState extends State {
-  //--Constructor--
+  //--constructor--
   NextOperandState(ValidateFunction context) : super(context);
 
   //--Methods--
@@ -14,36 +15,30 @@ class NextOperandState extends State {
   // and used for transitioning from one state to another
   @override
   int getNextState(String value, int counter) {
-    if(value.startsWith(RegExp(r'[0-9]'))){
-      //set the second operand value
-      //context.setSecondOperand(value);
-      //context.trackOperation.add(new Operand(value));
+    if(value.startsWith(RegExp(r'[+-/*^]'))){
+      context.setCurrentState(new OperatorState(context));
+    }
+    else if(value == "="){
+      // reaching here signifies a valid input expression
+      if(counter > 0){
+        context.setCurrentState(new ErrorState(context));
+      }
+      else {
+        context.setCurrentState(new StartState(context)); 
+      }
+    }
 
-      //update calculator view and state
-      //context.calculator.setOutput(context.calculator.getOutput() + value);
-      context.setCurrentState(new SecondOperandState(context));
-    }
-    else if(value.startsWith(RegExp(r'[+-/*^=)]'))){
-      context.setCurrentState(new ErrorState(context));
-      //context.calculator.setOutput("ERROR");
-    }
-    else if(value.startsWith("C")){
-      //update calculator view and reset to start state
-      // context.setFirstOperand(null);
-      // context.setOperator(null);
-      // context.setSecondOperand(null);
-      // context.trackOperation = new ArrayList<OperationModel>();
-      // context.subExpressionTree = new Operator(null);
-      // context.expressionTree = new Operator(null);
-      // context.setCurrentState(new StartState(context));
-      // context.calculator.setOutput("");
+    else if(value.startsWith(")")){
+      counter = counter - 1;
+      context.setCurrentState(new CloseSubExpressionState(context));
     }
     else if(value == "("){
-      counter = counter + 1;
-      context.setCurrentState(new OpenSubExpressionState(context));
+      context.setCurrentState(new ErrorState(context));
+    }
+    else {
+      context.setCurrentState(new ErrorState(context));
     }
 
     return counter;
   }
-
 }

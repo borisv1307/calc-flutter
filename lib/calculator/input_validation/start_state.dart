@@ -15,7 +15,7 @@ class StartState extends State {
   // and used for transitioning from one state to another
   @override
   int getNextState(String value, int counter){
-    if(value.startsWith(RegExp(r'[0-9]'))){
+    if(RegExp(r'^-?[0-9]+(.[0-9]+)?$').hasMatch(value)){
       //set the first operand value
       //context.setFirstOperand(value);
       //context.trackOperation.add(new Operand(value));

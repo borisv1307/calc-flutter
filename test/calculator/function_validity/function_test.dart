@@ -188,13 +188,13 @@ void main(){
 
       test('sin and valid parentheses', () {
         tester.counter = 0;
-        var string = 'sin ( 2 + ( - 4 ) ) - 2';
+        var string = 'sin ( 2 + ( -4 ) ) - 2';
         expect(tester.testFunction(string), equals(true));
       });
 
       test('multi trig and  parentheses', () {
         tester.counter = 0;
-        var string = 'sin ( 2 + cos ( - 4 ) ) - 2';
+        var string = 'sin ( 2 + cos ( -4 ) ) - 2';
         expect(tester.testFunction(string), equals(true));
       });
 

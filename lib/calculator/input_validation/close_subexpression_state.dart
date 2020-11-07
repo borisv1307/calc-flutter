@@ -1,6 +1,6 @@
 import 'package:open_calc/calculator/input_validation/open_subexpression_state.dart';
 import 'package:open_calc/calculator/input_validation/error_state.dart';
-import 'package:open_calc/calculator/input_validation/next_operand_State.dart';
+import 'package:open_calc/calculator/input_validation/operator_state.dart';
 import 'package:open_calc/calculator/input_validation/start_state.dart';
 import 'package:open_calc/calculator/input_validation/state.dart';
 import 'package:open_calc/calculator/input_validation/validate_function.dart';
@@ -31,7 +31,7 @@ class CloseSubExpressionState extends State {
     }
     else if(value.startsWith(RegExp(r'[+-/*^]'))){
       //update state
-      context.setCurrentState(new NextOperandState(context));
+      context.setCurrentState(new OperatorState(context));
     }
     else if(value == "="){
       // reaching here signifies a valid input expression
@@ -41,6 +41,9 @@ class CloseSubExpressionState extends State {
       else {
         context.setCurrentState(new StartState(context));
       }
+    }
+    else {
+      context.setCurrentState(new ErrorState(context));
     }
 
     return counter;

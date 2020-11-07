@@ -1,7 +1,7 @@
-
 import 'package:open_calc/calculator/input_validation/close_subexpression_state.dart';
 import 'package:open_calc/calculator/input_validation/error_state.dart';
-import 'package:open_calc/calculator/input_validation/next_operand_State.dart';
+import 'package:open_calc/calculator/input_validation/operator_state.dart';
+import 'package:open_calc/calculator/input_validation/start_state.dart';
 import 'package:open_calc/calculator/input_validation/state.dart';
 import 'package:open_calc/calculator/input_validation/validate_function.dart';
 
@@ -15,18 +15,27 @@ class FirstOperandState extends State {
   // and used for transitioning from one state to another
   @override
   int getNextState(String value, int counter) {
-    if(value.startsWith(RegExp(r'[0-9]'))){
-     // remain in the same state
+    if(value.startsWith(RegExp(r'[+-/*^]'))){
+      context.setCurrentState(new OperatorState(context));
     }
-    else if(value.startsWith(RegExp(r'[+-/*^]'))){
-      context.setCurrentState(new NextOperandState(context));
+    else if(value == "="){
+      // reaching here signifies a valid input expression
+      if(counter > 0){
+        context.setCurrentState(new ErrorState(context));
+      }
+      else {
+        context.setCurrentState(new StartState(context)); 
+      }
     }
-    else if(value.startsWith(RegExp(r'[=(]'))){
-      context.setCurrentState(new ErrorState(context));
+    else if(value.startsWith(RegExp(r'[(]'))){
+      context.setCurrentState(new ErrorState(context)); 
     }
     else if(value == ")"){
       counter = counter - 1;
       context.setCurrentState(new CloseSubExpressionState(context));
+    }
+    else {
+      context.setCurrentState(new ErrorState(context));
     }
 
     return counter;
