@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:cartesian_graph/bounds.dart';
@@ -13,8 +14,10 @@ class GraphScreen extends StatefulWidget {
 }
 
 class GraphScreenState extends State<GraphScreen>{
+  Timer timer;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final formKey = GlobalKey<FormState>();
+  final formKey2 = GlobalKey<FormState>();
   // Scale Value, Range and Domain of x and y will be set and saved in these variable
   int _xMin = -100,
       _xMax = 100,
@@ -23,12 +26,12 @@ class GraphScreenState extends State<GraphScreen>{
       _xScl = 1,
       _yScl = 2,
       _xRes = 1;
-  String _funcY = "0.05 * x^2";
+  String _funcY = "x^2";
 
   int width = 270;
   int height = 162;
   GraphBridge bridge = GraphBridge();
-  Coordinates cursorLocation = Coordinates(50, 50);
+  Coordinates cursorLocation = Coordinates(180, 81);
 
   List<Coordinates> _retrieveCoordinates() {
     List<Coordinates> allCoordinates = bridge.retrieveGraph(
@@ -48,6 +51,22 @@ class GraphScreenState extends State<GraphScreen>{
         updatedX += 3;
       } else if (direction == "LEFT") {
         updatedX -= 3;
+      }
+      this.cursorLocation = Coordinates(updatedX, updatedY);
+    });
+  }
+  void moveCursorFast(String direction) {
+    setState(() {
+      double updatedX = cursorLocation.x;
+      double updatedY = cursorLocation.y;
+      if (direction == "UP") {
+        updatedY += 10;
+      } else if (direction == "DOWN") {
+        updatedY -= 10;
+      } else if (direction == "RIGHT") {
+        updatedX += 10;
+      } else if (direction == "LEFT") {
+        updatedX -= 10;
       }
       this.cursorLocation = Coordinates(updatedX, updatedY);
     });
@@ -181,8 +200,14 @@ class GraphScreenState extends State<GraphScreen>{
                 ),
               ),
               Row(
-                mainAxisAlignment: MainAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
+                  Column(
+                    children: [
+                      Text("x = " + (cursorLocation.x - 180).toString()),
+                      Text("y = " + (cursorLocation.y - 81).toString()),
+                    ],
+                  ),
                   Column(
                     children: [
                       InkWell(
@@ -223,7 +248,7 @@ class GraphScreenState extends State<GraphScreen>{
             margin: EdgeInsets.symmetric(
                 vertical: 10, horizontal: 10),
             child: Form(
-              key: formKey,
+              key: formKey2,
               child: Column(
 
                 children: <Widget>[
@@ -234,7 +259,7 @@ class GraphScreenState extends State<GraphScreen>{
                   ),
                   ElevatedButton(
                       onPressed: () {
-                        formKey.currentState.save();
+                        formKey2.currentState.save();
                         setState(() {});
                       },
                       child: Text("Generate Graph"))
