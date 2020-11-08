@@ -26,7 +26,7 @@ class CalculatorScreenState extends State<CalculatorScreen>{
 
   // updates state to display new input on the calc screen
   void displayInput(String keypadInput) {
-    calculatorDisplayController.inputLine = (calculatorDisplayController.inputLine + keypadInput);
+    calculatorDisplayController.input(keypadInput);
   }
 
   // updates state to perform special button commands

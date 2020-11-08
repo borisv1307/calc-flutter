@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -23,7 +24,7 @@ class _CalculatorDisplayState extends State<CalculatorDisplay> {
   static const String BLANK = '⠀';
   static const double LINE_HEIGHT = 1.2;
   static const double FONT_SIZE = 22;
-  static const TextStyle TEXT_STYLE = TextStyle(height:LINE_HEIGHT,fontSize: FONT_SIZE, color:Colors.black);
+  static const TextStyle TEXT_STYLE = TextStyle(fontFamily: 'RobotoMono', height:LINE_HEIGHT,fontSize: FONT_SIZE, color:Colors.black);
   static const Color GREEN = Color.fromRGBO(170, 200, 154, 1);
   Timer _cursorTimer;
   TextEditingController inputLineController = TextEditingController();
@@ -108,7 +109,7 @@ class _CalculatorDisplayState extends State<CalculatorDisplay> {
             textInputAction: TextInputAction.none,
             controller: inputLineController,
             onTap: (){
-              //update cursor
+              this.widget.controller.cursorIndex = inputLineController.selection.extent.offset;
             },
             decoration: InputDecoration(
                 isCollapsed: true,

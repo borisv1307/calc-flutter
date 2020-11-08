@@ -65,6 +65,16 @@ void main(){
     });
   });
 
+  group('Cursor movement',(){
+    testWidgets('occurs on tap',(WidgetTester tester) async{
+      CalculatorDisplayController controller = _buildController('1234');
+      await tester.pumpWidget(MaterialApp(home:CalculatorDisplay(controller, numLines: 2)));
+      await tester.tapAt(tester.getTopLeft(find.byType(TextField)));
+      await tester.pump();
+      expect(find.text('█234⠀'),findsNWidgets(1));
+    });
+  });
+
   group('History is displayed',(){
     testWidgets('Prior input with result',(WidgetTester tester) async{
       await tester.pumpWidget(MaterialApp(home:CalculatorDisplay(_buildController('2+2', [DisplayHistory('3+3', '6')]), numLines: 3)));
