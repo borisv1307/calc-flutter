@@ -28,7 +28,7 @@ class CalculatorScreenState extends State<CalculatorScreen>{
 
   // updates state to display new input on the calc screen
   void displayInput(String keypadInput, String keypadInputDisplay) {
-      controller.input(keypadInput);
+      controller.input(keypadInput.trim());
       userInputString = controller.inputLine;
   }
 
