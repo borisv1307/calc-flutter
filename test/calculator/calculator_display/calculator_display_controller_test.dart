@@ -3,11 +3,11 @@ import 'package:open_calc/calculator/calculator_display/calculator_display_contr
 import 'package:open_calc/calculator/calculator_display/display_history.dart';
 
 class TestableCalculatorDisplayController extends CalculatorDisplayController{
-  bool notified = false;
+  int notified = 0;
 
   @override
   void notifyListeners(){
-    notified= true;
+    notified++;
   }
 }
 
@@ -28,7 +28,7 @@ void main(){
     test('notifies listeners when updated',(){
       TestableCalculatorDisplayController controller = TestableCalculatorDisplayController();
       controller.history = [DisplayHistory('','')];
-      expect(controller.notified, true);
+      expect(controller.notified, 1);
     });
   });
 
@@ -47,7 +47,7 @@ void main(){
     test('notifies listeners when updated',(){
       TestableCalculatorDisplayController controller = TestableCalculatorDisplayController();
       controller.inputLine = 'hello';
-      expect(controller.notified, true);
+      expect(controller.notified, 1);
     });
   });
 
@@ -66,7 +66,7 @@ void main(){
     test('notifies listeners when updated',(){
       TestableCalculatorDisplayController controller = TestableCalculatorDisplayController();
       controller.cursorIndex = 5;
-      expect(controller.notified, true);
+      expect(controller.notified, 1);
     });
 
     test('is at end of new input line',(){
@@ -100,7 +100,7 @@ void main(){
     test('notifies listeners when updated',(){
       TestableCalculatorDisplayController controller = TestableCalculatorDisplayController();
       controller.input('a');
-      expect(controller.notified, true);
+      expect(controller.notified, 1);
     });
 
     test('is inserted at cursor location',(){
@@ -110,7 +110,31 @@ void main(){
       controller.input('d');
       expect(controller.inputLine,'adbc');
     });
-
   });
 
+  group('Deleting',(){
+    test('character at cursor location can be deleted',(){
+      TestableCalculatorDisplayController controller = TestableCalculatorDisplayController();
+      controller.inputLine = 'abc';
+      controller.cursorIndex = 1;
+      controller.delete();
+      expect(controller.inputLine,'ac');
+    });
+
+    test('does not delete when cursor not on character',(){
+      TestableCalculatorDisplayController controller = TestableCalculatorDisplayController();
+      controller.inputLine = 'abc';
+      controller.delete();
+      expect(controller.inputLine,'abc');
+    });
+
+    test('notifies listener',(){
+      TestableCalculatorDisplayController controller = TestableCalculatorDisplayController();
+      controller.inputLine = 'abc';
+      controller.cursorIndex = 1;
+      controller.delete();
+      expect(controller.notified, 3);
+    });
+
+  });
 }

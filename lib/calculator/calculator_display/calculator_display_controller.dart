@@ -41,4 +41,13 @@ class CalculatorDisplayController extends ChangeNotifier{
     this._cursorIndex ++;
     notifyListeners();
   }
+
+  void delete(){
+    if(_cursorIndex < this._inputLine.length) {
+      String startToken = this._inputLine.substring(0, _cursorIndex);
+      String endToken = this._inputLine.substring(_cursorIndex + 1);
+      this._inputLine = startToken + endToken;
+      notifyListeners();
+    }
+  }
 }
