@@ -34,7 +34,7 @@ class CalculatorScreenState extends State<CalculatorScreen>{
     if (command == 'enter') {
       evaluate(calculatorDisplayController.inputLine);
     } else if (command =='del') {
-      calculatorDisplayController.inputLine = calculatorDisplayController.inputLine.substring(0,calculatorDisplayController.inputLine.length-1);
+      calculatorDisplayController.delete();
     }else if(command =='clear'){
       calculatorDisplayController.inputLine = '';
       calculatorDisplayController.history=[];
