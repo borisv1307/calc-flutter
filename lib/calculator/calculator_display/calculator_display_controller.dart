@@ -38,7 +38,7 @@ class CalculatorDisplayController extends ChangeNotifier{
     String startToken = this._inputLine.substring(0,_cursorIndex);
     String endToken = this._inputLine.substring(_cursorIndex);
     this._inputLine = startToken + token + endToken;
-    this._cursorIndex ++;
+    this._cursorIndex += token.length;
     notifyListeners();
   }
 
