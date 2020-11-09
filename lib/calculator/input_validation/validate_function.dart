@@ -3,6 +3,8 @@ import 'package:open_calc/calculator/input_validation/error_state.dart';
 import 'package:open_calc/calculator/input_validation/start_state.dart';
 import 'package:open_calc/calculator/input_validation/state.dart';
 
+import 'open_subexpression_state.dart';
+
 class ValidateFunction {
   State currentState;
   int counter = 0;
@@ -35,7 +37,12 @@ class ValidateFunction {
     currentState= new StartState(this);
 
     for(int i = 0; i < inputString.length; i++){
-      if(RegExp(r'^-?[0-9]+(.[0-9]+)?$').hasMatch(inputString[i]) || inputString[i].length == 1) {  // numbers or operands
+      if(inputString[i] == "-("){ //handle expression special case
+        // Increment the counter and update state
+        this.counter = this.counter + 1;
+        currentState = new OpenSubExpressionState(this);
+      }
+      else if(RegExp(r'^-?[0-9]+(.[0-9]+)?$').hasMatch(inputString[i]) || inputString[i].length == 1) {  // numbers or operands
         this.counter = currentState.getNextState(inputString[i], counter);
 
         if(currentState is ErrorState){

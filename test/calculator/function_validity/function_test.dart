@@ -234,6 +234,11 @@ void main(){
         var string = '4 + -( 30 * 2 )';
         expect(tester.testFunction(string), equals(true));
       });
+
+      test('basic negative parentheses', () {
+        var string = '-( 3 )';
+        expect(tester.testFunction(string), equals(true));
+      });
     });
 
     group('complex expressions:', () {
