@@ -7,30 +7,30 @@ import 'package:open_calc/calculator/input_pad/input_variables.dart';
 
 void main() {
   group('Buttons',(){
-    void _testInputButtonClick(WidgetTester tester, String text, String display, String expectedValue) async{
+    void _testInputButtonClick(WidgetTester tester, String text, String expectedValue) async{
       String actualValue = '';
-      await tester.pumpWidget(MaterialApp(home:InputPad(VariableStorage(),(text,display){actualValue = display;},(text,display){})));
+      await tester.pumpWidget(MaterialApp(home:InputPad(VariableStorage(),(text){actualValue = text;},(text){})));
       await tester.tap(find.text(text));
 
       expect(actualValue,expectedValue);
     }
 
-    void _testCommandButtonClick(WidgetTester tester, String text, String display, String expectedValue) async{
+    void _testCommandButtonClick(WidgetTester tester, String text, String expectedValue) async{
       String actualValue = '';
-      await tester.pumpWidget(MaterialApp(home:InputPad(VariableStorage(),(text,display){},(text,display){actualValue = text;})));
+      await tester.pumpWidget(MaterialApp(home:InputPad(VariableStorage(),(text){},(text){actualValue = text;})));
       await tester.tap(find.text(text));
 
       expect(actualValue,expectedValue);
     }
 
-    void _testStyle(WidgetTester tester, String text, String display, InputButtonStyle expectedStyle) async {
-      await tester.pumpWidget(MaterialApp(home:InputPad(VariableStorage(),(text,display){},(text,display){})));
+    void _testStyle(WidgetTester tester, String text, InputButtonStyle expectedStyle) async {
+      await tester.pumpWidget(MaterialApp(home:InputPad(VariableStorage(),(text){},(text){})));
       InputButton actualButton = tester.element(find.text(text)).findAncestorWidgetOfExactType<InputButton>();
       expect(actualButton.style, expectedStyle);
     }
 
-    void _testButtonLocation(WidgetTester tester, String text, String display, int expectedLocation) async {
-      await tester.pumpWidget(MaterialApp(home:InputPad(VariableStorage(),(text,display){},(text,display){})));
+    void _testButtonLocation(WidgetTester tester, String text, int expectedLocation) async {
+      await tester.pumpWidget(MaterialApp(home:InputPad(VariableStorage(),(text){},(text){})));
       List<Widget> allButtons = tester.widgetList(find.byType(InputButton)).toList();
       expect((allButtons[expectedLocation] as InputButton).buttonText, text);
     }
@@ -39,20 +39,20 @@ void main() {
       group(text,(){
         if(isCommand){
           testWidgets('executes command function when clicked with correct value',(WidgetTester tester) async{
-            _testCommandButtonClick(tester,text,display,display);
+            _testCommandButtonClick(tester,text,display);
           });
         }else{
           testWidgets('executes input function when clicked with correct value',(WidgetTester tester) async{
-            _testInputButtonClick(tester,text,display,display);
+            _testInputButtonClick(tester,text,display);
           });
         }
 
         testWidgets('is styled correctly',(WidgetTester tester) async{
-          _testStyle(tester,text,display,style);
+          _testStyle(tester,text,style);
         });
 
         testWidgets('is in correct location',(WidgetTester tester) async{
-          _testButtonLocation(tester, text, display, location);
+          _testButtonLocation(tester, text, location);
         });
       });
     }
@@ -91,7 +91,7 @@ void main() {
 
   group('Pad appearance',(){
     testWidgets('normal state',(WidgetTester tester) async{
-      await tester.pumpWidget(MaterialApp(home:InputPad(VariableStorage(),(text, display){},(text, display){},)));
+      await tester.pumpWidget(MaterialApp(home:InputPad(VariableStorage(),(text){},(text){},)));
       await expectLater(find.byType(InputPad),matchesGoldenFile('pad-standard.png'));
     });
   });

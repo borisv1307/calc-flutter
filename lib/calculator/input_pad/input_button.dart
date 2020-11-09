@@ -4,13 +4,11 @@ import 'package:open_calc/calculator/input_pad/input_button_style.dart';
 
 class InputButton extends StatelessWidget{
   final String buttonText;   // text on the button: '𝑥²'
-  final String display;      // text to be displayed on screen: '²'
-  final String value;        // text used for evaluation: '^ 2'
+  final String value;      // text to be displayed on screen: '²'
   final InputButtonStyle style;
-  final Function(String value, String display) onTap;
+  final Function(String value) onTap;
 
-  InputButton(this.buttonText, this.style, this.onTap, {String display, String value}):
-      this.display = display ?? buttonText,
+  InputButton(this.buttonText, this.style, this.onTap, {String value}):
       this.value = value ?? buttonText;
 
   @override
@@ -28,7 +26,7 @@ class InputButton extends StatelessWidget{
             child: Text(buttonText, style: TextStyle(fontSize: style.fontSize, fontWeight: style.fontWeight, color: style.textColor)),
         ),
         onTap: (){
-          this.onTap(this.value, this.display);
+          this.onTap(this.value);
         },
       )),
     );
