@@ -21,13 +21,13 @@ void main(){
 
     test('can be updated',(){
       TestableCalculatorDisplayController controller = TestableCalculatorDisplayController();
-      controller.history = [DisplayHistory('','','')];
+      controller.history = [DisplayHistory('','')];
       expect(controller.history.length,1);
     });
 
     test('notifies listeners when updated',(){
       TestableCalculatorDisplayController controller = TestableCalculatorDisplayController();
-      controller.history = [DisplayHistory('','','')];
+      controller.history = [DisplayHistory('','')];
       expect(controller.notified, 1);
     });
   });

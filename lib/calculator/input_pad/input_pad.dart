@@ -6,25 +6,21 @@ import 'package:open_calc/calculator/input_pad/input_variables.dart';
 
 class InputPad extends StatelessWidget{
 
-  final Function(String input, String displayInput) input;
-  final Function(String command, String displayCommand) command;
+  final Function(String input) inputFunction;
+  final Function(String command) commandFunction;
   final VariableStorage storage;
 
-  InputPad(this.storage,this.input,this.command);
+  InputPad(this.storage,this.inputFunction,this.commandFunction);
 
 
   Widget _buildInputButton(String text, InputButtonStyle type, {String display, String value}){
-    return InputButton(text, type, input, 
-      display: display, 
-      value: value
+    return InputButton(text, type, inputFunction, 
+      value: display, 
     );
   }
 
-  Widget _buildCommandButton(String text, InputButtonStyle type, {String value}){
-    return InputButton(text, type, command,
-      display: '',
-      value: value
-    );
+  Widget _buildCommandButton(String text, InputButtonStyle type){
+    return InputButton(text, type, commandFunction);
   }
 
   @override
@@ -35,13 +31,13 @@ class InputPad extends StatelessWidget{
         WidgetBuilder builder;
         switch (settings.name) {
           case 'inputPadOne':
-            builder = (BuildContext context) => InputPadOne(this.storage,this.input, this.command);
+            builder = (BuildContext context) => InputPadOne(this.storage,this.inputFunction, this.commandFunction);
             break;
           case 'inputPadTwo':
-            builder = (BuildContext context) => InputPadTwo(this.storage,this.input, this.command);
+            builder = (BuildContext context) => InputPadTwo(this.storage,this.inputFunction, this.commandFunction);
             break;
           case 'varPad':
-            builder = (BuildContext context) => VariableScreen(this.storage,this.input, this.command);
+            builder = (BuildContext context) => VariableScreen(this.storage,this.inputFunction, this.commandFunction);
             break;
         }
         return MaterialPageRoute(builder: builder, settings: settings);
@@ -84,34 +80,34 @@ class InputPadOne extends InputPad{
                 },
               )),
             ),
-            _buildInputButton('sin', InputButtonStyle.TERTIARY, display:'sin(', value:'sin ( '),
-            _buildInputButton('cos', InputButtonStyle.TERTIARY, display:'cos(', value:'cos ( '),
-            _buildInputButton('tan', InputButtonStyle.TERTIARY, display:'tan(', value:'tan ( '),
+            _buildInputButton('sin', InputButtonStyle.TERTIARY, display:'sin('),
+            _buildInputButton('cos', InputButtonStyle.TERTIARY, display:'cos('),
+            _buildInputButton('tan', InputButtonStyle.TERTIARY, display:'tan('),
             _buildCommandButton('del',InputButtonStyle.TERTIARY),
             _buildCommandButton('clear',InputButtonStyle.TERTIARY),
-            _buildInputButton('𝑥 ²', InputButtonStyle.TERTIARY, display:'²', value: '^ 2 '),
-            _buildInputButton('(', InputButtonStyle.TERTIARY, value: '( '),
-            _buildInputButton(')', InputButtonStyle.TERTIARY, value: ') '),
-            _buildInputButton('÷', InputButtonStyle.SECONDARY, display: ' / ', value: '/ '),
-            _buildInputButton('^', InputButtonStyle.TERTIARY, value: '^ '),
-            _buildInputButton('7', InputButtonStyle.PRIMARY, value: '7 '),
-            _buildInputButton('8', InputButtonStyle.PRIMARY, value: '8 '),
-            _buildInputButton('9', InputButtonStyle.PRIMARY, value: '9 '),
-            _buildInputButton('x', InputButtonStyle.SECONDARY, display: ' * ', value: '* '),
-            _buildInputButton('log', InputButtonStyle.TERTIARY, display: 'log(', value: ' log ( '),
-            _buildInputButton('4', InputButtonStyle.PRIMARY, value: '4 '),
-            _buildInputButton('5', InputButtonStyle.PRIMARY, value: '5 '),
-            _buildInputButton('6', InputButtonStyle.PRIMARY, value: '6 '),
-            _buildInputButton('−', InputButtonStyle.SECONDARY, display: ' − ', value: ' − '),
-            _buildInputButton('ln', InputButtonStyle.TERTIARY, display: 'ln(', value: 'ln ( '),
-            _buildInputButton('1', InputButtonStyle.PRIMARY, value: '1 '),
-            _buildInputButton('2', InputButtonStyle.PRIMARY, value: '2 '),
-            _buildInputButton('3', InputButtonStyle.PRIMARY, value: '3 '),
-            _buildInputButton('+', InputButtonStyle.SECONDARY, display: ' + ', value: '+ '),
+            _buildInputButton('𝑥 ²', InputButtonStyle.TERTIARY, display:'²'),
+            _buildInputButton('(', InputButtonStyle.TERTIARY),
+            _buildInputButton(')', InputButtonStyle.TERTIARY),
+            _buildInputButton('÷', InputButtonStyle.SECONDARY, display: ' / '),
+            _buildInputButton('^', InputButtonStyle.TERTIARY),
+            _buildInputButton('7', InputButtonStyle.PRIMARY),
+            _buildInputButton('8', InputButtonStyle.PRIMARY),
+            _buildInputButton('9', InputButtonStyle.PRIMARY),
+            _buildInputButton('x', InputButtonStyle.SECONDARY, display: ' * '),
+            _buildInputButton('log', InputButtonStyle.TERTIARY, display: 'log('),
+            _buildInputButton('4', InputButtonStyle.PRIMARY),
+            _buildInputButton('5', InputButtonStyle.PRIMARY),
+            _buildInputButton('6', InputButtonStyle.PRIMARY),
+            _buildInputButton('−', InputButtonStyle.SECONDARY, display: ' − '),
+            _buildInputButton('ln', InputButtonStyle.TERTIARY, display: 'ln('),
+            _buildInputButton('1', InputButtonStyle.PRIMARY),
+            _buildInputButton('2', InputButtonStyle.PRIMARY),
+            _buildInputButton('3', InputButtonStyle.PRIMARY),
+            _buildInputButton('+', InputButtonStyle.SECONDARY, display: ' + '),
             _buildCommandButton('sto', InputButtonStyle.TERTIARY),
-            _buildInputButton('0', InputButtonStyle.PRIMARY, value: '0 '),
+            _buildInputButton('0', InputButtonStyle.PRIMARY),
             _buildInputButton('.', InputButtonStyle.PRIMARY),
-            _buildInputButton('(-)', InputButtonStyle.PRIMARY,display: '-', value: '-'),
+            _buildInputButton('(-)', InputButtonStyle.PRIMARY,display: '-'),
             _buildCommandButton('enter', InputButtonStyle.SECONDARY),
               ],
 
