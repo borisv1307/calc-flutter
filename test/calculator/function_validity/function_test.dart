@@ -239,6 +239,16 @@ void main(){
         var string = '-( 3 )';
         expect(tester.testFunction(string), equals(true));
       });
+
+      test('negative trig input', () {
+        var string = '-sin ( 3 )';
+        expect(tester.testFunction(string), equals(true));
+      });
+
+      test('negative logarithmic input', () {
+        var string = '-ln ( 300 )';
+        expect(tester.testFunction(string), equals(true));
+      });
     });
 
     group('complex expressions:', () {
@@ -268,7 +278,7 @@ void main(){
       });
 
       test('stacked functions', () {
-        var string = 'log ( ln ( sin ( cos ( tan ( log ( cos ( sin ( -10.3456 ) ) ) ) ) ^ log ( 100.2 ) ) / cos ( -5 ) ) )';
+        var string = '-log ( ln ( sin ( cos ( tan ( log ( -cos ( sin ( -10.3456 ) ) ) ) ) ^ log ( 100.2 ) ) / cos ( -5 ) ) )';
         expect(tester.testFunction(string), equals(true));
       });
     });

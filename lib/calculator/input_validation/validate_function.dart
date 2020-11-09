@@ -9,7 +9,9 @@ class ValidateFunction {
   State currentState;
   int counter = 0;
   List<String> lengthTwoFunc = ["ln"];
-  List<String> lengthThreeFunc = ["log","sin","cos","tan"];
+  List<String> lengthThreeFunc = ["log","sin","cos","tan", "abs", "csc","sec", "cot" ];
+  List<String> lengthFourFunc = ["sqrt", "sinh", "cosh", "tanh", "asin", "acos", "atan", "acsc", "asec", "acot", "csch", "sech", "coth", "ceil"];
+  List<String> lengthFiveFunc = ["asinh", "acosh", "atanh", "acsch", "asech", "acoth", "floor", "round", "trunc", "fract"];
 
   ValidateFunction(){
     currentState= new StartState(this);
@@ -37,12 +39,12 @@ class ValidateFunction {
     currentState= new StartState(this);
 
     for(int i = 0; i < inputString.length; i++){
-      if(inputString[i] == "-("){ //handle expression special case
-        // Increment the counter and update state
-        this.counter = this.counter + 1;
-        currentState = new OpenSubExpressionState(this);
+      //handle special negatives for complex functions
+      if(RegExp(r'^-[a-z]+$').hasMatch(inputString[i]) && inputString[i].length > 1) {
+        inputString[i] = inputString[i].substring(1); // remove the negative
       }
-      else if(RegExp(r'^-?[0-9]+(.[0-9]+)?$').hasMatch(inputString[i]) || inputString[i].length == 1) {  // numbers or operands
+
+      if(RegExp(r'^-?[0-9]+(.[0-9]+)?$').hasMatch(inputString[i]) || inputString[i].length == 1) {  // numbers or operands
         this.counter = currentState.getNextState(inputString[i], counter);
 
         if(currentState is ErrorState){
@@ -50,12 +52,28 @@ class ValidateFunction {
         }
       }
       else if(inputString[i].length == 2){
-        if(lengthTwoFunc.contains(inputString[i]) == false){
+        if(inputString[i] == "-("){
+          // handle expression special case
+          // Increment the counter and update state
+          this.counter = this.counter + 1;
+          currentState = new OpenSubExpressionState(this);
+        }
+        else if(lengthTwoFunc.contains(inputString[i]) == false){
           return false;
         }
       }
       else if(inputString[i].length == 3){
         if(lengthThreeFunc.contains(inputString[i]) == false){
+          return false;
+        }
+      }
+      else if(inputString[i].length == 4){
+        if(lengthFourFunc.contains(inputString[i]) == false){
+          return false;
+        }
+      }
+      else if(inputString[i].length == 5){
+        if(lengthFiveFunc.contains(inputString[i]) == false){
           return false;
         }
       }
