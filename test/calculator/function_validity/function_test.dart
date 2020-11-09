@@ -212,6 +212,146 @@ void main(){
         var string = 'tan ( 12 )';
         expect(tester.testFunction(string), equals(true));
       });
+
+      test('abs', () {
+        var string = 'abs ( -12345 )';
+        expect(tester.testFunction(string), equals(true));
+      });
+
+      test('csc', () {
+        var string = 'csc ( 30 )';
+        expect(tester.testFunction(string), equals(true));
+      });
+
+      test('sec', () {
+        var string = 'sec ( 5 )';
+        expect(tester.testFunction(string), equals(true));
+      });
+
+      test('cot', () {
+        var string = 'cot ( -3 )';
+        expect(tester.testFunction(string), equals(true));
+      });
+
+      test('sqrt', () {
+        var string = 'sqrt ( 16 )';
+        expect(tester.testFunction(string), equals(true));
+      });
+
+      test('sinh', () {
+        var string = 'sinh ( -1 )';
+        expect(tester.testFunction(string), equals(true));
+      });
+
+      test('cosh', () {
+        var string = 'cosh ( 12 )';
+        expect(tester.testFunction(string), equals(true));
+      });
+
+      test('tanh', () {
+        var string = 'tanh ( -2 )';
+        expect(tester.testFunction(string), equals(true));
+      });
+
+      test('asin', () {
+        var string = 'asin ( 12 )';
+        expect(tester.testFunction(string), equals(true));
+      });
+
+      test('acos', () {
+        var string = 'acos ( 5 )';
+        expect(tester.testFunction(string), equals(true));
+      });
+
+      test('atan', () {
+        var string = 'atan ( -30 )';
+        expect(tester.testFunction(string), equals(true));
+      });
+
+      test('acsc', () {
+        var string = 'acsc ( 30 )';
+        expect(tester.testFunction(string), equals(true));
+      });
+
+      test('asec', () {
+        var string = 'asec ( 3 )';
+        expect(tester.testFunction(string), equals(true));
+      });
+
+      test('acot', () {
+        var string = 'acot ( 2 )';
+        expect(tester.testFunction(string), equals(true));
+      });
+
+      test('csch', () {
+        var string = 'csch ( 20 )';
+        expect(tester.testFunction(string), equals(true));
+      });
+
+      test('sech', () {
+        var string = 'sech ( 1 )';
+        expect(tester.testFunction(string), equals(true));
+      });
+
+      test('coth', () {
+        var string = 'coth ( -50 )';
+        expect(tester.testFunction(string), equals(true));
+      });
+
+      test('ceil', () {
+        var string = 'ceil ( 7.004 )';
+        expect(tester.testFunction(string), equals(true));
+      });
+
+      test('asinh', () {
+        var string = 'asinh ( 24 )';
+        expect(tester.testFunction(string), equals(true));
+      });
+
+      test('acosh', () {
+        var string = 'acosh ( 3 )';
+        expect(tester.testFunction(string), equals(true));
+      });
+
+      test('atanh', () {
+        var string = 'atanh ( -10 )';
+        expect(tester.testFunction(string), equals(true));
+      });
+
+      test('acsch', () {
+        var string = 'acsch ( 2 )';
+        expect(tester.testFunction(string), equals(true));
+      });
+
+      test('asech', () {
+        var string = 'asech ( 4 )';
+        expect(tester.testFunction(string), equals(true));
+      });
+
+      test('acoth', () {
+        var string = 'acoth ( 24 )';
+        expect(tester.testFunction(string), equals(true));
+      });
+
+      test('floor', () {
+        var string = 'floor ( -5.05 )';
+        expect(tester.testFunction(string), equals(true));
+      });
+
+      test('round', () {
+        var string = 'round ( 24.56 )';
+        expect(tester.testFunction(string), equals(true));
+      });
+
+      test('trunc', () {
+        var string = 'trunc ( -32.9012 )';
+        expect(tester.testFunction(string), equals(true));
+      });
+
+      test('fract', () {
+        var string = 'fract ( 0.5 )';
+        expect(tester.testFunction(string), equals(true));
+      });
     });
 
     group('parentheses expressions:', () {
