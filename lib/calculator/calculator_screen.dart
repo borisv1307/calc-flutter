@@ -22,7 +22,6 @@ class CalculatorScreenState extends State<CalculatorScreen>{
   final VariableStorage storage;
   CalculatorScreenState(this.storage);
 
-  String userInputString = '';  
   GraphBridge bridge = GraphBridge();
   ValidateFunction tester = new ValidateFunction();
   Translator translator = new Translator();
@@ -31,26 +30,22 @@ class CalculatorScreenState extends State<CalculatorScreen>{
   // updates state to display new input on the calc screen
   void displayInput(String keypadInput) {
       controller.input(keypadInput);
-      userInputString = controller.inputLine;
   }
 
   // updates state to perform special button commands
   void executeCommand(String command) {
     if (command == 'enter') {
-      evaluate(userInputString);
+      evaluate(controller.inputLine);
     } else if (command =='del') {
-      userInputString = userInputString.substring(0,userInputString.length-1); // TODO: fix to delete tokens instead of characters
       controller.delete();
-    }else if(command =='clear'){
-      userInputString = '';
+    } else if(command =='clear') {
       controller.inputLine = '';
       controller.history=[];
-    }else if(command =='sto'){
-      var toSto = userInputString.split('(');
+    } else if(command =='sto') {
+      var toSto = controller.inputLine.split('(');
       var keyNum = toSto[0];
       storage.addVariable(keyNum, toSto[1]);
       print(storage.variableMap);
-      userInputString = '';
       controller.inputLine = '';
     }
   }
@@ -74,7 +69,6 @@ class CalculatorScreenState extends State<CalculatorScreen>{
       }
     }
     DisplayHistory newEntry = new DisplayHistory(displayExpression, resultString);
-    userInputString = '';
     controller.inputLine = '';
 
     controller.history.add(newEntry);
