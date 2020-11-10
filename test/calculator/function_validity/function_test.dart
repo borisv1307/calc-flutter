@@ -418,7 +418,7 @@ void main(){
       });
 
       test('stacked functions', () {
-        var string = '-log ( ln ( sin ( cos ( tan ( log ( -cos ( sin ( -10.3456 ) ) ) ) ) ^ log ( 100.2 ) ) / cos ( -5 ) ) )';
+        var string = '-log ( floor ( sinh ( cos ( atan ( log ( -round ( sin ( -10.3456 ) ) ) ) ) ^ sqrt ( 100.2 ) ) / cos ( -5 ) ) )';
         expect(tester.testFunction(string), equals(true));
       });
     });
