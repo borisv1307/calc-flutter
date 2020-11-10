@@ -2,7 +2,7 @@
 class Pattern {
 
   RegExp add = new RegExp(r"\s*\+\s*");
-  RegExp subtract = new RegExp(r"\s*-\s+");
+  RegExp subtract = new RegExp(r"\s*−\s+");
   RegExp divide = new RegExp(r"\s*\*\s*");
   RegExp multiply = new RegExp(r"\s*/\s*");
   RegExp openParen = new RegExp(r"\(");
@@ -24,7 +24,8 @@ class Translator {
   String translate(String input) {
     String translated;
     if (input == null) return input;
-    translated = _addImpliedMultiply(input);
+    translated = _handleNegatives(input);
+    translated = _addImpliedMultiply(translated);
     translated = _fixSpacing(translated);
     translated = _addClosingParentheses(translated);
     return translated.trim();
@@ -70,6 +71,10 @@ class Translator {
       return "${m.group(1)} * ${m.group(2)}";
     });
     return result;
+  }
+
+  String _handleNegatives(String input) {
+    return input.replaceAll("-", " -1 * ");
   }
 
 }

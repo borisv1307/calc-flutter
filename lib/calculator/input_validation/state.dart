@@ -2,16 +2,12 @@
 import 'validate_function.dart';
 
 abstract class State {
-  //--Attributes--
   ValidateFunction context;
-  String previousState="none";
 
-  //--Constructor--
   State(ValidateFunction context) {
     this.context = context;
   }
 
-  //--Accessors and mutators--
   ValidateFunction getContext() {
     return this.context;
   }
@@ -20,6 +16,6 @@ abstract class State {
     this.context = context;
   }
 
-  //--abstract methods--
-  void getNextState(String value);
+  //abstract method
+  int getNextState(String value, int counter);
 }

@@ -28,14 +28,14 @@ class CalculatorScreenState extends State<CalculatorScreen>{
   CalculatorDisplayController controller = CalculatorDisplayController();
 
   // updates state to display new input on the calc screen
-  void displayInput(String keypadInput) {
+  void _displayInput(String keypadInput) {
       controller.input(keypadInput);
   }
 
   // updates state to perform special button commands
-  void executeCommand(String command) {
+  void _executeCommand(String command) {
     if (command == 'enter') {
-      evaluate(controller.inputLine);
+      _evaluate(controller.inputLine);
     } else if (command =='del') {
       controller.delete();
     } else if(command =='clear') {
@@ -51,7 +51,7 @@ class CalculatorScreenState extends State<CalculatorScreen>{
   }
 
   // evaluates a function and adds the input to the history
-  void evaluate(String displayExpression) {
+  void _evaluate(String displayExpression) {
     String resultString;
 
     // convert display string to proper math format
@@ -85,7 +85,7 @@ class CalculatorScreenState extends State<CalculatorScreen>{
             numLines: 8
           ),
           Expanded(
-            child: InputPad(storage, displayInput, executeCommand)
+            child: InputPad(storage, _displayInput, _executeCommand)
           ),
         ],
       )
