@@ -1,10 +1,10 @@
+import 'package:advanced_calculation/advanced_calculator.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:open_calc/bridge/graph_bridge.dart';
 import 'package:open_calc/calculator/calculator_display/calculator_display.dart';
+import 'package:open_calc/calculator/calculator_display/calculator_display_controller.dart';
 import 'package:open_calc/calculator/calculator_display/display_history.dart';
 import 'package:open_calc/calculator/input_pad/input_pad.dart';
 import 'package:open_calc/calculator/input_pad/input_variables.dart';
-import 'package:open_calc/calculator/input_validation/validate_function.dart';
 
 class CalculatorScreen extends StatefulWidget {
   final VariableStorage storage;
@@ -18,70 +18,62 @@ class CalculatorScreenState extends State<CalculatorScreen>{
 
   final VariableStorage storage;
   CalculatorScreenState(this.storage);
+  CalculatorDisplayController controller = CalculatorDisplayController();
+  AdvancedCalculator advancedCalculator = AdvancedCalculator();
 
-  String userInputString = '';
-  GraphBridge bridge = GraphBridge();
-  List<DisplayHistory> history = [];
-  ValidateFunction tester = new ValidateFunction();
-
-  void setLabelInput(String keypadInput) {
-    setState(() {
-      userInputString = (userInputString + keypadInput);
-    });
+  // updates state to display new input on the calc screen
+  void _displayInput(String keypadInput) {
+      controller.input(keypadInput);
   }
 
-  void executeCommand(String command){
-    if(command == 'enter'){
-      collectInput(userInputString);
-    }else if(command =='del'){
-      setState(() {
-        userInputString = userInputString.substring(0,userInputString.length-1);
-      });
-    }else if(command =='clear'){
-      setState(() {
-        userInputString = '';
-        history=[];
-      });
-    }else if(command =='sto'){
-      var toSto = userInputString.split('(');
+  // updates state to perform special button commands
+  void _executeCommand(String command) {
+    if (command == 'enter') {
+      _evaluate(controller.inputLine);
+    } else if (command =='del') {
+      controller.delete();
+    } else if(command =='clear') {
+      controller.inputLine = '';
+      controller.history=[];
+    } else if(command =='sto') {
+      var toSto = controller.inputLine.split('(');
       var keyNum = toSto[0];
-      
       storage.addVariable(keyNum, toSto[1]);
-
       print(storage.variableMap);
-
-      setState((){
-        userInputString = '';
-      });
+      controller.inputLine = '';
     }
   }
 
-  //evaluates a function and adds the input to the history
-  void collectInput(String expression) {
-    String results;
-    if (tester.testFunction(expression)) {
-      results = bridge.retrieveCalculatorResult(expression);  // call to backend evaluator
+  // evaluates a function and adds the input to the history
+  void _evaluate(String displayExpression) {
+    String resultString;
+
+    if (displayExpression?.isEmpty ?? true) {  // empty string or null
+      resultString = (controller.history.length == 0) ? "" : controller.history.last.result;
     } else {
-      results = "Syntax Error";
+      resultString = advancedCalculator.calculate(displayExpression);
     }
-    DisplayHistory newEntry = new DisplayHistory(expression, results);
-    setState(() {
-      userInputString = '';
-    });
+    DisplayHistory newEntry = new DisplayHistory(displayExpression, resultString);
+    controller.inputLine = '';
 
-    history.add(newEntry);
-
+    controller.history.add(newEntry);
   }
   
   @override
   Widget build(BuildContext context) {
     return Container(
-        child:Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-              CalculatorDisplay(8,inputLine:userInputString,history:history),
-              Expanded(child:InputPad(storage,setLabelInput,executeCommand)),
-            ],)
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: <Widget>[
+          CalculatorDisplay(
+            controller,
+            numLines: 8
+          ),
+          Expanded(
+            child: InputPad(storage, _displayInput, _executeCommand)
+          ),
+        ],
+      )
     );
   }
 }

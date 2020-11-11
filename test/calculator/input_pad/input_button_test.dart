@@ -11,23 +11,23 @@ void main() {
 
   group('Input button executes function when clicked',(){
     testWidgets('with provided text',(WidgetTester tester) async{
-      String actualText = '';
+      String actualValue = '';
 
       await tester.pumpWidget(MaterialApp(home:InputButton('2',InputButtonStyle.PRIMARY,(text){
-        actualText = text;
+        actualValue = text;
       })));
       await tester.tap(find.byType(InputButton));
-      expect(actualText,'2');
+      expect(actualValue,'2');
     });
 
-    testWidgets('with provided value',(WidgetTester tester) async{
-      String actualText = '';
+    testWidgets('with provided value, display value',(WidgetTester tester) async{
+      String actualValue = '';
 
       await tester.pumpWidget(MaterialApp(home:InputButton('2',InputButtonStyle.PRIMARY,(text){
-        actualText = text;
-      }, '4')));
+        actualValue = text;
+      }, value:'4')));
       await tester.tap(find.byType(InputButton));
-      expect(actualText,'4');
+      expect(actualValue,'4');
     });
   });
 

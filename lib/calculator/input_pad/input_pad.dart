@@ -6,19 +6,21 @@ import 'package:open_calc/calculator/input_pad/input_variables.dart';
 
 class InputPad extends StatelessWidget{
 
-  final Function(String text) input;
-  final Function(String command) command;
+  final Function(String input) inputFunction;
+  final Function(String command) commandFunction;
   final VariableStorage storage;
 
-  InputPad(this.storage,this.input,this.command);
+  InputPad(this.storage,this.inputFunction,this.commandFunction);
 
 
-  Widget _buildInputButton(String text, InputButtonStyle type, {String value}){
-    return InputButton(text, type, input, value);
+  Widget _buildInputButton(String text, InputButtonStyle type, {String display, String value}){
+    return InputButton(text, type, inputFunction, 
+      value: display, 
+    );
   }
 
-  Widget _buildCommandButton(String text, InputButtonStyle type, {String value}){
-    return InputButton(text, type, command, value);
+  Widget _buildCommandButton(String text, InputButtonStyle type){
+    return InputButton(text, type, commandFunction);
   }
 
   @override
@@ -29,13 +31,13 @@ class InputPad extends StatelessWidget{
         WidgetBuilder builder;
         switch (settings.name) {
           case 'inputPadOne':
-            builder = (BuildContext context) => InputPadOne(this.storage,this.input, this.command);
+            builder = (BuildContext context) => InputPadOne(this.storage,this.inputFunction, this.commandFunction);
             break;
           case 'inputPadTwo':
-            builder = (BuildContext context) => InputPadTwo(this.storage,this.input, this.command);
+            builder = (BuildContext context) => InputPadTwo(this.storage,this.inputFunction, this.commandFunction);
             break;
           case 'varPad':
-            builder = (BuildContext context) => VariableScreen(this.storage,this.input, this.command);
+            builder = (BuildContext context) => VariableScreen(this.storage,this.inputFunction, this.commandFunction);
             break;
         }
         return MaterialPageRoute(builder: builder, settings: settings);
@@ -78,35 +80,35 @@ class InputPadOne extends InputPad{
                 },
               )),
             ),
-            _buildInputButton('sin',InputButtonStyle.TERTIARY,value:'sin('),
-            _buildInputButton('cos',InputButtonStyle.TERTIARY,value:'cos('),
-            _buildInputButton('tan',InputButtonStyle.TERTIARY,value:'tan('),
+            _buildInputButton('sin', InputButtonStyle.TERTIARY, display:'sin('),
+            _buildInputButton('cos', InputButtonStyle.TERTIARY, display:'cos('),
+            _buildInputButton('tan', InputButtonStyle.TERTIARY, display:'tan('),
             _buildCommandButton('del',InputButtonStyle.TERTIARY),
             _buildCommandButton('clear',InputButtonStyle.TERTIARY),
-            _buildInputButton('𝑥 ²',InputButtonStyle.TERTIARY, value:'²'),
-            _buildInputButton('(',InputButtonStyle.TERTIARY),
-            _buildInputButton(')',InputButtonStyle.TERTIARY),
-            _buildInputButton('÷',InputButtonStyle.SECONDARY,value:'/'),
-            _buildInputButton('^',InputButtonStyle.TERTIARY),
-            _buildInputButton('7',InputButtonStyle.PRIMARY),
-            _buildInputButton('8',InputButtonStyle.PRIMARY),
-            _buildInputButton('9',InputButtonStyle.PRIMARY),
-            _buildInputButton('x',InputButtonStyle.SECONDARY, value: '*'),
-            _buildInputButton('log',InputButtonStyle.TERTIARY,value:'log('),
-            _buildInputButton('4',InputButtonStyle.PRIMARY),
-            _buildInputButton('5',InputButtonStyle.PRIMARY),
-            _buildInputButton('6',InputButtonStyle.PRIMARY),
-            _buildInputButton('-',InputButtonStyle.SECONDARY, value:' - '),
-            _buildInputButton('ln',InputButtonStyle.TERTIARY,value:'ln('),
-            _buildInputButton('1',InputButtonStyle.PRIMARY),
-            _buildInputButton('2',InputButtonStyle.PRIMARY),
-            _buildInputButton('3',InputButtonStyle.PRIMARY),
-            _buildInputButton('+',InputButtonStyle.SECONDARY, value: ' + '),
-            _buildCommandButton('sto',InputButtonStyle.TERTIARY),
-            _buildInputButton('0',InputButtonStyle.PRIMARY),
-            _buildInputButton('.',InputButtonStyle.PRIMARY),
-            _buildInputButton('−',InputButtonStyle.PRIMARY,value:'-'),
-            _buildCommandButton('enter',InputButtonStyle.SECONDARY),
+            _buildInputButton('𝑥 ²', InputButtonStyle.TERTIARY, display:'²'),
+            _buildInputButton('(', InputButtonStyle.TERTIARY),
+            _buildInputButton(')', InputButtonStyle.TERTIARY),
+            _buildInputButton('÷', InputButtonStyle.SECONDARY, display: '/'),
+            _buildInputButton('^', InputButtonStyle.TERTIARY),
+            _buildInputButton('7', InputButtonStyle.PRIMARY),
+            _buildInputButton('8', InputButtonStyle.PRIMARY),
+            _buildInputButton('9', InputButtonStyle.PRIMARY),
+            _buildInputButton('x', InputButtonStyle.SECONDARY, display: '*'),
+            _buildInputButton('log', InputButtonStyle.TERTIARY, display: 'log('),
+            _buildInputButton('4', InputButtonStyle.PRIMARY),
+            _buildInputButton('5', InputButtonStyle.PRIMARY),
+            _buildInputButton('6', InputButtonStyle.PRIMARY),
+            _buildInputButton('−', InputButtonStyle.SECONDARY),
+            _buildInputButton('ln', InputButtonStyle.TERTIARY, display: 'ln('),
+            _buildInputButton('1', InputButtonStyle.PRIMARY),
+            _buildInputButton('2', InputButtonStyle.PRIMARY),
+            _buildInputButton('3', InputButtonStyle.PRIMARY),
+            _buildInputButton('+', InputButtonStyle.SECONDARY),
+            _buildCommandButton('sto', InputButtonStyle.TERTIARY),
+            _buildInputButton('0', InputButtonStyle.PRIMARY),
+            _buildInputButton('.', InputButtonStyle.PRIMARY),
+            _buildInputButton('(-)', InputButtonStyle.PRIMARY,display: '-'),
+            _buildCommandButton('enter', InputButtonStyle.SECONDARY),
               ],
 
         ));
@@ -116,7 +118,6 @@ class InputPadOne extends InputPad{
 class InputPadTwo extends InputPad{
 
   InputPadTwo(storage,input, command) : super(storage,input, command);
-
 
   @override
   Widget build(BuildContext context) {

@@ -3,9 +3,9 @@ import 'dart:developer';
 import 'package:cartesian_graph/bounds.dart';
 import 'package:cartesian_graph/cartesian_graph.dart';
 import 'package:cartesian_graph/coordinates.dart';
+import 'package:open_calc/graph/graph_table.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:open_calc/bridge/graph_bridge.dart';
 
 class GraphScreen extends StatefulWidget {
   @override
@@ -13,8 +13,10 @@ class GraphScreen extends StatefulWidget {
 }
 
 class GraphScreenState extends State<GraphScreen>{
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  final formKey = GlobalKey<FormState>();
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
+  final _scaleFormKey = GlobalKey<FormState>();
+  final _exprFormKey = GlobalKey<FormFieldState>();
+
   // Scale Value, Range and Domain of x and y will be set and saved in these variable
   int _xMin = -100,
       _xMax = 100,
@@ -24,15 +26,16 @@ class GraphScreenState extends State<GraphScreen>{
       _yScl = 2,
       _xRes = 1;
 
-  int width = 270;
-  int height = 162;
-  GraphBridge bridge = GraphBridge();
+  int width = 270,
+    height = 162;
+       
   Coordinates cursorLocation = Coordinates(50, 50);
+  String _y1 = "0.05 * x^2 - 50";
+  List<Coordinates> coordinates;
 
-  List<Coordinates> _retrieveCoordinates() {
-    List<Coordinates> allCoordinates = bridge.retrieveGraph(
-        (width / 2) * -1, (width / 2), (height / 2) * -1, (height / 2));
-    return allCoordinates;
+  @override
+  void initState() {
+    super.initState();
   }
 
   void moveCursor(String direction) {
@@ -74,7 +77,7 @@ class GraphScreenState extends State<GraphScreen>{
             child: Padding(
               padding: EdgeInsets.all(8.0),
               child: Form(
-                key: formKey,
+                key: _scaleFormKey,
                 child: Column(
                   children: <Widget>[
                     TextFormField(
@@ -152,7 +155,7 @@ class GraphScreenState extends State<GraphScreen>{
                     ),
                     ElevatedButton(
                       onPressed: () {
-                        formKey.currentState.save();
+                        _scaleFormKey.currentState.save();
                       },
                       child: Text("Save Changes"),
                     ),
@@ -174,7 +177,7 @@ class GraphScreenState extends State<GraphScreen>{
                 ),
                 child: CartesianGraph(
                   Bounds(_xMin, _xMax, _yMin, _yMax),
-                  coordinates: _retrieveCoordinates(),
+                  equation: _y1,
                   cursorLocation: this.cursorLocation,
                 ),
               ),
@@ -223,24 +226,53 @@ class GraphScreenState extends State<GraphScreen>{
             child: Column(
               children: <Widget>[
                 TextFormField(
+                  key: _exprFormKey,
                   decoration: InputDecoration(labelText: 'y = '),
-                  onSaved: (input) => {log(input)},
+                  onSaved: (input) => {
+                    _y1 = input
+                  },
                 ),
                 ElevatedButton(
-                    onPressed: null,
-                    child: Text("Generate Graph"))
+                  onPressed: () {
+                    _exprFormKey.currentState.save();
+                  },
+                  child: Text("Generate Graph")
+                ),
               ],
             ),
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          _openDrawer();
-        },
-        label: Text('Scale'),
-        icon: Icon(Icons.crop),
-      ),
+      floatingActionButton: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          Container(
+            margin: EdgeInsets.only(left: 35),
+            child: FloatingActionButton.extended(
+              backgroundColor: Colors.green,
+              label: Text('Table'),
+              icon: Icon(Icons.menu_book),
+              heroTag: 1,
+              onPressed: () {
+                showModalBottomSheet<void>(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return GraphTable(coordinates: this.coordinates);
+                  }
+                );
+              })
+          ),
+          FloatingActionButton.extended(
+            onPressed: () {
+              _openDrawer();
+            },
+            label: Text('Scale'),
+            icon: Icon(Icons.crop),
+            heroTag: 2
+          ),
+        ],
+      )
     );
   }
 
