@@ -1,13 +1,10 @@
-//import 'dart:math';
+import 'package:advanced_calculation/advanced_calculator.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:open_calc/bridge/graph_bridge.dart';
 import 'package:open_calc/calculator/calculator_display/calculator_display.dart';
 import 'package:open_calc/calculator/calculator_display/calculator_display_controller.dart';
 import 'package:open_calc/calculator/calculator_display/display_history.dart';
 import 'package:open_calc/calculator/input_pad/input_pad.dart';
 import 'package:open_calc/calculator/input_pad/input_variables.dart';
-import 'package:open_calc/calculator/input_validation/validate_function.dart';
-import 'package:open_calc/calculator/translator/translator.dart';
 
 class CalculatorScreen extends StatefulWidget {
   final VariableStorage storage;
@@ -21,11 +18,8 @@ class CalculatorScreenState extends State<CalculatorScreen>{
 
   final VariableStorage storage;
   CalculatorScreenState(this.storage);
-
-  GraphBridge bridge = GraphBridge();
-  ValidateFunction tester = new ValidateFunction();
-  Translator translator = new Translator();
   CalculatorDisplayController controller = CalculatorDisplayController();
+  AdvancedCalculator advancedCalculator = AdvancedCalculator();
 
   // updates state to display new input on the calc screen
   void _displayInput(String keypadInput) {
@@ -54,19 +48,10 @@ class CalculatorScreenState extends State<CalculatorScreen>{
   void _evaluate(String displayExpression) {
     String resultString;
 
-    // convert display string to proper math format
-    String expression = translator.translate(displayExpression);
-
-    if (expression?.isEmpty ?? true) {  // empty string or null
+    if (displayExpression?.isEmpty ?? true) {  // empty string or null
       resultString = (controller.history.length == 0) ? "" : controller.history.last.result;
     } else {
-      bool validInput = tester.testFunction(expression);
-      if (validInput) {
-        double results = bridge.retrieveCalculatorResult(expression);  // call to backend evaluator
-        resultString = results.toString(); 
-      } else {
-        resultString = "Syntax Error";
-      }
+      resultString = advancedCalculator.calculate(displayExpression);
     }
     DisplayHistory newEntry = new DisplayHistory(displayExpression, resultString);
     controller.inputLine = '';
