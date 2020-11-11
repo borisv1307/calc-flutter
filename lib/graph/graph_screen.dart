@@ -6,7 +6,6 @@ import 'package:cartesian_graph/coordinates.dart';
 import 'package:open_calc/graph/graph_table.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:open_calc/bridge/graph_bridge.dart';
 
 class GraphScreen extends StatefulWidget {
   @override
@@ -30,7 +29,6 @@ class GraphScreenState extends State<GraphScreen>{
   int width = 270,
     height = 162;
        
-  GraphBridge bridge = GraphBridge();
   Coordinates cursorLocation = Coordinates(50, 50);
   String _y1 = "0.05 * x^2 - 50";
   List<Coordinates> coordinates;
@@ -38,18 +36,6 @@ class GraphScreenState extends State<GraphScreen>{
   @override
   void initState() {
     super.initState();
-    this._updateCoordinates();
-  }
-
-  void _updateCoordinates() {
-    setState(() {
-      coordinates = bridge.retrieveGraph(
-          _y1, (width / 2) * -1, (width / 2), (height / 2) * -1, (height / 2));
-    });
-  }
-  
-  List<Coordinates> _getCoordinates() {
-    return coordinates;
   }
 
   void moveCursor(String direction) {
@@ -170,7 +156,6 @@ class GraphScreenState extends State<GraphScreen>{
                     ElevatedButton(
                       onPressed: () {
                         _scaleFormKey.currentState.save();
-                        _updateCoordinates();
                       },
                       child: Text("Save Changes"),
                     ),
@@ -250,7 +235,6 @@ class GraphScreenState extends State<GraphScreen>{
                 ElevatedButton(
                   onPressed: () {
                     _exprFormKey.currentState.save();
-                    _updateCoordinates();
                   },
                   child: Text("Generate Graph")
                 ),
