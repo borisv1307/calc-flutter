@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:open_calc/calculator/input_pad/input_button.dart';
 import 'package:open_calc/calculator/input_pad/input_button_style.dart';
+import 'package:open_calc/calculator/input_pad/input_item.dart';
 import 'package:open_calc/calculator/input_pad/input_variables.dart';
 
 class InputPad extends StatelessWidget{
@@ -13,9 +14,15 @@ class InputPad extends StatelessWidget{
   InputPad(this.storage,this.inputFunction,this.commandFunction);
 
 
-  Widget _buildInputButton(String text, InputButtonStyle type, {String display, String value}){
-    return InputButton(text, type, inputFunction, 
-      value: display, 
+  Widget _buildInputButton(InputItem inputItem, InputButtonStyle type){
+    return InputButton(inputItem.display, type, inputFunction,
+      value: inputItem.value,
+    );
+  }
+
+  Widget _buildLegacyButton(String display, InputButtonStyle type, String value){
+    return InputButton(display, type, inputFunction,
+      value: value,
     );
   }
 
@@ -80,34 +87,34 @@ class InputPadOne extends InputPad{
                 },
               )),
             ),
-            _buildInputButton('sin', InputButtonStyle.TERTIARY, display:'sin('),
-            _buildInputButton('cos', InputButtonStyle.TERTIARY, display:'cos('),
-            _buildInputButton('tan', InputButtonStyle.TERTIARY, display:'tan('),
+            _buildInputButton(InputItem.SIN, InputButtonStyle.TERTIARY),
+            _buildInputButton(InputItem.COS, InputButtonStyle.TERTIARY),
+            _buildInputButton(InputItem.TAN, InputButtonStyle.TERTIARY),
             _buildCommandButton('del',InputButtonStyle.TERTIARY),
             _buildCommandButton('clear',InputButtonStyle.TERTIARY),
-            _buildInputButton('𝑥 ²', InputButtonStyle.TERTIARY, display:'²'),
-            _buildInputButton('(', InputButtonStyle.TERTIARY),
-            _buildInputButton(')', InputButtonStyle.TERTIARY),
-            _buildInputButton('÷', InputButtonStyle.SECONDARY, display: '/'),
-            _buildInputButton('^', InputButtonStyle.TERTIARY),
-            _buildInputButton('7', InputButtonStyle.PRIMARY),
-            _buildInputButton('8', InputButtonStyle.PRIMARY),
-            _buildInputButton('9', InputButtonStyle.PRIMARY),
-            _buildInputButton('x', InputButtonStyle.SECONDARY, display: '*'),
-            _buildInputButton('log', InputButtonStyle.TERTIARY, display: 'log('),
-            _buildInputButton('4', InputButtonStyle.PRIMARY),
-            _buildInputButton('5', InputButtonStyle.PRIMARY),
-            _buildInputButton('6', InputButtonStyle.PRIMARY),
-            _buildInputButton('−', InputButtonStyle.SECONDARY),
-            _buildInputButton('ln', InputButtonStyle.TERTIARY, display: 'ln('),
-            _buildInputButton('1', InputButtonStyle.PRIMARY),
-            _buildInputButton('2', InputButtonStyle.PRIMARY),
-            _buildInputButton('3', InputButtonStyle.PRIMARY),
-            _buildInputButton('+', InputButtonStyle.SECONDARY),
+            _buildInputButton(InputItem.SQUARED, InputButtonStyle.TERTIARY),
+            _buildInputButton(InputItem.OPEN_PARENTHESIS, InputButtonStyle.TERTIARY),
+            _buildInputButton(InputItem.CLOSE_PARENTHESIS, InputButtonStyle.TERTIARY),
+            _buildInputButton(InputItem.DIVIDE, InputButtonStyle.SECONDARY),
+            _buildInputButton(InputItem.POWER, InputButtonStyle.TERTIARY),
+            _buildInputButton(InputItem.SEVEN, InputButtonStyle.PRIMARY),
+            _buildInputButton(InputItem.EIGHT, InputButtonStyle.PRIMARY),
+            _buildInputButton(InputItem.NINE, InputButtonStyle.PRIMARY),
+            _buildInputButton(InputItem.MULTIPLY, InputButtonStyle.SECONDARY),
+            _buildInputButton(InputItem.LOG, InputButtonStyle.TERTIARY),
+            _buildInputButton(InputItem.FOUR, InputButtonStyle.PRIMARY),
+            _buildInputButton(InputItem.FIVE, InputButtonStyle.PRIMARY),
+            _buildInputButton(InputItem.SIX, InputButtonStyle.PRIMARY),
+            _buildInputButton(InputItem.SUBTRACT, InputButtonStyle.SECONDARY),
+            _buildInputButton(InputItem.NATURAL_LOG, InputButtonStyle.TERTIARY),
+            _buildInputButton(InputItem.ONE, InputButtonStyle.PRIMARY),
+            _buildInputButton(InputItem.TWO, InputButtonStyle.PRIMARY),
+            _buildInputButton(InputItem.THREE, InputButtonStyle.PRIMARY),
+            _buildInputButton(InputItem.ADD, InputButtonStyle.SECONDARY),
             _buildCommandButton('sto', InputButtonStyle.TERTIARY),
-            _buildInputButton('0', InputButtonStyle.PRIMARY),
-            _buildInputButton('.', InputButtonStyle.PRIMARY),
-            _buildInputButton('(-)', InputButtonStyle.PRIMARY,display: '-'),
+            _buildInputButton(InputItem.ZERO, InputButtonStyle.PRIMARY),
+            _buildInputButton(InputItem.DECIMAL, InputButtonStyle.PRIMARY),
+            _buildInputButton(InputItem.NEGATIVE, InputButtonStyle.PRIMARY),
             _buildCommandButton('enter', InputButtonStyle.SECONDARY),
               ],
 
@@ -166,16 +173,16 @@ class InputPadTwo extends InputPad{
                 },
               )),
             ),
-            _buildInputButton('A',InputButtonStyle.TERTIARY,value:'A'),
-            _buildInputButton('B',InputButtonStyle.TERTIARY,value:'B'),
-            _buildInputButton('C',InputButtonStyle.TERTIARY,value:'C'),
-            _buildInputButton('D',InputButtonStyle.TERTIARY,value:'D'),
-            _buildInputButton('E',InputButtonStyle.TERTIARY,value:'E'),
-            _buildInputButton('F',InputButtonStyle.TERTIARY,value:'F'),
-            _buildInputButton('G',InputButtonStyle.TERTIARY,value:'G'),
-            _buildInputButton('H',InputButtonStyle.TERTIARY,value:'H'),
-            _buildInputButton('I',InputButtonStyle.TERTIARY,value:'I'),
-            _buildInputButton('J',InputButtonStyle.TERTIARY,value:'J'),
+            _buildInputButton(InputItem.A,InputButtonStyle.TERTIARY),
+            _buildInputButton(InputItem.B,InputButtonStyle.TERTIARY),
+            _buildInputButton(InputItem.C,InputButtonStyle.TERTIARY),
+            _buildInputButton(InputItem.D,InputButtonStyle.TERTIARY),
+            _buildInputButton(InputItem.E,InputButtonStyle.TERTIARY),
+            _buildInputButton(InputItem.F,InputButtonStyle.TERTIARY),
+            _buildInputButton(InputItem.G,InputButtonStyle.TERTIARY),
+            _buildInputButton(InputItem.H,InputButtonStyle.TERTIARY),
+            _buildInputButton(InputItem.I,InputButtonStyle.TERTIARY),
+            _buildInputButton(InputItem.J,InputButtonStyle.TERTIARY),
 
               ],
 
@@ -197,7 +204,7 @@ class VariableScreen extends InputPad{
     int i = 0;
     for(i=0; i < list.length; i++){
       variablesWidgets.add(
-        _buildInputButton(keyList[i] + ': ' + list[i], InputButtonStyle.TERTIARY, value: list[i])
+        _buildLegacyButton(keyList[i] + ': ' + list[i], InputButtonStyle.TERTIARY, list[i])
       );
     }
 
