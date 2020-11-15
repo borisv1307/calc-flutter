@@ -5,6 +5,7 @@ class CalculatorDisplayController extends ChangeNotifier{
   String _inputLine='';
   List<DisplayHistory> _history = [];
   int _cursorIndex = 0;
+  int _historyIndex = 0;
 
   List<DisplayHistory> get history{
     return _history;
@@ -22,6 +23,7 @@ class CalculatorDisplayController extends ChangeNotifier{
   set inputLine(String text){
     this._inputLine = text;
     this._cursorIndex = text.length;
+    this._historyIndex = 0;
     notifyListeners();
   }
 
@@ -47,6 +49,24 @@ class CalculatorDisplayController extends ChangeNotifier{
       String startToken = this._inputLine.substring(0, _cursorIndex);
       String endToken = this._inputLine.substring(_cursorIndex + 1);
       this._inputLine = startToken + endToken;
+      notifyListeners();
+    }
+  }
+
+  void browseBackwards(){
+    if(_historyIndex < this._history.length){
+      _historyIndex++;
+      this._inputLine = this._history[this._history.length - _historyIndex].input;
+      this._cursorIndex = this._inputLine.length;
+      notifyListeners();
+    }
+  }
+
+  void browseForwards(){
+    if(_historyIndex > 1){
+      _historyIndex--;
+      this._inputLine = this._history[this._history.length - _historyIndex].input;
+      this._cursorIndex = this._inputLine.length;
       notifyListeners();
     }
   }
