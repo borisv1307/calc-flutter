@@ -122,14 +122,14 @@ void main(){
 
   group('Gestures browse history',(){
     testWidgets('browses backwards when swipe down',(WidgetTester tester) async{
-      MockCalculatorDisplayController controller = MockCalculatorDisplayController();;
+      MockCalculatorDisplayController controller = MockCalculatorDisplayController();
       await tester.pumpWidget(MaterialApp(home:CalculatorDisplay(controller, numLines: 2)));
       await tester.fling(find.byType(CalculatorDisplay), Offset(0,100),200);
       verify(controller.browseBackwards()).called(1);
     });
 
     testWidgets('browses forwards when swipe down',(WidgetTester tester) async{
-      MockCalculatorDisplayController controller = MockCalculatorDisplayController();;
+      MockCalculatorDisplayController controller = MockCalculatorDisplayController();
       await tester.pumpWidget(MaterialApp(home:CalculatorDisplay(controller, numLines: 2)));
       await tester.fling(find.byType(CalculatorDisplay), Offset(0,-100),200);
       verify(controller.browseForwards()).called(1);
