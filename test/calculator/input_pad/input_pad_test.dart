@@ -76,7 +76,7 @@ void main() {
     _generateButtonTests('4','4',InputButtonStyle.PRIMARY,15);
     _generateButtonTests('5','5',InputButtonStyle.PRIMARY,16);
     _generateButtonTests('6','6',InputButtonStyle.PRIMARY,17);
-    _generateButtonTests('-','-',InputButtonStyle.SECONDARY,18);
+    _generateButtonTests('−','−',InputButtonStyle.SECONDARY,18);
     _generateButtonTests('ln','ln(',InputButtonStyle.TERTIARY,19);
     _generateButtonTests('1','1',InputButtonStyle.PRIMARY,20);
     _generateButtonTests('2','2',InputButtonStyle.PRIMARY,21);
