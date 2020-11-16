@@ -228,9 +228,9 @@ void main() {
     expect(InputItem.ATAN.value,'atan(');
   });
 
-  test('FACTORIAL',(){
-    expect(InputItem.FACTORIAL.display,'!');
-    expect(InputItem.FACTORIAL.value,'!');
+  test('COMMA',(){
+    expect(InputItem.COMMA.display,',');
+    expect(InputItem.COMMA.value,',');
   });
 
   test('ASINH',(){
