@@ -65,7 +65,7 @@ void main() {
 
   test('subtract',(){
     expect(InputItem.SUBTRACT.display,'-');
-    expect(InputItem.SUBTRACT.value,'-');
+    expect(InputItem.SUBTRACT.value,'−');
     expect(InputItem.SUBTRACT.catalog,true);
   });
 

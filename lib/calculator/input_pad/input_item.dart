@@ -16,7 +16,7 @@ class InputItem{
   static const MULTIPLY = const InputItem('x',value:'*');
   static const POWER = const InputItem('^');
   static const LOG = const InputItem('log',value:'log(');
-  static const SUBTRACT = const InputItem('-');
+  static const SUBTRACT = const InputItem('−');
   static const NATURAL_LOG = const InputItem('ln',value:'ln(');
   static const NEGATIVE = const InputItem('(-)',value:'-');
   static const DECIMAL = const InputItem('.',value:'.');
