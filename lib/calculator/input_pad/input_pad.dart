@@ -1,13 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:open_calc/calculator/input_pad/input_button.dart';
+import 'package:open_calc/calculator/input_pad/button/input_button.dart';
+import 'package:open_calc/calculator/input_pad/button/pad_button.dart';
 import 'package:open_calc/calculator/input_pad/input_button_style.dart';
 import 'package:open_calc/calculator/input_pad/input_item.dart';
 import 'package:open_calc/calculator/input_pad/input_variables.dart';
 
 class InputPad extends StatelessWidget{
 
-  final Function(String input) inputFunction;
+  final Function(InputItem input) inputFunction;
   final Function(String command) commandFunction;
   final VariableStorage storage;
 
@@ -15,19 +16,13 @@ class InputPad extends StatelessWidget{
 
 
   Widget _buildInputButton(InputItem inputItem, InputButtonStyle type){
-    return InputButton(inputItem.display, type, inputFunction,
-      value: inputItem.value,
-    );
-  }
-
-  Widget _buildLegacyButton(String display, InputButtonStyle type, String value){
-    return InputButton(display, type, inputFunction,
-      value: value,
-    );
+    return InputButton(inputItem, type, inputFunction);
   }
 
   Widget _buildCommandButton(String text, InputButtonStyle type){
-    return InputButton(text, type, commandFunction);
+    return PadButton(text, type, (){
+      commandFunction(text);
+    });
   }
 
   @override
@@ -204,7 +199,7 @@ class VariableScreen extends InputPad{
     int i = 0;
     for(i=0; i < list.length; i++){
       variablesWidgets.add(
-        _buildLegacyButton(keyList[i] + ': ' + list[i], InputButtonStyle.TERTIARY, list[i])
+        _buildInputButton(InputItem(keyList[i] + ': ' + list[i], value: list[i]), InputButtonStyle.TERTIARY) ///TODO update to not be input button
       );
     }
 
