@@ -1,9 +1,8 @@
 class InputItem{
   final String display;
   final String value;
-  final bool catalog;
 
-  const InputItem(this.display, {String value, this.catalog = true}):
+  const InputItem(this.display, {String value}):
     this.value = value ?? display;
 
   static const SIN = const InputItem('sin',value:'sin(');
@@ -21,24 +20,24 @@ class InputItem{
   static const NEGATIVE = const InputItem('(-)',value:'-');
   static const DECIMAL = const InputItem('.',value:'.');
   static const ADD = const InputItem('+');
-  static const ZERO = const InputItem('0', catalog:false);
-  static const ONE = const InputItem('1',catalog:false);
-  static const TWO = const InputItem('2',catalog:false);
-  static const THREE = const InputItem('3',catalog:false);
-  static const FOUR = const InputItem('4',catalog:false);
-  static const FIVE = const InputItem('5',catalog:false);
-  static const SIX = const InputItem('6',catalog:false);
-  static const SEVEN = const InputItem('7',catalog:false);
-  static const EIGHT = const InputItem('8',catalog:false);
-  static const NINE = const InputItem('9',catalog:false);
-  static const A = const InputItem('A',catalog:false);
-  static const B = const InputItem('B',catalog:false);
-  static const C = const InputItem('C',catalog:false);
-  static const D = const InputItem('D',catalog:false);
-  static const E = const InputItem('E',catalog:false);
-  static const F = const InputItem('F',catalog:false);
-  static const G = const InputItem('G',catalog:false);
-  static const H = const InputItem('H',catalog:false);
-  static const I = const InputItem('I',catalog:false);
-  static const J = const InputItem('J',catalog:false);
+  static const ZERO = const InputItem('0');
+  static const ONE = const InputItem('1');
+  static const TWO = const InputItem('2');
+  static const THREE = const InputItem('3');
+  static const FOUR = const InputItem('4');
+  static const FIVE = const InputItem('5');
+  static const SIX = const InputItem('6');
+  static const SEVEN = const InputItem('7');
+  static const EIGHT = const InputItem('8');
+  static const NINE = const InputItem('9');
+  static const A = const InputItem('A');
+  static const B = const InputItem('B');
+  static const C = const InputItem('C');
+  static const D = const InputItem('D');
+  static const E = const InputItem('E');
+  static const F = const InputItem('F');
+  static const G = const InputItem('G');
+  static const H = const InputItem('H');
+  static const I = const InputItem('I');
+  static const J = const InputItem('J');
 }

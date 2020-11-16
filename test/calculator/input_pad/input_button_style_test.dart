@@ -3,7 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:open_calc/calculator/input_pad/input_button_style.dart';
 
 void main() {
-  group('Primary button style', () {
+  group('Primary pad_button style', () {
     test('has black text',(){
       expect(InputButtonStyle.PRIMARY.textColor, Colors.black);
     });
@@ -38,7 +38,7 @@ void main() {
     });
   });
 
-  group('Secondary button style', () {
+  group('Secondary pad_button style', () {
     test('has white text',(){
       expect(InputButtonStyle.SECONDARY.textColor, Colors.white);
     });
@@ -73,7 +73,7 @@ void main() {
     });
   });
 
-  group('Tertiary button style', () {
+  group('Tertiary pad_button style', () {
     test('has white text',(){
       expect(InputButtonStyle.TERTIARY.textColor, Colors.white);
     });
