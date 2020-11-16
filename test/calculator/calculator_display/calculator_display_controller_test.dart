@@ -135,6 +135,107 @@ void main(){
       controller.delete();
       expect(controller.notified, 3);
     });
+  });
 
+  group('Browsing history',(){
+
+    test('displays cursor after text when browsing backwards',(){
+      TestableCalculatorDisplayController controller = TestableCalculatorDisplayController();
+      controller.history = [DisplayHistory('1','1'),DisplayHistory('2','2')];
+      controller.browseBackwards();
+      expect(controller.cursorIndex, 1);
+    });
+
+    test('displays cursor after text when browsing forwards',(){
+      TestableCalculatorDisplayController controller = TestableCalculatorDisplayController();
+      controller.history = [DisplayHistory('11','1'),DisplayHistory('2','2')];
+      controller.browseBackwards();
+      controller.browseBackwards();
+      controller.browseForwards();
+      expect(controller.cursorIndex, 1);
+    });
+
+    group('when history present',(){
+      TestableCalculatorDisplayController controller;
+      setUp((){
+        controller = TestableCalculatorDisplayController();
+        controller.history = [DisplayHistory('1','1'),DisplayHistory('2','2')];
+      });
+
+      test('can browse backwards',(){
+        controller.browseBackwards();
+        expect(controller.notified, 2);//one for initial history set
+        expect(controller.inputLine,'2');
+      });
+
+      test('can browse further backwards',(){
+        controller.browseBackwards();
+        controller.browseBackwards();
+        expect(controller.notified, 3);//one for initial history set
+        expect(controller.inputLine,'1');
+      });
+
+      test('can browse forwards after browsing backwards',(){
+        controller.browseBackwards();
+        controller.browseBackwards();
+        controller.browseForwards();
+        expect(controller.notified, 4);//one for initial history set
+        expect(controller.inputLine,'2');
+      });
+
+      test('cannot browse before oldest entry',(){
+        controller.browseBackwards();
+        controller.browseBackwards();
+        controller.browseBackwards();
+        expect(controller.notified, 3);//one for initial history set
+        expect(controller.inputLine,'1');
+      });
+
+      test('cannot browse forwards after viewing newest entry',(){
+        controller.browseBackwards();
+        controller.browseBackwards();
+        controller.browseForwards();
+        controller.browseForwards();
+        expect(controller.notified, 4);//one for initial history set
+        expect(controller.inputLine,'2');
+      });
+    });
+
+    group('when no history present',(){
+      TestableCalculatorDisplayController controller;
+      setUp((){
+        controller = TestableCalculatorDisplayController();
+      });
+
+      test('cannot browse backwards',(){
+        controller.browseBackwards();
+        expect(controller.notified, 0);
+        expect(controller.inputLine,'');
+      });
+
+      test('cannot browse forwards',(){
+        controller.browseForwards();
+        expect(controller.notified, 0);//one for initial history set
+        expect(controller.inputLine,'');
+      });
+    });
+
+    group('after updating input',(){
+      TestableCalculatorDisplayController controller;
+      setUp((){
+        controller = TestableCalculatorDisplayController();
+        controller.history = [DisplayHistory('1','1'),DisplayHistory('2','2')];
+      });
+
+      test('can browse backwards',(){
+        controller.browseBackwards();
+        controller.history = [DisplayHistory('1','1'),DisplayHistory('2','2'),DisplayHistory('2','2')];
+        controller.inputLine = '';
+        controller.browseBackwards();
+        controller.browseBackwards();
+        expect(controller.notified, 6);
+        expect(controller.inputLine,'2');
+      });
+    });
   });
 }

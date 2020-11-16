@@ -125,19 +125,28 @@ class _CalculatorDisplayState extends State<CalculatorDisplay> {
       controller.jumpTo(controller.position.maxScrollExtent);
     });
 
-    return Container(
-      color: GREEN,
-      padding: EdgeInsets.all(12),
-      child: SizedBox(
-        height: LINE_HEIGHT * FONT_SIZE * this.widget.numLines,
-        child: SingleChildScrollView(
-          //reverse: true,
-          controller: controller,
-          physics: NeverScrollableScrollPhysics(),
-          child: Container(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: history
+    return GestureDetector(
+      onVerticalDragEnd: (DragEndDetails details){
+        if(details.primaryVelocity < 0){
+          this.widget.controller.browseForwards();
+        }else if(details.primaryVelocity > 0){
+          this.widget.controller.browseBackwards();
+        }
+      },
+      child:Container(
+        color: GREEN,
+        padding: EdgeInsets.all(12),
+        child: SizedBox(
+          height: LINE_HEIGHT * FONT_SIZE * this.widget.numLines,
+          child: SingleChildScrollView(
+            //reverse: true,
+            controller: controller,
+            physics: NeverScrollableScrollPhysics(),
+            child: Container(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: history
+              )
             )
           )
         )

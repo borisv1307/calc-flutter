@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/mockito.dart';
 import 'package:open_calc/calculator/calculator_display/calculator_display.dart';
 import 'package:open_calc/calculator/calculator_display/calculator_display_controller.dart';
 import 'package:open_calc/calculator/calculator_display/display_history.dart';
+
+class MockCalculatorDisplayController extends Mock implements CalculatorDisplayController{
+  String inputLine = '';
+  int cursorIndex = 0;
+  List<DisplayHistory> history = [];
+}
 
 void main(){
 
@@ -110,6 +117,22 @@ void main(){
       await tester.pumpWidget(MaterialApp(home:CalculatorDisplay(_buildController('2+2+'), numLines: 2)));
       await tester.pump(Duration(milliseconds: 500));
       expect(find.text('2+2+⠀'),findsNWidgets(1));
+    });
+  });
+
+  group('Gestures browse history',(){
+    testWidgets('browses backwards when swipe down',(WidgetTester tester) async{
+      MockCalculatorDisplayController controller = MockCalculatorDisplayController();
+      await tester.pumpWidget(MaterialApp(home:CalculatorDisplay(controller, numLines: 2)));
+      await tester.fling(find.byType(CalculatorDisplay), Offset(0,100),200);
+      verify(controller.browseBackwards()).called(1);
+    });
+
+    testWidgets('browses forwards when swipe down',(WidgetTester tester) async{
+      MockCalculatorDisplayController controller = MockCalculatorDisplayController();
+      await tester.pumpWidget(MaterialApp(home:CalculatorDisplay(controller, numLines: 2)));
+      await tester.fling(find.byType(CalculatorDisplay), Offset(0,-100),200);
+      verify(controller.browseForwards()).called(1);
     });
   });
 
