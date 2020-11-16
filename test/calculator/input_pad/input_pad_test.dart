@@ -39,7 +39,7 @@ void main() {
 
     void _testButtonLocation(WidgetTester tester, String text, int expectedLocation) async {
       await tester.pumpWidget(MaterialApp(home:InputPad(VariableStorage(),(text){},(text){})));
-      List<Widget> allButtons = tester.widgetList(find.byKey(Key('pad_button'))).toList();
+      List<Widget> allButtons = tester.widgetList(find.byWidgetPredicate((Widget widget) => widget is InputButton || widget is PadButton)).toList();
       expect((allButtons[expectedLocation] as PadButton).display, text);
     }
 
