@@ -40,4 +40,22 @@ class InputItem{
   static const H = const InputItem('H');
   static const I = const InputItem('I');
   static const J = const InputItem('J');
+  static const PI = const InputItem('𝜋');
+  static const CSC = const InputItem('csc',value:'csc(');
+  static const SEC = const InputItem('sec',value:'sec(');
+  static const COT = const InputItem('cot',value:'cot(');
+  static const E_POWER_X = const InputItem('𝑒 ˣ',value:'𝑒^');
+  static const SINH = const InputItem('sinh',value:'sinh(');
+  static const COSH = const InputItem('cosh',value:'cosh(');
+  static const TANH = const InputItem('tanh',value:'tanh(');
+  static const INVERSE = const InputItem('x ⁻¹',value:'⁻¹');
+  static const ASIN = const InputItem('asin',value:'asin(');
+  static const ACOS= const InputItem('acos',value:'acos(');
+  static const ATAN = const InputItem('atan',value:'atan(');
+  static const COMMA = const InputItem(',');
+  static const ASINH = const InputItem('asinh',value:'asinh(');
+  static const ACOSH = const InputItem('acosh',value:'acosh(');
+  static const ATANH = const InputItem('atanh',value:'atanh(');
+  static const BLANK = const InputItem('');
+
 }

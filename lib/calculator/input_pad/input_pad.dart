@@ -65,31 +65,15 @@ class InputPadOne extends InputPad{
           childAspectRatio: availableWidth/availableHeight,
           physics: NeverScrollableScrollPhysics(),
           children:[
-            Container(
-              margin: EdgeInsets.all(5),
-              child:Material(
-                borderRadius: InputButtonStyle.SECONDARY.radius,
-                color: InputButtonStyle.SECONDARY.backgroundColor,
-                child:InkWell(
-                  splashColor: Colors.blueGrey,
-                  borderRadius: InputButtonStyle.SECONDARY.radius,
-                  child:Container(
-                    alignment: Alignment.center,
-                    child: Text('Alt', style: TextStyle(fontSize: InputButtonStyle.SECONDARY.fontSize, fontWeight: InputButtonStyle.SECONDARY.fontWeight, color: InputButtonStyle.SECONDARY.textColor)),
-                ),
-                onTap: (){
-                   Navigator.of(context).pushReplacementNamed('inputPadTwo');
-                },
-              )),
-            ),
-            _buildInputButton(InputItem.SIN, InputButtonStyle.TERTIARY),
-            _buildInputButton(InputItem.COS, InputButtonStyle.TERTIARY),
-            _buildInputButton(InputItem.TAN, InputButtonStyle.TERTIARY),
+            PadButton('2nd', InputButtonStyle.SECONDARY, () {Navigator.pushReplacementNamed(context, 'inputPadTwo');}),
+            _buildInputButton(InputItem.OPEN_PARENTHESIS, InputButtonStyle.TERTIARY),
+            _buildInputButton(InputItem.CLOSE_PARENTHESIS, InputButtonStyle.TERTIARY),
             _buildCommandButton('del',InputButtonStyle.TERTIARY),
             _buildCommandButton('clear',InputButtonStyle.TERTIARY),
             _buildInputButton(InputItem.SQUARED, InputButtonStyle.TERTIARY),
-            _buildInputButton(InputItem.OPEN_PARENTHESIS, InputButtonStyle.TERTIARY),
-            _buildInputButton(InputItem.CLOSE_PARENTHESIS, InputButtonStyle.TERTIARY),
+            _buildInputButton(InputItem.SIN, InputButtonStyle.TERTIARY),
+            _buildInputButton(InputItem.COS, InputButtonStyle.TERTIARY),
+            _buildInputButton(InputItem.TAN, InputButtonStyle.TERTIARY),
             _buildInputButton(InputItem.DIVIDE, InputButtonStyle.SECONDARY),
             _buildInputButton(InputItem.POWER, InputButtonStyle.TERTIARY),
             _buildInputButton(InputItem.SEVEN, InputButtonStyle.PRIMARY),
@@ -134,53 +118,37 @@ class InputPadTwo extends InputPad{
           childAspectRatio: availableWidth/availableHeight,
           physics: NeverScrollableScrollPhysics(),
           children:[
-            Container(
-              margin: EdgeInsets.all(5),
-              child:Material(
-                borderRadius: InputButtonStyle.SECONDARY.radius,
-                color: InputButtonStyle.SECONDARY.backgroundColor,
-                child:InkWell(
-                  splashColor: Colors.blueGrey,
-                  borderRadius: InputButtonStyle.SECONDARY.radius,
-                  child:Container(
-                    alignment: Alignment.center,
-                    child: Text('Back', style: TextStyle(fontSize: InputButtonStyle.SECONDARY.fontSize, fontWeight: InputButtonStyle.SECONDARY.fontWeight, color: InputButtonStyle.SECONDARY.textColor)),
-                ),
-                onTap: (){
-                  Navigator.of(context).pushReplacementNamed('inputPadOne');
-                },
-              )),
-            ),
-            Container(
-              margin: EdgeInsets.all(5),
-              child:Material(
-                borderRadius: InputButtonStyle.SECONDARY.radius,
-                color: InputButtonStyle.SECONDARY.backgroundColor,
-                child:InkWell(
-                  splashColor: Colors.blueGrey,
-                  borderRadius: InputButtonStyle.SECONDARY.radius,
-                  child:Container(
-                    alignment: Alignment.center,
-                    child: Text('Vars', style: TextStyle(fontSize: InputButtonStyle.SECONDARY.fontSize, fontWeight: InputButtonStyle.SECONDARY.fontWeight, color: InputButtonStyle.SECONDARY.textColor)),
-                ),
-                onTap: (){
-                  Navigator.of(context).pushReplacementNamed('varPad');
-                },
-              )),
-            ),
-            _buildInputButton(InputItem.A,InputButtonStyle.TERTIARY),
-            _buildInputButton(InputItem.B,InputButtonStyle.TERTIARY),
-            _buildInputButton(InputItem.C,InputButtonStyle.TERTIARY),
-            _buildInputButton(InputItem.D,InputButtonStyle.TERTIARY),
-            _buildInputButton(InputItem.E,InputButtonStyle.TERTIARY),
-            _buildInputButton(InputItem.F,InputButtonStyle.TERTIARY),
-            _buildInputButton(InputItem.G,InputButtonStyle.TERTIARY),
-            _buildInputButton(InputItem.H,InputButtonStyle.TERTIARY),
-            _buildInputButton(InputItem.I,InputButtonStyle.TERTIARY),
-            _buildInputButton(InputItem.J,InputButtonStyle.TERTIARY),
-
+            PadButton('Back', InputButtonStyle.SECONDARY, () {Navigator.pushReplacementNamed(context, 'inputPadOne');}),
+            _buildInputButton(InputItem.OPEN_PARENTHESIS, InputButtonStyle.TERTIARY),
+            _buildInputButton(InputItem.CLOSE_PARENTHESIS, InputButtonStyle.TERTIARY),
+            _buildCommandButton('del',InputButtonStyle.TERTIARY),
+            _buildCommandButton('clear',InputButtonStyle.TERTIARY),
+            _buildInputButton(InputItem.PI, InputButtonStyle.TERTIARY),
+            _buildInputButton(InputItem.CSC, InputButtonStyle.TERTIARY),
+            _buildInputButton(InputItem.SEC, InputButtonStyle.TERTIARY),
+            _buildInputButton(InputItem.COT, InputButtonStyle.TERTIARY),
+            _buildInputButton(InputItem.DIVIDE, InputButtonStyle.SECONDARY),
+            _buildInputButton(InputItem.E_POWER_X, InputButtonStyle.TERTIARY),
+            _buildInputButton(InputItem.SINH, InputButtonStyle.TERTIARY),
+            _buildInputButton(InputItem.COSH, InputButtonStyle.TERTIARY),
+            _buildInputButton(InputItem.TANH, InputButtonStyle.TERTIARY),
+            _buildInputButton(InputItem.MULTIPLY, InputButtonStyle.SECONDARY),
+            _buildInputButton(InputItem.INVERSE, InputButtonStyle.TERTIARY),
+            _buildInputButton(InputItem.ASIN, InputButtonStyle.TERTIARY),
+            _buildInputButton(InputItem.ACOS, InputButtonStyle.TERTIARY),
+            _buildInputButton(InputItem.ATAN, InputButtonStyle.TERTIARY),
+            _buildInputButton(InputItem.SUBTRACT,  InputButtonStyle.SECONDARY),
+            _buildInputButton(InputItem.COMMA, InputButtonStyle.TERTIARY),
+            _buildInputButton(InputItem.ASINH, InputButtonStyle.TERTIARY),
+            _buildInputButton(InputItem.ACOSH, InputButtonStyle.TERTIARY),
+            _buildInputButton(InputItem.ATANH, InputButtonStyle.TERTIARY),
+            _buildInputButton(InputItem.ADD,  InputButtonStyle.SECONDARY),
+            PadButton('Vars', InputButtonStyle.FOUR, () {Navigator.pushReplacementNamed(context, 'varPad');}),
+            PadButton('A,B,C', InputButtonStyle.FOUR, (){}),
+            _buildInputButton(InputItem.BLANK, InputButtonStyle.FOUR),
+            _buildInputButton(InputItem.BLANK, InputButtonStyle.FOUR),
+            _buildCommandButton('enter', InputButtonStyle.SECONDARY),
               ],
-
         ));
     }
 }
@@ -228,7 +196,7 @@ class VariableScreen extends InputPad{
                     child: Text('Back', style: TextStyle(fontSize: InputButtonStyle.SECONDARY.fontSize, fontWeight: InputButtonStyle.SECONDARY.fontWeight, color: InputButtonStyle.SECONDARY.textColor)),
                 ),
                 onTap: (){
-                   Navigator.of(context).pushReplacementNamed('inputPadTwo');
+                   Navigator.pushReplacementNamed(context, 'inputPadTwo');
                 },
               )),     
           ),

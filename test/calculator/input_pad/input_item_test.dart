@@ -178,4 +178,79 @@ void main() {
     expect(InputItem.J.value,'J');
   });
 
+  test('PI',(){
+    expect(InputItem.PI.display,'𝜋');
+    expect(InputItem.PI.value,'𝜋');
+  });
+
+  test('CSC',(){
+    expect(InputItem.CSC.display,'csc');
+    expect(InputItem.CSC.value,'csc(');
+  });
+
+  test('E_POWER_X',(){
+    expect(InputItem.E_POWER_X.display,'𝑒 ˣ');
+    expect(InputItem.E_POWER_X.value,'𝑒^');
+  });
+
+  test('SINH',(){
+    expect(InputItem.SINH.display,'sinh');
+    expect(InputItem.SINH.value,'sinh(');
+  });
+
+  test('COSH',(){
+    expect(InputItem.COSH.display,'cosh');
+    expect(InputItem.COSH.value,'cosh(');
+  });
+
+  test('TANH',(){
+    expect(InputItem.TANH.display,'tanh');
+    expect(InputItem.TANH.value,'tanh(');
+  });
+
+  test('INVERSE',(){
+    expect(InputItem.INVERSE.display,'x ⁻¹');
+    expect(InputItem.INVERSE.value,'⁻¹');
+  });
+
+  test('ASIN',(){
+    expect(InputItem.ASIN.display,'asin');
+    expect(InputItem.ASIN.value,'asin(');
+  });
+
+  test('ACOS',(){
+    expect(InputItem.ACOS.display,'acos');
+    expect(InputItem.ACOS.value,'acos(');
+  });
+
+  test('ATAN',(){
+    expect(InputItem.ATAN.display,'atan');
+    expect(InputItem.ATAN.value,'atan(');
+  });
+
+  test('FACTORIAL',(){
+    expect(InputItem.FACTORIAL.display,'!');
+    expect(InputItem.FACTORIAL.value,'!');
+  });
+
+  test('ASINH',(){
+    expect(InputItem.ASINH.display,'asinh');
+    expect(InputItem.ASINH.value,'asinh(');
+  });
+
+  test('ACOSH',(){
+    expect(InputItem.ACOSH.display,'acosh');
+    expect(InputItem.ACOSH.value,'acosh(');
+  });
+
+  test('ATANH',(){
+    expect(InputItem.ATANH.display,'atanh');
+    expect(InputItem.ATANH.value,'atanh(');
+  });
+
+  test('BLANK',(){
+    expect(InputItem.BLANK.display,'');
+    expect(InputItem.BLANK.value,'');
+  });
+
 }
