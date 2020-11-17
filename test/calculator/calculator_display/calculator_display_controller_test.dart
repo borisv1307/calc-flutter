@@ -22,13 +22,13 @@ void main(){
 
     test('can be updated',(){
       TestableCalculatorDisplayController controller = TestableCalculatorDisplayController();
-      controller.history = [DisplayHistory('','')];
+      controller.history = [DisplayHistory([],'')];
       expect(controller.history.length,1);
     });
 
     test('notifies listeners when updated',(){
       TestableCalculatorDisplayController controller = TestableCalculatorDisplayController();
-      controller.history = [DisplayHistory('','')];
+      controller.history = [DisplayHistory([],'')];
       expect(controller.notified, 1);
     });
   });
@@ -41,23 +41,33 @@ void main(){
   });
 
   group('Input clearing',(){
-    TestableCalculatorDisplayController controller;
-    setUpAll((){
-      controller = TestableCalculatorDisplayController();
+    test('clears prior inputs',(){
+      TestableCalculatorDisplayController controller = TestableCalculatorDisplayController();
       controller.input(InputItem.A);
       controller.clearInput();
-    });
-
-    test('clears prior inputs',(){
       expect(controller.inputLine,'');
     });
 
     test('notifies listeners',(){
+      TestableCalculatorDisplayController controller = TestableCalculatorDisplayController();
+      controller.input(InputItem.A);
+      controller.clearInput();
       expect(controller.notified,2);
     });
 
     test('resets cursor',(){
+      TestableCalculatorDisplayController controller = TestableCalculatorDisplayController();
+      controller.input(InputItem.A);
+      controller.clearInput();
       expect(controller.cursorIndex,0);
+    });
+
+    test('does not clear references to old input',(){
+      TestableCalculatorDisplayController controller = TestableCalculatorDisplayController();
+      controller.input(InputItem.A);
+      List<InputItem> oldInput = controller.inputItems;
+      controller.clearInput();
+      expect(oldInput, contains(InputItem.A));
     });
   });
 
@@ -69,8 +79,17 @@ void main(){
 
     test('can be updated',(){
       TestableCalculatorDisplayController controller = TestableCalculatorDisplayController();
-      controller.cursorIndex = 5;
-      expect(controller.cursorIndex, 5);
+      controller.input(InputItem.A);
+      controller.input(InputItem.A);
+      controller.cursorIndex = 1;
+      expect(controller.cursorIndex, 1);
+    });
+
+    test('snaps to nearest item when updated',(){
+      TestableCalculatorDisplayController controller = TestableCalculatorDisplayController();
+      controller.input(InputItem.COS);
+      controller.cursorIndex = 2;
+      expect(controller.cursorIndex, 0);
     });
 
     test('notifies listeners when updated',(){
@@ -161,14 +180,14 @@ void main(){
 
     test('displays cursor after text when browsing backwards',(){
       TestableCalculatorDisplayController controller = TestableCalculatorDisplayController();
-      controller.history = [DisplayHistory('1','1'),DisplayHistory('2','2')];
+      controller.history = [DisplayHistory([InputItem.ONE],'1'),DisplayHistory([InputItem.TWO],'2')];
       controller.browseBackwards();
       expect(controller.cursorIndex, 1);
     });
 
     test('displays cursor after text when browsing forwards',(){
       TestableCalculatorDisplayController controller = TestableCalculatorDisplayController();
-      controller.history = [DisplayHistory('11','1'),DisplayHistory('2','2')];
+      controller.history = [DisplayHistory([InputItem.ONE, InputItem.ONE],'1'),DisplayHistory([InputItem.TWO],'2')];
       controller.browseBackwards();
       controller.browseBackwards();
       controller.browseForwards();
@@ -179,7 +198,7 @@ void main(){
       TestableCalculatorDisplayController controller;
       setUp((){
         controller = TestableCalculatorDisplayController();
-        controller.history = [DisplayHistory('1','1'),DisplayHistory('2','2')];
+        controller.history = [DisplayHistory([InputItem.ONE],'1'),DisplayHistory([InputItem.TWO],'2')];
       });
 
       test('can browse backwards',(){
@@ -193,6 +212,18 @@ void main(){
         controller.browseBackwards();
         expect(controller.notified, 3);//one for initial history set
         expect(controller.inputLine,'1');
+      });
+
+      test('can edit input after browsing backwards without impacting history',(){
+        controller.browseBackwards();
+        expect(controller.inputItems,isNot(same(controller.history[1].input)));
+      });
+
+      test('can edit input after browsing forwards without impacting history',(){
+        controller.browseBackwards();
+        controller.browseBackwards();
+        controller.browseForwards();
+        expect(controller.inputItems,isNot(same(controller.history[1].input)));
       });
 
       test('can browse forwards after browsing backwards',(){
@@ -244,12 +275,12 @@ void main(){
       TestableCalculatorDisplayController controller;
       setUp((){
         controller = TestableCalculatorDisplayController();
-        controller.history = [DisplayHistory('1','1'),DisplayHistory('2','2')];
+        controller.history = [DisplayHistory([InputItem.ONE],'1'),DisplayHistory([InputItem.TWO],'2')];
       });
 
       test('can browse backwards',(){
         controller.browseBackwards();
-        controller.history = [DisplayHistory('1','1'),DisplayHistory('2','2'),DisplayHistory('2','2')];
+        controller.history = [DisplayHistory([InputItem.ONE],'1'),DisplayHistory([InputItem.TWO],'2'),DisplayHistory([InputItem.TWO],'2')];
         controller.clearInput();
         controller.browseBackwards();
         controller.browseBackwards();

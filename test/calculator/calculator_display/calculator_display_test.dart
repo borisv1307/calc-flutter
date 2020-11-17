@@ -86,8 +86,8 @@ void main(){
 
   group('History is displayed',(){
     testWidgets('Prior input with result',(WidgetTester tester) async{
-      await tester.pumpWidget(MaterialApp(home:CalculatorDisplay(_buildController([InputItem.TWO,InputItem.ADD,InputItem.TWO], [DisplayHistory('3 + 3', '6')]), numLines: 3)));
-      expect(find.text('3 + 3'),findsNWidgets(1));
+      await tester.pumpWidget(MaterialApp(home:CalculatorDisplay(_buildController([InputItem.TWO,InputItem.ADD,InputItem.TWO], [DisplayHistory([InputItem.THREE,InputItem.ADD,InputItem.THREE], '6')]), numLines: 3)));
+      expect(find.text('3+3'),findsNWidgets(1));
       expect(find.text('6'),findsNWidgets(1));
     });
     testWidgets('Result without specific input',(WidgetTester tester) async{
@@ -95,13 +95,13 @@ void main(){
       expect(find.text('6'),findsNWidgets(1));
     });
     testWidgets('Result with blank input',(WidgetTester tester) async{
-      await tester.pumpWidget(MaterialApp(home:CalculatorDisplay(_buildController([InputItem.TWO,InputItem.ADD,InputItem.TWO], [DisplayHistory('','6')]), numLines: 3)));
+      await tester.pumpWidget(MaterialApp(home:CalculatorDisplay(_buildController([InputItem.TWO,InputItem.ADD,InputItem.TWO], [DisplayHistory([],'6')]), numLines: 3)));
       expect(find.text('6'),findsNWidgets(1));
     });
     testWidgets('after controller updates',(WidgetTester tester) async{
       CalculatorDisplayController controller = _buildController([InputItem.TWO,InputItem.ADD,InputItem.TWO]);
       await tester.pumpWidget(MaterialApp(home:CalculatorDisplay(controller, numLines: 2)));
-      controller.history = [DisplayHistory('3+3', '6')];
+      controller.history = [DisplayHistory([InputItem.THREE,InputItem.ADD,InputItem.THREE], '6')];
       await tester.pumpAndSettle();
       expect(find.text('3+3'),findsNWidgets(1));
       expect(find.text('6'),findsNWidgets(1));
@@ -140,12 +140,12 @@ void main(){
 
   group('Ensure layout',(){
     testWidgets('standard layout',(WidgetTester tester) async{
-      await tester.pumpWidget(MaterialApp(home:CalculatorDisplay(_buildController([InputItem.TWO,InputItem.ADD,InputItem.TWO],[DisplayHistory('123', '6')]),numLines: 6)));
+      await tester.pumpWidget(MaterialApp(home:CalculatorDisplay(_buildController([InputItem.TWO,InputItem.ADD,InputItem.TWO],[DisplayHistory([InputItem.ONE,InputItem.TWO,InputItem.THREE], '6')]),numLines: 6)));
       await expectLater(find.byType(CalculatorDisplay),matchesGoldenFile('standard.png'));
     });
 
     testWidgets('scrolled to bottom',(WidgetTester tester) async{
-      List<DisplayHistory> history = Iterable<int>.generate(100).toList().map((i)=> DisplayHistory('123', '6')).toList();
+      List<DisplayHistory> history = Iterable<int>.generate(100).toList().map((i)=> DisplayHistory([InputItem.ONE,InputItem.TWO,InputItem.THREE], '6')).toList();
       await tester.pumpWidget(MaterialApp(home:CalculatorDisplay(_buildController([InputItem.TWO], history),numLines: 6)));
       await tester.pumpAndSettle();
       await expectLater(find.byType(CalculatorDisplay),matchesGoldenFile('scrolled.png'));
