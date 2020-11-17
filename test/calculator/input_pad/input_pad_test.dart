@@ -61,7 +61,7 @@ void main() {
         await tester.tap(find.text("2nd"));
         await tester.pumpAndSettle(new Duration(milliseconds: 50));
       }
-      List<Widget> allButtons = tester.widgetList(find.byKey(Key('pad_button'))).toList();
+      List<Widget> allButtons = tester.widgetList(find.byWidgetPredicate((Widget widget) => widget is InputButton || widget is PadButton)).toList();
       expect((allButtons[expectedLocation] as PadButton).display, text);
     }
 

@@ -6,7 +6,7 @@ class PadButton extends StatelessWidget{
   final InputButtonStyle style;
   final Function onTap;
 
-  PadButton(this.display, this.style, this.onTap): super(key: Key('pad_button'));
+  PadButton(this.display, this.style, this.onTap);
 
   @override
   Widget build(BuildContext context) {
