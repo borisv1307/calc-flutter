@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:open_calc/calculator/calculator_display/display_history.dart';
+import 'package:open_calc/calculator/input_pad/input_item.dart';
 
 class CalculatorDisplayController extends ChangeNotifier{
   String _inputLine='';
@@ -20,13 +21,6 @@ class CalculatorDisplayController extends ChangeNotifier{
     return _inputLine;
   }
 
-  set inputLine(String text){
-    this._inputLine = text;
-    this._cursorIndex = text.length;
-    this._historyIndex = 0;
-    notifyListeners();
-  }
-
   int get cursorIndex{
     return _cursorIndex;
   }
@@ -36,11 +30,11 @@ class CalculatorDisplayController extends ChangeNotifier{
     notifyListeners();
   }
 
-  void input(String token){
+  void input(InputItem item){
     String startToken = this._inputLine.substring(0,_cursorIndex);
     String endToken = this._inputLine.substring(_cursorIndex);
-    this._inputLine = startToken + token + endToken;
-    this._cursorIndex += token.length;
+    this._inputLine = startToken + item.value + endToken;
+    this._cursorIndex += item.value.length;
     notifyListeners();
   }
 
@@ -51,6 +45,13 @@ class CalculatorDisplayController extends ChangeNotifier{
       this._inputLine = startToken + endToken;
       notifyListeners();
     }
+  }
+
+  void clearInput(){
+    this._inputLine = '';
+    this._cursorIndex = 0;
+    this._historyIndex = 0;
+    notifyListeners();
   }
 
   void browseBackwards(){

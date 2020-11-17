@@ -24,7 +24,7 @@ class CalculatorScreenState extends State<CalculatorScreen>{
 
   // updates state to display new input on the calc screen
   void _displayInput(InputItem keypadInput) {
-      controller.input(keypadInput.value);
+      controller.input(keypadInput);
   }
 
   // updates state to perform special pad_button commands
@@ -34,14 +34,14 @@ class CalculatorScreenState extends State<CalculatorScreen>{
     } else if (command =='del') {
       controller.delete();
     } else if(command =='clear') {
-      controller.inputLine = '';
+      controller.clearInput();
       controller.history=[];
     } else if(command =='sto') {
       var toSto = controller.inputLine.split('(');
       var keyNum = toSto[0];
       storage.addVariable(keyNum, toSto[1]);
       print(storage.variableMap);
-      controller.inputLine = '';
+      controller.clearInput();
     }
   }
 
@@ -55,7 +55,7 @@ class CalculatorScreenState extends State<CalculatorScreen>{
       resultString = advancedCalculator.calculate(displayExpression);
     }
     DisplayHistory newEntry = new DisplayHistory(displayExpression, resultString);
-    controller.inputLine = '';
+    controller.clearInput();
 
     controller.history.add(newEntry);
   }

@@ -1,6 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:open_calc/calculator/calculator_display/calculator_display_controller.dart';
 import 'package:open_calc/calculator/calculator_display/display_history.dart';
+import 'package:open_calc/calculator/input_pad/input_item.dart';
 
 class TestableCalculatorDisplayController extends CalculatorDisplayController{
   int notified = 0;
@@ -37,17 +38,26 @@ void main(){
       TestableCalculatorDisplayController controller = TestableCalculatorDisplayController();
       expect(controller.inputLine,'');
     });
+  });
 
-    test('can be updated',(){
-      TestableCalculatorDisplayController controller = TestableCalculatorDisplayController();
-      controller.inputLine = 'hello';
-      expect(controller.inputLine, 'hello');
+  group('Input clearing',(){
+    TestableCalculatorDisplayController controller;
+    setUpAll((){
+      controller = TestableCalculatorDisplayController();
+      controller.input(InputItem.A);
+      controller.clearInput();
     });
 
-    test('notifies listeners when updated',(){
-      TestableCalculatorDisplayController controller = TestableCalculatorDisplayController();
-      controller.inputLine = 'hello';
-      expect(controller.notified, 1);
+    test('clears prior inputs',(){
+      expect(controller.inputLine,'');
+    });
+
+    test('notifies listeners',(){
+      expect(controller.notified,2);
+    });
+
+    test('resets cursor',(){
+      expect(controller.cursorIndex,0);
     });
   });
 
@@ -71,14 +81,18 @@ void main(){
 
     test('is at end of new input line',(){
       TestableCalculatorDisplayController controller = TestableCalculatorDisplayController();
-      controller.inputLine = 'abc';
+      controller.input(InputItem.A);
+      controller.input(InputItem.B);
+      controller.input(InputItem.C);
       expect(controller.cursorIndex,3);
     });
 
     test('is incremented to track input',(){
       TestableCalculatorDisplayController controller = TestableCalculatorDisplayController();
-      controller.inputLine = 'abc';
-      controller.input('d');
+      controller.input(InputItem.A);
+      controller.input(InputItem.B);
+      controller.input(InputItem.C);
+      controller.input(InputItem.A);
       expect(controller.cursorIndex,4);
     });
   });
@@ -86,52 +100,58 @@ void main(){
   group('Input',(){
     test('can be read from the input line',(){
       TestableCalculatorDisplayController controller = TestableCalculatorDisplayController();
-      controller.input('a');
-      expect(controller.inputLine,'a');
+      controller.input(InputItem.A);
+      expect(controller.inputLine,'A');
     });
 
     test('is appended to end of input line',(){
       TestableCalculatorDisplayController controller = TestableCalculatorDisplayController();
-      controller.input('a');
-      controller.input('b');
-      expect(controller.inputLine,'ab');
+      controller.input(InputItem.A);
+      controller.input(InputItem.B);
+      expect(controller.inputLine,'AB');
     });
 
     test('notifies listeners when updated',(){
       TestableCalculatorDisplayController controller = TestableCalculatorDisplayController();
-      controller.input('a');
+      controller.input(InputItem.A);
       expect(controller.notified, 1);
     });
 
     test('is inserted at cursor location',(){
       TestableCalculatorDisplayController controller = TestableCalculatorDisplayController();
-      controller.inputLine = 'abc';
+      controller.input(InputItem.A);
+      controller.input(InputItem.B);
+      controller.input(InputItem.C);
       controller.cursorIndex = 1;
-      controller.input('d');
-      expect(controller.inputLine,'adbc');
+      controller.input(InputItem.D);
+      expect(controller.inputLine,'ADBC');
     });
   });
 
   group('Deleting',(){
     test('character at cursor location can be deleted',(){
       TestableCalculatorDisplayController controller = TestableCalculatorDisplayController();
-      controller.inputLine = 'abc';
+      controller.input(InputItem.A);
+      controller.input(InputItem.B);
+      controller.input(InputItem.C);
       controller.cursorIndex = 1;
       controller.delete();
-      expect(controller.inputLine,'ac');
+      expect(controller.inputLine,'AC');
     });
 
     test('does not delete when cursor not on character',(){
       TestableCalculatorDisplayController controller = TestableCalculatorDisplayController();
-      controller.inputLine = 'abc';
+      controller.input(InputItem.A);
+      controller.input(InputItem.B);
+      controller.input(InputItem.C);
       controller.delete();
-      expect(controller.inputLine,'abc');
+      expect(controller.inputLine,'ABC');
     });
 
     test('notifies listener',(){
       TestableCalculatorDisplayController controller = TestableCalculatorDisplayController();
-      controller.inputLine = 'abc';
-      controller.cursorIndex = 1;
+      controller.input(InputItem.A);
+      controller.cursorIndex = 0;
       controller.delete();
       expect(controller.notified, 3);
     });
@@ -230,7 +250,7 @@ void main(){
       test('can browse backwards',(){
         controller.browseBackwards();
         controller.history = [DisplayHistory('1','1'),DisplayHistory('2','2'),DisplayHistory('2','2')];
-        controller.inputLine = '';
+        controller.clearInput();
         controller.browseBackwards();
         controller.browseBackwards();
         expect(controller.notified, 6);
