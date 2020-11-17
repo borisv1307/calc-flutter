@@ -229,8 +229,8 @@ void main() {
   });
 
   test('FACTORIAL',(){
-    expect(InputItem.FACTORIAL.display,'!');
-    expect(InputItem.FACTORIAL.value,'!');
+    expect(InputItem.COMMA.display,',');
+    expect(InputItem.COMMA.value,',');
   });
 
   test('ASINH',(){
