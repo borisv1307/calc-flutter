@@ -5,6 +5,7 @@ import 'package:open_calc/calculator/input_pad/button/pad_button.dart';
 import 'package:open_calc/calculator/input_pad/input_button_style.dart';
 import 'package:open_calc/calculator/input_pad/input_item.dart';
 import 'package:open_calc/calculator/input_pad/input_variables.dart';
+import 'package:open_calc/calculator/input_pad/button/abc_button.dart';
 
 class InputPad extends StatelessWidget{
 
@@ -144,7 +145,7 @@ class InputPadTwo extends InputPad{
             _buildInputButton(InputItem.ATANH, InputButtonStyle.TERTIARY),
             _buildInputButton(InputItem.ADD,  InputButtonStyle.SECONDARY),
             PadButton('Vars', InputButtonStyle.FOUR, () {Navigator.pushReplacementNamed(context, 'varPad');}),
-            PadButton('A,B,C', InputButtonStyle.FOUR, (){}),
+            AbcButton(super.inputFunction, InputButtonStyle.FOUR),
             _buildInputButton(InputItem.BLANK, InputButtonStyle.FOUR),
             _buildInputButton(InputItem.BLANK, InputButtonStyle.FOUR),
             _buildCommandButton('enter', InputButtonStyle.SECONDARY),
@@ -152,7 +153,6 @@ class InputPadTwo extends InputPad{
         ));
     }
 }
-
 
 class VariableScreen extends InputPad{
 
