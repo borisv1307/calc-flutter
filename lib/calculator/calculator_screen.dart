@@ -1,10 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:open_calc/calculator/calculator_display/calculator_display.dart';
 import 'package:open_calc/calculator/calculator_display/calculator_display_controller.dart';
-import 'package:open_calc/calculator/calculator_display/display_history.dart';
 import 'package:open_calc/calculator/handler/command_handler.dart';
 import 'package:open_calc/calculator/handler/input_handler.dart';
-import 'file:///C:/Users/Greg/IdeaProjects/se-calc/calc-flutter/lib/calculator/handler/input_evaluator.dart';
 import 'package:open_calc/calculator/input_pad/input_pad.dart';
 import 'package:open_calc/calculator/input_pad/input_variables.dart';
 
@@ -23,6 +21,8 @@ class CalculatorScreenState extends State<CalculatorScreen>{
   CalculatorDisplayController controller;
   InputHandler inputHandler;
   CommandHandler commandHandler;
+  List<List<List<String>>> matrixStorage = List<List<List<String>>>();
+  List<String> matrixMathList = List<String>();
 
   CalculatorScreenState(this.storage) {
     controller = CalculatorDisplayController();
@@ -41,7 +41,7 @@ class CalculatorScreenState extends State<CalculatorScreen>{
             numLines: 8
           ),
           Expanded(
-            child: InputPad(storage, inputHandler.handle, commandHandler.handle)
+            child: InputPad(storage, inputHandler.handle, commandHandler.handle,matrixStorage,matrixMathList)
           ),
         ],
       )
