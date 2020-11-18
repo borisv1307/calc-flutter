@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:open_calc/calculator/input_pad/pad/input_pad.dart';
-import 'package:open_calc/calculator/input_pad/button/abc_button.dart';
+import 'package:open_calc/calculator/input_pad/button/multi_button.dart';
 import 'package:open_calc/calculator/input_pad/button/pad_button.dart';
 import 'package:open_calc/calculator/input_pad/input_button_style.dart';
 import 'package:open_calc/calculator/input_pad/input_item.dart';
@@ -50,9 +50,17 @@ class InputPadTwo extends InputPad{
           buildInputButton(InputItem.ATANH, InputButtonStyle.TERTIARY),
           buildInputButton(InputItem.ADD,  InputButtonStyle.SECONDARY),
           PadButton('Vars', InputButtonStyle.QUARTENARY, () {Navigator.pushReplacementNamed(context, 'varPad');}),
-          AbcButton(inputFunction, InputButtonStyle.QUARTENARY),
-          buildInputButton(InputItem(''), InputButtonStyle.QUARTENARY),
-          buildInputButton(InputItem(''), InputButtonStyle.QUARTENARY),
+          MultiButton("A,B,C", inputFunction, InputButtonStyle.QUARTENARY, [
+            InputItem.A,
+            InputItem.B,
+            InputItem.C,
+            InputItem.D,
+            InputItem.E,
+            InputItem.F,
+            InputItem.G
+          ]),
+          buildInputButton(InputItem.EMPTY, InputButtonStyle.QUARTENARY),
+          buildInputButton(InputItem.EMPTY, InputButtonStyle.QUARTENARY),
           buildCommandButton('enter', InputButtonStyle.SECONDARY),
         ],
       )

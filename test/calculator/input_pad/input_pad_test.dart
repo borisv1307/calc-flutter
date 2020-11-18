@@ -167,7 +167,6 @@ void main() {
     _generateInputButtonTests(InputItem.ATANH,InputButtonStyle.TERTIARY,23,2);
     _generateInputButtonTests(InputItem.ADD,InputButtonStyle.SECONDARY,24,2);
     _generateSpecialtyButtonTests('Vars',InputButtonStyle.QUARTENARY,25,2);
-    _generateSpecialtyButtonTests('A,B,C',InputButtonStyle.QUARTENARY,26,2);
     _generateCommandButtonTests('enter','enter',InputButtonStyle.SECONDARY,29,2);
 
   });
