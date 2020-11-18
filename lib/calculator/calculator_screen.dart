@@ -4,7 +4,7 @@ import 'package:open_calc/calculator/calculator_display/calculator_display.dart'
 import 'package:open_calc/calculator/calculator_display/calculator_display_controller.dart';
 import 'package:open_calc/calculator/calculator_display/display_history.dart';
 import 'package:open_calc/calculator/input_pad/input_item.dart';
-import 'package:open_calc/calculator/input_pad/input_pad.dart';
+import 'package:open_calc/calculator/input_pad/pad/input_pad.dart';
 import 'package:open_calc/calculator/input_pad/input_variables.dart';
 
 class CalculatorScreen extends StatefulWidget {

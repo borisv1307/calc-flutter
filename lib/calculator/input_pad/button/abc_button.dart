@@ -28,31 +28,31 @@ class AbcButton extends PadButton {
           itemBuilder: (context) => [
             PopupMenuItem(
               value: InputItem.A,
-              child: Text("A", style: TextStyle(fontSize: style.fontSize, fontWeight: style.fontWeight, color: style.textColor))
+              child: Text(InputItem.A.display, style: TextStyle(fontSize: style.fontSize, fontWeight: style.fontWeight, color: style.textColor))
             ),
             PopupMenuItem(
               value: InputItem.B,
-              child: Text("B", style: TextStyle(fontSize: style.fontSize, fontWeight: style.fontWeight, color: style.textColor))
+              child: Text(InputItem.B.display, style: TextStyle(fontSize: style.fontSize, fontWeight: style.fontWeight, color: style.textColor))
             ),
             PopupMenuItem(
               value: InputItem.C,
-              child: Text("C", style: TextStyle(fontSize: style.fontSize, fontWeight: style.fontWeight, color: style.textColor))
+              child: Text(InputItem.C.display, style: TextStyle(fontSize: style.fontSize, fontWeight: style.fontWeight, color: style.textColor))
             ),
             PopupMenuItem(
               value: InputItem.D,
-              child: Text("D", style: TextStyle(fontSize: style.fontSize, fontWeight: style.fontWeight, color: style.textColor))
+              child: Text(InputItem.D.display, style: TextStyle(fontSize: style.fontSize, fontWeight: style.fontWeight, color: style.textColor))
             ),
             PopupMenuItem(
               value: InputItem.E,
-              child: Text("E", style: TextStyle(fontSize: style.fontSize, fontWeight: style.fontWeight, color: style.textColor))
+              child: Text(InputItem.E.display, style: TextStyle(fontSize: style.fontSize, fontWeight: style.fontWeight, color: style.textColor))
             ),
             PopupMenuItem(
               value: InputItem.F,
-              child: Text("F", style: TextStyle(fontSize: style.fontSize, fontWeight: style.fontWeight, color: style.textColor))
+              child: Text(InputItem.F.display, style: TextStyle(fontSize: style.fontSize, fontWeight: style.fontWeight, color: style.textColor))
             ),
             PopupMenuItem(
               value: InputItem.G,
-              child: Text("G", style: TextStyle(fontSize: style.fontSize, fontWeight: style.fontWeight, color: style.textColor))
+              child: Text(InputItem.G.display, style: TextStyle(fontSize: style.fontSize, fontWeight: style.fontWeight, color: style.textColor))
             ),
           ],
           initialValue: InputItem.A,

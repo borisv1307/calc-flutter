@@ -4,7 +4,7 @@ import 'package:open_calc/calculator/input_pad/button/input_button.dart';
 import 'package:open_calc/calculator/input_pad/button/pad_button.dart';
 import 'package:open_calc/calculator/input_pad/input_button_style.dart';
 import 'package:open_calc/calculator/input_pad/input_item.dart';
-import 'package:open_calc/calculator/input_pad/input_pad.dart';
+import 'package:open_calc/calculator/input_pad/pad/input_pad.dart';
 import 'package:open_calc/calculator/input_pad/input_variables.dart';
 
 void main() {
@@ -166,8 +166,8 @@ void main() {
     _generateInputButtonTests(InputItem.ACOSH,InputButtonStyle.TERTIARY,22,2);
     _generateInputButtonTests(InputItem.ATANH,InputButtonStyle.TERTIARY,23,2);
     _generateInputButtonTests(InputItem.ADD,InputButtonStyle.SECONDARY,24,2);
-    _generateSpecialtyButtonTests('Vars',InputButtonStyle.FOUR,25,2);
-    _generateSpecialtyButtonTests('A,B,C',InputButtonStyle.FOUR,26,2);
+    _generateSpecialtyButtonTests('Vars',InputButtonStyle.QUARTENARY,25,2);
+    _generateSpecialtyButtonTests('A,B,C',InputButtonStyle.QUARTENARY,26,2);
     _generateCommandButtonTests('enter','enter',InputButtonStyle.SECONDARY,29,2);
 
   });

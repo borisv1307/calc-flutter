@@ -56,6 +56,5 @@ class InputItem{
   static const ASINH = const InputItem('asinh',value:'asinh(');
   static const ACOSH = const InputItem('acosh',value:'acosh(');
   static const ATANH = const InputItem('atanh',value:'atanh(');
-  static const BLANK = const InputItem('');
 
 }
