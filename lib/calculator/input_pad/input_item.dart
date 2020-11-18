@@ -1,25 +1,27 @@
 class InputItem{
   final String display;
   final String value;
+  final bool answerPrepend;
 
-  const InputItem(this.display, {String value}):
+  const InputItem(this.display, {String value, this.answerPrepend = false}):
     this.value = value ?? display;
 
+  static const ANSWER = const InputItem('Ans');
   static const SIN = const InputItem('sin',value:'sin(');
   static const COS = const InputItem('cos',value:'cos(');
   static const TAN = const InputItem('tan',value:'tan(');
-  static const SQUARED = const InputItem('𝑥 ²',value:'²');
+  static const SQUARED = const InputItem('𝑥 ²',value:'²', answerPrepend: true);
   static const OPEN_PARENTHESIS = const InputItem('(');
   static const CLOSE_PARENTHESIS = const InputItem(')');
-  static const DIVIDE = const InputItem('÷',value:'/');
-  static const MULTIPLY = const InputItem('x',value:'*');
-  static const POWER = const InputItem('^');
+  static const DIVIDE = const InputItem('÷',value:'/', answerPrepend: true);
+  static const MULTIPLY = const InputItem('x',value:'*', answerPrepend: true);
+  static const POWER = const InputItem('^', answerPrepend: true);
   static const LOG = const InputItem('log',value:'log(');
-  static const SUBTRACT = const InputItem('−');
+  static const SUBTRACT = const InputItem('−', answerPrepend: true);
   static const NATURAL_LOG = const InputItem('ln',value:'ln(');
   static const NEGATIVE = const InputItem('(-)',value:'-');
   static const DECIMAL = const InputItem('.',value:'.');
-  static const ADD = const InputItem('+');
+  static const ADD = const InputItem('+', answerPrepend: true);
   static const ZERO = const InputItem('0');
   static const ONE = const InputItem('1');
   static const TWO = const InputItem('2');

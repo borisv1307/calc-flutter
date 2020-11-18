@@ -31,6 +31,14 @@ void main(){
       controller.history = [DisplayHistory([],'')];
       expect(controller.notified, 1);
     });
+
+    test('can be cleared',(){
+      TestableCalculatorDisplayController controller = TestableCalculatorDisplayController();
+      controller.history = [DisplayHistory([],'')];
+      controller.clearHistory();
+      expect(controller.notified, 2);
+      expect(controller.history.length, 0);
+    });
   });
 
   group('Input line',(){
