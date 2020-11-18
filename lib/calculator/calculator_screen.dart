@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:open_calc/calculator/calculator_display/calculator_display.dart';
 import 'package:open_calc/calculator/calculator_display/calculator_display_controller.dart';
 import 'package:open_calc/calculator/calculator_display/display_history.dart';
+import 'package:open_calc/calculator/input_pad/input_item.dart';
 import 'package:open_calc/calculator/input_pad/input_pad.dart';
 import 'package:open_calc/calculator/input_pad/input_variables.dart';
 
@@ -26,12 +27,32 @@ class CalculatorScreenState extends State<CalculatorScreen>{
   AdvancedCalculator advancedCalculator = AdvancedCalculator();
 
   // updates state to display new input on the calc screen
-  void _displayInput(String keypadInput) {
+  void _displayInput(InputItem keypadInput) {
       controller.input(keypadInput);
   }
 
-    // evaluates a function and adds the input to the history
-  void _evaluate(String displayExpression) {
+
+  // updates state to perform special pad_button commands
+  void _executeCommand(String command) {
+    if (command == 'enter') {
+      _evaluate(controller.inputLine, controller.inputItems);
+    } else if (command =='del') {
+      controller.delete();
+    } else if(command =='clear') {
+      controller.clearInput();
+      controller.history=[];
+    } else if(command =='sto') {
+      var toSto = controller.inputLine.split('(');
+      var keyNum = toSto[0];
+      storage.addVariable(keyNum, toSto[1]);
+      print(storage.variableMap);
+      controller.clearInput();
+    }
+  }
+
+  // evaluates a function and adds the input to the history
+  void _evaluate(String displayExpression, List<InputItem> input) {
+
     String resultString;
 
     if (displayExpression?.isEmpty ?? true) {  // empty string or null
@@ -39,8 +60,8 @@ class CalculatorScreenState extends State<CalculatorScreen>{
     } else {
       resultString = advancedCalculator.calculate(displayExpression);
     }
-    DisplayHistory newEntry = new DisplayHistory(displayExpression, resultString);
-    controller.inputLine = '';
+    DisplayHistory newEntry = new DisplayHistory(input, resultString);
+    controller.clearInput();
 
     controller.history.add(newEntry);
   }

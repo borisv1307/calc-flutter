@@ -1,10 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:open_calc/calculator/calculator_display/display_history.dart';
+import 'package:open_calc/calculator/input_pad/input_item.dart';
 
 class CalculatorDisplayController extends ChangeNotifier{
-  String _inputLine='';
+  List<InputItem> _input = [];
   List<DisplayHistory> _history = [];
-  int _cursorIndex = 0;
+  int _inputIndex = 0;
+  int _historyIndex = 0;
 
   List<DisplayHistory> get history{
     return _history;
@@ -16,38 +18,63 @@ class CalculatorDisplayController extends ChangeNotifier{
   }
 
   String get inputLine{
-    return _inputLine;
+    return _input.map((e) => e.value).join();
   }
 
-  set inputLine(String text){
-    this._inputLine = text;
-    this._cursorIndex = text.length;
-    notifyListeners();
+  List<InputItem> get inputItems{
+    return _input;
   }
 
   int get cursorIndex{
-    return _cursorIndex;
+    return _input.sublist(0,_inputIndex).map((e) => e.value).join().length;
   }
 
   set cursorIndex(int cursorIndex){
-    this._cursorIndex = cursorIndex;
+    String output = '';
+    for(int i = 0; i< _input.length && cursorIndex >= output.length;i++){
+      output += _input[i].value.toString();
+      this._inputIndex = i;
+    }
     notifyListeners();
   }
 
-  void input(String token){
-    String startToken = this._inputLine.substring(0,_cursorIndex);
-    String endToken = this._inputLine.substring(_cursorIndex);
-    this._inputLine = startToken + token + endToken;
-    this._cursorIndex += token.length;
+  void input(InputItem item){
+    _input.insert(_inputIndex, item);
+    this._inputIndex++;
     notifyListeners();
   }
 
   void delete(){
-    if(_cursorIndex < this._inputLine.length) {
-      String startToken = this._inputLine.substring(0, _cursorIndex);
-      String endToken = this._inputLine.substring(_cursorIndex + 1);
-      this._inputLine = startToken + endToken;
+    if(_inputIndex < this._input.length) {
+      _input.removeAt(_inputIndex);
       notifyListeners();
     }
+  }
+
+  void clearInput(){
+    this._input = [];
+    this._inputIndex = 0;
+    this._historyIndex = 0;
+    notifyListeners();
+  }
+
+  void browseBackwards(){
+    if(_historyIndex < this._history.length){
+      _historyIndex++;
+      _updateInputFromHistory();
+    }
+  }
+
+  void browseForwards(){
+    if(_historyIndex > 1){
+      _historyIndex--;
+      _updateInputFromHistory();
+    }
+  }
+
+  void _updateInputFromHistory(){
+    this._input = List.from(this._history[this._history.length - _historyIndex].input);
+    this._inputIndex = this._input.length;
+    notifyListeners();
   }
 }

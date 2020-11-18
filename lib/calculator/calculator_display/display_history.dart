@@ -1,5 +1,7 @@
+import 'package:open_calc/calculator/input_pad/input_item.dart';
+
 class DisplayHistory{
-  String input;
+  List<InputItem> input;
   String result;
 
   DisplayHistory(this.input, this.result);
