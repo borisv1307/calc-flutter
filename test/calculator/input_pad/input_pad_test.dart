@@ -7,40 +7,46 @@ import 'package:open_calc/calculator/input_pad/input_item.dart';
 import 'package:open_calc/calculator/input_pad/input_pad.dart';
 import 'package:open_calc/calculator/input_pad/input_variables.dart';
 
+List<List<List<String>>> matrixStorage = [[['0']]];
+List<String> matrixMathList;
 void main() {
   group('Buttons',(){
+
     void _testInputButtonClick(WidgetTester tester, InputItem expectedValue) async{
       InputItem actualValue;
-      await tester.pumpWidget(MaterialApp(home:InputPad(VariableStorage(),(inputItem){actualValue = inputItem;},(text){})));
+      await tester.pumpWidget(MaterialApp(home:InputPad(VariableStorage(),(inputItem){actualValue = inputItem;},(text){},matrixStorage,matrixMathList)));
       await tester.tap(find.text(expectedValue.display));
+
 
       expect(actualValue,expectedValue);
     }
 
     void _testCommandButtonClick(WidgetTester tester, String text, String expectedValue) async{
       String actualValue = '';
-      await tester.pumpWidget(MaterialApp(home:InputPad(VariableStorage(),(text){},(text){actualValue = text;})));
+      await tester.pumpWidget(MaterialApp(home:InputPad(VariableStorage(),(text){},(text){actualValue = text;},matrixStorage,matrixMathList)));
       await tester.tap(find.text(text));
 
       expect(actualValue,expectedValue);
     }
 
+
     void _testCommandStyle(WidgetTester tester, String text, InputButtonStyle expectedStyle) async {
-      await tester.pumpWidget(MaterialApp(home:InputPad(VariableStorage(),(text){},(text){})));
+      await tester.pumpWidget(MaterialApp(home:InputPad(VariableStorage(),(text){},(text){},matrixStorage,matrixMathList)));
       PadButton actualButton = tester.element(find.text(text)).findAncestorWidgetOfExactType<PadButton>();
       expect(actualButton.style, expectedStyle);
     }
 
     void _testInputStyle(WidgetTester tester, String text, InputButtonStyle expectedStyle) async {
-      await tester.pumpWidget(MaterialApp(home:InputPad(VariableStorage(),(text){},(text){})));
+      await tester.pumpWidget(MaterialApp(home:InputPad(VariableStorage(),(text){},(text){},matrixStorage,matrixMathList)));
       InputButton actualButton = tester.element(find.text(text)).findAncestorWidgetOfExactType<InputButton>();
       expect(actualButton.style, expectedStyle);
     }
 
     void _testButtonLocation(WidgetTester tester, String text, int expectedLocation) async {
-      await tester.pumpWidget(MaterialApp(home:InputPad(VariableStorage(),(text){},(text){})));
+      await tester.pumpWidget(MaterialApp(home:InputPad(VariableStorage(),(text){},(text){},matrixStorage,matrixMathList)));
       List<Widget> allButtons = tester.widgetList(find.byWidgetPredicate((Widget widget) => widget is InputButton || widget is PadButton)).toList();
       expect((allButtons[expectedLocation] as PadButton).display, text);
+
     }
 
     void _generateInputButtonTests(InputItem inputItem, InputButtonStyle style, int location){
@@ -109,7 +115,7 @@ void main() {
 
   group('Pad appearance',(){
     testWidgets('normal state',(WidgetTester tester) async{
-      await tester.pumpWidget(MaterialApp(home:InputPad(VariableStorage(),(text){},(text){},)));
+      await tester.pumpWidget(MaterialApp(home:InputPad(VariableStorage(),(text){},(text){},matrixStorage,matrixMathList)));
       await expectLater(find.byType(InputPad),matchesGoldenFile('pad-standard.png'));
     });
   });
