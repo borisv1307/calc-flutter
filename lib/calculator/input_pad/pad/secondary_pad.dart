@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:open_calc/calculator/input_pad/pad/input_pad.dart';
+import 'package:open_calc/calculator/input_pad/input_pad.dart';
 import 'package:open_calc/calculator/input_pad/button/multi_button.dart';
 import 'package:open_calc/calculator/input_pad/button/pad_button.dart';
 import 'package:open_calc/calculator/input_pad/input_button_style.dart';
