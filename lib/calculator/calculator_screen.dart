@@ -66,19 +66,6 @@ class CalculatorScreenState extends State<CalculatorScreen>{
     controller.history.add(newEntry);
   }
 
-  // updates state to perform special button commands
-  void _executeCommand(String command) {
-    if (command == 'enter') {
-      _evaluate(controller.inputLine);
-    } else if (command =='del') {
-      controller.delete();
-    } else if(command =='clear') {
-      controller.inputLine = '';
-      controller.history=[];
-    } else if(command =='sto') {
-      
-  }
-  }
 
   @override
   Widget build(BuildContext context) {
