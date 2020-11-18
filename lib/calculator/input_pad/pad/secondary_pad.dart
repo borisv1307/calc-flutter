@@ -7,9 +7,9 @@ import 'package:open_calc/calculator/input_pad/input_button_style.dart';
 import 'package:open_calc/calculator/input_pad/input_item.dart';
 
 
-class InputPadTwo extends InputPad{
+class SecondaryPad extends InputPad{
 
-  InputPadTwo(storage,input, command) : super(storage,input, command);
+  SecondaryPad(storage,input, command) : super(storage,input, command);
 
   @override
   Widget build(BuildContext context) {

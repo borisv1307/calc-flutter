@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:open_calc/calculator/input_pad/pad/input_pad_one.dart';
-import 'package:open_calc/calculator/input_pad/pad/input_pad_two.dart';
+import 'package:open_calc/calculator/input_pad/pad/primary_pad.dart';
+import 'package:open_calc/calculator/input_pad/pad/secondary_pad.dart';
 import 'package:open_calc/calculator/input_pad/button/input_button.dart';
 import 'package:open_calc/calculator/input_pad/button/pad_button.dart';
 import 'package:open_calc/calculator/input_pad/input_button_style.dart';
@@ -37,10 +37,10 @@ class InputPad extends StatelessWidget{
         WidgetBuilder builder;
         switch (settings.name) {
           case 'inputPadOne':
-            builder = (BuildContext context) => InputPadOne(this.storage,this.inputFunction, this.commandFunction);
+            builder = (BuildContext context) => PrimaryPad(this.storage,this.inputFunction, this.commandFunction);
             break;
           case 'inputPadTwo':
-            builder = (BuildContext context) => InputPadTwo(this.storage,this.inputFunction, this.commandFunction);
+            builder = (BuildContext context) => SecondaryPad(this.storage,this.inputFunction, this.commandFunction);
             break;
           case 'varPad':
             builder = (BuildContext context) => VariableScreen(this.storage,this.inputFunction, this.commandFunction);

@@ -247,4 +247,9 @@ void main() {
     expect(InputItem.ATANH.display,'atanh');
     expect(InputItem.ATANH.value,'atanh(');
   });
+
+  test('EMPTY',(){
+    expect(InputItem.EMPTY.display,'');
+    expect(InputItem.EMPTY.value,'');
+  });
 }
