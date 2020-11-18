@@ -37,7 +37,7 @@ void main() {
     }
 
     void _testInputStyle(WidgetTester tester, String text, InputButtonStyle expectedStyle) async {
-      await tester.pumpWidget(MaterialApp(home:InputPad(VariableStorage(),(text){},(text){})));
+      await tester.pumpWidget(MaterialApp(home:InputPad(VariableStorage(),(text){},(text){},matrixStorage,matrixMathList)));
       InputButton actualButton = tester.element(find.text(text)).findAncestorWidgetOfExactType<InputButton>();
       expect(actualButton.style, expectedStyle);
     }
