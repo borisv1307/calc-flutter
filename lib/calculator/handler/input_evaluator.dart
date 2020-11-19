@@ -49,10 +49,14 @@ class InputEvaluator{
 
   String _translateInput(final List<InputItem> input, final List<DisplayHistory> history){
     String inputString = '';
-    InputItem prior = InputItem.EMPTY;
+    InputItem prior;
     for(InputItem item in input) {
-      if(!item.lookback && (prior.variable || prior == InputItem.ANSWER)){
-        inputString += InputItem.MULTIPLY.value;
+      if(prior != null){
+        bool nonLookbackAfterReplaceableItem = !item.lookback && prior.replaceable;
+        bool replaceableItemAfterNonLookback = !prior.lookback && item.replaceable;
+        if(nonLookbackAfterReplaceableItem || replaceableItemAfterNonLookback){
+          inputString += InputItem.MULTIPLY.value;
+        }
       }
 
       if (item == InputItem.ANSWER) {

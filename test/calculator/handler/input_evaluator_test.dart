@@ -75,6 +75,17 @@ void main(){
       expect(history.result, '4');
     });
 
+    test('Answer is multiplied with prior input',(){
+      MockAdvancedCalculator calculator = MockAdvancedCalculator();
+      when(calculator.calculate('2*3')).thenReturn('4');
+
+      InputEvaluator evaluator = InputEvaluator(MockVariableStorage(),calculator);
+
+      DisplayHistory history = evaluator.evaluate([InputItem.TWO, InputItem.ANSWER], [DisplayHistory([], '3')]);
+      expect(history.input,[InputItem.TWO, InputItem.ANSWER]);
+      expect(history.result, '4');
+    });
+
     test('Answer is only multiplied with next input if next input isnt a lookback',(){
       MockAdvancedCalculator calculator = MockAdvancedCalculator();
       when(calculator.calculate('3+2')).thenReturn('4');
@@ -186,7 +197,7 @@ void main(){
       expect(output.result,'2');
     });
 
-    test('Variable multiplication',(){
+    test('Variable multiplication after',(){
       MockAdvancedCalculator calculator = MockAdvancedCalculator();
       when(calculator.calculate('3*2')).thenReturn('6');
 
@@ -198,6 +209,21 @@ void main(){
       DisplayHistory output = evaluator.evaluate([InputItem.A, InputItem.TWO], []);
 
       expect(output.input,[InputItem.A, InputItem.TWO]);
+      expect(output.result,'6');
+    });
+
+    test('Variable multiplication before',(){
+      MockAdvancedCalculator calculator = MockAdvancedCalculator();
+      when(calculator.calculate('2*3')).thenReturn('6');
+
+      MockVariableStorage storage = MockVariableStorage();
+      when(storage.fetchVariable('A')).thenReturn('3');
+
+      InputEvaluator evaluator = InputEvaluator(storage,calculator);
+
+      DisplayHistory output = evaluator.evaluate([InputItem.TWO, InputItem.A], []);
+
+      expect(output.input,[InputItem.TWO, InputItem.A]);
       expect(output.result,'6');
     });
   });

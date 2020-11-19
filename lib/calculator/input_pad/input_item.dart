@@ -3,11 +3,13 @@ class InputItem{
   final String value;
   final bool lookback;
   final bool variable;
+  final bool replaceable;
 
-  const InputItem(this.display, {String value, this.lookback = false, this.variable = false}):
-    this.value = value ?? display;
+  const InputItem(this.display, {String value, this.lookback = false, this.variable = false, bool replaceable = false}):
+    this.value = value ?? display,
+    this.replaceable = replaceable || variable;
 
-  static const ANSWER = const InputItem('Ans');
+  static const ANSWER = const InputItem('Ans', replaceable: true);
   static const SIN = const InputItem('sin',value:'sin(');
   static const COS = const InputItem('cos',value:'cos(');
   static const TAN = const InputItem('tan',value:'tan(');
