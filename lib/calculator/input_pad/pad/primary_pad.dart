@@ -49,7 +49,7 @@ class PrimaryPad extends InputPad{
           buildInputButton(InputItem.TWO, InputButtonStyle.PRIMARY),
           buildInputButton(InputItem.THREE, InputButtonStyle.PRIMARY),
           buildInputButton(InputItem.ADD, InputButtonStyle.SECONDARY),
-          buildCommandButton(CommandItem.STORAGE, InputButtonStyle.TERTIARY),
+          buildInputButton(InputItem.STORAGE, InputButtonStyle.TERTIARY),
           buildInputButton(InputItem.ZERO, InputButtonStyle.PRIMARY),
           buildInputButton(InputItem.DECIMAL, InputButtonStyle.PRIMARY),
           buildInputButton(InputItem.NEGATIVE, InputButtonStyle.PRIMARY),

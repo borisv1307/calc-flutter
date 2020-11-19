@@ -2,8 +2,9 @@ class InputItem{
   final String display;
   final String value;
   final bool answerPrepend;
+  final bool variable;
 
-  const InputItem(this.display, {String value, this.answerPrepend = false}):
+  const InputItem(this.display, {String value, this.answerPrepend = false, this.variable = false}):
     this.value = value ?? display;
 
   static const ANSWER = const InputItem('Ans');
@@ -32,16 +33,16 @@ class InputItem{
   static const SEVEN = const InputItem('7');
   static const EIGHT = const InputItem('8');
   static const NINE = const InputItem('9');
-  static const A = const InputItem('A');
-  static const B = const InputItem('B');
-  static const C = const InputItem('C');
-  static const D = const InputItem('D');
-  static const E = const InputItem('E');
-  static const F = const InputItem('F');
-  static const G = const InputItem('G');
-  static const H = const InputItem('H');
-  static const I = const InputItem('I');
-  static const J = const InputItem('J');
+  static const A = const InputItem('A', variable: true);
+  static const B = const InputItem('B', variable: true);
+  static const C = const InputItem('C', variable: true);
+  static const D = const InputItem('D', variable: true);
+  static const E = const InputItem('E', variable: true);
+  static const F = const InputItem('F', variable: true);
+  static const G = const InputItem('G', variable: true);
+  static const H = const InputItem('H', variable: true);
+  static const I = const InputItem('I', variable: true);
+  static const J = const InputItem('J', variable: true);
   static const PI = const InputItem('𝜋');
   static const CSC = const InputItem('csc',value:'csc(');
   static const SEC = const InputItem('sec',value:'sec(');
@@ -58,6 +59,7 @@ class InputItem{
   static const ASINH = const InputItem('asinh',value:'asinh(');
   static const ACOSH = const InputItem('acosh',value:'acosh(');
   static const ATANH = const InputItem('atanh',value:'atanh(');
+  static const STORAGE = const InputItem('sto', value:'➡');
   static const EMPTY = const InputItem('');
 
 }

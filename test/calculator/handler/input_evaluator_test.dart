@@ -3,14 +3,16 @@ import 'package:mockito/mockito.dart';
 import 'package:open_calc/calculator/calculator_display/display_history.dart';
 import 'package:open_calc/calculator/handler/input_evaluator.dart';
 import 'package:open_calc/calculator/input_pad/input_item.dart';
+import 'package:open_calc/calculator/input_pad/input_variables.dart';
 import 'package:test/test.dart';
 
 class MockAdvancedCalculator extends Mock implements AdvancedCalculator{}
+class MockVariableStorage extends Mock implements VariableStorage{}
 
 void main(){
   group('Empty input',(){
     test('evaluates to blank',(){
-      InputEvaluator evaluator = InputEvaluator(MockAdvancedCalculator());
+      InputEvaluator evaluator = InputEvaluator(MockVariableStorage(),MockAdvancedCalculator());
 
       DisplayHistory history = evaluator.evaluate([], []);
       expect(history.input,[]);
@@ -18,7 +20,7 @@ void main(){
     });
 
     test('evaluates to prior result',(){
-      InputEvaluator evaluator = InputEvaluator(MockAdvancedCalculator());
+      InputEvaluator evaluator = InputEvaluator(MockVariableStorage(),MockAdvancedCalculator());
 
       DisplayHistory history = evaluator.evaluate([], [DisplayHistory([], '3')]);
       expect(history.input,[]);
@@ -31,7 +33,7 @@ void main(){
       MockAdvancedCalculator calculator = MockAdvancedCalculator();
       when(calculator.calculate('3')).thenReturn('2');
 
-      InputEvaluator evaluator = InputEvaluator(calculator);
+      InputEvaluator evaluator = InputEvaluator(MockVariableStorage(),calculator);
 
       DisplayHistory history = evaluator.evaluate([InputItem.THREE], []);
       expect(history.input,[InputItem.THREE]);
@@ -42,7 +44,7 @@ void main(){
       MockAdvancedCalculator calculator = MockAdvancedCalculator();
       when(calculator.calculate('3+3')).thenReturn('2');
 
-      InputEvaluator evaluator = InputEvaluator(calculator);
+      InputEvaluator evaluator = InputEvaluator(MockVariableStorage(),calculator);
 
       DisplayHistory history = evaluator.evaluate([InputItem.THREE, InputItem.ADD, InputItem.THREE], []);
       expect(history.input,[InputItem.THREE, InputItem.ADD, InputItem.THREE]);
@@ -55,11 +57,94 @@ void main(){
       MockAdvancedCalculator calculator = MockAdvancedCalculator();
       when(calculator.calculate('3')).thenReturn('2');
 
-      InputEvaluator evaluator = InputEvaluator(calculator);
+      InputEvaluator evaluator = InputEvaluator(MockVariableStorage(),calculator);
 
       DisplayHistory history = evaluator.evaluate([InputItem.ANSWER], [DisplayHistory([], '3')]);
       expect(history.input,[InputItem.ANSWER]);
       expect(history.result, '2');
+    });
+  });
+
+  group('Variable storage',(){
+    group('with variable specified',(){
+      MockVariableStorage storage;
+      DisplayHistory history;
+
+      setUp((){
+        MockAdvancedCalculator calculator = MockAdvancedCalculator();
+        when(calculator.calculate('3')).thenReturn('2');
+
+        storage = MockVariableStorage();
+
+        InputEvaluator evaluator = InputEvaluator(storage,calculator);
+        history = evaluator.evaluate([InputItem.THREE,InputItem.STORAGE,InputItem.A], []);
+      });
+
+      test('stores variable',(){
+        verify(storage.addVariable('A', '2'));
+      });
+
+      test('displays input',(){
+        expect(history.input,[InputItem.THREE,InputItem.STORAGE,InputItem.A]);
+      });
+
+      test('displays result',(){
+        expect(history.result,'2');
+      });
+    });
+
+    group('with non variable specified',(){
+      MockVariableStorage storage;
+      DisplayHistory history;
+
+      setUp((){
+        MockAdvancedCalculator calculator = MockAdvancedCalculator();
+        when(calculator.calculate('3')).thenReturn('2');
+
+        storage = MockVariableStorage();
+
+        InputEvaluator evaluator = InputEvaluator(storage,calculator);
+        history = evaluator.evaluate([InputItem.THREE,InputItem.STORAGE,InputItem.FOUR], []);
+      });
+
+      test('does not store variable',(){
+        verifyNoMoreInteractions(storage);
+      });
+
+      test('displays input',(){
+        expect(history.input,[InputItem.THREE,InputItem.STORAGE,InputItem.FOUR]);
+      });
+
+      test('displays syntax error',(){
+        expect(history.result,'Syntax Error');
+      });
+    });
+
+    group('with multiple characters specified for storage',(){
+      MockVariableStorage storage;
+      DisplayHistory history;
+
+      setUp((){
+        MockAdvancedCalculator calculator = MockAdvancedCalculator();
+        when(calculator.calculate('3')).thenReturn('2');
+
+        storage = MockVariableStorage();
+
+        InputEvaluator evaluator = InputEvaluator(storage,calculator);
+        history = evaluator.evaluate([InputItem.THREE,InputItem.STORAGE,InputItem.FOUR, InputItem.A], []);
+      });
+
+      test('does not store variable',(){
+        verifyNoMoreInteractions(storage);
+      });
+
+      test('displays input',(){
+        expect(history.input,[InputItem.THREE,InputItem.STORAGE,InputItem.FOUR, InputItem.A]);
+      });
+
+      test('displays syntax error',(){
+        expect(history.result,'Syntax Error');
+      });
     });
   });
 }

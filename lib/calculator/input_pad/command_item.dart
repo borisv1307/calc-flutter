@@ -6,5 +6,4 @@ class CommandItem{
   static const ENTER = CommandItem._('enter');
   static const DELETE = CommandItem._('del');
   static const CLEAR = CommandItem._('clear');
-  static const STORAGE = CommandItem._('sto');
 }

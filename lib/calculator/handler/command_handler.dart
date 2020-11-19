@@ -10,7 +10,7 @@ class CommandHandler{
   final InputEvaluator evaluator;
 
   CommandHandler(this.controller, this.storage, [InputEvaluator evaluator]):
-      evaluator = evaluator ?? InputEvaluator();
+      evaluator = evaluator ?? InputEvaluator(storage);
 
   void handle(CommandItem command) {
     if (command == CommandItem.ENTER) {
@@ -22,12 +22,6 @@ class CommandHandler{
     } else if(command ==CommandItem.CLEAR) {
       controller.clearInput();
       controller.clearHistory();
-    } else if(command ==CommandItem.STORAGE) {
-      var toSto = controller.inputLine.split('(');
-      var keyNum = toSto[0];
-      storage.addVariable(keyNum, toSto[1]);
-      print(storage.variableMap);
-      controller.clearInput();
     }
   }
 }

@@ -142,51 +142,61 @@ void main() {
   test('A',(){
     expect(InputItem.A.display,'A');
     expect(InputItem.A.value,'A');
+    expect(InputItem.A.variable,true);
   });
 
   test('B',(){
     expect(InputItem.B.display,'B');
     expect(InputItem.B.value,'B');
+    expect(InputItem.B.variable,true);
   });
 
   test('C',(){
     expect(InputItem.C.display,'C');
     expect(InputItem.C.value,'C');
+    expect(InputItem.C.variable,true);
   });
 
   test('D',(){
     expect(InputItem.D.display,'D');
     expect(InputItem.D.value,'D');
+    expect(InputItem.D.variable,true);
   });
 
   test('E',(){
     expect(InputItem.E.display,'E');
     expect(InputItem.E.value,'E');
+    expect(InputItem.E.variable,true);
   });
 
   test('F',(){
     expect(InputItem.F.display,'F');
     expect(InputItem.F.value,'F');
+    expect(InputItem.F.variable,true);
   });
 
   test('G',(){
     expect(InputItem.G.display,'G');
     expect(InputItem.G.value,'G');
+    expect(InputItem.G.variable,true);
   });
 
   test('H',(){
     expect(InputItem.H.display,'H');
     expect(InputItem.H.value,'H');
+    expect(InputItem.H.variable,true);
   });
 
   test('I',(){
     expect(InputItem.I.display,'I');
     expect(InputItem.I.value,'I');
+    expect(InputItem.I.variable,true);
   });
 
   test('J',(){
     expect(InputItem.J.display,'J');
     expect(InputItem.J.value,'J');
+    expect(InputItem.J.variable,true);
   });
 
   test('PI',(){
@@ -257,6 +267,11 @@ void main() {
   test('ATANH',(){
     expect(InputItem.ATANH.display,'atanh');
     expect(InputItem.ATANH.value,'atanh(');
+  });
+
+  test('storage',(){
+    expect(InputItem.STORAGE.display,'sto');
+    expect(InputItem.STORAGE.value,'➡');
   });
 
   test('EMPTY',(){

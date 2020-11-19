@@ -13,8 +13,4 @@ void main() {
   test('clear', () {
     expect(CommandItem.CLEAR.display, 'clear');
   });
-
-  test('sto', () {
-    expect(CommandItem.STORAGE.display, 'sto');
-  });
 }

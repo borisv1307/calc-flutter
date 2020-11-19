@@ -23,17 +23,17 @@ void main() {
       expect(actualValue, expectedValue);
     }
 
-    void _testCommandButtonClick(WidgetTester tester, String text, String expectedValue, int screen) async{
+    void _testCommandButtonClick(WidgetTester tester, CommandItem commandItem, int screen) async{
       CommandItem actualValue;
       await tester.pumpWidget(MaterialApp(home:InputPad(VariableStorage(),(command){},(command){actualValue = command;})));
       if (screen == 2) {
         await tester.tap(find.text("2nd"));
         await tester.pumpAndSettle(new Duration(milliseconds: 50));
-        await tester.tap(find.text(text).last);
+        await tester.tap(find.text(commandItem.display).last);
       } else {
-        await tester.tap(find.text(text).first);
+        await tester.tap(find.text(commandItem.display).first);
       }
-      expect(actualValue,expectedValue);
+      expect(actualValue,commandItem);
     }
 
     void _testCommandStyle(WidgetTester tester, String text, InputButtonStyle expectedStyle, int screen) async {
@@ -82,18 +82,18 @@ void main() {
       });
     }
 
-    void _generateCommandButtonTests(String text, String display, InputButtonStyle style, int location, int screen){
-      group(text,(){
+    void _generateCommandButtonTests(CommandItem commandItem, String display, InputButtonStyle style, int location, int screen){
+      group(commandItem.display,(){
         testWidgets('executes command function when clicked with correct value',(WidgetTester tester) async{
-          _testCommandButtonClick(tester,text,display,screen);
+          _testCommandButtonClick(tester,commandItem,screen);
         });
 
         testWidgets('is styled correctly',(WidgetTester tester) async{
-          _testCommandStyle(tester,text,style,screen);
+          _testCommandStyle(tester,commandItem.display,style,screen);
         });
 
         testWidgets('is in correct location',(WidgetTester tester) async{
-          _testButtonLocation(tester,text,location,screen);
+          _testButtonLocation(tester,commandItem.display,location,screen);
         });
       });
     }
@@ -114,8 +114,8 @@ void main() {
     _generateSpecialtyButtonTests('2nd',InputButtonStyle.SECONDARY,0,1);
     _generateInputButtonTests(InputItem.OPEN_PARENTHESIS,InputButtonStyle.TERTIARY,1,1);
     _generateInputButtonTests(InputItem.CLOSE_PARENTHESIS,InputButtonStyle.TERTIARY,2,1);
-    _generateCommandButtonTests('del','del',InputButtonStyle.TERTIARY,3,1);
-    _generateCommandButtonTests('clear','clear',InputButtonStyle.TERTIARY,4,1);
+    _generateCommandButtonTests(CommandItem.DELETE,'del',InputButtonStyle.TERTIARY,3,1);
+    _generateCommandButtonTests(CommandItem.CLEAR,'clear',InputButtonStyle.TERTIARY,4,1);
     _generateInputButtonTests(InputItem.SQUARED,InputButtonStyle.TERTIARY,5,1);
     _generateInputButtonTests(InputItem.SIN,InputButtonStyle.TERTIARY,6,1);
     _generateInputButtonTests(InputItem.COS,InputButtonStyle.TERTIARY,7,1);
@@ -136,17 +136,17 @@ void main() {
     _generateInputButtonTests(InputItem.TWO,InputButtonStyle.PRIMARY,22,1);
     _generateInputButtonTests(InputItem.THREE,InputButtonStyle.PRIMARY,23,1);
     _generateInputButtonTests(InputItem.ADD,InputButtonStyle.SECONDARY,24,1);
-    _generateCommandButtonTests('sto','sto',InputButtonStyle.TERTIARY,25,1);
+    _generateInputButtonTests(InputItem.STORAGE,InputButtonStyle.TERTIARY,25,1);
     _generateInputButtonTests(InputItem.ZERO,InputButtonStyle.PRIMARY,26,1);
     _generateInputButtonTests(InputItem.DECIMAL,InputButtonStyle.PRIMARY,27,1);
     _generateInputButtonTests(InputItem.NEGATIVE,InputButtonStyle.PRIMARY,28,1);
-    _generateCommandButtonTests('enter','enter',InputButtonStyle.SECONDARY,29,1);
+    _generateCommandButtonTests(CommandItem.ENTER,'enter',InputButtonStyle.SECONDARY,29,1);
 
     _generateSpecialtyButtonTests('Back',InputButtonStyle.SECONDARY,0,2);
     _generateInputButtonTests(InputItem.OPEN_PARENTHESIS,InputButtonStyle.TERTIARY,1,2);
     _generateInputButtonTests(InputItem.CLOSE_PARENTHESIS,InputButtonStyle.TERTIARY,2,2);
-    _generateCommandButtonTests('del','del',InputButtonStyle.TERTIARY,3,2);
-    _generateCommandButtonTests('clear','clear',InputButtonStyle.TERTIARY,4,2);
+    _generateCommandButtonTests(CommandItem.DELETE,'del',InputButtonStyle.TERTIARY,3,2);
+    _generateCommandButtonTests(CommandItem.CLEAR,'clear',InputButtonStyle.TERTIARY,4,2);
     _generateInputButtonTests(InputItem.PI,InputButtonStyle.TERTIARY,5,2);
     _generateInputButtonTests(InputItem.CSC,InputButtonStyle.TERTIARY,6,2);
     _generateInputButtonTests(InputItem.SEC,InputButtonStyle.TERTIARY,7,2);
@@ -168,7 +168,7 @@ void main() {
     _generateInputButtonTests(InputItem.ATANH,InputButtonStyle.TERTIARY,23,2);
     _generateInputButtonTests(InputItem.ADD,InputButtonStyle.SECONDARY,24,2);
     _generateSpecialtyButtonTests('Vars',InputButtonStyle.QUARTENARY,25,2);
-    _generateCommandButtonTests('enter','enter',InputButtonStyle.SECONDARY,29,2);
+    _generateCommandButtonTests(CommandItem.ENTER,'enter',InputButtonStyle.SECONDARY,29,2);
 
   });
 
