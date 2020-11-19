@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:open_calc/calculator/input_pad/button/input_button.dart';
 import 'package:open_calc/calculator/input_pad/button/pad_button.dart';
+import 'package:open_calc/calculator/input_pad/command_item.dart';
 import 'package:open_calc/calculator/input_pad/input_button_style.dart';
 import 'package:open_calc/calculator/input_pad/input_item.dart';
 import 'package:open_calc/calculator/input_pad/input_pad.dart';
@@ -23,8 +24,8 @@ void main() {
     }
 
     void _testCommandButtonClick(WidgetTester tester, String text, String expectedValue, int screen) async{
-      String actualValue = '';
-      await tester.pumpWidget(MaterialApp(home:InputPad(VariableStorage(),(text){},(text){actualValue = text;})));
+      CommandItem actualValue;
+      await tester.pumpWidget(MaterialApp(home:InputPad(VariableStorage(),(command){},(command){actualValue = command;})));
       if (screen == 2) {
         await tester.tap(find.text("2nd"));
         await tester.pumpAndSettle(new Duration(milliseconds: 50));

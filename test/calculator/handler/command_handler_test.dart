@@ -3,6 +3,7 @@ import 'package:open_calc/calculator/calculator_display/calculator_display_contr
 import 'package:open_calc/calculator/calculator_display/display_history.dart';
 import 'package:open_calc/calculator/handler/command_handler.dart';
 import 'package:open_calc/calculator/handler/input_evaluator.dart';
+import 'package:open_calc/calculator/input_pad/command_item.dart';
 import 'package:open_calc/calculator/input_pad/input_item.dart';
 import 'package:open_calc/calculator/input_pad/input_variables.dart';
 import 'package:test/test.dart';
@@ -27,7 +28,7 @@ void main(){
       when(evaluator.evaluate([InputItem.A], history)).thenReturn(DisplayHistory([InputItem.B], '72'));
 
       CommandHandler handler = CommandHandler(controller, MockVariableStorage(), evaluator);
-      handler.handle('enter');
+      handler.handle(CommandItem.ENTER);
     });
 
     test('clears input',(){
@@ -46,7 +47,7 @@ void main(){
       MockCalculatorDisplayController controller = MockCalculatorDisplayController();
       CommandHandler handler = CommandHandler(controller, MockVariableStorage(), MockInputEvaluator());
 
-      handler.handle('del');
+      handler.handle(CommandItem.DELETE);
       verify(controller.delete()).called(1);
     });
   });
@@ -56,7 +57,7 @@ void main(){
     setUpAll((){
       controller = MockCalculatorDisplayController();
       CommandHandler handler = CommandHandler(controller, MockVariableStorage(), MockInputEvaluator());
-      handler.handle('clear');
+      handler.handle(CommandItem.CLEAR);
     });
 
     test('clears input',(){

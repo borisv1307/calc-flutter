@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:open_calc/calculator/input_pad/command_item.dart';
 import '../input_pad.dart';
 import 'package:open_calc/calculator/input_pad/button/pad_button.dart';
 import 'package:open_calc/calculator/input_pad/input_button_style.dart';
@@ -26,8 +27,8 @@ class PrimaryPad extends InputPad{
           PadButton('2nd', InputButtonStyle.SECONDARY, () {Navigator.pushReplacementNamed(context, 'inputPadTwo');}),
           buildInputButton(InputItem.OPEN_PARENTHESIS, InputButtonStyle.TERTIARY),
           buildInputButton(InputItem.CLOSE_PARENTHESIS, InputButtonStyle.TERTIARY),
-          buildCommandButton('del',InputButtonStyle.TERTIARY),
-          buildCommandButton('clear',InputButtonStyle.TERTIARY),
+          buildCommandButton(CommandItem.DELETE,InputButtonStyle.TERTIARY),
+          buildCommandButton(CommandItem.CLEAR,InputButtonStyle.TERTIARY),
           buildInputButton(InputItem.SQUARED, InputButtonStyle.TERTIARY),
           buildInputButton(InputItem.SIN, InputButtonStyle.TERTIARY),
           buildInputButton(InputItem.COS, InputButtonStyle.TERTIARY),
@@ -48,11 +49,11 @@ class PrimaryPad extends InputPad{
           buildInputButton(InputItem.TWO, InputButtonStyle.PRIMARY),
           buildInputButton(InputItem.THREE, InputButtonStyle.PRIMARY),
           buildInputButton(InputItem.ADD, InputButtonStyle.SECONDARY),
-          buildCommandButton('sto', InputButtonStyle.TERTIARY),
+          buildCommandButton(CommandItem.STORAGE, InputButtonStyle.TERTIARY),
           buildInputButton(InputItem.ZERO, InputButtonStyle.PRIMARY),
           buildInputButton(InputItem.DECIMAL, InputButtonStyle.PRIMARY),
           buildInputButton(InputItem.NEGATIVE, InputButtonStyle.PRIMARY),
-          buildCommandButton('enter', InputButtonStyle.SECONDARY),
+          buildCommandButton(CommandItem.ENTER, InputButtonStyle.SECONDARY),
         ],
       )
     );
