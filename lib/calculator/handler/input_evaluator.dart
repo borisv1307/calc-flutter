@@ -49,12 +49,20 @@ class InputEvaluator{
 
   String _translateInput(final List<InputItem> input, final List<DisplayHistory> history){
     String inputString = '';
-    for(InputItem item in input){
-      if(item == InputItem.ANSWER){
+    InputItem prior = InputItem.EMPTY;
+    for(InputItem item in input) {
+      if(!item.lookback && (prior.variable || prior == InputItem.ANSWER)){
+        inputString += InputItem.MULTIPLY.value;
+      }
+
+      if (item == InputItem.ANSWER) {
         inputString += history.last.result;
-      }else{
+      } else if (item.variable){
+        inputString += storage.fetchVariable(item.value);
+      } else{
         inputString += item.value;
       }
+      prior = item;
     }
     return inputString;
   }

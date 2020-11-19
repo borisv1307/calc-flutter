@@ -26,7 +26,7 @@ void main() {
   test('squared',(){
     expect(InputItem.SQUARED.display,'𝑥 ²');
     expect(InputItem.SQUARED.value,'²');
-    expect(InputItem.SQUARED.answerPrepend, true);
+    expect(InputItem.SQUARED.lookback, true);
   });
 
   test('open parenthesis',(){
@@ -37,24 +37,25 @@ void main() {
   test('close parenthesis',(){
     expect(InputItem.CLOSE_PARENTHESIS.display,')');
     expect(InputItem.CLOSE_PARENTHESIS.value,')');
+    expect(InputItem.CLOSE_PARENTHESIS.lookback,true);
   });
 
   test('divide',(){
     expect(InputItem.DIVIDE.display,'÷');
     expect(InputItem.DIVIDE.value,'/');
-    expect(InputItem.DIVIDE.answerPrepend, true);
+    expect(InputItem.DIVIDE.lookback, true);
   });
 
   test('power',(){
     expect(InputItem.POWER.display,'^');
     expect(InputItem.POWER.value,'^');
-    expect(InputItem.POWER.answerPrepend, true);
+    expect(InputItem.POWER.lookback, true);
   });
 
   test('multiply',(){
     expect(InputItem.MULTIPLY.display,'x');
     expect(InputItem.MULTIPLY.value,'*');
-    expect(InputItem.MULTIPLY.answerPrepend, true);
+    expect(InputItem.MULTIPLY.lookback, true);
   });
 
   test('log',(){
@@ -65,7 +66,7 @@ void main() {
   test('subtract',(){
     expect(InputItem.SUBTRACT.display,'−');
     expect(InputItem.SUBTRACT.value,'−');
-    expect(InputItem.SUBTRACT.answerPrepend, true);
+    expect(InputItem.SUBTRACT.lookback, true);
   });
 
   test('natural log',(){
@@ -86,7 +87,7 @@ void main() {
   test('add',(){
     expect(InputItem.ADD.display,'+');
     expect(InputItem.ADD.value,'+');
-    expect(InputItem.ADD.answerPrepend, true);
+    expect(InputItem.ADD.lookback, true);
   });
 
   test('zero',(){
@@ -272,6 +273,7 @@ void main() {
   test('storage',(){
     expect(InputItem.STORAGE.display,'sto');
     expect(InputItem.STORAGE.value,'➡');
+    expect(InputItem.STORAGE.lookback,true);
   });
 
   test('EMPTY',(){

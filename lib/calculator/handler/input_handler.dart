@@ -7,7 +7,7 @@ class InputHandler{
   InputHandler(this.controller);
 
   void handle(InputItem inputItem) {
-    if(inputItem.answerPrepend && controller.history.isNotEmpty && controller.inputItems.isEmpty){
+    if(inputItem.lookback && controller.history.isNotEmpty && controller.inputItems.isEmpty){
       controller.input(InputItem.ANSWER);
     }
     controller.input(inputItem);
