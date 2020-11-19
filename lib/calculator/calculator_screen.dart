@@ -21,8 +21,6 @@ class CalculatorScreenState extends State<CalculatorScreen>{
   CalculatorDisplayController controller;
   InputHandler inputHandler;
   CommandHandler commandHandler;
-  List<List<List<String>>> matrixStorage = List<List<List<String>>>();
-  List<String> matrixMathList = List<String>();
 
   CalculatorScreenState(this.storage) {
     controller = CalculatorDisplayController();
@@ -41,7 +39,7 @@ class CalculatorScreenState extends State<CalculatorScreen>{
             numLines: 8
           ),
           Expanded(
-            child: InputPad(storage, inputHandler.handle, commandHandler.handle,matrixStorage,matrixMathList)
+            child: InputPad(storage, inputHandler.handle, commandHandler.handle)
           ),
         ],
       )
