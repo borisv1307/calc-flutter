@@ -12,7 +12,7 @@ class VariableStorage {
   }
 
   String fetchVariable(String key){
-    return variableMap[key];
+    return variableMap[key] ?? '0';
   }
 }
 

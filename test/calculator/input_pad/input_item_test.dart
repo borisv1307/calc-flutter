@@ -26,7 +26,7 @@ void main() {
   test('squared',(){
     expect(InputItem.SQUARED.display,'𝑥 ²');
     expect(InputItem.SQUARED.value,'²');
-    expect(InputItem.SQUARED.answerPrepend, true);
+    expect(InputItem.SQUARED.lookback, true);
   });
 
   test('open parenthesis',(){
@@ -37,24 +37,25 @@ void main() {
   test('close parenthesis',(){
     expect(InputItem.CLOSE_PARENTHESIS.display,')');
     expect(InputItem.CLOSE_PARENTHESIS.value,')');
+    expect(InputItem.CLOSE_PARENTHESIS.lookback,true);
   });
 
   test('divide',(){
     expect(InputItem.DIVIDE.display,'÷');
     expect(InputItem.DIVIDE.value,'/');
-    expect(InputItem.DIVIDE.answerPrepend, true);
+    expect(InputItem.DIVIDE.lookback, true);
   });
 
   test('power',(){
     expect(InputItem.POWER.display,'^');
     expect(InputItem.POWER.value,'^');
-    expect(InputItem.POWER.answerPrepend, true);
+    expect(InputItem.POWER.lookback, true);
   });
 
   test('multiply',(){
     expect(InputItem.MULTIPLY.display,'x');
     expect(InputItem.MULTIPLY.value,'*');
-    expect(InputItem.MULTIPLY.answerPrepend, true);
+    expect(InputItem.MULTIPLY.lookback, true);
   });
 
   test('log',(){
@@ -65,7 +66,7 @@ void main() {
   test('subtract',(){
     expect(InputItem.SUBTRACT.display,'−');
     expect(InputItem.SUBTRACT.value,'−');
-    expect(InputItem.SUBTRACT.answerPrepend, true);
+    expect(InputItem.SUBTRACT.lookback, true);
   });
 
   test('natural log',(){
@@ -86,7 +87,7 @@ void main() {
   test('add',(){
     expect(InputItem.ADD.display,'+');
     expect(InputItem.ADD.value,'+');
-    expect(InputItem.ADD.answerPrepend, true);
+    expect(InputItem.ADD.lookback, true);
   });
 
   test('zero',(){
@@ -142,51 +143,61 @@ void main() {
   test('A',(){
     expect(InputItem.A.display,'A');
     expect(InputItem.A.value,'A');
+    expect(InputItem.A.variable,true);
   });
 
   test('B',(){
     expect(InputItem.B.display,'B');
     expect(InputItem.B.value,'B');
+    expect(InputItem.B.variable,true);
   });
 
   test('C',(){
     expect(InputItem.C.display,'C');
     expect(InputItem.C.value,'C');
+    expect(InputItem.C.variable,true);
   });
 
   test('D',(){
     expect(InputItem.D.display,'D');
     expect(InputItem.D.value,'D');
+    expect(InputItem.D.variable,true);
   });
 
   test('E',(){
     expect(InputItem.E.display,'E');
     expect(InputItem.E.value,'E');
+    expect(InputItem.E.variable,true);
   });
 
   test('F',(){
     expect(InputItem.F.display,'F');
     expect(InputItem.F.value,'F');
+    expect(InputItem.F.variable,true);
   });
 
   test('G',(){
     expect(InputItem.G.display,'G');
     expect(InputItem.G.value,'G');
+    expect(InputItem.G.variable,true);
   });
 
   test('H',(){
     expect(InputItem.H.display,'H');
     expect(InputItem.H.value,'H');
+    expect(InputItem.H.variable,true);
   });
 
   test('I',(){
     expect(InputItem.I.display,'I');
     expect(InputItem.I.value,'I');
+    expect(InputItem.I.variable,true);
   });
 
   test('J',(){
     expect(InputItem.J.display,'J');
     expect(InputItem.J.value,'J');
+    expect(InputItem.J.variable,true);
   });
 
   test('PI',(){
@@ -257,6 +268,12 @@ void main() {
   test('ATANH',(){
     expect(InputItem.ATANH.display,'atanh');
     expect(InputItem.ATANH.value,'atanh(');
+  });
+
+  test('storage',(){
+    expect(InputItem.STORAGE.display,'sto');
+    expect(InputItem.STORAGE.value,'➡');
+    expect(InputItem.STORAGE.lookback,true);
   });
 
   test('EMPTY',(){

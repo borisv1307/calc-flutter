@@ -100,6 +100,13 @@ void main(){
       expect(controller.cursorIndex, 0);
     });
 
+    test('can be updated to be after all entered text',(){
+      TestableCalculatorDisplayController controller = TestableCalculatorDisplayController();
+      controller.input(InputItem.COS);
+      controller.cursorIndex = 4;
+      expect(controller.cursorIndex, 4);
+    });
+
     test('notifies listeners when updated',(){
       TestableCalculatorDisplayController controller = TestableCalculatorDisplayController();
       controller.cursorIndex = 5;

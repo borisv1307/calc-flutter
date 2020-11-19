@@ -36,8 +36,10 @@ class CalculatorDisplayController extends ChangeNotifier{
 
   set cursorIndex(int cursorIndex){
     String output = '';
-    for(int i = 0; i< _input.length && cursorIndex >= output.length;i++){
-      output += _input[i].value.toString();
+    for(int i = 0; i<= _input.length && cursorIndex >= output.length;i++){
+      if(i < _input.length) {
+        output += _input[i].value.toString();
+      }
       this._inputIndex = i;
     }
     notifyListeners();

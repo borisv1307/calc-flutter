@@ -21,7 +21,11 @@ void main(){
       expect(testVars.fetchVariable('2'), equals('5 - 5'));
       expect(testVars.fetchVariable('6'), equals('5 / 5'));
     });
+  });
 
+  test('Non existent variable returns 0',(){
+    VariableStorage storage = new VariableStorage();
+    expect(storage.fetchVariable('Z'),'0');
   });
 }
 

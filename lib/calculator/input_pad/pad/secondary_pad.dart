@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:open_calc/calculator/input_pad/command_item.dart';
 import 'package:open_calc/calculator/input_pad/input_pad.dart';
 import 'package:open_calc/calculator/input_pad/button/multi_button.dart';
 import 'package:open_calc/calculator/input_pad/button/pad_button.dart';
@@ -27,8 +28,8 @@ class SecondaryPad extends InputPad{
           PadButton('Back', InputButtonStyle.SECONDARY, () {Navigator.pushReplacementNamed(context, 'inputPadOne');}),
           buildInputButton(InputItem.OPEN_PARENTHESIS, InputButtonStyle.TERTIARY),
           buildInputButton(InputItem.CLOSE_PARENTHESIS, InputButtonStyle.TERTIARY),
-          buildCommandButton('del',InputButtonStyle.TERTIARY),
-          buildCommandButton('clear',InputButtonStyle.TERTIARY),
+          buildCommandButton(CommandItem.DELETE,InputButtonStyle.TERTIARY),
+          buildCommandButton(CommandItem.CLEAR,InputButtonStyle.TERTIARY),
           buildInputButton(InputItem.PI, InputButtonStyle.TERTIARY),
           buildInputButton(InputItem.CSC, InputButtonStyle.TERTIARY),
           buildInputButton(InputItem.SEC, InputButtonStyle.TERTIARY),
@@ -61,7 +62,7 @@ class SecondaryPad extends InputPad{
           ]),
           buildInputButton(InputItem.EMPTY, InputButtonStyle.QUARTENARY),
           buildInputButton(InputItem.EMPTY, InputButtonStyle.QUARTENARY),
-          buildCommandButton('enter', InputButtonStyle.SECONDARY),
+          buildCommandButton(CommandItem.ENTER, InputButtonStyle.SECONDARY),
         ],
       )
     );
