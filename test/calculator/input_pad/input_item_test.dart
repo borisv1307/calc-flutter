@@ -3,6 +3,11 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:open_calc/calculator/input_pad/input_item.dart';
 
 void main() {
+  test('ans',(){
+    expect(InputItem.ANSWER.display,'Ans');
+    expect(InputItem.ANSWER.value,'Ans');
+  });
+
   test('sin',(){
     expect(InputItem.SIN.display,'sin');
     expect(InputItem.SIN.value,'sin(');
@@ -21,6 +26,7 @@ void main() {
   test('squared',(){
     expect(InputItem.SQUARED.display,'𝑥 ²');
     expect(InputItem.SQUARED.value,'²');
+    expect(InputItem.SQUARED.answerPrepend, true);
   });
 
   test('open parenthesis',(){
@@ -36,16 +42,19 @@ void main() {
   test('divide',(){
     expect(InputItem.DIVIDE.display,'÷');
     expect(InputItem.DIVIDE.value,'/');
+    expect(InputItem.DIVIDE.answerPrepend, true);
   });
 
   test('power',(){
     expect(InputItem.POWER.display,'^');
     expect(InputItem.POWER.value,'^');
+    expect(InputItem.POWER.answerPrepend, true);
   });
 
   test('multiply',(){
     expect(InputItem.MULTIPLY.display,'x');
     expect(InputItem.MULTIPLY.value,'*');
+    expect(InputItem.MULTIPLY.answerPrepend, true);
   });
 
   test('log',(){
@@ -56,6 +65,7 @@ void main() {
   test('subtract',(){
     expect(InputItem.SUBTRACT.display,'−');
     expect(InputItem.SUBTRACT.value,'−');
+    expect(InputItem.SUBTRACT.answerPrepend, true);
   });
 
   test('natural log',(){
@@ -76,6 +86,7 @@ void main() {
   test('add',(){
     expect(InputItem.ADD.display,'+');
     expect(InputItem.ADD.value,'+');
+    expect(InputItem.ADD.answerPrepend, true);
   });
 
   test('zero',(){

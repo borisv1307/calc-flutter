@@ -17,6 +17,11 @@ class CalculatorDisplayController extends ChangeNotifier{
     notifyListeners();
   }
 
+  void clearHistory(){
+    this._history = [];
+    notifyListeners();
+  }
+
   String get inputLine{
     return _input.map((e) => e.value).join();
   }
