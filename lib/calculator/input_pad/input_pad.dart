@@ -5,17 +5,14 @@ import 'package:open_calc/calculator/input_pad/button/pad_button.dart';
 import 'package:open_calc/calculator/input_pad/input_button_style.dart';
 import 'package:open_calc/calculator/input_pad/input_item.dart';
 import 'package:open_calc/calculator/input_pad/input_variables.dart';
-import 'package:open_calc/calculator/matrix/matrix_main.dart';
 
 class InputPad extends StatelessWidget{
 
   final Function(InputItem input) inputFunction;
   final Function(String command) commandFunction;
   final VariableStorage storage;
-  final List<List<List<String>>> matrixStorage;
-  final List<String> matrixMathList;
 
-  InputPad(this.storage,this.inputFunction,this.commandFunction, this.matrixStorage, this.matrixMathList);
+  InputPad(this.storage,this.inputFunction,this.commandFunction);
 
 
   Widget _buildInputButton(InputItem inputItem, InputButtonStyle type){
@@ -28,9 +25,6 @@ class InputPad extends StatelessWidget{
     });
   }
 
-  //====================================================================================
-  //==================================================================================
-
   @override
   Widget build(BuildContext context){
     return new Navigator(
@@ -39,16 +33,13 @@ class InputPad extends StatelessWidget{
         WidgetBuilder builder;
         switch (settings.name) {
           case 'inputPadOne':
-            builder = (BuildContext context) => InputPadOne(this.storage,this.inputFunction, this.commandFunction,this.matrixStorage,this.matrixMathList);
+            builder = (BuildContext context) => InputPadOne(this.storage,this.inputFunction, this.commandFunction);
             break;
           case 'inputPadTwo':
-            builder = (BuildContext context) => InputPadTwo(this.storage,this.inputFunction, this.commandFunction,this.matrixStorage,this.matrixMathList);
+            builder = (BuildContext context) => InputPadTwo(this.storage,this.inputFunction, this.commandFunction);
             break;
           case 'varPad':
-            builder = (BuildContext context) => VariableScreen(this.storage,this.inputFunction, this.commandFunction,this.matrixStorage,this.matrixMathList);
-            break;
-          case 'Matr':
-            builder = (BuildContext context) => MatrixHome(matrixStorage, matrixMathList);
+            builder = (BuildContext context) => VariableScreen(this.storage,this.inputFunction, this.commandFunction);
             break;
         }
         return MaterialPageRoute(builder: builder, settings: settings);
@@ -59,7 +50,7 @@ class InputPad extends StatelessWidget{
 
 class InputPadOne extends InputPad{
 
-  InputPadOne(storage,input,command,matrixStorage,matrixMathList) : super(storage,input,command,matrixStorage,matrixMathList);
+  InputPadOne(storage,input, command) : super(storage,input, command);
   
   @override
   Widget build(BuildContext context) {
@@ -128,7 +119,7 @@ class InputPadOne extends InputPad{
 
 class InputPadTwo extends InputPad{
 
-  InputPadTwo(storage,input,command,matrixStorage,matrixMathList) : super(storage,input,command,matrixStorage,matrixMathList);
+  InputPadTwo(storage,input, command) : super(storage,input, command);
 
   @override
   Widget build(BuildContext context) {
@@ -177,23 +168,6 @@ class InputPadTwo extends InputPad{
                 },
               )),
             ),
-            Container(
-              margin: EdgeInsets.all(5),
-              child:Material(
-                borderRadius: InputButtonStyle.SECONDARY.radius,
-                color: InputButtonStyle.SECONDARY.backgroundColor,
-                child:InkWell(
-                  splashColor: Colors.blueGrey,
-                  borderRadius: InputButtonStyle.SECONDARY.radius,
-                  child:Container(
-                    alignment: Alignment.center,
-                    child: Text('Matr', style: TextStyle(fontSize: InputButtonStyle.SECONDARY.fontSize, fontWeight: InputButtonStyle.SECONDARY.fontWeight, color: InputButtonStyle.SECONDARY.textColor)),
-                ),
-                onTap: (){
-                  Navigator.of(context).pushReplacementNamed('Matr');
-                },
-              )),
-            ),
             _buildInputButton(InputItem.A,InputButtonStyle.TERTIARY),
             _buildInputButton(InputItem.B,InputButtonStyle.TERTIARY),
             _buildInputButton(InputItem.C,InputButtonStyle.TERTIARY),
@@ -205,7 +179,6 @@ class InputPadTwo extends InputPad{
             _buildInputButton(InputItem.I,InputButtonStyle.TERTIARY),
             _buildInputButton(InputItem.J,InputButtonStyle.TERTIARY),
 
-
               ],
 
         ));
@@ -215,7 +188,7 @@ class InputPadTwo extends InputPad{
 
 class VariableScreen extends InputPad{
 
-  VariableScreen(storage,input,command,matrixStorage,matrixMathList) : super(storage,input,command,matrixStorage,matrixMathList);
+  VariableScreen(storage,input, command) : super(storage,input, command);
 
   List<Widget> _getVariables(){
     var list = [];

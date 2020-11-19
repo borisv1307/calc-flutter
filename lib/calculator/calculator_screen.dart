@@ -9,20 +9,16 @@ import 'package:open_calc/calculator/input_pad/input_variables.dart';
 
 class CalculatorScreen extends StatefulWidget {
   final VariableStorage storage;
-  final List<List<List<String>>> matrixStorage;
-  final List<String> matrixMathList;
 
-  CalculatorScreen(this.storage, this.matrixStorage, this.matrixMathList);
+  CalculatorScreen(this.storage);
   @override
-  State<StatefulWidget> createState() => CalculatorScreenState(storage, matrixStorage, matrixMathList);
+  State<StatefulWidget> createState() => CalculatorScreenState(storage);
 }
 
 class CalculatorScreenState extends State<CalculatorScreen>{
 
   final VariableStorage storage;
-  final List<List<List<String>>> matrixStorage;
-    final List<String> matrixMathList;
-  CalculatorScreenState(this.storage,this.matrixStorage,this.matrixMathList);
+  CalculatorScreenState(this.storage);
   CalculatorDisplayController controller = CalculatorDisplayController();
   AdvancedCalculator advancedCalculator = AdvancedCalculator();
 
@@ -30,7 +26,6 @@ class CalculatorScreenState extends State<CalculatorScreen>{
   void _displayInput(InputItem keypadInput) {
       controller.input(keypadInput);
   }
-
 
   // updates state to perform special pad_button commands
   void _executeCommand(String command) {
@@ -52,7 +47,6 @@ class CalculatorScreenState extends State<CalculatorScreen>{
 
   // evaluates a function and adds the input to the history
   void _evaluate(String displayExpression, List<InputItem> input) {
-
     String resultString;
 
     if (displayExpression?.isEmpty ?? true) {  // empty string or null
@@ -65,7 +59,7 @@ class CalculatorScreenState extends State<CalculatorScreen>{
 
     controller.history.add(newEntry);
   }
-
+  
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -77,7 +71,7 @@ class CalculatorScreenState extends State<CalculatorScreen>{
             numLines: 8
           ),
           Expanded(
-            child: InputPad(storage, _displayInput, _executeCommand,matrixStorage,matrixMathList)
+            child: InputPad(storage, _displayInput, _executeCommand)
           ),
         ],
       )

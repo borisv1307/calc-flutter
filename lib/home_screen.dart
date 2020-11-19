@@ -11,8 +11,6 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
 
     VariableStorage storage = new VariableStorage();
-    List<List<List<String>>> matrixStorage = List<List<List<String>>>();
-    List<String> matrixMathList = List<String>();
 
     return MaterialApp(
         home: DefaultTabController(
@@ -32,7 +30,7 @@ class HomeScreen extends StatelessWidget {
                 ),
                 body: TabBarView(children: [
                   GraphScreen(),
-                  CalculatorScreen(storage, matrixStorage, matrixMathList)
+                  CalculatorScreen(storage)
                 ]
             )
         )
