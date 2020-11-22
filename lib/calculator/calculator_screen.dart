@@ -8,24 +8,26 @@ import 'package:open_calc/calculator/input_pad/input_variables.dart';
 
 class CalculatorScreen extends StatefulWidget {
   final VariableStorage storage;
+  final List<List<List<String>>> matrixStorage;
 
-  CalculatorScreen(this.storage);
+  CalculatorScreen(this.storage, this.matrixStorage);
   @override
-  State<StatefulWidget> createState() => CalculatorScreenState(storage);
+  State<StatefulWidget> createState() => CalculatorScreenState(storage, matrixStorage);
 }
 
 class CalculatorScreenState extends State<CalculatorScreen>{
 
   final VariableStorage storage;
+  final List<List<List<String>>> matrixStorage;
 
   CalculatorDisplayController controller;
   InputHandler inputHandler;
   CommandHandler commandHandler;
 
-  CalculatorScreenState(this.storage) {
+  CalculatorScreenState(this.storage, this.matrixStorage) {
     controller = CalculatorDisplayController();
     inputHandler= InputHandler(controller);
-    commandHandler = CommandHandler(controller, storage);
+    commandHandler = CommandHandler(controller, storage, matrixStorage);
   }
   
   @override
@@ -39,7 +41,7 @@ class CalculatorScreenState extends State<CalculatorScreen>{
             numLines: 8
           ),
           Expanded(
-            child: InputPad(storage, inputHandler.handle, commandHandler.handle)
+            child: InputPad(storage, inputHandler.handle, commandHandler.handle, matrixStorage)
           ),
         ],
       )

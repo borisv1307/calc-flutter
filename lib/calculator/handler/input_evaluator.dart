@@ -2,13 +2,17 @@ import 'package:advanced_calculation/advanced_calculator.dart';
 import 'package:open_calc/calculator/calculator_display/display_history.dart';
 import 'package:open_calc/calculator/input_pad/input_item.dart';
 import 'package:open_calc/calculator/input_pad/input_variables.dart';
+import 'package:open_calc/calculator/matrices/matrix_formatting.dart';
 
 class InputEvaluator{
   static const String SYNTAX_ERROR = 'Syntax Error';
 
   final AdvancedCalculator calculator;
   final VariableStorage storage;
-  InputEvaluator(this.storage, [AdvancedCalculator calculator]):
+  final List<List<List<String>>> matrixStorage;
+  MatrixFormatter matrFormatter = new MatrixFormatter();
+  
+  InputEvaluator(this.storage, this.matrixStorage, [AdvancedCalculator calculator]):
       calculator = calculator ?? AdvancedCalculator();
 
   DisplayHistory evaluate(final List<InputItem> input, final List<DisplayHistory> history) {
@@ -16,6 +20,9 @@ class InputEvaluator{
 
     if(input.contains(InputItem.STORAGE)){
       resultString = _evaluateStorage(input, resultString, history);
+    }else if (_translateInput(input, history).contains("matr")){
+      var resultList = matrFormatter.matrixStringToList(_calculateMatr(input, history));
+      resultString = matrFormatter.printMatrix(resultList);
     }else if (input.isNotEmpty) {
       resultString = _calculate(input, history);
     } else if(history.isNotEmpty){
@@ -45,6 +52,36 @@ class InputEvaluator{
     String resultString = calculator.calculate(inputString);
 
     return resultString;
+  }
+
+  String _calculateMatr(final List<InputItem> input, final List<DisplayHistory> history){
+        
+        String matrixString;
+        String inputString = _translateInput(input, history);
+
+        if(inputString.contains('+')){
+          matrixString = '';
+          var inputArray = inputString.split('+');
+          String a = inputArray[0].replaceAll("matr", "");
+          String b = inputArray[1].replaceAll("matr", "");
+          
+          String matrix1 = matrFormatter.formatMatrixString(matrixStorage[(int.parse(a)-1)]);
+          String matrix2 = matrFormatter.formatMatrixString(matrixStorage[(int.parse(b)-1)]);
+          matrixString = matrix1 + "+" + matrix2;
+
+        }else if(inputString.contains('−')){
+          matrixString = '';
+          var inputArray = inputString.split('−');
+          String a = inputArray[0].replaceAll("matr", "");
+          String b = inputArray[1].replaceAll("matr", "");
+
+          String matrix1 = matrFormatter.formatMatrixString(matrixStorage[(int.parse(a)-1)]);
+          String matrix2 = matrFormatter.formatMatrixString(matrixStorage[(int.parse(b)-1)]);
+          matrixString = matrix1 + "−" + matrix2;
+        }
+        String resultString = calculator.calculateMatrix(matrixString);
+
+        return resultString;
   }
 
   String _translateInput(final List<InputItem> input, final List<DisplayHistory> history){

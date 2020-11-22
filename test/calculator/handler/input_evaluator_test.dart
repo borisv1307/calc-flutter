@@ -8,11 +8,12 @@ import 'package:test/test.dart';
 
 class MockAdvancedCalculator extends Mock implements AdvancedCalculator{}
 class MockVariableStorage extends Mock implements VariableStorage{}
+List<List<List<String>>> matrixStorage = new List<List<List<String>>>();
 
 void main(){
   group('Empty input',(){
     test('evaluates to blank',(){
-      InputEvaluator evaluator = InputEvaluator(MockVariableStorage(),MockAdvancedCalculator());
+      InputEvaluator evaluator = InputEvaluator(MockVariableStorage(), matrixStorage, MockAdvancedCalculator());
 
       DisplayHistory history = evaluator.evaluate([], []);
       expect(history.input,[]);
@@ -20,7 +21,7 @@ void main(){
     });
 
     test('evaluates to prior result',(){
-      InputEvaluator evaluator = InputEvaluator(MockVariableStorage(),MockAdvancedCalculator());
+      InputEvaluator evaluator = InputEvaluator(MockVariableStorage(), matrixStorage, MockAdvancedCalculator());
 
       DisplayHistory history = evaluator.evaluate([], [DisplayHistory([], '3')]);
       expect(history.input,[]);
@@ -33,7 +34,7 @@ void main(){
       MockAdvancedCalculator calculator = MockAdvancedCalculator();
       when(calculator.calculate('3')).thenReturn('2');
 
-      InputEvaluator evaluator = InputEvaluator(MockVariableStorage(),calculator);
+      InputEvaluator evaluator = InputEvaluator(MockVariableStorage(), matrixStorage, calculator);
 
       DisplayHistory history = evaluator.evaluate([InputItem.THREE], []);
       expect(history.input,[InputItem.THREE]);
@@ -44,7 +45,7 @@ void main(){
       MockAdvancedCalculator calculator = MockAdvancedCalculator();
       when(calculator.calculate('3+3')).thenReturn('2');
 
-      InputEvaluator evaluator = InputEvaluator(MockVariableStorage(),calculator);
+      InputEvaluator evaluator = InputEvaluator(MockVariableStorage(), matrixStorage, calculator);
 
       DisplayHistory history = evaluator.evaluate([InputItem.THREE, InputItem.ADD, InputItem.THREE], []);
       expect(history.input,[InputItem.THREE, InputItem.ADD, InputItem.THREE]);
@@ -57,7 +58,7 @@ void main(){
       MockAdvancedCalculator calculator = MockAdvancedCalculator();
       when(calculator.calculate('3')).thenReturn('2');
 
-      InputEvaluator evaluator = InputEvaluator(MockVariableStorage(),calculator);
+      InputEvaluator evaluator = InputEvaluator(MockVariableStorage(), matrixStorage, calculator);
 
       DisplayHistory history = evaluator.evaluate([InputItem.ANSWER], [DisplayHistory([], '3')]);
       expect(history.input,[InputItem.ANSWER]);
@@ -68,7 +69,7 @@ void main(){
       MockAdvancedCalculator calculator = MockAdvancedCalculator();
       when(calculator.calculate('3*2')).thenReturn('4');
 
-      InputEvaluator evaluator = InputEvaluator(MockVariableStorage(),calculator);
+      InputEvaluator evaluator = InputEvaluator(MockVariableStorage(), matrixStorage, calculator);
 
       DisplayHistory history = evaluator.evaluate([InputItem.ANSWER, InputItem.TWO], [DisplayHistory([], '3')]);
       expect(history.input,[InputItem.ANSWER, InputItem.TWO]);
@@ -79,7 +80,7 @@ void main(){
       MockAdvancedCalculator calculator = MockAdvancedCalculator();
       when(calculator.calculate('2*3')).thenReturn('4');
 
-      InputEvaluator evaluator = InputEvaluator(MockVariableStorage(),calculator);
+      InputEvaluator evaluator = InputEvaluator(MockVariableStorage(), matrixStorage, calculator);
 
       DisplayHistory history = evaluator.evaluate([InputItem.TWO, InputItem.ANSWER], [DisplayHistory([], '3')]);
       expect(history.input,[InputItem.TWO, InputItem.ANSWER]);
@@ -90,7 +91,7 @@ void main(){
       MockAdvancedCalculator calculator = MockAdvancedCalculator();
       when(calculator.calculate('3+2')).thenReturn('4');
 
-      InputEvaluator evaluator = InputEvaluator(MockVariableStorage(),calculator);
+      InputEvaluator evaluator = InputEvaluator(MockVariableStorage(), matrixStorage, calculator);
 
       DisplayHistory history = evaluator.evaluate([InputItem.ANSWER, InputItem.ADD, InputItem.TWO], [DisplayHistory([], '3')]);
       expect(history.input,[InputItem.ANSWER, InputItem.ADD, InputItem.TWO]);
@@ -109,7 +110,7 @@ void main(){
 
         storage = MockVariableStorage();
 
-        InputEvaluator evaluator = InputEvaluator(storage,calculator);
+        InputEvaluator evaluator = InputEvaluator(storage, matrixStorage, calculator);
         history = evaluator.evaluate([InputItem.THREE,InputItem.STORAGE,InputItem.A], []);
       });
 
@@ -136,7 +137,7 @@ void main(){
 
         storage = MockVariableStorage();
 
-        InputEvaluator evaluator = InputEvaluator(storage,calculator);
+        InputEvaluator evaluator = InputEvaluator(storage, matrixStorage, calculator);
         history = evaluator.evaluate([InputItem.THREE,InputItem.STORAGE,InputItem.FOUR], []);
       });
 
@@ -163,7 +164,7 @@ void main(){
 
         storage = MockVariableStorage();
 
-        InputEvaluator evaluator = InputEvaluator(storage,calculator);
+        InputEvaluator evaluator = InputEvaluator(storage, matrixStorage, calculator);
         history = evaluator.evaluate([InputItem.THREE,InputItem.STORAGE,InputItem.FOUR, InputItem.A], []);
       });
 
@@ -189,7 +190,7 @@ void main(){
       MockVariableStorage storage = MockVariableStorage();
       when(storage.fetchVariable('A')).thenReturn('3');
 
-      InputEvaluator evaluator = InputEvaluator(storage,calculator);
+      InputEvaluator evaluator = InputEvaluator(storage, matrixStorage, calculator);
 
       DisplayHistory output = evaluator.evaluate([InputItem.A], []);
 
@@ -204,7 +205,7 @@ void main(){
       MockVariableStorage storage = MockVariableStorage();
       when(storage.fetchVariable('A')).thenReturn('3');
 
-      InputEvaluator evaluator = InputEvaluator(storage,calculator);
+      InputEvaluator evaluator = InputEvaluator(storage, matrixStorage, calculator);
 
       DisplayHistory output = evaluator.evaluate([InputItem.A, InputItem.TWO], []);
 
@@ -219,7 +220,7 @@ void main(){
       MockVariableStorage storage = MockVariableStorage();
       when(storage.fetchVariable('A')).thenReturn('3');
 
-      InputEvaluator evaluator = InputEvaluator(storage,calculator);
+      InputEvaluator evaluator = InputEvaluator(storage, matrixStorage, calculator);
 
       DisplayHistory output = evaluator.evaluate([InputItem.TWO, InputItem.A], []);
 

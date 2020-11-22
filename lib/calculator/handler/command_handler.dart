@@ -8,9 +8,10 @@ class CommandHandler{
   final CalculatorDisplayController controller;
   final VariableStorage storage;
   final InputEvaluator evaluator;
+  final List<List<List<String>>> matrixStorage;
 
-  CommandHandler(this.controller, this.storage, [InputEvaluator evaluator]):
-      evaluator = evaluator ?? InputEvaluator(storage);
+  CommandHandler(this.controller, this.storage, this.matrixStorage, [InputEvaluator evaluator]):
+      evaluator = evaluator ?? InputEvaluator(storage, matrixStorage);
 
   void handle(CommandItem command) {
     if (command == CommandItem.ENTER) {

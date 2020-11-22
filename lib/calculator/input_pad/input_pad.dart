@@ -9,6 +9,7 @@ import 'package:open_calc/calculator/input_pad/input_button_style.dart';
 import 'package:open_calc/calculator/input_pad/input_item.dart';
 import 'package:open_calc/calculator/input_pad/input_variables.dart';
 import 'package:open_calc/calculator/input_pad/pad/variable_screen.dart';
+import 'package:open_calc/calculator/matrices/matrix_main.dart';
 
 
 class InputPad extends StatelessWidget{
@@ -16,8 +17,9 @@ class InputPad extends StatelessWidget{
   final Function(InputItem input) inputFunction;
   final Function(CommandItem command) commandFunction;
   final VariableStorage storage;
+  final List<List<List<String>>> matrixStorage;
 
-  InputPad(this.storage,this.inputFunction,this.commandFunction);
+  InputPad(this.storage,this.inputFunction,this.commandFunction,this.matrixStorage);
 
 
   Widget buildInputButton(InputItem inputItem, InputButtonStyle type){
@@ -38,13 +40,16 @@ class InputPad extends StatelessWidget{
         WidgetBuilder builder;
         switch (settings.name) {
           case 'inputPadOne':
-            builder = (BuildContext context) => PrimaryPad(this.storage,this.inputFunction, this.commandFunction);
+            builder = (BuildContext context) => PrimaryPad(this.storage,this.inputFunction,this.commandFunction,this.matrixStorage);
             break;
           case 'inputPadTwo':
-            builder = (BuildContext context) => SecondaryPad(this.storage,this.inputFunction, this.commandFunction);
+            builder = (BuildContext context) => SecondaryPad(this.storage,this.inputFunction,this.commandFunction,this.matrixStorage);
             break;
           case 'varPad':
-            builder = (BuildContext context) => VariableScreen(this.storage,this.inputFunction, this.commandFunction);
+            builder = (BuildContext context) => VariableScreen(this.storage,this.inputFunction,this.commandFunction,this.matrixStorage);
+            break;
+          case 'matrPad' :
+            builder = (BuildContext context) => MatrixHome(this.matrixStorage,this.inputFunction);
             break;
         }
         return MaterialPageRoute(builder: builder, settings: settings);

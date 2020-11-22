@@ -7,7 +7,7 @@ import 'package:open_calc/calculator/input_pad/input_item.dart';
 
 class VariableScreen extends InputPad{
 
-  VariableScreen(storage,input, command) : super(storage,input, command);
+  VariableScreen(storage,input,command,matrixStorage) : super(storage,input,command,matrixStorage);
 
   List<Widget> _getVariables(){
     var list = [];

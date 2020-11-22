@@ -10,7 +10,7 @@ import 'package:open_calc/calculator/input_pad/input_item.dart';
 
 class SecondaryPad extends InputPad{
 
-  SecondaryPad(storage,input, command) : super(storage,input, command);
+  SecondaryPad(storage,input,command,matrixStorage) : super(storage,input,command,matrixStorage);
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +60,7 @@ class SecondaryPad extends InputPad{
             InputItem.F,
             InputItem.G
           ]),
-          buildInputButton(InputItem.EMPTY, InputButtonStyle.QUARTENARY),
+          PadButton("Matr", InputButtonStyle.QUARTENARY, () {Navigator.pushReplacementNamed(context, 'matrPad');}),
           buildInputButton(InputItem.EMPTY, InputButtonStyle.QUARTENARY),
           buildCommandButton(CommandItem.ENTER, InputButtonStyle.SECONDARY),
         ],

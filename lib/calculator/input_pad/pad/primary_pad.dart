@@ -9,7 +9,7 @@ import 'package:open_calc/calculator/input_pad/input_item.dart';
 
 class PrimaryPad extends InputPad{
 
-  PrimaryPad(storage,input, command) : super(storage,input, command);
+  PrimaryPad(storage,input,command,matrixStorage) : super(storage,input,command,matrixStorage);
   
   @override
   Widget build(BuildContext context) {

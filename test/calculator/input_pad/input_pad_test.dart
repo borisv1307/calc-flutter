@@ -9,10 +9,12 @@ import 'package:open_calc/calculator/input_pad/input_pad.dart';
 import 'package:open_calc/calculator/input_pad/input_variables.dart';
 
 void main() {
+
+  List<List<List<String>>> matrixStorage = new List<List<List<String>>>();
   group('Buttons',(){
     void _testInputButtonClick(WidgetTester tester, InputItem expectedValue, int screen) async{
       InputItem actualValue;
-      await tester.pumpWidget(MaterialApp(home:InputPad(VariableStorage(),(inputItem){actualValue = inputItem;},(text){})));
+      await tester.pumpWidget(MaterialApp(home:InputPad(VariableStorage(),(inputItem){actualValue = inputItem;},(text){},matrixStorage)));
       if (screen == 2) {
         await tester.tap(find.text("2nd"));
         await tester.pumpAndSettle(new Duration(milliseconds: 50));
@@ -25,7 +27,7 @@ void main() {
 
     void _testCommandButtonClick(WidgetTester tester, CommandItem commandItem, int screen) async{
       CommandItem actualValue;
-      await tester.pumpWidget(MaterialApp(home:InputPad(VariableStorage(),(command){},(command){actualValue = command;})));
+      await tester.pumpWidget(MaterialApp(home:InputPad(VariableStorage(),(command){},(command){actualValue = command;},matrixStorage)));
       if (screen == 2) {
         await tester.tap(find.text("2nd"));
         await tester.pumpAndSettle(new Duration(milliseconds: 50));
@@ -37,7 +39,7 @@ void main() {
     }
 
     void _testCommandStyle(WidgetTester tester, String text, InputButtonStyle expectedStyle, int screen) async {
-      await tester.pumpWidget(MaterialApp(home:InputPad(VariableStorage(),(text){},(text){})));
+      await tester.pumpWidget(MaterialApp(home:InputPad(VariableStorage(),(text){},(text){},matrixStorage)));
       if (screen == 2) {
         await tester.tap(find.text("2nd"));
         await tester.pumpAndSettle(new Duration(milliseconds: 50));
@@ -47,7 +49,7 @@ void main() {
     }
 
     void _testInputStyle(WidgetTester tester, String text, InputButtonStyle expectedStyle, int screen) async {
-      await tester.pumpWidget(MaterialApp(home:InputPad(VariableStorage(),(text){},(text){})));
+      await tester.pumpWidget(MaterialApp(home:InputPad(VariableStorage(),(text){},(text){},matrixStorage)));
       if (screen == 2) {
         await tester.tap(find.text("2nd"));
         await tester.pumpAndSettle(new Duration(milliseconds: 50));
@@ -57,7 +59,7 @@ void main() {
     }
 
     void _testButtonLocation(WidgetTester tester, String text, int expectedLocation, int screen) async {
-      await tester.pumpWidget(MaterialApp(home:InputPad(VariableStorage(),(text){},(text){})));
+      await tester.pumpWidget(MaterialApp(home:InputPad(VariableStorage(),(text){},(text){},matrixStorage)));
       if (screen == 2) {
         await tester.tap(find.text("2nd"));
         await tester.pumpAndSettle(new Duration(milliseconds: 50));
@@ -174,12 +176,12 @@ void main() {
 
   group('Pad appearance',(){
     testWidgets('normal state',(WidgetTester tester) async{
-      await tester.pumpWidget(MaterialApp(home:InputPad(VariableStorage(),(text){},(text){},)));
+      await tester.pumpWidget(MaterialApp(home:InputPad(VariableStorage(),(text){},(text){},matrixStorage)));
       await expectLater(find.byType(InputPad),matchesGoldenFile('pad-standard.png'));
     });
 
     testWidgets('second state',(WidgetTester tester) async{
-      await tester.pumpWidget(MaterialApp(home:InputPad(VariableStorage(),(text){},(text){},)));
+      await tester.pumpWidget(MaterialApp(home:InputPad(VariableStorage(),(text){},(text){},matrixStorage)));
       await tester.tap(find.text("2nd"));
       await tester.pumpAndSettle(new Duration(milliseconds: 50));
       await expectLater(find.byType(InputPad),matchesGoldenFile('pad-2nd.png'));
