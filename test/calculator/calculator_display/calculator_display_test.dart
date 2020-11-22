@@ -1,14 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/mockito.dart';
 import 'package:open_calc/calculator/calculator_display/calculator_display.dart';
 import 'package:open_calc/calculator/calculator_display/calculator_display_controller.dart';
 import 'package:open_calc/calculator/calculator_display/display_history.dart';
+import 'package:open_calc/calculator/input_pad/input_item.dart';
+
+class MockCalculatorDisplayController extends Mock implements CalculatorDisplayController{
+  String inputLine = '';
+  int cursorIndex = 0;
+  List<DisplayHistory> history = [];
+}
 
 void main(){
 
-  CalculatorDisplayController _buildController([String inputLine='',List<DisplayHistory> history = const []]){
+  CalculatorDisplayController _buildController([List<InputItem> inputItems=const [],List<DisplayHistory> history = const []]){
     CalculatorDisplayController controller = CalculatorDisplayController();
-    controller.inputLine = inputLine;
+    inputItems.forEach((inputItem)=>controller.input(inputItem));
     controller.history = history;
     return controller;
   }
@@ -25,22 +33,22 @@ void main(){
   group('Input line is displayed',(){
     group('with cursor',(){
       testWidgets('initially displayed',(WidgetTester tester) async{
-        await tester.pumpWidget(MaterialApp(home:CalculatorDisplay(_buildController('2+2'),numLines: 2)));
+        await tester.pumpWidget(MaterialApp(home:CalculatorDisplay(_buildController([InputItem.TWO,InputItem.ADD,InputItem.TWO]),numLines: 2)));
         expect(find.text('2+2█'),findsNWidgets(1));
       });
       testWidgets('blinking off',(WidgetTester tester) async{
-        await tester.pumpWidget(MaterialApp(home:CalculatorDisplay(_buildController('2+2'), numLines: 2)));
+        await tester.pumpWidget(MaterialApp(home:CalculatorDisplay(_buildController([InputItem.TWO,InputItem.ADD,InputItem.TWO]), numLines: 2)));
         await tester.pump(Duration(milliseconds: 500));
         expect(find.text('2+2⠀'),findsNWidgets(1));
       });
 
       testWidgets('blinking on',(WidgetTester tester) async{
-        await tester.pumpWidget(MaterialApp(home:CalculatorDisplay(_buildController('2+2'), numLines: 2)));
+        await tester.pumpWidget(MaterialApp(home:CalculatorDisplay(_buildController([InputItem.TWO,InputItem.ADD,InputItem.TWO]), numLines: 2)));
         await tester.pump(Duration(milliseconds: 1000));
         expect(find.text('2+2█'),findsNWidgets(1));
       });
       testWidgets('with cursor at specified location',(WidgetTester tester) async{
-        CalculatorDisplayController controller = _buildController('2+2');
+        CalculatorDisplayController controller = _buildController([InputItem.TWO,InputItem.ADD,InputItem.TWO]);
         controller.cursorIndex = 0;
 
         await tester.pumpWidget(MaterialApp(home:CalculatorDisplay(controller, numLines: 2)));
@@ -48,7 +56,7 @@ void main(){
       });
 
       testWidgets('with cursor blinking at specified location',(WidgetTester tester) async{
-        CalculatorDisplayController controller = _buildController('2+2');
+        CalculatorDisplayController controller = _buildController([InputItem.TWO,InputItem.ADD,InputItem.TWO]);
         controller.cursorIndex = 0;
 
         await tester.pumpWidget(MaterialApp(home:CalculatorDisplay(controller, numLines: 2)));
@@ -57,9 +65,10 @@ void main(){
       });
     });
     testWidgets('after controller updates',(WidgetTester tester) async{
-      CalculatorDisplayController controller = _buildController('2+2');
+      CalculatorDisplayController controller = _buildController([InputItem.TWO,InputItem.ADD,InputItem.TWO]);
       await tester.pumpWidget(MaterialApp(home:CalculatorDisplay(controller, numLines: 2)));
-      controller.inputLine = '3';
+      controller.clearInput();
+      controller.input(InputItem.THREE);
       await tester.pumpAndSettle();
       expect(find.text('3█'),findsNWidgets(1));
     });
@@ -67,7 +76,7 @@ void main(){
 
   group('Cursor movement',(){
     testWidgets('occurs on tap',(WidgetTester tester) async{
-      CalculatorDisplayController controller = _buildController('1234');
+      CalculatorDisplayController controller = _buildController([InputItem.ONE,InputItem.TWO,InputItem.THREE, InputItem.FOUR]);
       await tester.pumpWidget(MaterialApp(home:CalculatorDisplay(controller, numLines: 2)));
       await tester.tapAt(tester.getTopLeft(find.byType(TextField)));
       await tester.pump();
@@ -77,24 +86,24 @@ void main(){
 
   group('History is displayed',(){
     testWidgets('Prior input with result',(WidgetTester tester) async{
-      await tester.pumpWidget(MaterialApp(home:CalculatorDisplay(_buildController('2+2', [DisplayHistory('3+3', '3 + 3', '6')]), numLines: 3)));
-      expect(find.text('3 + 3'),findsNWidgets(1));
+      await tester.pumpWidget(MaterialApp(home:CalculatorDisplay(_buildController([InputItem.TWO,InputItem.ADD,InputItem.TWO], [DisplayHistory([InputItem.THREE,InputItem.ADD,InputItem.THREE], '6')]), numLines: 3)));
+      expect(find.text('3+3'),findsNWidgets(1));
       expect(find.text('6'),findsNWidgets(1));
     });
     testWidgets('Result without specific input',(WidgetTester tester) async{
-      await tester.pumpWidget(MaterialApp(home:CalculatorDisplay(_buildController('2+2', [DisplayHistory.result('6')]), numLines: 3)));
+      await tester.pumpWidget(MaterialApp(home:CalculatorDisplay(_buildController([InputItem.TWO,InputItem.ADD,InputItem.TWO], [DisplayHistory.result('6')]), numLines: 3)));
       expect(find.text('6'),findsNWidgets(1));
     });
     testWidgets('Result with blank input',(WidgetTester tester) async{
-      await tester.pumpWidget(MaterialApp(home:CalculatorDisplay(_buildController('2+2', [DisplayHistory('','','6')]), numLines: 3)));
+      await tester.pumpWidget(MaterialApp(home:CalculatorDisplay(_buildController([InputItem.TWO,InputItem.ADD,InputItem.TWO], [DisplayHistory([],'6')]), numLines: 3)));
       expect(find.text('6'),findsNWidgets(1));
     });
     testWidgets('after controller updates',(WidgetTester tester) async{
-      CalculatorDisplayController controller = _buildController('2+2');
+      CalculatorDisplayController controller = _buildController([InputItem.TWO,InputItem.ADD,InputItem.TWO]);
       await tester.pumpWidget(MaterialApp(home:CalculatorDisplay(controller, numLines: 2)));
-      controller.history = [DisplayHistory('3+3', '3 + 3', '6')];
+      controller.history = [DisplayHistory([InputItem.THREE,InputItem.ADD,InputItem.THREE], '6')];
       await tester.pumpAndSettle();
-      expect(find.text('3 + 3'),findsNWidgets(1));
+      expect(find.text('3+3'),findsNWidgets(1));
       expect(find.text('6'),findsNWidgets(1));
     });
   });
@@ -102,26 +111,42 @@ void main(){
   group('Widget updates',(){
     testWidgets('initially display input with cursor',(WidgetTester tester) async{
       //create widget twice to trigger update on second creation
-      await tester.pumpWidget(MaterialApp(home:CalculatorDisplay(_buildController('2+2+'), numLines: 2)));
+      await tester.pumpWidget(MaterialApp(home:CalculatorDisplay(_buildController([InputItem.TWO,InputItem.ADD,InputItem.TWO, InputItem.ADD]), numLines: 2)));
       expect(find.text('2+2+█'),findsNWidgets(1));
     });
 
     testWidgets('display blinking cursor',(WidgetTester tester) async{
-      await tester.pumpWidget(MaterialApp(home:CalculatorDisplay(_buildController('2+2+'), numLines: 2)));
+      await tester.pumpWidget(MaterialApp(home:CalculatorDisplay(_buildController([InputItem.TWO,InputItem.ADD,InputItem.TWO, InputItem.ADD]), numLines: 2)));
       await tester.pump(Duration(milliseconds: 500));
       expect(find.text('2+2+⠀'),findsNWidgets(1));
     });
   });
 
+  group('Gestures browse history',(){
+    testWidgets('browses backwards when swipe down',(WidgetTester tester) async{
+      MockCalculatorDisplayController controller = MockCalculatorDisplayController();
+      await tester.pumpWidget(MaterialApp(home:CalculatorDisplay(controller, numLines: 2)));
+      await tester.fling(find.byType(CalculatorDisplay), Offset(0,100),200);
+      verify(controller.browseBackwards()).called(1);
+    });
+
+    testWidgets('browses forwards when swipe down',(WidgetTester tester) async{
+      MockCalculatorDisplayController controller = MockCalculatorDisplayController();
+      await tester.pumpWidget(MaterialApp(home:CalculatorDisplay(controller, numLines: 2)));
+      await tester.fling(find.byType(CalculatorDisplay), Offset(0,-100),200);
+      verify(controller.browseForwards()).called(1);
+    });
+  });
+
   group('Ensure layout',(){
     testWidgets('standard layout',(WidgetTester tester) async{
-      await tester.pumpWidget(MaterialApp(home:CalculatorDisplay(_buildController('2+2',[DisplayHistory('123', '123', '6')]),numLines: 6)));
+      await tester.pumpWidget(MaterialApp(home:CalculatorDisplay(_buildController([InputItem.TWO,InputItem.ADD,InputItem.TWO],[DisplayHistory([InputItem.ONE,InputItem.TWO,InputItem.THREE], '6')]),numLines: 6)));
       await expectLater(find.byType(CalculatorDisplay),matchesGoldenFile('standard.png'));
     });
 
     testWidgets('scrolled to bottom',(WidgetTester tester) async{
-      List<DisplayHistory> history = Iterable<int>.generate(100).toList().map((i)=> DisplayHistory('123', '123', '6')).toList();
-      await tester.pumpWidget(MaterialApp(home:CalculatorDisplay(_buildController('2', history),numLines: 6)));
+      List<DisplayHistory> history = Iterable<int>.generate(100).toList().map((i)=> DisplayHistory([InputItem.ONE,InputItem.TWO,InputItem.THREE], '6')).toList();
+      await tester.pumpWidget(MaterialApp(home:CalculatorDisplay(_buildController([InputItem.TWO], history),numLines: 6)));
       await tester.pumpAndSettle();
       await expectLater(find.byType(CalculatorDisplay),matchesGoldenFile('scrolled.png'));
     });

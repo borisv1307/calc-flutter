@@ -7,7 +7,6 @@ import 'package:cartesian_graph/coordinates.dart';
 import 'package:open_calc/graph/graph_table.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:open_calc/bridge/graph_bridge.dart';
 
 class GraphScreen extends StatefulWidget {
   @override
@@ -86,8 +85,9 @@ class FunctionScreenState extends State<FunctionScreen> {
 }
 
 class GraphScreenState extends State<GraphScreen>{
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
   final _scaleFormKey = GlobalKey<FormState>();
+  final _exprFormKey = GlobalKey<FormFieldState>();
 
   // Scale Value, Range and Domain of x and y will be set and saved in these variable
   int _xMin = -100,
@@ -101,29 +101,13 @@ class GraphScreenState extends State<GraphScreen>{
   int width = 270,
     height = 162;
 
-  GraphBridge bridge = GraphBridge();
   Coordinates cursorLocation = Coordinates(50, 50);
-  // String _y1 = "0.05 * x^2 - 50";
-  // String _y2 = "x";
-  // String _y3 = "x^3";
+  String _y1 = "0.05 * x^2 - 50";
   List<Coordinates> coordinates;
 
   @override
   void initState() {
     super.initState();
-    this._updateCoordinates();
-  }
-  // Coordinates cursorLocation = Coordinates(180, 81);
-
-  void _updateCoordinates() {
-    setState(() {
-      coordinates = bridge.retrieveGraph(
-          _y1, _y2, _y3, (width / 2) * -1, (width / 2), (height / 2) * -1, (height / 2));
-    });
-  }
-
-  List<Coordinates> _getCoordinates() {
-    return coordinates;
   }
 
   void moveCursor(String direction) {
@@ -138,22 +122,6 @@ class GraphScreenState extends State<GraphScreen>{
         updatedX += 3;
       } else if (direction == "LEFT") {
         updatedX -= 3;
-      }
-      this.cursorLocation = Coordinates(updatedX, updatedY);
-    });
-  }
-  void moveCursorFast(String direction) {
-    setState(() {
-      double updatedX = cursorLocation.x;
-      double updatedY = cursorLocation.y;
-      if (direction == "UP") {
-        updatedY += 10;
-      } else if (direction == "DOWN") {
-        updatedY -= 10;
-      } else if (direction == "RIGHT") {
-        updatedX += 10;
-      } else if (direction == "LEFT") {
-        updatedX -= 10;
       }
       this.cursorLocation = Coordinates(updatedX, updatedY);
     });
@@ -263,7 +231,6 @@ class GraphScreenState extends State<GraphScreen>{
                     ElevatedButton(
                       onPressed: () {
                         _scaleFormKey.currentState.save();
-                        _updateCoordinates();
                         setState(() {});
                       },
                       child: Text("Save Changes"),
@@ -275,114 +242,82 @@ class GraphScreenState extends State<GraphScreen>{
           ),
         ),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            ListView(
-              shrinkWrap: true,
-              children: <Widget>[
-                ConstrainedBox(
-                  constraints: BoxConstraints(
-                    maxHeight: 652,
-                  ),
-                  child: CartesianGraph(
-                    Bounds(_xMin, _xMax, _yMin, _yMax),
-                    equation1: _y1,
-                    equation2: _y2,
-                    equation3: _y3,
-                    cursorLocation: this.cursorLocation,
-                  ),
+      body: Column(
+        children: <Widget>[
+          ListView(
+            shrinkWrap: true,
+            children: <Widget>[
+              ConstrainedBox(
+                constraints: BoxConstraints(
+                  maxHeight: 652,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
-                      children: [
-                        Text("x = " + (cursorLocation.x - 180).toString()),
-                        Text("y = " + (cursorLocation.y - 81).toString()),
-                      ],
-                    ),
-                    Column(
-                      children: [
-                        InkWell(
-                            onTap: () {
-                              moveCursor('UP');
-                            },
-                            child: Icon(Icons.arrow_upward)),
-                        Row(
-                          mainAxisAlignment:
-                          MainAxisAlignment.spaceBetween,
-                          children: [
-                            Padding(
-                                padding: EdgeInsets.only(right: 25),
-                                child: InkWell(
-                                    onTap: () {
-                                      moveCursor('LEFT');
-                                    },
-                                    child: Icon(Icons.arrow_back))),
-                            InkWell(
-                                onTap: () {
-                                  moveCursor('RIGHT');
-                                },
-                                child: Icon(Icons.arrow_forward))
-                          ],
-                        ),
-                        InkWell(
-                            onTap: () {
-                              moveCursor('DOWN');
-                            },
-                            child: Icon(Icons.arrow_downward)),
-                      ],
-                    )
-                  ],
+                child: CartesianGraph(
+                  Bounds(_xMin, _xMax, _yMin, _yMax),
+                  equation: _y1,
+                  cursorLocation: this.cursorLocation,
+                ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Column(
+                    children: [
+                      InkWell(
+                          onTap: () {
+                            moveCursor('UP');
+                          },
+                          child: Icon(Icons.arrow_upward)),
+                      Row(
+                        mainAxisAlignment:
+                        MainAxisAlignment.spaceBetween,
+                        children: [
+                          Padding(
+                              padding: EdgeInsets.only(right: 25),
+                              child: InkWell(
+                                  onTap: () {
+                                    moveCursor('LEFT');
+                                  },
+                                  child: Icon(Icons.arrow_back))),
+                          InkWell(
+                              onTap: () {
+                                moveCursor('RIGHT');
+                              },
+                              child: Icon(Icons.arrow_forward))
+                        ],
+                      ),
+                      InkWell(
+                          onTap: () {
+                            moveCursor('DOWN');
+                          },
+                          child: Icon(Icons.arrow_downward)),
+                    ],
+                  )
+                ],
+              ),
+            ],
+          ),
+          Container(
+            margin: EdgeInsets.symmetric(
+                vertical: 10, horizontal: 10),
+            child: Column(
+              children: <Widget>[
+                TextFormField(
+                  key: _exprFormKey,
+                  decoration: InputDecoration(labelText: 'y = '),
+                  onSaved: (input) => {
+                    _y1 = input
+                  },
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    _exprFormKey.currentState.save();
+                  },
+                  child: Text("Generate Graph")
                 ),
               ],
             ),
-            // Container(
-            //   margin: EdgeInsets.symmetric(
-            //       vertical: 10, horizontal: 10),
-            //   child: Form(
-            //     key: _exprFormKey,
-            //     child: Column(
-            //       children: <Widget>[
-            //         TextFormField(
-            //           // key: _exprFormKey,
-            //           decoration: InputDecoration(labelText: 'y1 = '),
-            //           initialValue: '$_y1' ,
-            //           onSaved: (input) => {
-            //             _y1 = input
-            //           },
-            //         ),
-            //         TextFormField(
-            //           // key: _exprFormKey,
-            //           decoration: InputDecoration(labelText: 'y2 = '),
-            //           initialValue: '$_y2' ,
-            //           onSaved: (input) => {
-            //             _y2 = input
-            //           },
-            //         ),
-            //         TextFormField(
-            //           // key: _exprFormKey,
-            //           decoration: InputDecoration(labelText: 'y3 = '),
-            //           initialValue: '$_y3' ,
-            //           onSaved: (input) => {
-            //             _y3 = input
-            //           },
-            //         ),
-            //
-            //         ElevatedButton(
-            //           onPressed: () {
-            //             _exprFormKey.currentState.save();
-            //             _updateCoordinates();
-            //           },
-            //           child: Text("Generate Graph")
-            //         ),
-            //       ],
-            //     ),
-            //   ),
-            // ),
-          ],
-        ),
+          ),
+        ],
       ),
       floatingActionButton: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,

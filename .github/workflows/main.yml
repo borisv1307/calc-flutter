@@ -37,6 +37,14 @@ jobs:
           repository: SE-691-Graphing-Calculator/cartesian_graph.git
           path: cartesian_graph 
           ref: main
+
+      #checkout advanced calculation
+      - uses: actions/checkout@v2
+        with:
+          repository: SE-691-Graphing-Calculator/advanced_calculation.git
+          path: advanced_calculation
+          ref: main
+
       # Setup the flutter environment.
       - uses: subosito/flutter-action@v1
         with:
