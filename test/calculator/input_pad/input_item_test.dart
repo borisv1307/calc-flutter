@@ -231,7 +231,7 @@ void main() {
   });
 
   test('INVERSE',(){
-    expect(InputItem.INVERSE.display,'x ⁻¹');
+    expect(InputItem.INVERSE.display,'𝑥 ⁻¹');
     expect(InputItem.INVERSE.value,'⁻¹');
   });
 
