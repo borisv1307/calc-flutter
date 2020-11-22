@@ -55,18 +55,33 @@ class GraphBridge {
     return _result;
   }
 
-  List<Coordinates> retrieveGraph(String expr, double minX, double maxX, double minY, double maxY, [double xPrecision = 1, double yPrecision = 1]) {
+  List<Coordinates> retrieveGraph(String expr1, String expr2, String expr3, double minX, double maxX, double minY, double maxY, [double xPrecision = 1, double yPrecision = 1]) {
     final GraphFunction calcPoints = _retrieveGraphFunction();
-    Pointer<CoordPair> points = calcPoints(Utf8.toUtf8(expr), minX, maxX, minY, maxY, xPrecision, yPrecision);
+    Pointer<CoordPair> points1 = calcPoints(Utf8.toUtf8(expr1), minX, maxX, minY, maxY, xPrecision, yPrecision);
+    Pointer<CoordPair> points2 = calcPoints(Utf8.toUtf8(expr2), minX, maxX, minY, maxY, xPrecision, yPrecision);
+    Pointer<CoordPair> points3 = calcPoints(Utf8.toUtf8(expr3), minX, maxX, minY, maxY, xPrecision, yPrecision);
+
     int listSize = ((maxX - minX) + 1).round();
-    Float64List xCoords = points.ref.x_ptr.asTypedList(listSize);
-    Float64List yCoords = points.ref.y_ptr.asTypedList(listSize);
+    Float64List xCoords1 = points1.ref.x_ptr.asTypedList(listSize);
+    Float64List yCoords1 = points1.ref.y_ptr.asTypedList(listSize);
+    Float64List xCoords2 = points2.ref.x_ptr.asTypedList(listSize);
+    Float64List yCoords2 = points2.ref.y_ptr.asTypedList(listSize);
+    Float64List xCoords3 = points3.ref.x_ptr.asTypedList(listSize);
+    Float64List yCoords3 = points3.ref.y_ptr.asTypedList(listSize);
 
     List<Coordinates> coordinates = [];
     for (int i = 0; i < listSize; i++) {
-      if (!xCoords.elementAt(i).isNaN && !yCoords.elementAt(i).isNaN) {
+      if (!xCoords1.elementAt(i).isNaN && !yCoords1.elementAt(i).isNaN) {
         coordinates
-            .add(Coordinates(xCoords.elementAt(i), yCoords.elementAt(i)));
+            .add(Coordinates(xCoords1.elementAt(i), yCoords1.elementAt(i)));
+      }
+      if (!xCoords2.elementAt(i).isNaN && !yCoords2.elementAt(i).isNaN) {
+        coordinates
+            .add(Coordinates(xCoords2.elementAt(i), yCoords2.elementAt(i)));
+      }
+      if (!xCoords3.elementAt(i).isNaN && !yCoords3.elementAt(i).isNaN) {
+        coordinates
+            .add(Coordinates(xCoords3.elementAt(i), yCoords3.elementAt(i)));
       }
     }
     return coordinates;

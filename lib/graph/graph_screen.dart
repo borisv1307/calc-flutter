@@ -13,15 +13,81 @@ class GraphScreen extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => GraphScreenState();
 }
+class FunctionScreen extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() => FunctionScreenState();
+
+}
+
+String _y1 = "0.05 * x^2 - 50";
+String _y2 = "x + 5";
+String _y3 = "x^3";
+
+class FunctionScreenState extends State<FunctionScreen> {
+  final _exprFormKey = GlobalKey<FormFieldState>();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        body: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              Container(
+                margin: EdgeInsets.symmetric(
+                    vertical: 10, horizontal: 10),
+                child: Form(
+                  key: _exprFormKey,
+                  child: Column(
+                    children: <Widget>[
+                      TextFormField(
+                        decoration: InputDecoration(labelText: 'y1 = '),
+                        initialValue: _y1 ,
+                        onSaved: (String input){
+                          _y1 = input;
+                        },
+                      ),
+                      TextFormField(
+                        decoration: InputDecoration(labelText: 'y2 = '),
+                        initialValue: _y2 ,
+                        onSaved: (String input){
+                          _y2 = input;
+                        },
+                      ),
+                      TextFormField(
+                        decoration: InputDecoration(labelText: 'y3 = '),
+                        initialValue: _y3 ,
+                        onSaved: (String input){
+                          _y3 = input;
+                        },
+                      ),
+                      ElevatedButton(
+                          onPressed: () {
+                            log(_y3);
+                            _exprFormKey.currentState.save();
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => GraphScreen()),
+                            );
+                          },
+                          child: Text("Generate Graph")
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+
+          ),
+        )
+
+    );
+  }
+
+}
 
 class GraphScreenState extends State<GraphScreen>{
-  Timer timer;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  final formKey = GlobalKey<FormState>();
-  final formKey2 = GlobalKey<FormState>();
-  final _scaffoldKey = GlobalKey<ScaffoldState>();
   final _scaleFormKey = GlobalKey<FormState>();
-  final _exprFormKey = GlobalKey<FormFieldState>();
 
   // Scale Value, Range and Domain of x and y will be set and saved in these variable
   int _xMin = -100,
@@ -31,14 +97,15 @@ class GraphScreenState extends State<GraphScreen>{
       _xScl = 1,
       _yScl = 2,
       _xRes = 1;
-  String _funcY = "x^2";
 
   int width = 270,
     height = 162;
 
   GraphBridge bridge = GraphBridge();
   Coordinates cursorLocation = Coordinates(50, 50);
-  String _y1 = "0.05 * x^2 - 50";
+  // String _y1 = "0.05 * x^2 - 50";
+  // String _y2 = "x";
+  // String _y3 = "x^3";
   List<Coordinates> coordinates;
 
   @override
@@ -46,12 +113,12 @@ class GraphScreenState extends State<GraphScreen>{
     super.initState();
     this._updateCoordinates();
   }
-  Coordinates cursorLocation = Coordinates(180, 81);
+  // Coordinates cursorLocation = Coordinates(180, 81);
 
   void _updateCoordinates() {
     setState(() {
       coordinates = bridge.retrieveGraph(
-          _y1, (width / 2) * -1, (width / 2), (height / 2) * -1, (height / 2));
+          _y1, _y2, _y3, (width / 2) * -1, (width / 2), (height / 2) * -1, (height / 2));
     });
   }
 
@@ -100,6 +167,9 @@ class GraphScreenState extends State<GraphScreen>{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        appBar: AppBar(
+        title: Text("Graph"),
+        ),
       key: _scaffoldKey,
       endDrawer: ClipRRect(
         borderRadius: BorderRadius.vertical(
@@ -205,89 +275,114 @@ class GraphScreenState extends State<GraphScreen>{
           ),
         ),
       ),
-      body: Column(
-        children: <Widget>[
-          ListView(
-            shrinkWrap: true,
-            children: <Widget>[
-              ConstrainedBox(
-                constraints: BoxConstraints(
-                  maxHeight: 652,
-                ),
-                child: CartesianGraph(
-                  Bounds(_xMin, _xMax, _yMin, _yMax),
-                  equation: _y1,
-                  cursorLocation: this.cursorLocation,
-                ),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    children: [
-                      Text("x = " + (cursorLocation.x - 180).toString()),
-                      Text("y = " + (cursorLocation.y - 81).toString()),
-                    ],
-                  ),
-                  Column(
-                    children: [
-                      InkWell(
-                          onTap: () {
-                            moveCursor('UP');
-                          },
-                          child: Icon(Icons.arrow_upward)),
-                      Row(
-                        mainAxisAlignment:
-                        MainAxisAlignment.spaceBetween,
-                        children: [
-                          Padding(
-                              padding: EdgeInsets.only(right: 25),
-                              child: InkWell(
-                                  onTap: () {
-                                    moveCursor('LEFT');
-                                  },
-                                  child: Icon(Icons.arrow_back))),
-                          InkWell(
-                              onTap: () {
-                                moveCursor('RIGHT');
-                              },
-                              child: Icon(Icons.arrow_forward))
-                        ],
-                      ),
-                      InkWell(
-                          onTap: () {
-                            moveCursor('DOWN');
-                          },
-                          child: Icon(Icons.arrow_downward)),
-                    ],
-                  )
-                ],
-              ),
-            ],
-          ),
-          Container(
-            margin: EdgeInsets.symmetric(
-                vertical: 10, horizontal: 10),
-            child: Column(
+      body: SingleChildScrollView(
+        child: Column(
+          children: <Widget>[
+            ListView(
+              shrinkWrap: true,
               children: <Widget>[
-                TextFormField(
-                  key: _exprFormKey,
-                  decoration: InputDecoration(labelText: 'y = '),
-                  onSaved: (input) => {
-                    _y1 = input
-                  },
+                ConstrainedBox(
+                  constraints: BoxConstraints(
+                    maxHeight: 652,
+                  ),
+                  child: CartesianGraph(
+                    Bounds(_xMin, _xMax, _yMin, _yMax),
+                    equation1: _y1,
+                    equation2: _y2,
+                    equation3: _y3,
+                    cursorLocation: this.cursorLocation,
+                  ),
                 ),
-                ElevatedButton(
-                  onPressed: () {
-                    _exprFormKey.currentState.save();
-                    _updateCoordinates();
-                  },
-                  child: Text("Generate Graph")
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      children: [
+                        Text("x = " + (cursorLocation.x - 180).toString()),
+                        Text("y = " + (cursorLocation.y - 81).toString()),
+                      ],
+                    ),
+                    Column(
+                      children: [
+                        InkWell(
+                            onTap: () {
+                              moveCursor('UP');
+                            },
+                            child: Icon(Icons.arrow_upward)),
+                        Row(
+                          mainAxisAlignment:
+                          MainAxisAlignment.spaceBetween,
+                          children: [
+                            Padding(
+                                padding: EdgeInsets.only(right: 25),
+                                child: InkWell(
+                                    onTap: () {
+                                      moveCursor('LEFT');
+                                    },
+                                    child: Icon(Icons.arrow_back))),
+                            InkWell(
+                                onTap: () {
+                                  moveCursor('RIGHT');
+                                },
+                                child: Icon(Icons.arrow_forward))
+                          ],
+                        ),
+                        InkWell(
+                            onTap: () {
+                              moveCursor('DOWN');
+                            },
+                            child: Icon(Icons.arrow_downward)),
+                      ],
+                    )
+                  ],
                 ),
               ],
             ),
-          ),
-        ],
+            // Container(
+            //   margin: EdgeInsets.symmetric(
+            //       vertical: 10, horizontal: 10),
+            //   child: Form(
+            //     key: _exprFormKey,
+            //     child: Column(
+            //       children: <Widget>[
+            //         TextFormField(
+            //           // key: _exprFormKey,
+            //           decoration: InputDecoration(labelText: 'y1 = '),
+            //           initialValue: '$_y1' ,
+            //           onSaved: (input) => {
+            //             _y1 = input
+            //           },
+            //         ),
+            //         TextFormField(
+            //           // key: _exprFormKey,
+            //           decoration: InputDecoration(labelText: 'y2 = '),
+            //           initialValue: '$_y2' ,
+            //           onSaved: (input) => {
+            //             _y2 = input
+            //           },
+            //         ),
+            //         TextFormField(
+            //           // key: _exprFormKey,
+            //           decoration: InputDecoration(labelText: 'y3 = '),
+            //           initialValue: '$_y3' ,
+            //           onSaved: (input) => {
+            //             _y3 = input
+            //           },
+            //         ),
+            //
+            //         ElevatedButton(
+            //           onPressed: () {
+            //             _exprFormKey.currentState.save();
+            //             _updateCoordinates();
+            //           },
+            //           child: Text("Generate Graph")
+            //         ),
+            //       ],
+            //     ),
+            //   ),
+            // ),
+          ],
+        ),
       ),
       floatingActionButton: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
