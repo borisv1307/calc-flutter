@@ -1,6 +1,7 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:open_calc/calculator/input_pad/button/pad_button.dart';
 import 'package:open_calc/calculator/input_pad/input_pad.dart';
 import 'package:open_calc/calculator/input_pad/input_button_style.dart';
 import 'package:open_calc/calculator/input_pad/input_item.dart';
@@ -18,41 +19,32 @@ class VariableScreen extends InputPad{
     int i = 0;
     for(i=0; i < list.length; i++){
       variablesWidgets.add(
-        buildInputButton(InputItem(keyList[i] + ': ' + list[i], value: list[i]), InputButtonStyle.TERTIARY) ///TODO update to not be input button
+        buildInputButton(InputItem(keyList[i] + ': ' + list[i], value: list[i]), InputButtonStyle.QUARTENARY) ///TODO update to not be input button
       );
     }
-
+    for( ; i < 29; i++){
+      variablesWidgets.add(
+        buildInputButton(InputItem.EMPTY, InputButtonStyle.QUARTENARY)
+      );
+    }
     return variablesWidgets;
   }
   
   Widget build(BuildContext context) {
     double availableWidth = MediaQuery.of(context).size.width * MediaQuery.of(context).devicePixelRatio;
     double availableHeight = MediaQuery.of(context).size.height;
-    return GridView.count(
+    return Container(
+      alignment: Alignment.center,
+      child:GridView.count(
         shrinkWrap: true,
         crossAxisCount: 5,
         childAspectRatio: availableWidth/availableHeight,
         physics: NeverScrollableScrollPhysics(),
         children: [
-          Container(
-              margin: EdgeInsets.all(5),
-              child:Material(
-                borderRadius: InputButtonStyle.SECONDARY.radius,
-                color: InputButtonStyle.SECONDARY.backgroundColor,
-                child:InkWell(
-                  splashColor: Colors.blueGrey,
-                  borderRadius: InputButtonStyle.SECONDARY.radius,
-                  child:Container(
-                    alignment: Alignment.center,
-                    child: Text('Back', style: TextStyle(fontSize: InputButtonStyle.SECONDARY.fontSize, fontWeight: InputButtonStyle.SECONDARY.fontWeight, color: InputButtonStyle.SECONDARY.textColor)),
-                ),
-                onTap: (){
-                   Navigator.pushReplacementNamed(context, 'inputPadTwo');
-                },
-              )),     
-          ),
-      for(var item in _getVariables()) Container(child: item)
-    ]
+          PadButton('Back', InputButtonStyle.SECONDARY, () {Navigator.pushReplacementNamed(context, 'inputPadTwo');}),
+          for(var item in _getVariables()) Container(child: item)
+        ]
+      )
     );
   }
 }
