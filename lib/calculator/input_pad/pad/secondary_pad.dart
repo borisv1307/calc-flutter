@@ -17,7 +17,6 @@ class SecondaryPad extends InputPad{
     double availableWidth = MediaQuery.of(context).size.width * MediaQuery.of(context).devicePixelRatio;
     double availableHeight = MediaQuery.of(context).size.height;
     return Container(
-      color:Colors.black38,
       alignment: Alignment.center,
       child:GridView.count(
         shrinkWrap: true,
