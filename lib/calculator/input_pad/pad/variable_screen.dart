@@ -19,12 +19,12 @@ class VariableScreen extends InputPad{
     int i = 0;
     for(i=0; i < list.length; i++){
       variablesWidgets.add(
-        buildInputButton(InputItem(keyList[i] + ': ' + list[i], value: list[i]), InputButtonStyle.QUARTENARY) ///TODO update to not be input button
+        buildInputButton(InputItem(keyList[i] + ': ' + list[i], value: list[i]), InputButtonStyle.WHITE_SMALL_TEXT) ///TODO update to not be input button
       );
     }
     for( ; i < 29; i++){
       variablesWidgets.add(
-        buildInputButton(InputItem.EMPTY, InputButtonStyle.QUARTENARY)
+        buildInputButton(InputItem.EMPTY, InputButtonStyle.WHITE_SMALL_TEXT)
       );
     }
     return variablesWidgets;
@@ -41,7 +41,7 @@ class VariableScreen extends InputPad{
         childAspectRatio: availableWidth/availableHeight,
         physics: NeverScrollableScrollPhysics(),
         children: [
-          PadButton('Back', InputButtonStyle.SECONDARY, () {Navigator.pushReplacementNamed(context, 'inputPadTwo');}),
+          PadButton('Back', InputButtonStyle.BLUE_LARGE_TEXT, () {Navigator.pushReplacementNamed(context, 'inputPadTwo');}),
           for(var item in _getVariables()) Container(child: item)
         ]
       )

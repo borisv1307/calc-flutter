@@ -206,7 +206,7 @@ void main() {
   });
 
   test('CSC',(){
-    expect(InputItem.CSC.display,'csc');
+    expect(InputItem.CSC.display,'sin⁻¹');
     expect(InputItem.CSC.value,'csc(');
   });
 
@@ -231,7 +231,7 @@ void main() {
   });
 
   test('INVERSE',(){
-    expect(InputItem.INVERSE.display,'x ⁻¹');
+    expect(InputItem.INVERSE.display,'𝑥 ⁻¹');
     expect(InputItem.INVERSE.value,'⁻¹');
   });
 

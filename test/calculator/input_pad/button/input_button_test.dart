@@ -8,7 +8,7 @@ void main(){
   testWidgets('Input button executes function when clicked',(WidgetTester tester) async{
     InputItem actualValue;
 
-    await tester.pumpWidget(MaterialApp(home:InputButton(InputItem.TWO,InputButtonStyle.PRIMARY,(inputItem){
+    await tester.pumpWidget(MaterialApp(home:InputButton(InputItem.TWO,InputButtonStyle.WHITE_ROUNDED,(inputItem){
       actualValue = inputItem;
     })));
     await tester.tap(find.byType(InputButton));
@@ -16,35 +16,35 @@ void main(){
   });
 
   testWidgets('Input button displays given text',(WidgetTester tester) async{
-    await tester.pumpWidget(MaterialApp(home:InputButton(InputItem.SIN,InputButtonStyle.PRIMARY,(text){})));
+    await tester.pumpWidget(MaterialApp(home:InputButton(InputItem.SIN,InputButtonStyle.WHITE_ROUNDED,(text){})));
     expect(find.text('sin'),findsNWidgets(1));
   });
 
   group('Input button style applied',(){
     testWidgets('style font size',(WidgetTester tester) async{
-      await tester.pumpWidget(MaterialApp(home:InputButton(InputItem.TWO,InputButtonStyle.PRIMARY,(text){})));
+      await tester.pumpWidget(MaterialApp(home:InputButton(InputItem.TWO,InputButtonStyle.WHITE_ROUNDED,(text){})));
       Text actualText = tester.firstWidget(find.text('2'));
-      expect(actualText.style.fontSize,InputButtonStyle.PRIMARY.fontSize);
+      expect(actualText.style.fontSize,InputButtonStyle.WHITE_ROUNDED.fontSize);
     });
 
     testWidgets('style font weight',(WidgetTester tester) async{
-      await tester.pumpWidget(MaterialApp(home:InputButton(InputItem.TWO,InputButtonStyle.PRIMARY,(text){})));
+      await tester.pumpWidget(MaterialApp(home:InputButton(InputItem.TWO,InputButtonStyle.WHITE_ROUNDED,(text){})));
       Text actualText = tester.firstWidget(find.text('2'));
-      expect(actualText.style.fontWeight,InputButtonStyle.PRIMARY.fontWeight);
+      expect(actualText.style.fontWeight,InputButtonStyle.WHITE_ROUNDED.fontWeight);
     });
 
     testWidgets('style text color',(WidgetTester tester) async{
-      await tester.pumpWidget(MaterialApp(home:InputButton(InputItem.TWO,InputButtonStyle.PRIMARY,(text){})));
+      await tester.pumpWidget(MaterialApp(home:InputButton(InputItem.TWO,InputButtonStyle.WHITE_ROUNDED,(text){})));
       Text actualText = tester.firstWidget(find.text('2'));
-      expect(actualText.style.color,InputButtonStyle.PRIMARY.textColor);
+      expect(actualText.style.color,InputButtonStyle.WHITE_ROUNDED.textColor);
     });
 
     testWidgets('style radius',(WidgetTester tester) async{
-      await tester.pumpWidget(MaterialApp(home:InputButton(InputItem.TWO,InputButtonStyle.PRIMARY,(text){})));
+      await tester.pumpWidget(MaterialApp(home:InputButton(InputItem.TWO,InputButtonStyle.WHITE_ROUNDED,(text){})));
       InkWell actualInkWell = tester.firstWidget(find.byType(InkWell));
       Material actualMaterial = tester.firstWidget(find.byType(Material));
-      expect(actualInkWell.borderRadius,InputButtonStyle.PRIMARY.radius);
-      expect(actualMaterial.borderRadius,InputButtonStyle.PRIMARY.radius);
+      expect(actualInkWell.borderRadius,InputButtonStyle.WHITE_ROUNDED.radius);
+      expect(actualMaterial.borderRadius,InputButtonStyle.WHITE_ROUNDED.radius);
     });
   });
 }

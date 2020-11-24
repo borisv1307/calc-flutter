@@ -48,9 +48,9 @@ class InputItem{
   static const I = const InputItem('I', variable: true);
   static const J = const InputItem('J', variable: true);
   static const PI = const InputItem('𝜋');
-  static const CSC = const InputItem('csc',value:'csc(', function: true);
-  static const SEC = const InputItem('sec',value:'sec(', function: true);
-  static const COT = const InputItem('cot',value:'cot(', function: true);
+  static const CSC = const InputItem('sin⁻¹',value:'csc(', function: true);
+  static const SEC = const InputItem('cos⁻¹',value:'sec(', function: true);
+  static const COT = const InputItem('tan⁻¹',value:'cot(', function: true);
   static const E_POWER_X = const InputItem('𝑒 ˣ',value:'𝑒^');
   static const SINH = const InputItem('sinh',value:'sinh(', function: true);
   static const COSH = const InputItem('cosh',value:'cosh(', function: true);
@@ -65,6 +65,8 @@ class InputItem{
   static const ATANH = const InputItem('atanh',value:'atanh(', function: true);
   static const SQUARE_ROOT = const InputItem('sqrt',value:'√(', function: true);
   static const STORAGE = const InputItem('sto', value:'➡', lookback: true);
+  static const MAX = const InputItem('max', value:'max(', function: true);
+  static const MIN = const InputItem('min', value:'min(', function: true);
   static const EMPTY = const InputItem('');
 
 }
