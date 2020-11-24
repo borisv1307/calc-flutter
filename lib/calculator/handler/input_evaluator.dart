@@ -42,7 +42,6 @@ class InputEvaluator{
 
   String _calculate(final List<InputItem> input, final List<DisplayHistory> history){
     String inputString = _translateInput(input, history);
-    print(inputString);
     String resultString = calculator.calculate(inputString);
 
     return resultString;
