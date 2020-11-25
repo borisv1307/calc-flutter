@@ -1,6 +1,4 @@
-import 'dart:async';
 import 'dart:developer';
-
 import 'package:cartesian_graph/bounds.dart';
 import 'package:cartesian_graph/cartesian_graph.dart';
 import 'package:cartesian_graph/coordinates.dart';
@@ -18,19 +16,15 @@ class FunctionScreen extends StatefulWidget {
 
 }
 
-String _y1 = "0.05 * x^2 - 50";
-String _y2 = "x + 5";
-String _y3 = "x^3";
-
 class FunctionScreenState extends State<FunctionScreen> {
-  final _formkey = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormState>();
   TextEditingController _functionController;
   static List<String> functionList = [null];
 
   @override
   void initState() {
     super.initState();
-    _functionController = new TextEditingController(text: _y1);
+    _functionController = new TextEditingController();
   }
   @override
   void dispose() {
@@ -44,7 +38,7 @@ class FunctionScreenState extends State<FunctionScreen> {
     return Scaffold(
         body: Center(
           child: Form(
-            key: _formkey,
+            key: _formKey,
             child: Column(
               children: <Widget>[
                 Container(
@@ -84,7 +78,7 @@ class FunctionScreenState extends State<FunctionScreen> {
                 ),
                 ElevatedButton(
                     onPressed: () {
-                      if(_formkey.currentState.validate()) {
+                      if(_formKey.currentState.validate()) {
                         Navigator.push(
                           context,
                           MaterialPageRoute(builder: (context) => GraphScreen()),
@@ -193,7 +187,6 @@ class _FunctionTextFieldsState extends State<FunctionTextFields> {
 class GraphScreenState extends State<GraphScreen>{
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   final _scaleFormKey = GlobalKey<FormState>();
-  final _exprFormKey = GlobalKey<FormFieldState>();
   FunctionScreenState functionScreenState;
   List<String> inputEquations = FunctionScreenState.functionList;
 
