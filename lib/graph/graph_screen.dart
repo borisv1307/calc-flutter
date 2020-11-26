@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'dart:developer';
 
 import 'package:cartesian_graph/bounds.dart';
@@ -19,8 +18,6 @@ class FunctionScreen extends StatefulWidget {
 }
 
 String _y1 = "0.05 * x^2 - 50";
-String _y2 = "x + 5";
-String _y3 = "x^3";
 
 class FunctionScreenState extends State<FunctionScreen> {
   final _formkey = GlobalKey<FormState>();
@@ -193,7 +190,6 @@ class _FunctionTextFieldsState extends State<FunctionTextFields> {
 class GraphScreenState extends State<GraphScreen>{
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   final _scaleFormKey = GlobalKey<FormState>();
-  final _exprFormKey = GlobalKey<FormFieldState>();
   FunctionScreenState functionScreenState;
   List<String> inputEquations = FunctionScreenState.functionList;
 

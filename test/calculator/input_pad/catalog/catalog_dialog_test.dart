@@ -148,7 +148,7 @@ void main(){
       })));
 
       InputItem expectedItem = InputItem.COS;
-      await tester.tap(find.byWidgetPredicate((widget) => widget is ItemTags && (widget as ItemTags).title == expectedItem.display));
+      await tester.tap(find.byWidgetPredicate((widget) => widget is ItemTags && widget.title == expectedItem.display));
 
       expect(actualItem, expectedItem);
     });
@@ -158,7 +158,7 @@ void main(){
       
       await tester.pumpWidget(MaterialApp(home:CatalogDialog((InputItem item){}),navigatorObservers: [observer],));
       
-      await tester.tap(find.byWidgetPredicate((widget) => widget is ItemTags && (widget as ItemTags).title == InputItem.COS.display));
+      await tester.tap(find.byWidgetPredicate((widget) => widget is ItemTags && widget.title == InputItem.COS.display));
 
       verify(observer.didPop(any, any));
     });
