@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:open_calc/calculator/input_pad/button/multi_button.dart';
 import 'package:open_calc/calculator/input_pad/command_item.dart';
 import '../input_pad.dart';
 import 'package:open_calc/calculator/input_pad/button/pad_button.dart';
@@ -25,26 +26,26 @@ class PrimaryPad extends InputPad{
         physics: NeverScrollableScrollPhysics(),
         children:[
           PadButton('2nd', InputButtonStyle.SECONDARY, () {Navigator.pushReplacementNamed(context, 'inputPadTwo');}),
-          buildInputButton(InputItem.OPEN_PARENTHESIS, InputButtonStyle.TERTIARY),
-          buildInputButton(InputItem.CLOSE_PARENTHESIS, InputButtonStyle.TERTIARY),
+          buildInputButton(InputItem.PI, InputButtonStyle.TERTIARY),
+          buildInputButton(InputItem.ANSWER, InputButtonStyle.TERTIARY),
           buildCommandButton(CommandItem.DELETE,InputButtonStyle.TERTIARY),
           buildCommandButton(CommandItem.CLEAR,InputButtonStyle.TERTIARY),
           buildInputButton(InputItem.SQUARED, InputButtonStyle.TERTIARY),
-          buildInputButton(InputItem.SIN, InputButtonStyle.TERTIARY),
-          buildInputButton(InputItem.COS, InputButtonStyle.TERTIARY),
-          buildInputButton(InputItem.TAN, InputButtonStyle.TERTIARY),
-          buildInputButton(InputItem.DIVIDE, InputButtonStyle.SECONDARY),
           buildInputButton(InputItem.POWER, InputButtonStyle.TERTIARY),
+          buildInputButton(InputItem.OPEN_PARENTHESIS, InputButtonStyle.TERTIARY),
+          buildInputButton(InputItem.CLOSE_PARENTHESIS, InputButtonStyle.TERTIARY),
+          buildInputButton(InputItem.DIVIDE, InputButtonStyle.SECONDARY),
+          buildInputButton(InputItem.INVERSE, InputButtonStyle.TERTIARY),
           buildInputButton(InputItem.SEVEN, InputButtonStyle.PRIMARY),
           buildInputButton(InputItem.EIGHT, InputButtonStyle.PRIMARY),
           buildInputButton(InputItem.NINE, InputButtonStyle.PRIMARY),
           buildInputButton(InputItem.MULTIPLY, InputButtonStyle.SECONDARY),
-          buildInputButton(InputItem.LOG, InputButtonStyle.TERTIARY),
+          MultiButton([InputItem.SIN, InputItem.COS, InputItem.TAN], inputFunction, InputButtonStyle.TERTIARY),
           buildInputButton(InputItem.FOUR, InputButtonStyle.PRIMARY),
           buildInputButton(InputItem.FIVE, InputButtonStyle.PRIMARY),
           buildInputButton(InputItem.SIX, InputButtonStyle.PRIMARY),
           buildInputButton(InputItem.SUBTRACT, InputButtonStyle.SECONDARY),
-          buildInputButton(InputItem.NATURAL_LOG, InputButtonStyle.TERTIARY),
+          MultiButton([InputItem.LOG, InputItem.NATURAL_LOG], inputFunction, InputButtonStyle.TERTIARY),
           buildInputButton(InputItem.ONE, InputButtonStyle.PRIMARY),
           buildInputButton(InputItem.TWO, InputButtonStyle.PRIMARY),
           buildInputButton(InputItem.THREE, InputButtonStyle.PRIMARY),

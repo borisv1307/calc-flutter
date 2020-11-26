@@ -5,28 +5,30 @@ class InputItem{
   final bool variable;
   final bool replaceable;
   final bool function;
+  final String name;
 
-  const InputItem(this.display, {String value, this.lookback = false, this.variable = false, 
-                                            bool replaceable = false, this.function = false}):
+  const InputItem(this.display, {String value, this.lookback = false, this.variable = false,
+                                            bool replaceable = false, this.function = false, String name}):
     this.value = value ?? display,
-    this.replaceable = replaceable || variable;
+    this.replaceable = replaceable || variable,
+    this.name = name ?? display;
 
   static const ANSWER = const InputItem('Ans', replaceable: true);
   static const SIN = const InputItem('sin',value:'sin(', function: true);
   static const COS = const InputItem('cos',value:'cos(', function: true);
   static const TAN = const InputItem('tan',value:'tan(', function: true);
-  static const SQUARED = const InputItem('𝑥 ²',value:'²', lookback: true);
+  static const SQUARED = const InputItem('𝑥 ²',value:'²', name:'square',lookback: true);
   static const OPEN_PARENTHESIS = const InputItem('(');
   static const CLOSE_PARENTHESIS = const InputItem(')', lookback: true);
-  static const DIVIDE = const InputItem('÷',value:'/', lookback: true);
-  static const MULTIPLY = const InputItem('x',value:'*', lookback: true);
-  static const POWER = const InputItem('^', lookback: true);
+  static const DIVIDE = const InputItem('÷',value:'/', name:'divide', lookback: true);
+  static const MULTIPLY = const InputItem('x',value:'*', name: 'multiply', lookback: true);
+  static const POWER = const InputItem('^', name:'power', lookback: true);
   static const LOG = const InputItem('log',value:'log(', function: true);
-  static const SUBTRACT = const InputItem('−', lookback: true);
+  static const SUBTRACT = const InputItem('−', name:'subtract', lookback: true, function: true);
   static const NATURAL_LOG = const InputItem('ln',value:'ln(', function: true);
   static const NEGATIVE = const InputItem('(-)',value:'-');
   static const DECIMAL = const InputItem('.',value:'.');
-  static const ADD = const InputItem('+', lookback: true);
+  static const ADD = const InputItem('+', name:'add',lookback: true);
   static const ZERO = const InputItem('0');
   static const ONE = const InputItem('1');
   static const TWO = const InputItem('2');

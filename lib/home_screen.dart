@@ -23,13 +23,15 @@ class HomeScreen extends StatelessWidget {
                   ],
                   bottom: TabBar(
                     tabs: [
+                      // Tab(text: "y="),
                       Tab(icon: Icon(Icons.call_missed_outgoing)),
                       Tab(icon: Icon(Icons.calculate)),
                     ],
                   ),
                 ),
                 body: TabBarView(children: [
-                  GraphScreen(),
+                  // FunctionScreen(),
+                  FunctionScreen(),
                   CalculatorScreen(storage)
                 ]
             )

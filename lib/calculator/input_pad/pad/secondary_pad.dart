@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:open_calc/calculator/input_pad/catalog/catalog_dialog.dart';
 import 'package:open_calc/calculator/input_pad/command_item.dart';
 import 'package:open_calc/calculator/input_pad/input_pad.dart';
 import 'package:open_calc/calculator/input_pad/button/multi_button.dart';
@@ -30,28 +31,28 @@ class SecondaryPad extends InputPad{
           buildInputButton(InputItem.CLOSE_PARENTHESIS, InputButtonStyle.TERTIARY),
           buildCommandButton(CommandItem.DELETE,InputButtonStyle.TERTIARY),
           buildCommandButton(CommandItem.CLEAR,InputButtonStyle.TERTIARY),
-          buildInputButton(InputItem.PI, InputButtonStyle.TERTIARY),
-          buildInputButton(InputItem.CSC, InputButtonStyle.TERTIARY),
-          buildInputButton(InputItem.SEC, InputButtonStyle.TERTIARY),
-          buildInputButton(InputItem.COT, InputButtonStyle.TERTIARY),
+          MultiButton([InputItem.CSC, InputItem.SEC, InputItem.COT], inputFunction, InputButtonStyle.TERTIARY),
+          MultiButton([InputItem.SINH, InputItem.COSH, InputItem.TANH], inputFunction, InputButtonStyle.TERTIARY),
+          MultiButton([InputItem.ASIN, InputItem.ACOS, InputItem.ATAN], inputFunction, InputButtonStyle.TERTIARY),
+          MultiButton([InputItem.ASINH, InputItem.ACOSH, InputItem.ATANH], inputFunction, InputButtonStyle.TERTIARY),
           buildInputButton(InputItem.DIVIDE, InputButtonStyle.SECONDARY),
           buildInputButton(InputItem.E_POWER_X, InputButtonStyle.TERTIARY),
-          buildInputButton(InputItem.SINH, InputButtonStyle.TERTIARY),
-          buildInputButton(InputItem.COSH, InputButtonStyle.TERTIARY),
-          buildInputButton(InputItem.TANH, InputButtonStyle.TERTIARY),
+          buildInputButton(InputItem.EMPTY, InputButtonStyle.TERTIARY),
+          buildInputButton(InputItem.EMPTY, InputButtonStyle.TERTIARY),
+          buildInputButton(InputItem.EMPTY, InputButtonStyle.TERTIARY),
           buildInputButton(InputItem.MULTIPLY, InputButtonStyle.SECONDARY),
-          buildInputButton(InputItem.INVERSE, InputButtonStyle.TERTIARY),
-          buildInputButton(InputItem.ASIN, InputButtonStyle.TERTIARY),
-          buildInputButton(InputItem.ACOS, InputButtonStyle.TERTIARY),
-          buildInputButton(InputItem.ATAN, InputButtonStyle.TERTIARY),
+          buildInputButton(InputItem.EMPTY, InputButtonStyle.TERTIARY),
+          buildInputButton(InputItem.EMPTY, InputButtonStyle.TERTIARY),
+          buildInputButton(InputItem.EMPTY, InputButtonStyle.TERTIARY),
+          buildInputButton(InputItem.EMPTY, InputButtonStyle.TERTIARY),
           buildInputButton(InputItem.SUBTRACT,  InputButtonStyle.SECONDARY),
           buildInputButton(InputItem.COMMA, InputButtonStyle.TERTIARY),
-          buildInputButton(InputItem.ASINH, InputButtonStyle.TERTIARY),
-          buildInputButton(InputItem.ACOSH, InputButtonStyle.TERTIARY),
-          buildInputButton(InputItem.ATANH, InputButtonStyle.TERTIARY),
+          buildInputButton(InputItem.EMPTY, InputButtonStyle.TERTIARY),
+          buildInputButton(InputItem.EMPTY, InputButtonStyle.TERTIARY),
+          buildInputButton(InputItem.EMPTY, InputButtonStyle.TERTIARY),
           buildInputButton(InputItem.ADD,  InputButtonStyle.SECONDARY),
-          PadButton('Vars', InputButtonStyle.QUARTENARY, () {Navigator.pushReplacementNamed(context, 'varPad');}),
-          MultiButton("A,B,C", inputFunction, InputButtonStyle.QUARTENARY, [
+          PadButton('vars', InputButtonStyle.QUARTENARY, () {Navigator.pushReplacementNamed(context, 'varPad');}),
+          MultiButton([
             InputItem.A,
             InputItem.B,
             InputItem.C,
@@ -59,8 +60,12 @@ class SecondaryPad extends InputPad{
             InputItem.E,
             InputItem.F,
             InputItem.G
-          ]),
-          buildInputButton(InputItem.EMPTY, InputButtonStyle.QUARTENARY),
+          ], inputFunction, InputButtonStyle.QUARTENARY, display:'a, b, c'),
+          PadButton('list', InputButtonStyle.QUARTENARY,(){
+            showDialog(context: context,builder: (BuildContext context){
+              return CatalogDialog(this.inputFunction);
+            });
+          }),
           buildInputButton(InputItem.EMPTY, InputButtonStyle.QUARTENARY),
           buildCommandButton(CommandItem.ENTER, InputButtonStyle.SECONDARY),
         ],
