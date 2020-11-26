@@ -18,7 +18,6 @@ class InputItem{
   static const COS = const InputItem('cos',value:'cos(', function: true);
   static const TAN = const InputItem('tan',value:'tan(', function: true);
   static const SQUARED = const InputItem('𝑥 ²',value:'²', name:'square',lookback: true);
-  static const SQUARED = const InputItem('𝑥 ²',value:'²', lookback: true);
   static const OPEN_PARENTHESIS = const InputItem('(');
   static const CLOSE_PARENTHESIS = const InputItem(')', lookback: true);
   static const DIVIDE = const InputItem('÷',value:'/', name:'divide', lookback: true);
