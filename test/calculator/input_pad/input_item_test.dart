@@ -11,16 +11,19 @@ void main() {
   test('sin',(){
     expect(InputItem.SIN.display,'sin');
     expect(InputItem.SIN.value,'sin(');
+    expect(InputItem.SIN.function, true);
   });
 
   test('cos',(){
     expect(InputItem.COS.display,'cos');
     expect(InputItem.COS.value,'cos(');
+    expect(InputItem.COS.function, true);
   });
 
   test('tan',(){
     expect(InputItem.TAN.display,'tan');
     expect(InputItem.TAN.value,'tan(');
+    expect(InputItem.TAN.function, true);
   });
 
   test('squared',(){
@@ -28,6 +31,13 @@ void main() {
     expect(InputItem.SQUARED.value,'²');
     expect(InputItem.SQUARED.lookback, true);
   });
+
+    test('square root',(){
+    expect(InputItem.SQUARE_ROOT.display,'sqrt');
+    expect(InputItem.SQUARE_ROOT.value,'√(');
+    expect(InputItem.SQUARE_ROOT.function, true);
+  });
+
 
   test('open parenthesis',(){
     expect(InputItem.OPEN_PARENTHESIS.display,'(');
@@ -61,6 +71,7 @@ void main() {
   test('log',(){
     expect(InputItem.LOG.display,'log');
     expect(InputItem.LOG.value,'log(');
+    expect(InputItem.LOG.function, true);
   });
 
   test('subtract',(){
@@ -72,6 +83,7 @@ void main() {
   test('natural log',(){
     expect(InputItem.NATURAL_LOG.display,'ln');
     expect(InputItem.NATURAL_LOG.value,'ln(');
+    expect(InputItem.NATURAL_LOG.function, true);
   });
 
   test('negative',(){
@@ -208,6 +220,19 @@ void main() {
   test('CSC',(){
     expect(InputItem.CSC.display,'csc');
     expect(InputItem.CSC.value,'csc(');
+    expect(InputItem.CSC.function, true);
+  });
+
+  test('SEC',(){
+    expect(InputItem.SEC.display,'sec');
+    expect(InputItem.SEC.value,'sec(');
+    expect(InputItem.SEC.function, true);
+  });
+
+  test('COT',(){
+    expect(InputItem.COT.display,'cot');
+    expect(InputItem.COT.value,'cot(');
+    expect(InputItem.COT.function, true);
   });
 
   test('E_POWER_X',(){
@@ -218,36 +243,42 @@ void main() {
   test('SINH',(){
     expect(InputItem.SINH.display,'sinh');
     expect(InputItem.SINH.value,'sinh(');
+    expect(InputItem.SINH.function, true);
   });
 
   test('COSH',(){
     expect(InputItem.COSH.display,'cosh');
     expect(InputItem.COSH.value,'cosh(');
+    expect(InputItem.COSH.function, true);
   });
 
   test('TANH',(){
     expect(InputItem.TANH.display,'tanh');
     expect(InputItem.TANH.value,'tanh(');
+    expect(InputItem.TANH.function, true);
   });
 
   test('INVERSE',(){
-    expect(InputItem.INVERSE.display,'x ⁻¹');
+    expect(InputItem.INVERSE.display,'𝑥 ⁻¹');
     expect(InputItem.INVERSE.value,'⁻¹');
   });
 
   test('ASIN',(){
     expect(InputItem.ASIN.display,'asin');
     expect(InputItem.ASIN.value,'asin(');
+    expect(InputItem.ASIN.function, true);
   });
 
   test('ACOS',(){
     expect(InputItem.ACOS.display,'acos');
     expect(InputItem.ACOS.value,'acos(');
+    expect(InputItem.ACOS.function, true);
   });
 
   test('ATAN',(){
     expect(InputItem.ATAN.display,'atan');
     expect(InputItem.ATAN.value,'atan(');
+    expect(InputItem.ATAN.function, true);
   });
 
   test('FACTORIAL',(){
@@ -258,16 +289,19 @@ void main() {
   test('ASINH',(){
     expect(InputItem.ASINH.display,'asinh');
     expect(InputItem.ASINH.value,'asinh(');
+    expect(InputItem.ASINH.function, true);
   });
 
   test('ACOSH',(){
     expect(InputItem.ACOSH.display,'acosh');
     expect(InputItem.ACOSH.value,'acosh(');
+    expect(InputItem.ACOSH.function, true);
   });
 
   test('ATANH',(){
     expect(InputItem.ATANH.display,'atanh');
     expect(InputItem.ATANH.value,'atanh(');
+    expect(InputItem.ATANH.function, true);
   });
 
   test('storage',(){
