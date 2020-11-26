@@ -25,7 +25,7 @@ class InputItem{
   static const POWER = const InputItem('^', name:'power', lookback: true);
   static const LOG = const InputItem('log',value:'log(', function: true);
   static const SUBTRACT = const InputItem('−', name:'subtract', lookback: true, function: true);
-  static const NATURAL_LOG = const InputItem('ln',value:'ln(');
+  static const NATURAL_LOG = const InputItem('ln',value:'ln(', function: true);
   static const NEGATIVE = const InputItem('(-)',value:'-');
   static const DECIMAL = const InputItem('.',value:'.');
   static const ADD = const InputItem('+', name:'add',lookback: true);
