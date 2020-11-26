@@ -4,27 +4,29 @@ class InputItem{
   final bool lookback;
   final bool variable;
   final bool replaceable;
+  final String name;
 
-  const InputItem(this.display, {String value, this.lookback = false, this.variable = false, bool replaceable = false}):
+  const InputItem(this.display, {String value, this.lookback = false, this.variable = false, bool replaceable = false, String name}):
     this.value = value ?? display,
-    this.replaceable = replaceable || variable;
+    this.replaceable = replaceable || variable,
+    this.name = name ?? display;
 
   static const ANSWER = const InputItem('Ans', replaceable: true);
   static const SIN = const InputItem('sin',value:'sin(');
   static const COS = const InputItem('cos',value:'cos(');
   static const TAN = const InputItem('tan',value:'tan(');
-  static const SQUARED = const InputItem('𝑥 ²',value:'²', lookback: true);
+  static const SQUARED = const InputItem('𝑥 ²',value:'²', name:'square',lookback: true);
   static const OPEN_PARENTHESIS = const InputItem('(');
   static const CLOSE_PARENTHESIS = const InputItem(')', lookback: true);
-  static const DIVIDE = const InputItem('÷',value:'/', lookback: true);
-  static const MULTIPLY = const InputItem('x',value:'*', lookback: true);
-  static const POWER = const InputItem('^', lookback: true);
+  static const DIVIDE = const InputItem('÷',value:'/', name:'divide', lookback: true);
+  static const MULTIPLY = const InputItem('x',value:'*', name: 'multiply', lookback: true);
+  static const POWER = const InputItem('^', name:'power', lookback: true);
   static const LOG = const InputItem('log',value:'log(');
-  static const SUBTRACT = const InputItem('−', lookback: true);
+  static const SUBTRACT = const InputItem('−', name:'subtract', lookback: true);
   static const NATURAL_LOG = const InputItem('ln',value:'ln(');
   static const NEGATIVE = const InputItem('(-)',value:'-');
   static const DECIMAL = const InputItem('.',value:'.');
-  static const ADD = const InputItem('+', lookback: true);
+  static const ADD = const InputItem('+', name:'add',lookback: true);
   static const ZERO = const InputItem('0');
   static const ONE = const InputItem('1');
   static const TWO = const InputItem('2');
@@ -53,7 +55,7 @@ class InputItem{
   static const SINH = const InputItem('sinh',value:'sinh(');
   static const COSH = const InputItem('cosh',value:'cosh(');
   static const TANH = const InputItem('tanh',value:'tanh(');
-  static const INVERSE = const InputItem('x ⁻¹',value:'⁻¹');
+  static const INVERSE = const InputItem('𝑥 ⁻¹',value:'⁻¹');
   static const ASIN = const InputItem('asin',value:'asin(');
   static const ACOS= const InputItem('acos',value:'acos(');
   static const ATAN = const InputItem('atan',value:'atan(');

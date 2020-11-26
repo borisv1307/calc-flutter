@@ -27,6 +27,7 @@ void main() {
     expect(InputItem.SQUARED.display,'𝑥 ²');
     expect(InputItem.SQUARED.value,'²');
     expect(InputItem.SQUARED.lookback, true);
+    expect(InputItem.SQUARED.name, 'square');
   });
 
   test('open parenthesis',(){
@@ -44,18 +45,21 @@ void main() {
     expect(InputItem.DIVIDE.display,'÷');
     expect(InputItem.DIVIDE.value,'/');
     expect(InputItem.DIVIDE.lookback, true);
+    expect(InputItem.DIVIDE.name,'divide');
   });
 
   test('power',(){
     expect(InputItem.POWER.display,'^');
     expect(InputItem.POWER.value,'^');
     expect(InputItem.POWER.lookback, true);
+    expect(InputItem.POWER.name,'power');
   });
 
   test('multiply',(){
     expect(InputItem.MULTIPLY.display,'x');
     expect(InputItem.MULTIPLY.value,'*');
     expect(InputItem.MULTIPLY.lookback, true);
+    expect(InputItem.MULTIPLY.name, 'multiply');
   });
 
   test('log',(){
@@ -67,6 +71,7 @@ void main() {
     expect(InputItem.SUBTRACT.display,'−');
     expect(InputItem.SUBTRACT.value,'−');
     expect(InputItem.SUBTRACT.lookback, true);
+    expect(InputItem.SUBTRACT.name, 'subtract');
   });
 
   test('natural log',(){
@@ -88,6 +93,7 @@ void main() {
     expect(InputItem.ADD.display,'+');
     expect(InputItem.ADD.value,'+');
     expect(InputItem.ADD.lookback, true);
+    expect(InputItem.ADD.name,'add');
   });
 
   test('zero',(){
@@ -231,7 +237,7 @@ void main() {
   });
 
   test('INVERSE',(){
-    expect(InputItem.INVERSE.display,'x ⁻¹');
+    expect(InputItem.INVERSE.display,'𝑥 ⁻¹');
     expect(InputItem.INVERSE.value,'⁻¹');
   });
 

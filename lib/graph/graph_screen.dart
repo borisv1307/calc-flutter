@@ -361,7 +361,6 @@ class GraphScreenState extends State<GraphScreen>{
                 ),
                 child: CartesianGraph(
                   Bounds(_xMin, _xMax, _yMin, _yMax),
-                  equations: inputEquations,
                   cursorLocation: this.cursorLocation,
                 ),
               ),
