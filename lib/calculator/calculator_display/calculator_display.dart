@@ -107,6 +107,7 @@ class _CalculatorDisplayState extends State<CalculatorDisplay> {
             readOnly: true,
             showCursor: false,
             textInputAction: TextInputAction.none,
+            maxLines: null,
             controller: inputLineController,
             onTap: (){
               this.widget.controller.cursorIndex = inputLineController.selection.extent.offset;
