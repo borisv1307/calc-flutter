@@ -7,7 +7,7 @@ class CalculatorDisplayController extends ChangeNotifier{
   List<DisplayHistory> _history = [];
   int _inputIndex = 0;
   int _historyIndex = 0;
-  String _alert = null;
+  String _alert;
 
   List<DisplayHistory> get history{
     return _history;

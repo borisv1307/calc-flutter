@@ -135,7 +135,7 @@ void main(){
         MockVariableStorage storage = MockVariableStorage();
 
         InputEvaluator evaluator = InputEvaluator(storage,calculator);
-        DisplayHistory history = evaluator.evaluate([InputItem.THREE,InputItem.STORAGE,InputItem.FOUR], []);
+        evaluator.evaluate([InputItem.THREE,InputItem.STORAGE,InputItem.FOUR], []);
       }
 
       test('throws syntax exception',(){
