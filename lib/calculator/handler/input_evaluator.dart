@@ -1,6 +1,6 @@
 import 'package:advanced_calculation/advanced_calculator.dart';
+import 'package:advanced_calculation/syntax_exception.dart';
 import 'package:open_calc/calculator/calculator_display/display_history.dart';
-import 'package:open_calc/calculator/handler/syntax_exception.dart';
 import 'package:open_calc/calculator/input_pad/input_item.dart';
 import 'package:open_calc/calculator/input_pad/input_variables.dart';
 
