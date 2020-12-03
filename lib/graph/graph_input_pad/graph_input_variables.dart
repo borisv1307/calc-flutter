@@ -2,8 +2,8 @@
 class FunctionVariableStorage {
 
   Map variableMap;
-  
-  VariableStorage(){
+
+  variableStorage(){
     variableMap = new Map();
   }
 
