@@ -2,6 +2,11 @@ import 'dart:developer';
 import 'package:cartesian_graph/bounds.dart';
 import 'package:cartesian_graph/cartesian_graph.dart';
 import 'package:cartesian_graph/coordinates.dart';
+import 'package:open_calc/graph/function_display_controller.dart';
+import 'package:open_calc/graph/graph_handler/graph_command_handler.dart';
+import 'package:open_calc/graph/graph_input_pad/graph_input_pad.dart';
+import 'package:open_calc/graph/graph_handler/graph_input_handler.dart';
+import 'package:open_calc/graph/graph_input_pad/graph_input_variables.dart';
 import 'package:open_calc/graph/graph_table.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -11,8 +16,11 @@ class GraphScreen extends StatefulWidget {
   State<StatefulWidget> createState() => GraphScreenState();
 }
 class FunctionScreen extends StatefulWidget {
+  final FunctionVariableStorage storage;
+
+  FunctionScreen(this.storage);
   @override
-  State<StatefulWidget> createState() => FunctionScreenState();
+  State<StatefulWidget> createState() => FunctionScreenState(storage);
 
 }
 
@@ -31,6 +39,18 @@ class FunctionScreenState extends State<FunctionScreen> {
     // Clean up the controller when the widget is disposed.
     _functionController.dispose();
     super.dispose();
+  }
+
+  final FunctionVariableStorage storage;
+
+  FunctionDisplayController controller;
+  InputHandler inputHandler;
+  CommandHandler commandHandler;
+
+  FunctionScreenState(this.storage) {
+    controller = FunctionDisplayController();
+    inputHandler = InputHandler(controller);
+    commandHandler = CommandHandler(controller, storage);
   }
 
   @override
@@ -87,6 +107,7 @@ class FunctionScreenState extends State<FunctionScreen> {
                     },
                     child: Text("Generate Graph")
                 ),
+                Expanded(child: InputPad(storage, inputHandler.handle, commandHandler.handle))
               ],
             ),
           ),
