@@ -304,4 +304,31 @@ void main(){
       });
     });
   });
+  group('Alerts',(){
+    test('are initially not present',(){
+      TestableCalculatorDisplayController controller = TestableCalculatorDisplayController();
+      expect(controller.popAlert(), isNull);
+    });
+
+    group('alert updates',(){
+      TestableCalculatorDisplayController controller;
+      setUpAll((){
+        controller = TestableCalculatorDisplayController();
+        controller.pushAlert('demo');
+      });
+
+      test('updates subscribers',(){
+        expect(controller.notified, 1);
+      });
+
+      test('can be popped',(){
+        expect(controller.popAlert(), 'demo');
+      });
+
+      test('is non-existent after being popped',(){
+        expect(controller.popAlert(), null);
+      });
+    });
+
+  });
 }

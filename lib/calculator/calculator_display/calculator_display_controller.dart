@@ -7,6 +7,7 @@ class CalculatorDisplayController extends ChangeNotifier{
   List<DisplayHistory> _history = [];
   int _inputIndex = 0;
   int _historyIndex = 0;
+  String _alert = null;
 
   List<DisplayHistory> get history{
     return _history;
@@ -77,6 +78,17 @@ class CalculatorDisplayController extends ChangeNotifier{
       _historyIndex--;
       _updateInputFromHistory();
     }
+  }
+
+  void pushAlert(String alert){
+    this._alert = alert;
+    notifyListeners();
+  }
+
+  String popAlert(){
+    String alert = _alert;
+    _alert = null;
+    return alert;
   }
 
   void _updateInputFromHistory(){

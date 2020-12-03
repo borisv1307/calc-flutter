@@ -2,6 +2,7 @@ import 'package:advanced_calculation/advanced_calculator.dart';
 import 'package:mockito/mockito.dart';
 import 'package:open_calc/calculator/calculator_display/display_history.dart';
 import 'package:open_calc/calculator/handler/input_evaluator.dart';
+import 'package:open_calc/calculator/handler/syntax_exception.dart';
 import 'package:open_calc/calculator/input_pad/input_item.dart';
 import 'package:open_calc/calculator/input_pad/input_variables.dart';
 import 'package:test/test.dart';
@@ -127,56 +128,51 @@ void main(){
     });
 
     group('with non variable specified',(){
-      MockVariableStorage storage;
-      DisplayHistory history;
-
-      setUp((){
+      triggerSyntaxException(){
         MockAdvancedCalculator calculator = MockAdvancedCalculator();
         when(calculator.calculate('3')).thenReturn('2');
 
-        storage = MockVariableStorage();
+        MockVariableStorage storage = MockVariableStorage();
 
         InputEvaluator evaluator = InputEvaluator(storage,calculator);
-        history = evaluator.evaluate([InputItem.THREE,InputItem.STORAGE,InputItem.FOUR], []);
+        DisplayHistory history = evaluator.evaluate([InputItem.THREE,InputItem.STORAGE,InputItem.FOUR], []);
+      }
+
+      test('throws syntax exception',(){
+        expect(() => triggerSyntaxException(), throwsA(const TypeMatcher<SyntaxException>()));
       });
 
-      test('does not store variable',(){
-        verifyNoMoreInteractions(storage);
-      });
-
-      test('displays input',(){
-        expect(history.input,[InputItem.THREE,InputItem.STORAGE,InputItem.FOUR]);
-      });
-
-      test('displays syntax error',(){
-        expect(history.result,'Syntax Error');
+      test('sets syntax error index',(){
+        try{
+          triggerSyntaxException();
+        }on SyntaxException catch(e){
+          expect(e.index, 2);
+        }
       });
     });
 
     group('with multiple characters specified for storage',(){
-      MockVariableStorage storage;
-      DisplayHistory history;
 
-      setUp((){
+      triggerSyntaxException(){
         MockAdvancedCalculator calculator = MockAdvancedCalculator();
         when(calculator.calculate('3')).thenReturn('2');
 
-        storage = MockVariableStorage();
+        MockVariableStorage storage = MockVariableStorage();
 
         InputEvaluator evaluator = InputEvaluator(storage,calculator);
-        history = evaluator.evaluate([InputItem.THREE,InputItem.STORAGE,InputItem.FOUR, InputItem.A], []);
+        evaluator.evaluate([InputItem.THREE,InputItem.STORAGE,InputItem.FOUR, InputItem.A], []);
+      }
+
+      test('throws syntax exception',(){
+        expect(() => triggerSyntaxException(), throwsA(const TypeMatcher<SyntaxException>()));
       });
 
-      test('does not store variable',(){
-        verifyNoMoreInteractions(storage);
-      });
-
-      test('displays input',(){
-        expect(history.input,[InputItem.THREE,InputItem.STORAGE,InputItem.FOUR, InputItem.A]);
-      });
-
-      test('displays syntax error',(){
-        expect(history.result,'Syntax Error');
+      test('sets syntax error index',(){
+        try{
+          triggerSyntaxException();
+        }on SyntaxException catch(e){
+          expect(e.index, 2);
+        }
       });
     });
   });
