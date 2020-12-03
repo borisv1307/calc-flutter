@@ -2,11 +2,11 @@ import 'dart:developer';
 import 'package:cartesian_graph/bounds.dart';
 import 'package:cartesian_graph/cartesian_graph.dart';
 import 'package:cartesian_graph/coordinates.dart';
-import 'package:open_calc/graph/function_display_controller.dart';
+import 'package:open_calc/graph/graph_display_controller.dart';
 import 'package:open_calc/graph/graph_handler/graph_command_handler.dart';
 import 'package:open_calc/graph/graph_input_pad/graph_input_pad.dart';
 import 'package:open_calc/graph/graph_handler/graph_input_handler.dart';
-import 'package:open_calc/graph/graph_input_pad/graph_input_variables.dart';
+import 'package:open_calc/calculator/input_pad/input_variables.dart';
 import 'package:open_calc/graph/graph_table.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +16,7 @@ class GraphScreen extends StatefulWidget {
   State<StatefulWidget> createState() => GraphScreenState();
 }
 class FunctionScreen extends StatefulWidget {
-  final FunctionVariableStorage storage;
+  final VariableStorage storage;
 
   FunctionScreen(this.storage);
   @override
@@ -26,8 +26,19 @@ class FunctionScreen extends StatefulWidget {
 
 class FunctionScreenState extends State<FunctionScreen> {
   final _formKey = GlobalKey<FormState>();
-  TextEditingController _functionController;
+  final VariableStorage storage;
   static List<String> functionList = [null];
+  GraphDisplayController controller;
+  TextEditingController _functionController;
+  InputHandler inputHandler;
+  CommandHandler commandHandler;
+  List<TextEditingController> controllerList = [];
+
+  FunctionScreenState(this.storage) {
+    controller = GraphDisplayController();
+    inputHandler = InputHandler(controller);
+    commandHandler = CommandHandler(controller, storage);
+  }
 
   @override
   void initState() {
@@ -39,18 +50,6 @@ class FunctionScreenState extends State<FunctionScreen> {
     // Clean up the controller when the widget is disposed.
     _functionController.dispose();
     super.dispose();
-  }
-
-  final FunctionVariableStorage storage;
-
-  FunctionDisplayController controller;
-  InputHandler inputHandler;
-  CommandHandler commandHandler;
-
-  FunctionScreenState(this.storage) {
-    controller = FunctionDisplayController();
-    inputHandler = InputHandler(controller);
-    commandHandler = CommandHandler(controller, storage);
   }
 
   @override
@@ -74,6 +73,7 @@ class FunctionScreenState extends State<FunctionScreen> {
                           child: RaisedButton(
                             onPressed: () {
                               // functionList.insert(functionList.length, null);
+                              controller.addField();
                               functionList.add(null);
                               setState((){});
                             },
@@ -122,9 +122,9 @@ class FunctionScreenState extends State<FunctionScreen> {
             padding: const EdgeInsets.symmetric(vertical: 5.0),
             child: Row(
               children: [
-                Expanded(child: FunctionTextFields(i)),
+                Expanded(child: FunctionTextField(i, controller)),
                 SizedBox(width: 16,),
-                // we need add button at last friends row only
+                // we need a dd button at last friends row only
                 _removeButton(false, i),
               ],
             ),
@@ -141,6 +141,7 @@ class FunctionScreenState extends State<FunctionScreen> {
         //   functionList.insert(index + 1, null);
         // }
         // else
+        controller.removeField(index);
         functionList.removeAt(index);
         setState((){});
       },
@@ -159,39 +160,50 @@ class FunctionScreenState extends State<FunctionScreen> {
   }
 }
 
-class FunctionTextFields extends StatefulWidget {
+class FunctionTextField extends StatefulWidget { 
   final int index;
-  FunctionTextFields(this.index);
+  final GraphDisplayController controller;
+  FunctionTextField(this.index, this.controller);
 
   @override
-  _FunctionTextFieldsState createState() => _FunctionTextFieldsState();
+  _FunctionTextFieldState createState() => _FunctionTextFieldState();
 }
 
-class _FunctionTextFieldsState extends State<FunctionTextFields> {
-  TextEditingController _functionController;
+class _FunctionTextFieldState extends State<FunctionTextField> {
+
+  TextEditingController textController;
 
   @override
   void initState() {
     super.initState();
-    _functionController = TextEditingController();
+    textController = TextEditingController();
+    widget.controller?.addListener(_updateFunction);
   }
   @override
   void dispose() {
-    _functionController.dispose();
+    textController.dispose();
+    widget.controller?.dispose();
     super.dispose();
+  }
+
+  void _updateFunction() {
+    setState(() {
+      textController.text = widget.controller.getInput(widget.index);
+      FunctionScreenState.functionList[widget.index] = textController.text;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      _functionController.text = FunctionScreenState.functionList[widget.index]
+      textController.text = FunctionScreenState.functionList[widget.index]
           ?? '';
     });
     return TextFormField(
-      controller: _functionController,
+      controller: textController,
       // save text field data in friends list at index
       // whenever text field value changes
-      onChanged: (v) => FunctionScreenState.functionList[widget.index] = v,
+      onTap: () { widget.controller.currentField = widget.index; },
       decoration: InputDecoration(
           labelText: 'y' + (widget.index + 1).toString() + '= '
       ),

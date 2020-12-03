@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:open_calc/calculator/input_pad/input_variables.dart';
 import 'package:open_calc/graph/graph_input_pad/graph_command_item.dart';
 import 'package:open_calc/graph/graph_input_pad/pad/graph_primary_pad.dart';
 import 'package:open_calc/graph/graph_input_pad/pad/graph_secondary_pad.dart';
@@ -7,7 +8,6 @@ import 'package:open_calc/graph/graph_input_pad/button/graph_input_button.dart';
 import 'package:open_calc/graph/graph_input_pad/button/graph_pad_button.dart';
 import 'package:open_calc/graph/graph_input_pad/graph_input_button_style.dart';
 import 'package:open_calc/graph/graph_input_pad/graph_input_item.dart';
-import 'package:open_calc/graph/graph_input_pad/graph_input_variables.dart';
 import 'package:open_calc/graph/graph_input_pad/pad/graph_variable_screen.dart';
 
 
@@ -15,7 +15,7 @@ class InputPad extends StatelessWidget{
 
   final Function(InputItem input) inputFunction;
   final Function(CommandItem command) commandFunction;
-  final FunctionVariableStorage storage;
+  final VariableStorage storage;
 
   InputPad(this.storage,this.inputFunction,this.commandFunction);
 
