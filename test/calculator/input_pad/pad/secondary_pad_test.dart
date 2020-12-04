@@ -46,7 +46,8 @@ void main(){
     _verifyButtonLocation(InputItem.ACOSH.display, 8);
     _verifyButtonLocation(InputItem.ATANH.display, 8);
     _verifyButtonLocation(InputItem.DIVIDE.display, 9);
-    _verifyButtonLocation(InputItem.E_POWER_X.display, 10);
+    _verifyButtonLocation(InputItem.SQUARE_ROOT.display, 10);
+    _verifyButtonLocation(InputItem.E_POWER_X.display, 11);
     _verifyButtonLocation(InputItem.MULTIPLY.display, 14);
     _verifyButtonLocation(InputItem.SUBTRACT.display, 19);
     _verifyButtonLocation(InputItem.COMMA.display, 20);
@@ -84,6 +85,7 @@ void main(){
     _verifyButtonStyle(InputItem.ACOSH.display, InputButtonStyle.TERTIARY);
     _verifyButtonStyle(InputItem.ATANH.display, InputButtonStyle.TERTIARY);
     _verifyButtonStyle(InputItem.DIVIDE.display, InputButtonStyle.SECONDARY);
+    _verifyButtonStyle(InputItem.SQUARE_ROOT.display, InputButtonStyle.TERTIARY);
     _verifyButtonStyle(InputItem.E_POWER_X.display, InputButtonStyle.TERTIARY);
     _verifyButtonStyle(InputItem.MULTIPLY.display, InputButtonStyle.SECONDARY);
     _verifyButtonStyle(InputItem.SUBTRACT.display, InputButtonStyle.SECONDARY);
