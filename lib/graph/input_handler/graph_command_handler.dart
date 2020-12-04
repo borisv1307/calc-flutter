@@ -1,7 +1,7 @@
 import 'package:open_calc/calculator/input_pad/input_variables.dart';
 import 'package:open_calc/graph/graph_display_controller.dart';
-import 'package:open_calc/graph/graph_handler/graph_input_evaluator.dart';
-import 'package:open_calc/graph/graph_input_pad/graph_command_item.dart';
+import 'package:open_calc/graph/input_handler/graph_input_evaluator.dart';
+import 'package:open_calc/calculator/input_pad/command_item.dart';
 
 class CommandHandler{
   final GraphDisplayController controller;

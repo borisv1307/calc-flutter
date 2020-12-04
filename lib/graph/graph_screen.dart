@@ -3,9 +3,9 @@ import 'package:cartesian_graph/bounds.dart';
 import 'package:cartesian_graph/cartesian_graph.dart';
 import 'package:cartesian_graph/coordinates.dart';
 import 'package:open_calc/graph/graph_display_controller.dart';
-import 'package:open_calc/graph/graph_handler/graph_command_handler.dart';
+import 'package:open_calc/graph/input_handler/graph_command_handler.dart';
 import 'package:open_calc/graph/graph_input_pad/graph_input_pad.dart';
-import 'package:open_calc/graph/graph_handler/graph_input_handler.dart';
+import 'package:open_calc/graph/input_handler/graph_input_handler.dart';
 import 'package:open_calc/calculator/input_pad/input_variables.dart';
 import 'package:open_calc/graph/graph_table.dart';
 import 'package:flutter/cupertino.dart';
@@ -107,7 +107,7 @@ class FunctionScreenState extends State<FunctionScreen> {
                     },
                     child: Text("Generate Graph")
                 ),
-                Expanded(child: InputPad(storage, inputHandler.handle, commandHandler.handle))
+                Expanded(child: GraphInputPad(storage, inputHandler.handle, commandHandler.handle))
               ],
             ),
           ),
@@ -201,9 +201,8 @@ class _FunctionTextFieldState extends State<FunctionTextField> {
     });
     return TextFormField(
       controller: textController,
-      // save text field data in friends list at index
-      // whenever text field value changes
-      onTap: () { widget.controller.currentField = widget.index; },
+      showCursor: false,
+      onTap: () => widget.controller.currentField = widget.index,
       decoration: InputDecoration(
           labelText: 'y' + (widget.index + 1).toString() + '= '
       ),
