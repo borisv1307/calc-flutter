@@ -53,7 +53,7 @@ class InputEvaluator{
     for(InputItem item in input) {
       if(prior != null){
         bool nonLookbackAfterReplaceableItem = !item.lookback && prior.replaceable;
-        bool replaceableItemAfterNonLookback = !prior.lookback && item.replaceable;
+        bool replaceableItemAfterNonLookback = !prior.lookback && item.replaceable && !prior.function;
         if(nonLookbackAfterReplaceableItem || replaceableItemAfterNonLookback){
           inputString += InputItem.MULTIPLY.value;
         }

@@ -226,5 +226,20 @@ void main(){
       expect(output.input,[InputItem.TWO, InputItem.A]);
       expect(output.result,'6');
     });
+
+    test('Variable in function does not add multiplication',(){
+      MockAdvancedCalculator calculator = MockAdvancedCalculator();
+      when(calculator.calculate('log(10')).thenReturn('1');
+
+      MockVariableStorage storage = MockVariableStorage();
+      when(storage.fetchVariable('A')).thenReturn('10');
+
+      InputEvaluator evaluator = InputEvaluator(storage,calculator);
+
+      DisplayHistory output = evaluator.evaluate([InputItem.LOG, InputItem.A], []);
+
+      expect(output.input,[InputItem.LOG, InputItem.A]);
+      expect(output.result,'1');
+    });
   });
 }

@@ -32,7 +32,6 @@ class FunctionScreenState extends State<FunctionScreen> {
   TextEditingController _functionController;
   InputHandler inputHandler;
   CommandHandler commandHandler;
-  List<TextEditingController> controllerList = [];
 
   FunctionScreenState(this.storage) {
     controller = GraphDisplayController();
@@ -388,6 +387,7 @@ class GraphScreenState extends State<GraphScreen>{
                   Bounds(_xMin, _xMax, _yMin, _yMax),
                   equations: inputEquations,
                   cursorLocation: this.cursorLocation,
+                  
                 ),
               ),
               Row(
@@ -482,7 +482,6 @@ class GraphScreenState extends State<GraphScreen>{
   List<Widget> _getEquations() {
     List<Widget> displayedEquations = [];
     for (int i = 0; i < inputEquations.length; i++) {
-      log(inputEquations[i]);
       displayedEquations.add(
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 16.0),
