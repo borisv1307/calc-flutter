@@ -150,5 +150,14 @@ void main(){
       await tester.pumpAndSettle();
       await expectLater(find.byType(CalculatorDisplay),matchesGoldenFile('scrolled.png'));
     });
+
+    testWidgets('text wraps to new line',(WidgetTester tester) async{
+      List<InputItem> input = [];
+      for (var i = 0; i < 45; i++) {
+        input.add(InputItem.THREE);
+      }
+      await tester.pumpWidget(MaterialApp(home:CalculatorDisplay(_buildController(input,[DisplayHistory([InputItem.ONE,InputItem.TWO,InputItem.THREE], '6')]),numLines: 6)));
+      await expectLater(find.byType(CalculatorDisplay),matchesGoldenFile('textwrap.png'));
+    });
   });
 }
