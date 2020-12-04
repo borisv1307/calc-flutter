@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:open_calc/calculator/input_pad/input_pad.dart';
 import 'package:open_calc/calculator/input_pad/pad/secondary_pad.dart';
 import 'package:open_calc/calculator/input_pad/pad/variable_screen.dart';
-import 'package:open_calc/graph/graph_input_pad/pad/graph_primary_pad.dart';
-
+import 'package:open_calc/graph/function_screen/input_pad/pad/graph_primary_pad.dart';
 
 class GraphInputPad extends InputPad{
 

@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:open_calc/calculator/input_pad/input_item.dart';
 
-class GraphDisplayController extends ChangeNotifier{
+class FunctionDisplayController extends ChangeNotifier{
   List<List<InputItem>> _inputs = [[]];  // input for each text field
   int currentField = 0;                  // index of active text field
 

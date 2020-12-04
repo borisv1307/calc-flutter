@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:open_calc/calculator/calculator_screen.dart';
-import 'package:open_calc/graph/graph_screen.dart';
 import 'package:open_calc/calculator/input_pad/input_variables.dart';
+import 'package:open_calc/graph/function_screen/function_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   final String title;
@@ -9,9 +9,8 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
+    
     VariableStorage storage = new VariableStorage();
-
 
     return MaterialApp(
         home: DefaultTabController(
@@ -31,7 +30,6 @@ class HomeScreen extends StatelessWidget {
                   ),
                 ),
                 body: TabBarView(children: [
-                  // FunctionScreen(),
                   FunctionScreen(storage),
                   CalculatorScreen(storage)
                 ]

@@ -2,218 +2,15 @@ import 'dart:developer';
 import 'package:cartesian_graph/bounds.dart';
 import 'package:cartesian_graph/cartesian_graph.dart';
 import 'package:cartesian_graph/coordinates.dart';
-import 'package:open_calc/graph/graph_display_controller.dart';
-import 'package:open_calc/graph/input_handler/graph_command_handler.dart';
-import 'package:open_calc/graph/graph_input_pad/graph_input_pad.dart';
-import 'package:open_calc/graph/input_handler/graph_input_handler.dart';
-import 'package:open_calc/calculator/input_pad/input_variables.dart';
-import 'package:open_calc/graph/graph_table.dart';
+import 'package:open_calc/graph/graph_screen/graph_table.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:open_calc/graph/function_screen/function_screen.dart';
 
 class GraphScreen extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => GraphScreenState();
 }
-class FunctionScreen extends StatefulWidget {
-  final VariableStorage storage;
-
-  FunctionScreen(this.storage);
-  @override
-  State<StatefulWidget> createState() => FunctionScreenState(storage);
-
-}
-
-class FunctionScreenState extends State<FunctionScreen> {
-  final _formKey = GlobalKey<FormState>();
-  final VariableStorage storage;
-  static List<String> functionList = [null];
-  GraphDisplayController controller;
-  TextEditingController _functionController;
-  InputHandler inputHandler;
-  CommandHandler commandHandler;
-
-  FunctionScreenState(this.storage) {
-    controller = GraphDisplayController();
-    inputHandler = InputHandler(controller);
-    commandHandler = CommandHandler(controller, storage);
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _functionController = new TextEditingController();
-  }
-  @override
-  void dispose() {
-    // Clean up the controller when the widget is disposed.
-    _functionController.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        body: Center(
-          child: Form(
-            key: _formKey,
-            child: Column(
-              children: <Widget>[
-                Container(
-                  height: 300,
-                  margin: EdgeInsets.symmetric( vertical: 10, horizontal: 10),
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: <Widget>[
-                        ..._getFunctions(),
-                        ButtonTheme(
-                          minWidth: 200.0,
-                          height: 40,
-                          child: RaisedButton(
-                            onPressed: () {
-                              // functionList.insert(functionList.length, null);
-                              controller.addField();
-                              functionList.add(null);
-                              setState((){});
-                            },
-                            child: Container(
-                              width: 30,
-                              height: 30,
-                              decoration: BoxDecoration(
-                                // color: Colors.green,
-                                // borderRadius: BorderRadius.circular(15),
-                              ),
-                              // onPressed: ,
-                              child: Icon(
-                                Icons.add, color: Colors.white,
-                              ),
-                            ),
-                          ),
-                        )
-
-                      ],
-                    ),
-                  ),
-                ),
-                ElevatedButton(
-                    onPressed: () {
-                      if(_formKey.currentState.validate()) {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => GraphScreen()),
-                        );
-                      }
-                    },
-                    child: Text("Generate Graph")
-                ),
-                Expanded(child: GraphInputPad(storage, inputHandler.handle, commandHandler.handle))
-              ],
-            ),
-          ),
-        )
-    );
-  }
-  List<Widget> _getFunctions(){
-    List<Widget> functionsTextFields = [];
-    for (int i = 0; i < functionList.length; i++) {
-      functionsTextFields.add(
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 5.0),
-            child: Row(
-              children: [
-                Expanded(child: FunctionTextField(i, controller)),
-                SizedBox(width: 16,),
-                // we need a dd button at last friends row only
-                _removeButton(false, i),
-              ],
-            ),
-          )
-      );
-    }
-    return functionsTextFields;
-  }
-  Widget _removeButton(bool add, int index) {
-    return InkWell(
-      onTap: (){
-        // if(add){
-        //   // add new text-fields at the top of all friends textfields
-        //   functionList.insert(index + 1, null);
-        // }
-        // else
-        controller.removeField(index);
-        functionList.removeAt(index);
-        setState((){});
-      },
-      child: Container(
-        width: 30,
-        height: 30,
-        decoration: BoxDecoration(
-          color: (add) ? Colors.green : Colors.red,
-          borderRadius: BorderRadius.circular(15),
-        ),
-        child: Icon(
-          Icons.remove, color: Colors.white,
-        ),
-      ),
-    );
-  }
-}
-
-class FunctionTextField extends StatefulWidget { 
-  final int index;
-  final GraphDisplayController controller;
-  FunctionTextField(this.index, this.controller);
-
-  @override
-  _FunctionTextFieldState createState() => _FunctionTextFieldState();
-}
-
-class _FunctionTextFieldState extends State<FunctionTextField> {
-
-  TextEditingController textController;
-
-  @override
-  void initState() {
-    super.initState();
-    textController = TextEditingController();
-    widget.controller?.addListener(_updateFunction);
-  }
-  @override
-  void dispose() {
-    textController.dispose();
-    widget.controller?.dispose();
-    super.dispose();
-  }
-
-  void _updateFunction() {
-    setState(() {
-      textController.text = widget.controller.getInput(widget.index);
-      FunctionScreenState.functionList[widget.index] = textController.text;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      textController.text = FunctionScreenState.functionList[widget.index]
-          ?? '';
-    });
-    return TextFormField(
-      controller: textController,
-      showCursor: false,
-      onTap: () => widget.controller.currentField = widget.index,
-      decoration: InputDecoration(
-          labelText: 'y' + (widget.index + 1).toString() + '= '
-      ),
-      validator: (v){
-        if(v.trim().isEmpty) return 'Please enter something';
-        return null;
-      },
-    );
-  }
-}
-
-
 
 class GraphScreenState extends State<GraphScreen>{
   final _scaffoldKey = GlobalKey<ScaffoldState>();
@@ -234,7 +31,6 @@ class GraphScreenState extends State<GraphScreen>{
     height = 162;
 
   Coordinates cursorLocation = Coordinates(50, 50);
-  // String _y1 = "0.05 * x^2 - 50";
   List<Coordinates> coordinates;
 
   @override
@@ -263,6 +59,18 @@ class GraphScreenState extends State<GraphScreen>{
     _scaffoldKey.currentState.openEndDrawer();
   }
 
+  List<Widget> _getEquations() {
+    List<Widget> displayedEquations = [];
+    for (int i = 0; i < inputEquations.length; i++) {
+      displayedEquations.add(
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 16.0),
+            child: Text("y"+ (i+1).toString() + " = " + inputEquations[i]),
+          )
+      );
+    }
+    return displayedEquations;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -273,8 +81,9 @@ class GraphScreenState extends State<GraphScreen>{
       key: _scaffoldKey,
       endDrawer: ClipRRect(
         borderRadius: BorderRadius.vertical(
-            top: Radius.circular(10),
-            bottom: Radius.circular(10)),
+          top: Radius.circular(10),
+          bottom: Radius.circular(10)
+        ),
         child: SingleChildScrollView(
           scrollDirection: Axis.vertical,
           child: Container(
@@ -363,6 +172,7 @@ class GraphScreenState extends State<GraphScreen>{
                     ElevatedButton(
                       onPressed: () {
                         _scaleFormKey.currentState.save();
+                        Navigator.of(context).pop();  // close drawer
                         setState(() {});
                       },
                       child: Text("Save Changes"),
@@ -387,7 +197,6 @@ class GraphScreenState extends State<GraphScreen>{
                   Bounds(_xMin, _xMax, _yMin, _yMax),
                   equations: inputEquations,
                   cursorLocation: this.cursorLocation,
-                  
                 ),
               ),
               Row(
@@ -402,33 +211,37 @@ class GraphScreenState extends State<GraphScreen>{
                   Column(
                     children: [
                       InkWell(
-                          onTap: () {
-                            moveCursor('UP');
-                          },
-                          child: Icon(Icons.arrow_upward)),
+                        onTap: () {
+                          moveCursor('UP');
+                        },
+                        child: Icon(Icons.arrow_upward)
+                      ),
                       Row(
-                        mainAxisAlignment:
-                        MainAxisAlignment.spaceBetween,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Padding(
-                              padding: EdgeInsets.only(right: 25),
-                              child: InkWell(
-                                  onTap: () {
-                                    moveCursor('LEFT');
-                                  },
-                                  child: Icon(Icons.arrow_back))),
-                          InkWell(
+                            padding: EdgeInsets.only(right: 25),
+                            child: InkWell(
                               onTap: () {
-                                moveCursor('RIGHT');
+                                moveCursor('LEFT');
                               },
-                              child: Icon(Icons.arrow_forward))
+                              child: Icon(Icons.arrow_back)
+                            )
+                          ),
+                          InkWell(
+                            onTap: () {
+                              moveCursor('RIGHT');
+                            },
+                            child: Icon(Icons.arrow_forward)
+                          )
                         ],
                       ),
                       InkWell(
-                          onTap: () {
-                            moveCursor('DOWN');
-                          },
-                          child: Icon(Icons.arrow_downward)),
+                        onTap: () {
+                          moveCursor('DOWN');
+                        },
+                        child: Icon(Icons.arrow_downward)
+                      ),
                     ],
                   )
                 ],
@@ -441,7 +254,6 @@ class GraphScreenState extends State<GraphScreen>{
             child: Column(
               children: <Widget>[
                 ..._getEquations(),
-                // Text("y1 = $_y1")
               ],
             ),
           ),
@@ -479,16 +291,5 @@ class GraphScreenState extends State<GraphScreen>{
       )
     );
   }
-  List<Widget> _getEquations() {
-    List<Widget> displayedEquations = [];
-    for (int i = 0; i < inputEquations.length; i++) {
-      displayedEquations.add(
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 16.0),
-            child: Text("y"+ (i+1).toString() + " = " + inputEquations[i]),
-          )
-      );
-    }
-    return displayedEquations;
-  }
 }
+
