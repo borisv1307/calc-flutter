@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:open_calc/calculator/input_pad/input_pad.dart';
-import 'package:open_calc/calculator/input_pad/pad/primary_pad.dart';
 import 'package:open_calc/calculator/input_pad/pad/secondary_pad.dart';
 import 'package:open_calc/calculator/input_pad/pad/variable_screen.dart';
+import 'package:open_calc/graph/graph_input_pad/pad/graph_primary_pad.dart';
 
 
 class GraphInputPad extends InputPad{
@@ -18,7 +18,7 @@ class GraphInputPad extends InputPad{
         WidgetBuilder builder;
         switch (settings.name) {
           case 'inputPadOne':
-            builder = (BuildContext context) => PrimaryPad(this.storage,this.inputFunction, this.commandFunction);
+            builder = (BuildContext context) => GraphPrimaryPad(this.storage,this.inputFunction, this.commandFunction);
             break;
           case 'inputPadTwo':
             builder = (BuildContext context) => SecondaryPad(this.storage,this.inputFunction, this.commandFunction);
