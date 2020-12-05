@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:open_calc/calculator/calculator_screen.dart';
+import 'package:open_calc/calculator/calculator_tab.dart';
 import 'package:open_calc/calculator/input_pad/input_variables.dart';
-import 'package:open_calc/graph/function_screen/function_screen.dart';
+import 'package:open_calc/graph/graph_tab.dart';
 
 class HomeScreen extends StatelessWidget {
   final String title;
@@ -30,7 +30,7 @@ class HomeScreen extends StatelessWidget {
                   ),
                 ),
                 body: TabBarView(children: [
-                  FunctionScreen(storage),
+                  GraphTab(storage),
                   CalculatorScreen(storage)
                 ]
             )

@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:open_calc/graph/function_screen/function_screen.dart';
 
 class GraphScreen extends StatefulWidget {
+  
   @override
   State<StatefulWidget> createState() => GraphScreenState();
 }
@@ -75,9 +76,6 @@ class GraphScreenState extends State<GraphScreen>{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-        title: Text("Graph"),
-        ),
       key: _scaffoldKey,
       endDrawer: ClipRRect(
         borderRadius: BorderRadius.vertical(
@@ -257,8 +255,13 @@ class GraphScreenState extends State<GraphScreen>{
               ],
             ),
           ),
+          ElevatedButton(
+            onPressed: () { Navigator.of(context).pop(); },
+            child: Text("Return")
+          ),
         ],
       ),
+
       floatingActionButton: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,

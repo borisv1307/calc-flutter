@@ -5,16 +5,14 @@ import 'package:open_calc/graph/function_screen/function_text_field.dart';
 import 'package:open_calc/graph/function_screen/function_display_controller.dart';
 import 'package:open_calc/graph/function_screen/input_handler/graph_command_handler.dart';
 import 'package:open_calc/graph/function_screen/input_handler/graph_input_handler.dart';
-import 'package:open_calc/graph/graph_screen/graph_screen.dart';
 import 'package:open_calc/graph/function_screen/input_pad/graph_input_pad.dart';
 
 class FunctionScreen extends StatefulWidget {
   final VariableStorage storage;
-
   FunctionScreen(this.storage);
+
   @override
   State<StatefulWidget> createState() => FunctionScreenState(storage);
-
 }
 
 class FunctionScreenState extends State<FunctionScreen> {
@@ -138,10 +136,7 @@ class FunctionScreenState extends State<FunctionScreen> {
                 ElevatedButton(
                   onPressed: () {
                     if(_formKey.currentState.validate()) {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => GraphScreen()),
-                      );
+                      Navigator.of(context).pushNamed("/graphScreen");
                     }
                   },
                   child: Text("Generate Graph")
