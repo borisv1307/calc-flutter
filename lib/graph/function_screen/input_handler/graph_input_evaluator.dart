@@ -1,7 +1,5 @@
 import 'package:advanced_calculation/advanced_calculator.dart';
 import 'package:open_calc/calculator/input_pad/input_variables.dart';
-// import 'package:open_calc/graph/function_display_history.dart';
-// import 'package:open_calc/graph/graph_input_pad/graph_input_item.dart';
 
 class InputEvaluator{
   static const String SYNTAX_ERROR = 'Syntax Error';

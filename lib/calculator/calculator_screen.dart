@@ -36,7 +36,7 @@ class CalculatorScreenState extends State<CalculatorScreen>{
         children: <Widget>[
           CalculatorDisplay(
             controller,
-            numLines: 8
+            numLines: 10
           ),
           Expanded(
             child: InputPad(storage, inputHandler.handle, commandHandler.handle)

@@ -66,7 +66,7 @@ class InputItem{
   static const ACOSH = const InputItem('acosh',value:'acosh(', function: true);
   static const ATANH = const InputItem('atanh',value:'atanh(', function: true);
   static const SQUARE_ROOT = const InputItem('sqrt',value:'√(', function: true);
-  static const X = const InputItem('𝑥',value:'x');
+  static const X = const InputItem('𝑥', value: 'x');
   static const STORAGE = const InputItem('sto', value:'➡', lookback: true);
   static const EMPTY = const InputItem('');
 

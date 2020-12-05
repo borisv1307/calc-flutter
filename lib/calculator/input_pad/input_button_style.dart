@@ -21,4 +21,5 @@ class InputButtonStyle{
   static const SECONDARY = const InputButtonStyle(Colors.white, Colors.blue, 24,_SMALL_RADIUS);
   static const TERTIARY = const InputButtonStyle(Colors.white, Colors.black, 20,_SMALL_RADIUS);
   static const QUARTENARY = const InputButtonStyle(Colors.black, Colors.white, 24,_SMALL_RADIUS);
+  static const QUINARY = const InputButtonStyle(Colors.black, Colors.white, 24,_SMALL_RADIUS);
 }

@@ -100,7 +100,7 @@ class FunctionScreenState extends State<FunctionScreen> {
             child: Column(
               children: <Widget>[
                 Container(
-                  height: 300,
+                  height: 230,
                   margin: EdgeInsets.symmetric( vertical: 10, horizontal: 10),
                   child: SingleChildScrollView(
                     child: Column(
@@ -136,15 +136,15 @@ class FunctionScreenState extends State<FunctionScreen> {
                   ),
                 ),
                 ElevatedButton(
-                    onPressed: () {
-                      if(_formKey.currentState.validate()) {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => GraphScreen()),
-                        );
-                      }
-                    },
-                    child: Text("Generate Graph")
+                  onPressed: () {
+                    if(_formKey.currentState.validate()) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => GraphScreen()),
+                      );
+                    }
+                  },
+                  child: Text("Generate Graph")
                 ),
                 Expanded(child: GraphInputPad(storage, inputHandler.handle, commandHandler.handle))
               ],
