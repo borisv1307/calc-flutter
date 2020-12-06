@@ -126,15 +126,26 @@ void main(){
     testWidgets('browses backwards when swipe down',(WidgetTester tester) async{
       MockCalculatorDisplayController controller = MockCalculatorDisplayController();
       await tester.pumpWidget(MaterialApp(home:CalculatorDisplay(controller, numLines: 2)));
-      await tester.fling(find.byType(CalculatorDisplay), Offset(0,100),200);
+      await tester.fling(find.byType(TextField), Offset(0,100),200);
       verify(controller.browseBackwards()).called(1);
     });
 
-    testWidgets('browses forwards when swipe down',(WidgetTester tester) async{
+    testWidgets('browses forwards when swipe up',(WidgetTester tester) async{
       MockCalculatorDisplayController controller = MockCalculatorDisplayController();
       await tester.pumpWidget(MaterialApp(home:CalculatorDisplay(controller, numLines: 2)));
-      await tester.fling(find.byType(CalculatorDisplay), Offset(0,-100),200);
+      await tester.fling(find.byType(TextField), Offset(0,-100),200);
       verify(controller.browseForwards()).called(1);
+    });
+  });
+
+  group('Alerts are displayed',(){
+    testWidgets('when alert is provided',(WidgetTester tester) async{
+      CalculatorDisplayController controller = CalculatorDisplayController();
+      await tester.pumpWidget(MaterialApp(home:CalculatorDisplay(controller, numLines: 2)));
+      controller.pushAlert('Test alert');
+      await tester.pumpAndSettle();
+      expect(find.text('TEST ALERT'),findsOneWidget);
+      await tester.pump(Duration(milliseconds: 500));
     });
   });
 
@@ -142,6 +153,12 @@ void main(){
     testWidgets('standard layout',(WidgetTester tester) async{
       await tester.pumpWidget(MaterialApp(home:CalculatorDisplay(_buildController([InputItem.TWO,InputItem.ADD,InputItem.TWO],[DisplayHistory([InputItem.ONE,InputItem.TWO,InputItem.THREE], '6')]),numLines: 6)));
       await expectLater(find.byType(CalculatorDisplay),matchesGoldenFile('standard.png'));
+    });
+
+    testWidgets('input line overflow',(WidgetTester tester) async{
+      List<InputItem> input = List<InputItem>.generate(40, (i) => InputItem.TWO).toList();
+      await tester.pumpWidget(MaterialApp(home:CalculatorDisplay(_buildController(input,[]),numLines: 6)));
+      await expectLater(find.byType(CalculatorDisplay),matchesGoldenFile('overflow.png'));
     });
 
     testWidgets('scrolled to bottom',(WidgetTester tester) async{

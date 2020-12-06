@@ -1,12 +1,11 @@
 import 'package:advanced_calculation/advanced_calculator.dart';
+import 'package:advanced_calculation/syntax_exception.dart';
 import 'package:open_calc/calculator/calculator_display/display_history.dart';
 import 'package:open_calc/calculator/input_pad/input_item.dart';
 import 'package:open_calc/calculator/input_pad/input_variables.dart';
 
 class InputEvaluator{
-  static const String SYNTAX_ERROR = 'Syntax Error';
-
-  final AdvancedCalculator calculator;
+    final AdvancedCalculator calculator;
   final VariableStorage storage;
   InputEvaluator(this.storage, [AdvancedCalculator calculator]):
       calculator = calculator ?? AdvancedCalculator();
@@ -35,7 +34,7 @@ class InputEvaluator{
       resultString = _calculate(expression, history);
       storage.addVariable(variable.display, resultString);
     }else{
-      resultString = SYNTAX_ERROR;
+      throw new SyntaxException(stoIndex + 1);
     }
     return resultString;
   }
