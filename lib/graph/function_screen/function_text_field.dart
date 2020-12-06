@@ -25,7 +25,6 @@ class _FunctionTextFieldState extends State<FunctionTextField> {
   @override
   void dispose() {
     textController.dispose();
-    widget.controller?.dispose();
     super.dispose();
   }
 

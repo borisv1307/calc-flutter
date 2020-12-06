@@ -71,29 +71,36 @@ class MultiButton extends PadButton {
         )
     );
   }
-
+  
   Widget _buildThreeLabel(final List<InputItem> displayItems){
     return Container(
         padding: EdgeInsets.symmetric(horizontal:HORIZONTAL_PADDING),
         child:Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                _generateMultiText(displayItems[0].display)
-              ]
+            Expanded(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  _generateMultiText(displayItems[0].display)
+                ]
+              )
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                _generateMultiText(displayItems[1].display)
-              ]
+            Expanded(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  _generateMultiText(displayItems[1].display)
+                ]
+              )
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                _generateMultiText(displayItems[2].display)
-              ]
+            Expanded(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  _generateMultiText(displayItems[2].display)
+                ]
+              )
             )
           ],
         )
