@@ -47,9 +47,23 @@ class InputPad extends StatelessWidget{
             builder = (BuildContext context) => VariableScreen(this.storage,this.inputFunction, this.commandFunction);
             break;
         }
-        return MaterialPageRoute(builder: builder, settings: settings);
+        return NoTransitionRoute(builder: builder, settings: settings);
       },
     );
+  }
+}
+
+
+class NoTransitionRoute<T> extends MaterialPageRoute<T> {
+  NoTransitionRoute({ WidgetBuilder builder, RouteSettings settings })
+      : super(builder: builder, settings: settings);
+
+  @override
+  Widget buildTransitions(BuildContext context,
+      Animation<double> animation,
+      Animation<double> secondaryAnimation,
+      Widget child) {
+    return child;  // route change without any transition
   }
 }
 

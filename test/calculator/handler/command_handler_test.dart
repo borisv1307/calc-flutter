@@ -1,3 +1,4 @@
+import 'package:advanced_calculation/syntax_exception.dart';
 import 'package:mockito/mockito.dart';
 import 'package:open_calc/calculator/calculator_display/calculator_display_controller.dart';
 import 'package:open_calc/calculator/calculator_display/display_history.dart';
@@ -8,37 +9,68 @@ import 'package:open_calc/calculator/input_pad/input_item.dart';
 import 'package:open_calc/calculator/input_pad/input_variables.dart';
 import 'package:test/test.dart';
 
-class MockCalculatorDisplayController extends Mock implements CalculatorDisplayController{}
+class MockCalculatorDisplayController extends Mock implements CalculatorDisplayController{
+  int cursorIndex;
+}
 class MockVariableStorage extends Mock implements VariableStorage{}
 class MockInputEvaluator extends Mock implements InputEvaluator{}
 
 void main(){
   group('Enter',(){
-    MockCalculatorDisplayController controller;
-    MockInputEvaluator evaluator;
-    List<DisplayHistory> history;
+    group('Valid input',(){
+      MockCalculatorDisplayController controller;
+      MockInputEvaluator evaluator;
+      List<DisplayHistory> history;
 
-    setUpAll((){
-      history = [];
-      controller = MockCalculatorDisplayController();
-      when(controller.inputItems).thenReturn([InputItem.A]);
-      when(controller.history).thenReturn(history);
+      setUpAll((){
+        history = [];
+        controller = MockCalculatorDisplayController();
+        when(controller.inputItems).thenReturn([InputItem.A]);
+        when(controller.history).thenReturn(history);
 
-      evaluator = MockInputEvaluator();
-      when(evaluator.evaluate([InputItem.A], history)).thenReturn(DisplayHistory([InputItem.B], '72'));
+        evaluator = MockInputEvaluator();
+        when(evaluator.evaluate([InputItem.A], history)).thenReturn(DisplayHistory([InputItem.B], '72'));
 
-      CommandHandler handler = CommandHandler(controller, MockVariableStorage(), evaluator);
-      handler.handle(CommandItem.ENTER);
+        CommandHandler handler = CommandHandler(controller, MockVariableStorage(), evaluator);
+        handler.handle(CommandItem.ENTER);
+      });
+
+      test('clears input',(){
+        verify(controller.clearInput()).called(1);
+      });
+
+      test('displays evaluated input',(){
+        expect(history.length,1);
+        expect(history[0].input,[InputItem.B]);
+        expect(history[0].result,'72');
+      });
     });
 
-    test('clears input',(){
-      verify(controller.clearInput()).called(1);
-    });
+    group('Syntax error',(){
+      MockCalculatorDisplayController controller;
+      MockInputEvaluator evaluator;
+      List<DisplayHistory> history;
 
-    test('displays evaluated input',(){
-      expect(history.length,1);
-      expect(history[0].input,[InputItem.B]);
-      expect(history[0].result,'72');
+      setUpAll((){
+        history = [];
+        controller = MockCalculatorDisplayController();
+        when(controller.inputItems).thenReturn([InputItem.A]);
+        when(controller.history).thenReturn(history);
+
+        evaluator = MockInputEvaluator();
+        when(evaluator.evaluate([InputItem.A], history)).thenThrow(new SyntaxException(1));
+
+        CommandHandler handler = CommandHandler(controller, MockVariableStorage(), evaluator);
+        handler.handle(CommandItem.ENTER);
+      });
+
+      test('pushes syntax alert',(){
+        verify(controller.pushAlert('Syntax Error')).called(1);
+      });
+
+      test('moves cursor to location of error',(){
+        expect(controller.cursorIndex, 1);
+      });
     });
   });
 

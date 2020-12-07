@@ -140,7 +140,10 @@ class FunctionScreenState extends State<FunctionScreen> {
                   },
                   child: Text("Generate Graph")
                 ),
-                Expanded(child: GraphInputPad(widget.storage, inputHandler.handle, commandHandler.handle))
+                Container(
+                  height: 333,
+                  color: Colors.black38,
+                  child: GraphInputPad(widget.storage, inputHandler.handle, commandHandler.handle))
               ],
             ),
           ),
