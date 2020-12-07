@@ -6,15 +6,15 @@ import 'package:open_calc/calculator/handler/input_handler.dart';
 import 'package:open_calc/calculator/input_pad/input_pad.dart';
 import 'package:open_calc/calculator/input_pad/input_variables.dart';
 
-class CalculatorScreen extends StatefulWidget {
+class CalculatorTab extends StatefulWidget {
   final VariableStorage storage;
 
-  CalculatorScreen(this.storage);
+  CalculatorTab(this.storage);
   @override
-  State<StatefulWidget> createState() => CalculatorScreenState(storage);
+  State<StatefulWidget> createState() => CalculatorTabState(storage);
 }
 
-class CalculatorScreenState extends State<CalculatorScreen>{
+class CalculatorTabState extends State<CalculatorTab>{
 
   final VariableStorage storage;
 
@@ -22,7 +22,7 @@ class CalculatorScreenState extends State<CalculatorScreen>{
   InputHandler inputHandler;
   CommandHandler commandHandler;
 
-  CalculatorScreenState(this.storage) {
+  CalculatorTabState(this.storage) {
     controller = CalculatorDisplayController();
     inputHandler= InputHandler(controller);
     commandHandler = CommandHandler(controller, storage);

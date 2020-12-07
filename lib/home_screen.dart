@@ -31,7 +31,7 @@ class HomeScreen extends StatelessWidget {
                 ),
                 body: TabBarView(children: [
                   GraphTab(storage),
-                  CalculatorScreen(storage)
+                  CalculatorTab(storage)
                 ]
             )
         )
