@@ -25,7 +25,7 @@ class _FunctionTextFieldState extends State<FunctionTextField> {
   @override
   void dispose() {
     textController.dispose();
-    widget.controller?.dispose();
+    // widget.controller?.dispose();
     super.dispose();
   }
 
@@ -41,10 +41,11 @@ class _FunctionTextFieldState extends State<FunctionTextField> {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       textController.text = FunctionScreenState.functionList[widget.index]
           ?? '';
+      textController.selection= TextSelection.fromPosition(TextPosition(offset: textController.text.length));
     });
     return TextFormField(
       controller: textController,
-      showCursor: false,
+      showCursor: true,
       readOnly: true,
       onTap: () => widget.controller.currentField = widget.index,
       decoration: InputDecoration(
