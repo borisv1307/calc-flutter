@@ -18,7 +18,6 @@ class SecondaryPad extends InputPad{
     double availableWidth = MediaQuery.of(context).size.width * MediaQuery.of(context).devicePixelRatio;
     double availableHeight = MediaQuery.of(context).size.height;
     return Container(
-      color:Colors.black38,
       alignment: Alignment.center,
       child:GridView.count(
         shrinkWrap: true,
@@ -36,8 +35,8 @@ class SecondaryPad extends InputPad{
           MultiButton([InputItem.ASIN, InputItem.ACOS, InputItem.ATAN], inputFunction, InputButtonStyle.TERTIARY),
           MultiButton([InputItem.ASINH, InputItem.ACOSH, InputItem.ATANH], inputFunction, InputButtonStyle.TERTIARY),
           buildInputButton(InputItem.DIVIDE, InputButtonStyle.SECONDARY),
+          buildInputButton(InputItem.SQUARE_ROOT, InputButtonStyle.TERTIARY),
           buildInputButton(InputItem.E_POWER_X, InputButtonStyle.TERTIARY),
-          buildInputButton(InputItem.EMPTY, InputButtonStyle.TERTIARY),
           buildInputButton(InputItem.EMPTY, InputButtonStyle.TERTIARY),
           buildInputButton(InputItem.EMPTY, InputButtonStyle.TERTIARY),
           buildInputButton(InputItem.MULTIPLY, InputButtonStyle.SECONDARY),

@@ -9,36 +9,35 @@ import 'package:open_calc/graph/function_screen/input_pad/graph_input_pad.dart';
 
 class FunctionScreen extends StatefulWidget {
   final VariableStorage storage;
-  FunctionScreen(this.storage);
+  final FunctionDisplayController controller;
+  FunctionScreen(this.storage, this.controller);
 
   @override
-  State<StatefulWidget> createState() => FunctionScreenState(storage);
+  State<StatefulWidget> createState() => FunctionScreenState();
 }
 
 class FunctionScreenState extends State<FunctionScreen> {
   final _formKey = GlobalKey<FormState>();
-  final VariableStorage storage;
   static List<String> functionList = [null];
-  FunctionDisplayController controller;
   TextEditingController _functionController;
   InputHandler inputHandler;
   CommandHandler commandHandler;
 
-  FunctionScreenState(this.storage) {
-    controller = FunctionDisplayController();
-    inputHandler = InputHandler(controller);
-    commandHandler = CommandHandler(controller, storage);
-  }
+  // FunctionScreenState() {
+  //   inputHandler = InputHandler(widget.controller);
+  //   commandHandler = CommandHandler(widget.controller, widget.storage);
+  // }
 
   @override
   void initState() {
     super.initState();
+    inputHandler = InputHandler(widget.controller);
+    commandHandler = CommandHandler(widget.controller, widget.storage);
     _functionController = new TextEditingController();
   }
 
   @override
   void dispose() {
-    // Clean up the controller when the widget is disposed.
     _functionController.dispose();
     super.dispose();
   }
@@ -51,7 +50,7 @@ class FunctionScreenState extends State<FunctionScreen> {
             padding: const EdgeInsets.symmetric(vertical: 5.0),
             child: Row(
               children: [
-                Expanded(child: FunctionTextField(i, controller)),
+                Expanded(child: FunctionTextField(i, widget.controller)),
                 SizedBox(width: 16,),
                 // we need a dd button at last friends row only
                 _removeButton(false, i),
@@ -71,7 +70,7 @@ class FunctionScreenState extends State<FunctionScreen> {
         //   functionList.insert(index + 1, null);
         // }
         // else
-        controller.removeField(index);
+        widget.controller.removeField(index);
         functionList.removeAt(index);
         setState((){});
       },
@@ -110,7 +109,7 @@ class FunctionScreenState extends State<FunctionScreen> {
                           child: RaisedButton(
                             onPressed: () {
                               // functionList.insert(functionList.length, null);
-                              controller.addField();
+                              widget.controller.addField();
                               functionList.add(null);
                               setState((){});
                             },
@@ -141,11 +140,14 @@ class FunctionScreenState extends State<FunctionScreen> {
                   },
                   child: Text("Generate Graph")
                 ),
-                Expanded(child: GraphInputPad(storage, inputHandler.handle, commandHandler.handle))
+                Container(
+                  height: 333,
+                  color: Colors.black38,
+                  child: GraphInputPad(widget.storage, inputHandler.handle, commandHandler.handle))
               ],
             ),
           ),
         )
-    );
+      );
   }
 }

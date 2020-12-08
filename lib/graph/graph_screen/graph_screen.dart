@@ -2,13 +2,15 @@ import 'dart:developer';
 import 'package:cartesian_graph/bounds.dart';
 import 'package:cartesian_graph/cartesian_graph.dart';
 import 'package:cartesian_graph/coordinates.dart';
+import 'package:open_calc/graph/function_screen/function_display_controller.dart';
 import 'package:open_calc/graph/graph_screen/graph_table.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:open_calc/graph/function_screen/function_screen.dart';
 
 class GraphScreen extends StatefulWidget {
-  
+  final FunctionDisplayController controller;
+  GraphScreen(this.controller);
+
   @override
   State<StatefulWidget> createState() => GraphScreenState();
 }
@@ -16,8 +18,7 @@ class GraphScreen extends StatefulWidget {
 class GraphScreenState extends State<GraphScreen>{
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   final _scaleFormKey = GlobalKey<FormState>();
-  FunctionScreenState functionScreenState;
-  List<String> inputEquations = FunctionScreenState.functionList;
+  List<String> inputEquations;
 
   // Scale Value, Range and Domain of x and y will be set and saved in these variable
   int _xMin = -100,
@@ -33,11 +34,6 @@ class GraphScreenState extends State<GraphScreen>{
 
   Coordinates cursorLocation = Coordinates(50, 50);
   List<Coordinates> coordinates;
-
-  @override
-  void initState() {
-    super.initState();
-  }
 
   void moveCursor(String direction) {
     setState(() {
@@ -75,6 +71,8 @@ class GraphScreenState extends State<GraphScreen>{
 
   @override
   Widget build(BuildContext context) {
+    this.inputEquations = widget.controller.translateInputs();
+
     return Scaffold(
       key: _scaffoldKey,
       endDrawer: ClipRRect(

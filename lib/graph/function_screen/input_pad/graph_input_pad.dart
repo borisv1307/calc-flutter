@@ -26,7 +26,7 @@ class GraphInputPad extends InputPad{
             builder = (BuildContext context) => VariableScreen(this.storage,this.inputFunction, this.commandFunction);
             break;
         }
-        return MaterialPageRoute(builder: builder, settings: settings);
+        return NoTransitionRoute(builder: builder, settings: settings);
       },
     );
   }
