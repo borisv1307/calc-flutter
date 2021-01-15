@@ -12,12 +12,15 @@ class MockVariableStorage extends Mock implements VariableStorage{}
 
 void main(){
   group('Empty input',(){
-    test('evaluates to blank',(){
-      InputEvaluator evaluator = InputEvaluator(MockVariableStorage(),MockAdvancedCalculator());
+    test('evaluates when no history',(){
+      MockAdvancedCalculator calculator = MockAdvancedCalculator();
+      when(calculator.calculate('')).thenReturn('4');
+
+      InputEvaluator evaluator = InputEvaluator(MockVariableStorage(),calculator);
 
       DisplayHistory history = evaluator.evaluate([], []);
       expect(history.input,[]);
-      expect(history.result, '');
+      expect(history.result, '4');
     });
 
     test('evaluates to prior result',(){

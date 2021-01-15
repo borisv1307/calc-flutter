@@ -15,10 +15,10 @@ class InputEvaluator{
 
     if(input.contains(InputItem.STORAGE)){
       resultString = _evaluateStorage(input, resultString, history);
-    }else if (input.isNotEmpty) {
-      resultString = _calculate(input, history);
-    } else if(history.isNotEmpty){
+    }else if(input.isEmpty && history.isNotEmpty){
       resultString = history.last.result;
+    }else{
+      resultString = _calculate(input, history);
     }
     DisplayHistory newEntry = new DisplayHistory(input, resultString);
 
