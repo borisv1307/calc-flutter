@@ -1,20 +1,25 @@
+import 'package:open_calc/calculator/input_pad/command_item.dart';
 import 'package:open_calc/calculator/input_pad/input_variables.dart';
 import 'package:open_calc/graph/function_screen/function_display_controller.dart';
-import 'package:open_calc/calculator/input_pad/command_item.dart';
+import 'package:open_calc/calculator/input_pad/input_item.dart';
 
-class CommandHandler{
+class GraphInputHandler{
   final FunctionDisplayController controller;
   final VariableStorage storage;
 
-  CommandHandler(this.controller, this.storage);
+  GraphInputHandler(this.controller, this.storage);
 
-  void handle(CommandItem command) {
+  void handleInput(InputItem inputItem) {
+    controller.input(inputItem);
+  }
+  void handleCommand(CommandItem command) {
     if (command == CommandItem.ENTER) {
-      // evaluator.evaluate(controller.inputItems, controller.history);
+      // TODO: switch to graph screen
     } else if (command == CommandItem.DELETE) {
       controller.delete();
     } else if(command ==CommandItem.CLEAR) {
       controller.clearInput();
     }
   }
+
 }

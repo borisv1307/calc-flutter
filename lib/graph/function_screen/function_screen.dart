@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:open_calc/calculator/input_pad/input_variables.dart';
 import 'package:open_calc/graph/function_screen/function_text_field.dart';
 import 'package:open_calc/graph/function_screen/function_display_controller.dart';
-import 'package:open_calc/graph/function_screen/input_handler/graph_command_handler.dart';
-import 'package:open_calc/graph/function_screen/input_handler/graph_input_handler.dart';
+import 'package:open_calc/graph/function_screen/input_pad/graph_input_handler.dart';
 import 'package:open_calc/graph/function_screen/input_pad/graph_input_pad.dart';
 
 class FunctionScreen extends StatefulWidget {
@@ -20,8 +19,7 @@ class FunctionScreenState extends State<FunctionScreen> {
   final _formKey = GlobalKey<FormState>();
   static List<String> functionList = [null];
   TextEditingController _functionController;
-  InputHandler inputHandler;
-  CommandHandler commandHandler;
+  GraphInputHandler inputHandler;
 
   // FunctionScreenState() {
   //   inputHandler = InputHandler(widget.controller);
@@ -31,8 +29,7 @@ class FunctionScreenState extends State<FunctionScreen> {
   @override
   void initState() {
     super.initState();
-    inputHandler = InputHandler(widget.controller);
-    commandHandler = CommandHandler(widget.controller, widget.storage);
+    inputHandler = GraphInputHandler(widget.controller, widget.storage);
     _functionController = new TextEditingController();
   }
 
@@ -143,7 +140,7 @@ class FunctionScreenState extends State<FunctionScreen> {
                 Container(
                   height: 333,
                   color: Colors.black38,
-                  child: GraphInputPad(widget.storage, inputHandler.handle, commandHandler.handle))
+                  child: GraphInputPad(widget.storage, inputHandler.handleInput, inputHandler.handleCommand))
               ],
             ),
           ),
