@@ -5,9 +5,8 @@ import 'package:open_calc/calculator/input_pad/input_item.dart';
 
 class GraphInputHandler{
   final FunctionDisplayController controller;
-  final VariableStorage storage;
 
-  GraphInputHandler(this.controller, this.storage);
+  GraphInputHandler(this.controller);
 
   void handleInput(InputItem inputItem) {
     controller.input(inputItem);

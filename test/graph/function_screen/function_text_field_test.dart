@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/mockito.dart';
+import 'package:open_calc/calculator/input_pad/input_item.dart';
 import 'package:open_calc/calculator/input_pad/input_variables.dart';
 import 'package:open_calc/graph/function_screen/function_display_controller.dart';
 import 'package:open_calc/graph/function_screen/function_text_field.dart';
 
-
-class MockFunctionDisplayController extends Mock implements FunctionDisplayController {}
 
 void main() {
 
@@ -23,16 +21,35 @@ void main() {
     expect(fieldFinder, findsOneWidget);
   });
 
+  testWidgets("text is updated from controller", (WidgetTester tester) async {
+    FunctionDisplayController controller = FunctionDisplayController(VariableStorage());
+    await tester.pumpWidget(MaterialApp(
+      home: Scaffold(
+        body: FunctionTextField(0, controller)
+      )
+    ));
+    controller.input(InputItem.THREE);
+    await tester.pumpAndSettle();
+    Finder textFinder = find.text("3");
+    expect(textFinder, findsNWidgets(1));
+  });
 
-
-
-
-
-
-
-
-
-
+  testWidgets("tapping text field updates active controller index", (WidgetTester tester) async {
+    // TODO: not working
+    
+    // FunctionDisplayController controller = FunctionDisplayController(VariableStorage());
+    // controller.addField();
+    
+    // await tester.pumpWidget(MaterialApp(
+    //   home: Scaffold(
+    //     body: FunctionTextField(1, controller)
+    //   )
+    // ));
+    // Finder fields = find.byType(FunctionTextField);
+    // await tester.tap(fields.last);
+    // await tester.pumpAndSettle();
+    // expect(controller.currentField, 1);
+  });
 
 
 

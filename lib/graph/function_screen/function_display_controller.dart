@@ -10,12 +10,16 @@ class FunctionDisplayController extends ChangeNotifier{
 
   FunctionDisplayController(this.storage);
 
-  String getInput(int index){
-    return _inputs[index].map((e) => e.value).join();
+  List<List<InputItem>> get inputs {
+    return _inputs;
   }
 
   List<InputItem> getInputItems(int index){
     return _inputs[index];
+  }
+
+  String getInput(int index){
+    return _inputs[index].map((e) => e.value).join();
   }
 
   void addField() {

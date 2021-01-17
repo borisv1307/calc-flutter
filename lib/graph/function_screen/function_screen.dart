@@ -29,7 +29,7 @@ class FunctionScreenState extends State<FunctionScreen> {
   @override
   void initState() {
     super.initState();
-    inputHandler = GraphInputHandler(widget.controller, widget.storage);
+    inputHandler = GraphInputHandler(widget.controller);
     _functionController = new TextEditingController();
   }
 
