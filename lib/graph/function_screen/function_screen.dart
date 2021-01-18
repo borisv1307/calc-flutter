@@ -21,11 +21,6 @@ class FunctionScreenState extends State<FunctionScreen> {
   TextEditingController _functionController;
   GraphInputHandler inputHandler;
 
-  // FunctionScreenState() {
-  //   inputHandler = InputHandler(widget.controller);
-  //   commandHandler = CommandHandler(widget.controller, widget.storage);
-  // }
-
   @override
   void initState() {
     super.initState();
@@ -105,7 +100,6 @@ class FunctionScreenState extends State<FunctionScreen> {
                           height: 40,
                           child: RaisedButton(
                             onPressed: () {
-                              // functionList.insert(functionList.length, null);
                               widget.controller.addField();
                               functionList.add(null);
                               setState((){});
@@ -117,7 +111,6 @@ class FunctionScreenState extends State<FunctionScreen> {
                                 // color: Colors.green,
                                 // borderRadius: BorderRadius.circular(15),
                               ),
-                              // onPressed: ,
                               child: Icon(
                                 Icons.add, color: Colors.white,
                               ),

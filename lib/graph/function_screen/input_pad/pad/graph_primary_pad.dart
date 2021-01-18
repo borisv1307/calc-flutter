@@ -24,7 +24,7 @@ class GraphPrimaryPad extends InputPad{
         physics: NeverScrollableScrollPhysics(),
         children:[
           PadButton('2nd', InputButtonStyle.SECONDARY, () {Navigator.pushReplacementNamed(context, 'inputPadTwo');}),
-          buildInputButton(InputItem.X, InputButtonStyle.QUINARY),
+          buildInputButton(InputItem.X, InputButtonStyle(Colors.black, Colors.white, 24, BorderRadius.all(Radius.circular(10)))),
           buildInputButton(InputItem.POWER, InputButtonStyle.TERTIARY),
           buildCommandButton(CommandItem.DELETE,InputButtonStyle.TERTIARY),
           buildCommandButton(CommandItem.CLEAR,InputButtonStyle.TERTIARY),

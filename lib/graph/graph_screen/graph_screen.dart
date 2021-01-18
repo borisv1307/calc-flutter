@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'package:cartesian_graph/bounds.dart';
 import 'package:cartesian_graph/cartesian_graph.dart';
 import 'package:cartesian_graph/coordinates.dart';
@@ -21,18 +20,12 @@ class GraphScreenState extends State<GraphScreen>{
   List<String> inputEquations;
 
   // Scale Value, Range and Domain of x and y will be set and saved in these variable
-  int _xMin = -100,
-      _xMax = 100,
-      _yMin = -80,
-      _yMax = 80,
-      _xScl = 1,
-      _yScl = 2,
-      _xRes = 1;
+  int _xMin = -10,
+      _xMax = 10,
+      _yMin = -10,
+      _yMax = 10;
 
-  int width = 270,
-    height = 162;
-
-  Coordinates cursorLocation = Coordinates(50, 50);
+  Coordinates cursorLocation = Coordinates(135, 81);
   List<Coordinates> coordinates;
 
   void moveCursor(String direction) {
@@ -72,114 +65,11 @@ class GraphScreenState extends State<GraphScreen>{
   @override
   Widget build(BuildContext context) {
     this.inputEquations = widget.controller.translateInputs();
+      bool keyboardIsOpened = MediaQuery.of(context).viewInsets.bottom != 0.0;
 
     return Scaffold(
       key: _scaffoldKey,
-      endDrawer: ClipRRect(
-        borderRadius: BorderRadius.vertical(
-          top: Radius.circular(10),
-          bottom: Radius.circular(10)
-        ),
-        child: SingleChildScrollView(
-          scrollDirection: Axis.vertical,
-          child: Container(
-            color: Colors.white,
-            width: 200,
-            height: 485,
-            child: Padding(
-              padding: EdgeInsets.all(8.0),
-              child: Form(
-                key: _scaleFormKey,
-                child: Column(
-                  children: <Widget>[
-                    TextFormField(
-                      keyboardType: TextInputType.number,
-                      initialValue: '$_xMax',
-                      decoration:
-                      InputDecoration(labelText: 'X max:'),
-                      onSaved: (input) => {
-                        _xMax = int.parse(input),
-                        log('x_Max: ' + input)
-                      },
-                    ),
-                    TextFormField(
-                      keyboardType: TextInputType.number,
-                      initialValue: '$_xMin',
-                      decoration:
-                      InputDecoration(labelText: 'X min:'),
-                      onSaved: (input) => {
-                        _xMin = int.parse(input),
-                        log('x_Min: ' + input)
-                      },
-                    ),
-                    TextFormField(
-                      keyboardType: TextInputType.number,
-                      initialValue: '$_xScl',
-                      decoration:
-                      InputDecoration(labelText: 'X scale:'),
-                      onSaved: (input) => {
-                        _xScl = int.parse(input),
-                        log('x_Scl: ' + input)
-                      },
-                    ),
-                    TextFormField(
-                      keyboardType: TextInputType.number,
-                      initialValue: '$_yMax',
-                      decoration:
-                      InputDecoration(labelText: 'Y max:'),
-                      onSaved: (input) => {
-                        _yMax = int.parse(input),
-                        log('y_Max: ' + input)
-                      },
-                    ),
-                    TextFormField(
-                      keyboardType: TextInputType.number,
-                      initialValue: '$_yMin',
-                      decoration:
-                      InputDecoration(labelText: 'Y min:'),
-                      onSaved: (input) => {
-                        _yMin = int.parse(input),
-                        log('y_Min: ' + input)
-                      },
-                    ),
-                    TextFormField(
-                      keyboardType: TextInputType.number,
-                      initialValue: '$_yScl',
-                      decoration:
-                      InputDecoration(labelText: 'Y scale:'),
-                      onSaved: (input) => {
-                        _yScl = int.parse(input),
-                        log('y_Min: ' + input)
-                      },
-                    ),
-                    TextFormField(
-                      keyboardType: TextInputType.number,
-                      initialValue: '$_xRes',
-                      decoration:
-                      InputDecoration(labelText: 'X res:'),
-                      onSaved: (input) => {
-                        _xRes = int.parse(input),
-                        log('x_Res: ' + input)
-                      },
-                    ),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        _scaleFormKey.currentState.save();
-                        Navigator.of(context).pop();  // close drawer
-                        setState(() {});
-                      },
-                      child: Text("Save Changes"),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ),
-      ),
+      resizeToAvoidBottomInset: false,
       body: Column(
         children: <Widget>[
           ListView(
@@ -200,7 +90,7 @@ class GraphScreenState extends State<GraphScreen>{
                 children: [
                   Column(
                     children: [
-                      Text("x = " + (cursorLocation.x - 180).toString()),
+                      Text("x = " + (cursorLocation.x - 135).toString()),
                       Text("y = " + (cursorLocation.y - 81).toString()),
                     ],
                   ),
@@ -238,39 +128,116 @@ class GraphScreenState extends State<GraphScreen>{
                         },
                         child: Icon(Icons.arrow_downward)
                       ),
-                    ],
+                    ]
                   )
                 ],
               ),
+              Container(
+                margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                child: Column(
+                  children: <Widget>[
+                    ..._getEquations(),
+                  ],
+                ),
+              ),
             ],
-          ),
-          Container(
-            margin: EdgeInsets.symmetric(
-                vertical: 10, horizontal: 10),
-            child: Column(
-              children: <Widget>[
-                ..._getEquations(),
-              ],
-            ),
-          ),
-          ElevatedButton(
-            onPressed: () { Navigator.of(context).pop(); },
-            child: Text("Return")
           ),
         ],
       ),
 
-      floatingActionButton: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          Container(
-            margin: EdgeInsets.only(left: 35),
-            child: FloatingActionButton.extended(
+      endDrawer: ClipRRect(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(10),
+          bottom: Radius.circular(10)
+        ),
+        child: SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          child: Container(
+            color: Colors.white,
+            width: 200,
+            height: 305,
+            child: Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Form(
+                key: _scaleFormKey,
+                child: Column(
+                  children: <Widget>[
+                    TextFormField(
+                      keyboardType: TextInputType.number,
+                      initialValue: '$_xMax',
+                      decoration:
+                      InputDecoration(labelText: 'X max:'),
+                      onSaved: (input) => {
+                        _xMax = int.parse(input),
+                      },
+                    ),
+                    TextFormField(
+                      keyboardType: TextInputType.number,
+                      initialValue: '$_xMin',
+                      decoration:
+                      InputDecoration(labelText: 'X min:'),
+                      onSaved: (input) => {
+                        _xMin = int.parse(input),
+                      },
+                    ),
+                    TextFormField(
+                      keyboardType: TextInputType.number,
+                      initialValue: '$_yMax',
+                      decoration:
+                      InputDecoration(labelText: 'Y max:'),
+                      onSaved: (input) => {
+                        _yMax = int.parse(input),
+                      },
+                    ),
+                    TextFormField(
+                      keyboardType: TextInputType.number,
+                      initialValue: '$_yMin',
+                      decoration:
+                      InputDecoration(labelText: 'Y min:'),
+                      onSaved: (input) => {
+                        _yMin = int.parse(input),
+                      },
+                    ),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        _scaleFormKey.currentState.save();
+                        Navigator.of(context).pop();  // close drawer
+                        setState(() {});
+                      },
+                      child: Text("Save"),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+
+      floatingActionButton: Visibility(
+        visible: !keyboardIsOpened,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Container(
+              margin: EdgeInsets.only(left: 34),
+              child: FloatingActionButton.extended(
+                onPressed: () { Navigator.of(context).pop(); },
+                icon: Icon(Icons.arrow_back),
+                label: Text("Back"),
+                backgroundColor: Colors.red,
+                heroTag: 1,
+              ),
+            ),
+            FloatingActionButton.extended(
               backgroundColor: Colors.green,
               label: Text('Table'),
               icon: Icon(Icons.menu_book),
-              heroTag: 1,
+              heroTag: 2,
               onPressed: () {
                 showModalBottomSheet<void>(
                   context: context,
@@ -278,17 +245,18 @@ class GraphScreenState extends State<GraphScreen>{
                     return GraphTable(coordinates: this.coordinates);
                   }
                 );
-              })
-          ),
-          FloatingActionButton.extended(
-            onPressed: () {
-              _openDrawer();
-            },
-            label: Text('Scale'),
-            icon: Icon(Icons.crop),
-            heroTag: 2
-          ),
-        ],
+              }
+            ),
+            FloatingActionButton.extended(
+              onPressed: () {
+                _openDrawer();
+              },
+              label: Text('Scale'),
+              icon: Icon(Icons.crop),
+              heroTag: 3
+            ),
+          ],
+        )
       )
     );
   }
