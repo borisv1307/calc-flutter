@@ -21,25 +21,25 @@ class MultiButton extends PadButton {
         padding: EdgeInsets.symmetric(horizontal:HORIZONTAL_PADDING),
         child:Column(
           children: [
-            Row(
+            Expanded(child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 _generateMultiText(displayItems[0].display)
               ]
-            ),
-            Row(
+            )),
+            Expanded(child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 _generateMultiText(displayItems[1].display),
                 _generateMultiText(displayItems[2].display)
               ]
-            ),
-            Row(
+            )),
+            Expanded(child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 _generateMultiText(displayItems[3].display)
               ]
-            )
+            ))
           ],
         )
     );
@@ -50,23 +50,23 @@ class MultiButton extends PadButton {
         padding: EdgeInsets.symmetric(horizontal:HORIZONTAL_PADDING),
         child:Column(
           children: [
-            Row(
+            Expanded(child: Row(
               children: [
                 Text('', style: TextStyle(fontSize: 15, fontWeight: style.fontWeight, color: style.textColor, height: 0.9))
               ]
-            ),
-            Row(
+            )),
+            Expanded(child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 _generateMultiText(displayItems[0].display),
                 _generateMultiText(displayItems[1].display)
               ]
-            ),
-            Row(
+            )),
+            Expanded(child: Row(
               children: [
                 Text('', style: TextStyle(fontSize: 15, fontWeight: style.fontWeight, color: style.textColor,height: 0.9))
               ]
-            )
+            ))
           ],
         )
     );
@@ -78,30 +78,24 @@ class MultiButton extends PadButton {
         child:Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Expanded(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  _generateMultiText(displayItems[0].display)
-                ]
-              )
-            ),
-            Expanded(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  _generateMultiText(displayItems[1].display)
-                ]
-              )
-            ),
-            Expanded(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  _generateMultiText(displayItems[2].display)
-                ]
-              )
-            )
+            Expanded(child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                _generateMultiText(displayItems[0].display)
+              ]
+            )),
+            Expanded(child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                _generateMultiText(displayItems[1].display)
+              ]
+            )),
+            Expanded(child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                _generateMultiText(displayItems[2].display)
+              ]
+            ))
           ],
         )
     );
