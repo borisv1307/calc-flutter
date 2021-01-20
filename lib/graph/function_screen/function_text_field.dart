@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'function_screen.dart';
 import '../function_screen/function_display_controller.dart';
 
 class FunctionTextField extends StatefulWidget { 
