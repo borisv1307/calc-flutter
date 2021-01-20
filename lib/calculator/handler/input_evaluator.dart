@@ -15,10 +15,10 @@ class InputEvaluator{
 
     if(input.contains(InputItem.STORAGE)){
       resultString = _evaluateStorage(input, resultString, history);
-    }else if (input.isNotEmpty) {
-      resultString = _calculate(input, history);
-    } else if(history.isNotEmpty){
+    }else if(input.isEmpty && history.isNotEmpty){
       resultString = history.last.result;
+    }else{
+      resultString = _calculate(input, history);
     }
     DisplayHistory newEntry = new DisplayHistory(input, resultString);
 
@@ -32,7 +32,7 @@ class InputEvaluator{
       int stoIndex = input.indexOf(InputItem.STORAGE);
       List<InputItem> expression = input.sublist(0,stoIndex);
       resultString = _calculate(expression, history);
-      storage.addVariable(variable.display, resultString);
+      storage.addVariable(variable.label, resultString);
     }else{
       throw new SyntaxException(stoIndex + 1);
     }

@@ -53,7 +53,7 @@ class CatalogDialogState extends State<CatalogDialog>{
   List<InputItem> filterCatalogItems(String text) {
     List<InputItem> items = this.widget.catalogItems;
     if(text.isNotEmpty){
-      items = this.widget.catalogItems.where((item) => item.display.toUpperCase().contains(text) ||
+      items = this.widget.catalogItems.where((item) => item.label.toUpperCase().contains(text) ||
           item.value.toUpperCase().contains(text) ||
           item.name.toUpperCase().contains(text)).toList();
     }
@@ -84,7 +84,7 @@ class CatalogDialogState extends State<CatalogDialog>{
                 InputItem item = displayItems[index];
                 return ItemTags(
                   index: index,
-                  title: item.display,
+                  title: item.label,
                   padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
                   onPressed: (Item item){
                     Navigator.pop(context);
