@@ -24,20 +24,20 @@ class MultiButton extends PadButton {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                _generateMultiText(displayItems[0].display)
+                _generateMultiText(displayItems[0].label)
               ]
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                _generateMultiText(displayItems[1].display),
-                _generateMultiText(displayItems[2].display)
+                _generateMultiText(displayItems[1].label),
+                _generateMultiText(displayItems[2].label)
               ]
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                _generateMultiText(displayItems[3].display)
+                _generateMultiText(displayItems[3].label)
               ]
             )
           ],
@@ -58,8 +58,8 @@ class MultiButton extends PadButton {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                _generateMultiText(displayItems[0].display),
-                _generateMultiText(displayItems[1].display)
+                _generateMultiText(displayItems[0].label),
+                _generateMultiText(displayItems[1].label)
               ]
             ),
             Row(
@@ -80,19 +80,19 @@ class MultiButton extends PadButton {
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                _generateMultiText(displayItems[0].display)
+                _generateMultiText(displayItems[0].label)
               ]
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                _generateMultiText(displayItems[1].display)
+                _generateMultiText(displayItems[1].label)
               ]
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                _generateMultiText(displayItems[2].display)
+                _generateMultiText(displayItems[2].label)
               ]
             )
           ],
@@ -142,7 +142,7 @@ class MultiButton extends PadButton {
               value: item,
               child: Container(
                 alignment: Alignment.center,
-                child: Text(item.display, style: TextStyle(fontSize: 20, fontWeight: style.fontWeight, color: style.textColor))
+                child: Text(item.label, style: TextStyle(fontSize: 20, fontWeight: style.fontWeight, color: style.textColor))
               )
             )).toList(),
           onSelected: (value) {

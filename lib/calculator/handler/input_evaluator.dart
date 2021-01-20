@@ -32,7 +32,7 @@ class InputEvaluator{
       int stoIndex = input.indexOf(InputItem.STORAGE);
       List<InputItem> expression = input.sublist(0,stoIndex);
       resultString = _calculate(expression, history);
-      storage.addVariable(variable.display, resultString);
+      storage.addVariable(variable.label, resultString);
     }else{
       throw new SyntaxException(stoIndex + 1);
     }

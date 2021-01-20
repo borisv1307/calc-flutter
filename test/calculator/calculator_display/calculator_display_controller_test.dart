@@ -138,6 +138,12 @@ void main(){
       expect(controller.inputLine,'A');
     });
 
+    test('displays display text',(){
+      TestableCalculatorDisplayController controller = TestableCalculatorDisplayController();
+      controller.input(InputItem.NEGATIVE);
+      expect(controller.inputLine,'-');
+    });
+
     test('is appended to end of input line',(){
       TestableCalculatorDisplayController controller = TestableCalculatorDisplayController();
       controller.input(InputItem.A);

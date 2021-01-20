@@ -18,7 +18,7 @@ class VariableScreen extends InputPad{
     int i = 0;
     for(i=0; i < list.length; i++){
       variablesWidgets.add(
-        buildInputButton(InputItem(keyList[i] + ': ' + list[i], value: list[i]), InputButtonStyle.TERTIARY) ///TODO update to not be input button
+        buildInputButton(InputItem(keyList[i] + ': ' + list[i], display: list[i]), InputButtonStyle.TERTIARY) ///TODO update to not be input button
       );
     }
 
