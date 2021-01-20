@@ -8,7 +8,8 @@ import 'package:open_calc/graph/function_screen/function_screen.dart';
 class GraphTab extends StatefulWidget {
   final VariableStorage storage;
   final FunctionDisplayController controller;
-  GraphTab(this.storage) : controller = FunctionDisplayController(storage);
+  
+  GraphTab(this.storage) : controller = FunctionDisplayController();
 
   State<StatefulWidget> createState() => GraphTabState();
 }
@@ -25,7 +26,7 @@ class GraphTabState extends State<GraphTab> {
             builder = (BuildContext context) => FunctionScreen(widget.storage, widget.controller);
             break;
           case '/graphScreen':
-            builder = (BuildContext context) => GraphScreen(widget.controller);
+            builder = (BuildContext context) => GraphScreen(widget.storage, widget.controller);
             break;
         }
         return MaterialPageRoute(builder: builder, settings: settings);

@@ -1,14 +1,18 @@
 import 'package:cartesian_graph/bounds.dart';
 import 'package:cartesian_graph/cartesian_graph.dart';
 import 'package:cartesian_graph/coordinates.dart';
+import 'package:open_calc/calculator/input_pad/input_variables.dart';
 import 'package:open_calc/graph/function_screen/function_display_controller.dart';
+import 'package:open_calc/graph/function_screen/input_pad/graph_input_evaluator.dart';
 import 'package:open_calc/graph/graph_screen/graph_table.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class GraphScreen extends StatefulWidget {
   final FunctionDisplayController controller;
-  GraphScreen(this.controller);
+  final VariableStorage storage;
+  final GraphInputEvaluator evaluator;
+  GraphScreen(this.storage, this.controller) : evaluator = GraphInputEvaluator(storage);
 
   @override
   State<StatefulWidget> createState() => GraphScreenState();
@@ -22,7 +26,10 @@ class GraphScreenState extends State<GraphScreen>{
       _xMax = 10,
       _yMin = -10,
       _yMax = 10;
-      
+  double drawerWidth = 200;
+  double drawerHeight = 305;
+  TextStyle mainStyle = TextStyle(fontFamily: 'RobotoMono', fontSize: 20);
+  TextStyle titleStyle = TextStyle(fontFamily: 'RobotoMono', fontSize: 23);
   Coordinates cursorLocation = Coordinates(135, 81);
   List<Coordinates> coordinates;
 
@@ -49,7 +56,7 @@ class GraphScreenState extends State<GraphScreen>{
 
   @override
   Widget build(BuildContext context) {
-    this.inputEquations = widget.controller.translateInputs();
+    this.inputEquations = widget.evaluator.translateInputs(widget.controller.inputs);
 
     return Scaffold(
       key: _scaffoldKey,
@@ -79,12 +86,8 @@ class GraphScreenState extends State<GraphScreen>{
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text("x = " + (cursorLocation.x - 135).toString(), 
-                          style: TextStyle(fontFamily: 'RobotoMono', fontSize: 20)
-                        ),
-                        Text("y = " + (cursorLocation.y - 81).toString(), 
-                          style: TextStyle(fontFamily: 'RobotoMono', fontSize: 20)
-                        ),
+                        Text("x = " + (cursorLocation.x - 135).toString(), style: mainStyle),
+                        Text("y = " + (cursorLocation.y - 81).toString(), style: mainStyle),
                       ],
                     )
                   ),
@@ -140,8 +143,8 @@ class GraphScreenState extends State<GraphScreen>{
                     return ListTile();
                   }
                   return ListTile(
-                    leading: Text("y"+ (index+1).toString() + "=", style: TextStyle(fontFamily: 'RobotoMono', fontSize: 23)),
-                    title: Text(inputEquations[index], style: TextStyle(fontFamily: 'RobotoMono', fontSize: 20))
+                    leading: Text("y"+ (index+1).toString() + "=", style: titleStyle),
+                    title: Text(inputEquations[index], style: mainStyle)
                   );
                 },
                 separatorBuilder: (BuildContext context, int index) => Divider(thickness: 1.5),
@@ -155,8 +158,8 @@ class GraphScreenState extends State<GraphScreen>{
         scrollDirection: Axis.vertical,
         child: Container(
           color: Colors.white,
-          width: 200,
-          height: 305,
+          width: drawerWidth,
+          height: drawerHeight,
           child: Padding(
             padding: EdgeInsets.all(8.0),
             child: Form(

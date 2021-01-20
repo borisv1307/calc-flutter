@@ -12,7 +12,7 @@ void main() {
     // pump the widget wrapped in a MaterialApp Scaffold
     await tester.pumpWidget(MaterialApp(
       home: Scaffold(
-        body: FunctionTextField(0, FunctionDisplayController(VariableStorage()))
+        body: FunctionTextField(0, FunctionDisplayController())
       )
     ));
     // use a finder to find the widget
@@ -22,7 +22,7 @@ void main() {
   });
 
   testWidgets("text is updated from controller", (WidgetTester tester) async {
-    FunctionDisplayController controller = FunctionDisplayController(VariableStorage());
+    FunctionDisplayController controller = FunctionDisplayController();
     await tester.pumpWidget(MaterialApp(
       home: Scaffold(
         body: FunctionTextField(0, controller)
@@ -37,7 +37,7 @@ void main() {
   testWidgets("tapping text field updates active controller index", (WidgetTester tester) async {
     // TODO: not working
     
-    // FunctionDisplayController controller = FunctionDisplayController(VariableStorage());
+    // FunctionDisplayController controller = FunctionDisplayController();
     // controller.addField();
     
     // await tester.pumpWidget(MaterialApp(

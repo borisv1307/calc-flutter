@@ -17,7 +17,6 @@ class FunctionScreen extends StatefulWidget {
 
 class FunctionScreenState extends State<FunctionScreen> {
   final _formKey = GlobalKey<FormState>();
-  static List<String> functionList = [null];
   TextEditingController _functionController;
   GraphInputHandler inputHandler;
 
@@ -35,36 +34,31 @@ class FunctionScreenState extends State<FunctionScreen> {
   }
 
   List<Widget> _getFunctions(){
-    List<Widget> functionsTextFields = [];
-    for (int i = 0; i < functionList.length; i++) {
-      functionsTextFields.add(
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 5.0),
-            child: Row(
-              children: [
-                Expanded(child: FunctionTextField(i, widget.controller)),
-                SizedBox(width: 16,),
-                // we need a dd button at last friends row only
-                _removeButton(false, i),
-              ],
-            ),
-          )
+    List<Widget> functions = [];
+    for (int i = 0; i < widget.controller.inputs.length; i++) {
+      functions.add(
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 5.0),
+          child: Row(
+            children: [
+              Expanded(child: FunctionTextField(i, widget.controller)),
+              SizedBox(width: 16,),
+              // we need add button at last friends row only
+              _removeButton(false, i),
+            ],
+          ),
+        )
       );
     }
-    return functionsTextFields;
+    return functions;
   }
   
   Widget _removeButton(bool add, int index) {
     return InkWell(
       onTap: (){
-        // if(add){
-        //   // add new text-fields at the top of all friends textfields
-        //   functionList.insert(index + 1, null);
-        // }
-        // else
-        widget.controller.removeField(index);
-        functionList.removeAt(index);
-        setState((){});
+        setState((){
+          widget.controller.removeField(index);
+        });
       },
       child: Container(
         width: 30,
@@ -100,9 +94,9 @@ class FunctionScreenState extends State<FunctionScreen> {
                           height: 40,
                           child: RaisedButton(
                             onPressed: () {
-                              widget.controller.addField();
-                              functionList.add(null);
-                              setState((){});
+                              setState((){
+                                widget.controller.addField();
+                              });
                             },
                             child: Container(
                               width: 30,

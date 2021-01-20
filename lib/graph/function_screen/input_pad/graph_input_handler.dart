@@ -10,6 +10,7 @@ class GraphInputHandler{
   void handleInput(InputItem inputItem) {
     controller.input(inputItem);
   }
+  
   void handleCommand(CommandItem command) {
     if (command == CommandItem.ENTER) {
       // TODO: switch to graph screen

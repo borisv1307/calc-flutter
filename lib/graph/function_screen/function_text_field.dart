@@ -31,17 +31,18 @@ class _FunctionTextFieldState extends State<FunctionTextField> {
 
   void _updateFunction() {
     setState(() {
-      textController.text = widget.controller.getInput(widget.index);
-      FunctionScreenState.functionList[widget.index] = textController.text;
+      if (widget.index < widget.controller.inputs.length) {
+        textController.text = widget.controller.getInput(widget.index);
+      }
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      textController.text = FunctionScreenState.functionList[widget.index]
-          ?? '';
-    });
+    // WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    //   textController.text = FunctionScreenState.functionList[widget.index]
+    //       ?? '';
+    // });
     return TextFormField(
       controller: textController,
       showCursor: false,

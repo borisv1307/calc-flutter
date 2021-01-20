@@ -14,7 +14,7 @@ void main() {
 
   setUp(() {
     storage = VariableStorage();
-    controller = FunctionDisplayController(storage);
+    controller = FunctionDisplayController();
   });
 
 
@@ -55,7 +55,10 @@ void main() {
     testWidgets("correct number of remove buttons", (WidgetTester tester) async {
       await tester.pumpWidget(MaterialApp(
         home: Scaffold(body: new FunctionScreen(storage, controller)))
-      ); 
+      );       
+      Finder addButton = find.byIcon(Icons.add);
+      await tester.tap(addButton);
+      await tester.pumpAndSettle();
       expect(find.byIcon(Icons.remove), findsNWidgets(2));
     });
 
@@ -63,6 +66,9 @@ void main() {
       await tester.pumpWidget(MaterialApp(
         home: Scaffold(body: FunctionScreen(storage, controller)))
       ); 
+      Finder addButton = find.byIcon(Icons.add);
+      await tester.tap(addButton);
+      await tester.pumpAndSettle();
       Finder removeButtons = find.byIcon(Icons.remove);
       await tester.tap(removeButtons.at(1));
       await tester.pumpAndSettle();
