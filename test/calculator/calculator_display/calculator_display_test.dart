@@ -33,8 +33,8 @@ void main(){
   group('Input line is displayed',(){
     group('with cursor',(){
       testWidgets('initially displayed',(WidgetTester tester) async{
-        await tester.pumpWidget(MaterialApp(home:CalculatorDisplay(_buildController([InputItem.TWO,InputItem.ADD,InputItem.TWO]),numLines: 2)));
-        expect(find.text('2+2█'),findsNWidgets(1));
+        await tester.pumpWidget(MaterialApp(home:CalculatorDisplay(_buildController([InputItem.NEGATIVE, InputItem.TWO,InputItem.ADD,InputItem.TWO]),numLines: 2)));
+        expect(find.text('-2+2█'),findsNWidgets(1));
       });
       testWidgets('blinking off',(WidgetTester tester) async{
         await tester.pumpWidget(MaterialApp(home:CalculatorDisplay(_buildController([InputItem.TWO,InputItem.ADD,InputItem.TWO]), numLines: 2)));
