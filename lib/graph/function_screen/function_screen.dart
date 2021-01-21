@@ -23,7 +23,6 @@ class FunctionScreenState extends State<FunctionScreen> {
   @override
   void initState() {
     super.initState();
-    inputHandler = GraphInputHandler(widget.controller);
     _functionController = new TextEditingController();
   }
 
@@ -76,6 +75,8 @@ class FunctionScreenState extends State<FunctionScreen> {
 
   @override
   Widget build(BuildContext context) {
+    inputHandler = GraphInputHandler(widget.controller, context, _formKey);
+
     return Scaffold(
         body: Center(
           child: Form(
@@ -83,7 +84,7 @@ class FunctionScreenState extends State<FunctionScreen> {
             child: Column(
               children: <Widget>[
                 Container(
-                  height: 230,
+                  height: 265,
                   margin: EdgeInsets.symmetric( vertical: 10, horizontal: 10),
                   child: SingleChildScrollView(
                     child: Column(
@@ -115,19 +116,12 @@ class FunctionScreenState extends State<FunctionScreen> {
                     ),
                   ),
                 ),
-                ElevatedButton(
-                  onPressed: () {
-                    if(_formKey.currentState.validate()) {
-                      Navigator.of(context).pushNamed("/graphScreen");
-                    }
-                  },
-                  child: Text("Generate Graph")
-                ),
                 Expanded(
                   child: Container(
                     // height: 333,
                     color: Colors.black38,
-                    child: GraphInputPad(widget.storage, inputHandler.handleInput, inputHandler.handleCommand))
+                    child: GraphInputPad(widget.storage, inputHandler.handleInput, inputHandler.handleCommand)
+                  )
                 ),
               ],
             ),

@@ -20,7 +20,9 @@ class _FunctionTextFieldState extends State<FunctionTextField> {
     super.initState();
     textController = TextEditingController();
     widget.controller?.addListener(_updateFunction);
+    _updateFunction();
   }
+
   @override
   void dispose() {
     widget.controller?.removeListener(_updateFunction);
@@ -38,10 +40,6 @@ class _FunctionTextFieldState extends State<FunctionTextField> {
 
   @override
   Widget build(BuildContext context) {
-    // WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-    //   textController.text = FunctionScreenState.functionList[widget.index]
-    //       ?? '';
-    // });
     return TextFormField(
       controller: textController,
       showCursor: false,
