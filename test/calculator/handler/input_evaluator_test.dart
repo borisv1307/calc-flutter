@@ -25,12 +25,17 @@ void main(){
       expect(history.result, '4');
     });
 
-    test('evaluates to prior result',(){
-      InputEvaluator evaluator = InputEvaluator(MockVariableStorage(),MockAdvancedCalculator());
+    test('evaluates prior input',(){
+      CalculationOptions options = CalculationOptions();
+      MockAdvancedCalculator calculator = MockAdvancedCalculator();
+      when(calculator.calculate('7', options)).thenReturn('4');
 
-      DisplayHistory history = evaluator.evaluate([], [DisplayHistory([], '3')], CalculationOptions());
+      InputEvaluator evaluator = InputEvaluator(MockVariableStorage(),calculator);
+
+      DisplayHistory history = evaluator.evaluate([], [DisplayHistory([InputItem.SEVEN], '3')], options);
       expect(history.input,[]);
-      expect(history.result, '3');
+      expect(history.evaluatedInput,[InputItem.SEVEN]);
+      expect(history.result, '4');
     });
   });
 
@@ -44,6 +49,7 @@ void main(){
 
       DisplayHistory history = evaluator.evaluate([InputItem.THREE], [],options);
       expect(history.input,[InputItem.THREE]);
+      expect(history.evaluatedInput,[InputItem.THREE]);
       expect(history.result, '2');
     });
 

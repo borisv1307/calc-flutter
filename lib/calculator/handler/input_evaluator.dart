@@ -13,15 +13,16 @@ class InputEvaluator{
 
   DisplayHistory evaluate(final List<InputItem> input, final List<DisplayHistory> history, final CalculationOptions options) {
     String resultString = '';
-
+    List<InputItem> evaluatedInput = input;
     if(input.contains(InputItem.STORAGE)){
       resultString = _evaluateStorage(input, resultString, history, options);
-    }else if(input.isEmpty && history.isNotEmpty){
-      resultString = history.last.result;
     }else{
-      resultString = _calculate(input, history, options);
+      if(input.isEmpty && history.isNotEmpty){
+        evaluatedInput = history.last.evaluatedInput;
+      }
+      resultString = _calculate(evaluatedInput, history, options);
     }
-    DisplayHistory newEntry = new DisplayHistory(input, resultString);
+    DisplayHistory newEntry = new DisplayHistory(input, resultString, evaluatedInput);
 
     return newEntry;
   }
