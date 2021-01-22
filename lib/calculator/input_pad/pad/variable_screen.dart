@@ -1,13 +1,19 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:open_calc/calculator/input_pad/input_pad.dart';
+import 'package:open_calc/calculator/input_pad/button/input_button.dart';
 import 'package:open_calc/calculator/input_pad/input_button_style.dart';
 import 'package:open_calc/calculator/input_pad/input_item.dart';
 
-class VariableScreen extends InputPad{
+import '../input_variables.dart';
 
-  VariableScreen(storage,input, command) : super(storage,input, command);
+class VariableScreen extends StatelessWidget{
+
+  final Function(InputItem input) inputFunction;
+  final VariableStorage storage;
+
+  VariableScreen(this.inputFunction, this.storage);
+
+
 
   List<Widget> _getVariables(){
     var list = [];
@@ -18,7 +24,7 @@ class VariableScreen extends InputPad{
     int i = 0;
     for(i=0; i < list.length; i++){
       variablesWidgets.add(
-        buildInputButton(InputItem(keyList[i] + ': ' + list[i], display: list[i]), InputButtonStyle.TERTIARY) ///TODO update to not be input button
+        InputButton(InputItem(keyList[i] + ': ' + list[i], display: list[i]), InputButtonStyle.TERTIARY, inputFunction) ///TODO update to not be input button
       );
     }
 

@@ -72,4 +72,8 @@ class InputItem{
   static const STORAGE = const InputItem('sto', display:'➡', lookback: true);
   static const EMPTY = const InputItem('');
 
+  @override
+  String toString(){
+    return this.label;
+  }
 }

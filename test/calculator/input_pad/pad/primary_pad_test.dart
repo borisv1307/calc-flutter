@@ -15,7 +15,7 @@ void main(){
 
     return MaterialApp(home:MediaQuery(
         data:MediaQueryData(size: Size(400,700), devicePixelRatio: 2.5),
-        child:PrimaryPad(null,inputFunction,commandFunction)));
+        child:PrimaryPad(inputFunction,commandFunction)));
   }
 
 

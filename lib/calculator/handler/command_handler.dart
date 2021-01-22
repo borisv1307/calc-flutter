@@ -1,3 +1,4 @@
+import 'package:advanced_calculation/calculation_options.dart';
 import 'package:advanced_calculation/syntax_exception.dart';
 import 'package:open_calc/calculator/calculator_display/calculator_display_controller.dart';
 import 'package:open_calc/calculator/calculator_display/display_history.dart';
@@ -10,14 +11,15 @@ class CommandHandler{
   final CalculatorDisplayController controller;
   final VariableStorage storage;
   final InputEvaluator evaluator;
+  final CalculationOptions options;
 
-  CommandHandler(this.controller, this.storage, [InputEvaluator evaluator]):
+  CommandHandler(this.controller, this.storage, this.options, [InputEvaluator evaluator]):
       evaluator = evaluator ?? InputEvaluator(storage);
 
   void handle(CommandItem command) {
     if (command == CommandItem.ENTER) {
       try{
-        DisplayHistory newEntry = evaluator.evaluate(controller.inputItems, controller.history);
+        DisplayHistory newEntry = evaluator.evaluate(controller.inputItems, controller.history,this.options);
         controller.clearInput();
         controller.history.add(newEntry);
       } on SyntaxException catch(e){
