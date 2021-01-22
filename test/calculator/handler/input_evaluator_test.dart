@@ -1,4 +1,5 @@
 import 'package:advanced_calculation/advanced_calculator.dart';
+import 'package:advanced_calculation/calculation_options.dart';
 import 'package:advanced_calculation/syntax_exception.dart';
 import 'package:mockito/mockito.dart';
 import 'package:open_calc/calculator/calculator_display/display_history.dart';
@@ -13,12 +14,13 @@ class MockVariableStorage extends Mock implements VariableStorage{}
 void main(){
   group('Empty input',(){
     test('evaluates when no history',(){
+      CalculationOptions options = CalculationOptions();
       MockAdvancedCalculator calculator = MockAdvancedCalculator();
-      when(calculator.calculate('')).thenReturn('4');
+      when(calculator.calculate('', options)).thenReturn('4');
 
       InputEvaluator evaluator = InputEvaluator(MockVariableStorage(),calculator);
 
-      DisplayHistory history = evaluator.evaluate([], []);
+      DisplayHistory history = evaluator.evaluate([], [], options);
       expect(history.input,[]);
       expect(history.result, '4');
     });
@@ -26,7 +28,7 @@ void main(){
     test('evaluates to prior result',(){
       InputEvaluator evaluator = InputEvaluator(MockVariableStorage(),MockAdvancedCalculator());
 
-      DisplayHistory history = evaluator.evaluate([], [DisplayHistory([], '3')]);
+      DisplayHistory history = evaluator.evaluate([], [DisplayHistory([], '3')], CalculationOptions());
       expect(history.input,[]);
       expect(history.result, '3');
     });
@@ -34,23 +36,25 @@ void main(){
 
   group('Provided input',(){
     test('evaluates calculator result',(){
+      CalculationOptions options = CalculationOptions();
       MockAdvancedCalculator calculator = MockAdvancedCalculator();
-      when(calculator.calculate('3')).thenReturn('2');
+      when(calculator.calculate('3',options)).thenReturn('2');
 
       InputEvaluator evaluator = InputEvaluator(MockVariableStorage(),calculator);
 
-      DisplayHistory history = evaluator.evaluate([InputItem.THREE], []);
+      DisplayHistory history = evaluator.evaluate([InputItem.THREE], [],options);
       expect(history.input,[InputItem.THREE]);
       expect(history.result, '2');
     });
 
     test('evaluates complex input calculator result',(){
+      CalculationOptions options = CalculationOptions();
       MockAdvancedCalculator calculator = MockAdvancedCalculator();
-      when(calculator.calculate('3+3')).thenReturn('2');
+      when(calculator.calculate('3+3',options)).thenReturn('2');
 
       InputEvaluator evaluator = InputEvaluator(MockVariableStorage(),calculator);
 
-      DisplayHistory history = evaluator.evaluate([InputItem.THREE, InputItem.ADD, InputItem.THREE], []);
+      DisplayHistory history = evaluator.evaluate([InputItem.THREE, InputItem.ADD, InputItem.THREE], [],options);
       expect(history.input,[InputItem.THREE, InputItem.ADD, InputItem.THREE]);
       expect(history.result, '2');
     });
@@ -58,45 +62,49 @@ void main(){
 
   group('Variable replacement',(){
     test('Answer is replaced with history',(){
+      CalculationOptions options = CalculationOptions();
       MockAdvancedCalculator calculator = MockAdvancedCalculator();
-      when(calculator.calculate('3')).thenReturn('2');
+      when(calculator.calculate('3',options)).thenReturn('2');
 
       InputEvaluator evaluator = InputEvaluator(MockVariableStorage(),calculator);
 
-      DisplayHistory history = evaluator.evaluate([InputItem.ANSWER], [DisplayHistory([], '3')]);
+      DisplayHistory history = evaluator.evaluate([InputItem.ANSWER], [DisplayHistory([], '3')],options);
       expect(history.input,[InputItem.ANSWER]);
       expect(history.result, '2');
     });
 
     test('Answer is multiplied with next input',(){
+      CalculationOptions options = CalculationOptions();
       MockAdvancedCalculator calculator = MockAdvancedCalculator();
-      when(calculator.calculate('3*2')).thenReturn('4');
+      when(calculator.calculate('3*2',options)).thenReturn('4');
 
       InputEvaluator evaluator = InputEvaluator(MockVariableStorage(),calculator);
 
-      DisplayHistory history = evaluator.evaluate([InputItem.ANSWER, InputItem.TWO], [DisplayHistory([], '3')]);
+      DisplayHistory history = evaluator.evaluate([InputItem.ANSWER, InputItem.TWO], [DisplayHistory([], '3')],options);
       expect(history.input,[InputItem.ANSWER, InputItem.TWO]);
       expect(history.result, '4');
     });
 
     test('Answer is multiplied with prior input',(){
+      CalculationOptions options = CalculationOptions();
       MockAdvancedCalculator calculator = MockAdvancedCalculator();
-      when(calculator.calculate('2*3')).thenReturn('4');
+      when(calculator.calculate('2*3',options)).thenReturn('4');
 
       InputEvaluator evaluator = InputEvaluator(MockVariableStorage(),calculator);
 
-      DisplayHistory history = evaluator.evaluate([InputItem.TWO, InputItem.ANSWER], [DisplayHistory([], '3')]);
+      DisplayHistory history = evaluator.evaluate([InputItem.TWO, InputItem.ANSWER], [DisplayHistory([], '3')],options);
       expect(history.input,[InputItem.TWO, InputItem.ANSWER]);
       expect(history.result, '4');
     });
 
     test('Answer is only multiplied with next input if next input isnt a lookback',(){
+      CalculationOptions options = CalculationOptions();
       MockAdvancedCalculator calculator = MockAdvancedCalculator();
-      when(calculator.calculate('3+2')).thenReturn('4');
+      when(calculator.calculate('3+2',options)).thenReturn('4');
 
       InputEvaluator evaluator = InputEvaluator(MockVariableStorage(),calculator);
 
-      DisplayHistory history = evaluator.evaluate([InputItem.ANSWER, InputItem.ADD, InputItem.TWO], [DisplayHistory([], '3')]);
+      DisplayHistory history = evaluator.evaluate([InputItem.ANSWER, InputItem.ADD, InputItem.TWO], [DisplayHistory([], '3')],options);
       expect(history.input,[InputItem.ANSWER, InputItem.ADD, InputItem.TWO]);
       expect(history.result, '4');
     });
@@ -108,13 +116,14 @@ void main(){
       DisplayHistory history;
 
       setUp((){
+        CalculationOptions options = CalculationOptions();
         MockAdvancedCalculator calculator = MockAdvancedCalculator();
-        when(calculator.calculate('3')).thenReturn('2');
+        when(calculator.calculate('3',options)).thenReturn('2');
 
         storage = MockVariableStorage();
 
         InputEvaluator evaluator = InputEvaluator(storage,calculator);
-        history = evaluator.evaluate([InputItem.THREE,InputItem.STORAGE,InputItem.A], []);
+        history = evaluator.evaluate([InputItem.THREE,InputItem.STORAGE,InputItem.A], [],options);
       });
 
       test('stores variable',(){
@@ -132,13 +141,14 @@ void main(){
 
     group('with non variable specified',(){
       triggerSyntaxException(){
+        CalculationOptions options = CalculationOptions();
         MockAdvancedCalculator calculator = MockAdvancedCalculator();
-        when(calculator.calculate('3')).thenReturn('2');
+        when(calculator.calculate('3',options)).thenReturn('2');
 
         MockVariableStorage storage = MockVariableStorage();
 
         InputEvaluator evaluator = InputEvaluator(storage,calculator);
-        evaluator.evaluate([InputItem.THREE,InputItem.STORAGE,InputItem.FOUR], []);
+        evaluator.evaluate([InputItem.THREE,InputItem.STORAGE,InputItem.FOUR], [],options);
       }
 
       test('throws syntax exception',(){
@@ -157,13 +167,14 @@ void main(){
     group('with multiple characters specified for storage',(){
 
       triggerSyntaxException(){
+        CalculationOptions options = CalculationOptions();
         MockAdvancedCalculator calculator = MockAdvancedCalculator();
-        when(calculator.calculate('3')).thenReturn('2');
+        when(calculator.calculate('3',options)).thenReturn('2');
 
         MockVariableStorage storage = MockVariableStorage();
 
         InputEvaluator evaluator = InputEvaluator(storage,calculator);
-        evaluator.evaluate([InputItem.THREE,InputItem.STORAGE,InputItem.FOUR, InputItem.A], []);
+        evaluator.evaluate([InputItem.THREE,InputItem.STORAGE,InputItem.FOUR, InputItem.A], [],options);
       }
 
       test('throws syntax exception',(){
@@ -182,60 +193,64 @@ void main(){
 
   group('Variable retrieval',(){
     test('Variable replacement',(){
+      CalculationOptions options = CalculationOptions();
       MockAdvancedCalculator calculator = MockAdvancedCalculator();
-      when(calculator.calculate('3')).thenReturn('2');
+      when(calculator.calculate('3',options)).thenReturn('2');
 
       MockVariableStorage storage = MockVariableStorage();
       when(storage.fetchVariable('A')).thenReturn('3');
 
       InputEvaluator evaluator = InputEvaluator(storage,calculator);
 
-      DisplayHistory output = evaluator.evaluate([InputItem.A], []);
+      DisplayHistory output = evaluator.evaluate([InputItem.A], [],options);
 
       expect(output.input,[InputItem.A]);
       expect(output.result,'2');
     });
 
     test('Variable multiplication after',(){
+      CalculationOptions options = CalculationOptions();
       MockAdvancedCalculator calculator = MockAdvancedCalculator();
-      when(calculator.calculate('3*2')).thenReturn('6');
+      when(calculator.calculate('3*2',options)).thenReturn('6');
 
       MockVariableStorage storage = MockVariableStorage();
       when(storage.fetchVariable('A')).thenReturn('3');
 
       InputEvaluator evaluator = InputEvaluator(storage,calculator);
 
-      DisplayHistory output = evaluator.evaluate([InputItem.A, InputItem.TWO], []);
+      DisplayHistory output = evaluator.evaluate([InputItem.A, InputItem.TWO], [],options);
 
       expect(output.input,[InputItem.A, InputItem.TWO]);
       expect(output.result,'6');
     });
 
     test('Variable multiplication before',(){
+      CalculationOptions options = CalculationOptions();
       MockAdvancedCalculator calculator = MockAdvancedCalculator();
-      when(calculator.calculate('2*3')).thenReturn('6');
+      when(calculator.calculate('2*3',options)).thenReturn('6');
 
       MockVariableStorage storage = MockVariableStorage();
       when(storage.fetchVariable('A')).thenReturn('3');
 
       InputEvaluator evaluator = InputEvaluator(storage,calculator);
 
-      DisplayHistory output = evaluator.evaluate([InputItem.TWO, InputItem.A], []);
+      DisplayHistory output = evaluator.evaluate([InputItem.TWO, InputItem.A], [],options);
 
       expect(output.input,[InputItem.TWO, InputItem.A]);
       expect(output.result,'6');
     });
 
     test('Variable in function does not add multiplication',(){
+      CalculationOptions options = CalculationOptions();
       MockAdvancedCalculator calculator = MockAdvancedCalculator();
-      when(calculator.calculate('log(10')).thenReturn('1');
+      when(calculator.calculate('log(10',options)).thenReturn('1');
 
       MockVariableStorage storage = MockVariableStorage();
       when(storage.fetchVariable('A')).thenReturn('10');
 
       InputEvaluator evaluator = InputEvaluator(storage,calculator);
 
-      DisplayHistory output = evaluator.evaluate([InputItem.LOG, InputItem.A], []);
+      DisplayHistory output = evaluator.evaluate([InputItem.LOG, InputItem.A], [],options);
 
       expect(output.input,[InputItem.LOG, InputItem.A]);
       expect(output.result,'1');

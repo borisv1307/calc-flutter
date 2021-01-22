@@ -1,3 +1,4 @@
+import 'package:advanced_calculation/calculation_options.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:open_calc/calculator/calculator_display/calculator_display.dart';
@@ -22,11 +23,13 @@ class CalculatorTabState extends State<CalculatorTab>{
   CalculatorDisplayController controller;
   InputHandler inputHandler;
   CommandHandler commandHandler;
+  CalculationOptions options;
 
   CalculatorTabState(this.storage) {
     controller = CalculatorDisplayController();
+    options = CalculationOptions();
     inputHandler= InputHandler(controller);
-    commandHandler = CommandHandler(controller, storage);
+    commandHandler = CommandHandler(controller, storage,options);
   }
   
   @override
