@@ -1,13 +1,20 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:open_calc/calculator/input_pad/command_item.dart';
+import 'package:open_calc/calculator/input_pad/input_item.dart';
 import 'package:open_calc/calculator/input_pad/input_pad.dart';
+import 'package:open_calc/calculator/input_pad/input_variables.dart';
 import 'package:open_calc/calculator/input_pad/pad/secondary_pad.dart';
 import 'package:open_calc/calculator/input_pad/pad/variable_screen.dart';
 import 'package:open_calc/graph/function_screen/input_pad/pad/graph_primary_pad.dart';
 
-class GraphInputPad extends InputPad{
+class GraphInputPad extends StatelessWidget{
 
-  GraphInputPad(storage, inputFunction, commandFunction) : super(storage, inputFunction, commandFunction);
+  final Function(InputItem input) inputFunction;
+  final Function(CommandItem command) commandFunction;
+  final VariableStorage storage;
+
+  GraphInputPad(this.storage, this.inputFunction, this.commandFunction);
 
   @override
   Widget build(BuildContext context){
@@ -17,13 +24,13 @@ class GraphInputPad extends InputPad{
         WidgetBuilder builder;
         switch (settings.name) {
           case 'inputPadOne':
-            builder = (BuildContext context) => GraphPrimaryPad(this.storage,this.inputFunction, this.commandFunction);
+            builder = (BuildContext context) => GraphPrimaryPad(this.inputFunction, this.commandFunction);
             break;
           case 'inputPadTwo':
-            builder = (BuildContext context) => SecondaryPad(this.storage,this.inputFunction, this.commandFunction);
+            builder = (BuildContext context) => SecondaryPad(this.inputFunction, this.commandFunction, null);
             break;
           case 'varPad':
-            builder = (BuildContext context) => VariableScreen(this.storage,this.inputFunction, this.commandFunction);
+            builder = (BuildContext context) => VariableScreen(this.inputFunction, this.storage);
             break;
         }
         return NoTransitionRoute(builder: builder, settings: settings);

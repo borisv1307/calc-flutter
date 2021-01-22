@@ -41,10 +41,10 @@ class CalculatorTabState extends State<CalculatorTab>{
         children: <Widget>[
           CalculatorDisplay(
             controller,
-            numLines: 10
+            numLines: 8
           ),
           Expanded(
-            child: InputPad(storage, inputHandler.handle, commandHandler.handle)
+            child: InputPad(storage, inputHandler.handle, commandHandler.handle, options)
           ),
         ],
       )

@@ -1,15 +1,27 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:open_calc/calculator/input_pad/button/input_button.dart';
 import 'package:open_calc/calculator/input_pad/button/multi_button.dart';
 import 'package:open_calc/calculator/input_pad/button/pad_button.dart';
 import 'package:open_calc/calculator/input_pad/command_item.dart';
 import 'package:open_calc/calculator/input_pad/input_button_style.dart';
 import 'package:open_calc/calculator/input_pad/input_item.dart';
-import 'package:open_calc/calculator/input_pad/input_pad.dart';
 
-class GraphPrimaryPad extends InputPad{
+class GraphPrimaryPad extends StatelessWidget{
+  final Function(InputItem input) inputFunction;
+  final Function(CommandItem command) commandFunction;
 
-  GraphPrimaryPad(storage,input, command) : super(storage,input, command);
+  GraphPrimaryPad(this.inputFunction, this.commandFunction);
+
+  Widget buildInputButton(InputItem inputItem, InputButtonStyle type){
+    return InputButton(inputItem, type, inputFunction);
+  }
+
+  Widget buildCommandButton(CommandItem commandItem, InputButtonStyle type){
+    return PadButton(commandItem.display, type, (){
+      commandFunction(commandItem);
+    });
+  }
   
   @override
   Widget build(BuildContext context) {

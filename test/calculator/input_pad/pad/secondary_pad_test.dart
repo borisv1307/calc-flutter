@@ -1,3 +1,4 @@
+import 'package:advanced_calculation/calculation_options.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:open_calc/calculator/input_pad/button/input_button.dart';
@@ -15,7 +16,7 @@ void main(){
 
     return MaterialApp(home:MediaQuery(
         data:MediaQueryData(size: Size(400,700), devicePixelRatio: 2.5),
-        child:SecondaryPad(null,inputFunction,commandFunction)));
+        child:SecondaryPad(inputFunction,commandFunction, CalculationOptions())));
   }
 
 
@@ -55,6 +56,7 @@ void main(){
     _verifyButtonLocation('vars', 25);
     _verifyButtonLocation('a, b, c', 26);
     _verifyButtonLocation('list', 27);
+    _verifyButtonLocation('mode', 28);
     _verifyButtonLocation(CommandItem.ENTER.display, 29);
     expect(allButtons.length,30);
   });
@@ -94,6 +96,7 @@ void main(){
     _verifyButtonStyle('vars', InputButtonStyle.QUARTENARY);
     _verifyButtonStyle('a, b, c', InputButtonStyle.QUARTENARY);
     _verifyButtonStyle('list', InputButtonStyle.QUARTENARY);
+    _verifyButtonStyle('mode', InputButtonStyle.QUARTENARY);
     _verifyButtonStyle(CommandItem.ENTER.display, InputButtonStyle.SECONDARY);
   });
 }
