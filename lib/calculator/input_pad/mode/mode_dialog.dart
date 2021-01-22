@@ -26,7 +26,7 @@ class ModeDialogState extends State<ModeDialog>{
               items:  Iterable<int>.generate(11).map((number) {
                 return DropdownMenuItem<String>(
                     value: (number - 1).toString(),
-                    child: Text(number == 0 ? 'float' : (number - 1).toString())
+                    child: Text(number == 0 ? 'max' : (number - 1).toString())
                 );
               }).toList(),
           onChanged: (String updated){

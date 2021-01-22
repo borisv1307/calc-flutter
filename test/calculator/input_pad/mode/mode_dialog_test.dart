@@ -21,7 +21,7 @@ void main(){
       await tester.tap(find.text('float'));
       await tester.pumpAndSettle();
       expect(find.text('Decimal places'), findsWidgets);
-      expect(find.text('float'), findsWidgets);
+      expect(find.text('max'), findsWidgets);
       expect(find.text('0'), findsWidgets);
       expect(find.text('1'), findsWidgets);
       expect(find.text('2'), findsWidgets);
@@ -37,7 +37,7 @@ void main(){
     testWidgets('can be updated', (WidgetTester tester) async{
       CalculationOptions options = CalculationOptions();
       await tester.pumpWidget(MaterialApp(home:ModeDialog(options)));
-      await tester.tap(find.text('float'));
+      await tester.tap(find.text('max'));
       await tester.pumpAndSettle();
       await tester.tap(find.text('3').first);
       expect(options.decimalPlaces,3);
