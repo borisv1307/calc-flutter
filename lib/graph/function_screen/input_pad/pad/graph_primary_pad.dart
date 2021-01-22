@@ -52,7 +52,7 @@ class GraphPrimaryPad extends InputPad{
           buildInputButton(InputItem.ZERO, InputButtonStyle.PRIMARY),
           buildInputButton(InputItem.DECIMAL, InputButtonStyle.PRIMARY),
           buildInputButton(InputItem.NEGATIVE, InputButtonStyle.PRIMARY),
-          buildCommandButton(CommandItem.ENTER, InputButtonStyle.SECONDARY),
+          buildCommandButton(CommandItem.GRAPH, InputButtonStyle.SECONDARY),
         ],
       )
     );
