@@ -18,7 +18,7 @@ void main(){
   group('Decimal places',(){
     testWidgets('are displayed', (WidgetTester tester) async{
       await tester.pumpWidget(MaterialApp(home:ModeDialog(CalculationOptions())));
-      await tester.tap(find.text('float'));
+      await tester.tap(find.text('max'));
       await tester.pumpAndSettle();
       expect(find.text('Decimal places'), findsWidgets);
       expect(find.text('max'), findsWidgets);
