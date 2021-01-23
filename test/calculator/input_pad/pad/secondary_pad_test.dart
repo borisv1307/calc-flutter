@@ -52,6 +52,8 @@ void main(){
     _verifyButtonLocation(InputItem.MULTIPLY.label, 14);
     _verifyButtonLocation(InputItem.SUBTRACT.label, 19);
     _verifyButtonLocation(InputItem.COMMA.label, 20);
+    _verifyButtonLocation('Matr', 22);
+    _verifyButtonLocation('Conv', 23);
     _verifyButtonLocation(InputItem.ADD.label, 24);
     _verifyButtonLocation('vars', 25);
     _verifyButtonLocation('a, b, c', 26);
@@ -93,6 +95,8 @@ void main(){
     _verifyButtonStyle(InputItem.SUBTRACT.label, InputButtonStyle.SECONDARY);
     _verifyButtonStyle(InputItem.COMMA.label, InputButtonStyle.TERTIARY);
     _verifyButtonStyle(InputItem.ADD.label, InputButtonStyle.SECONDARY);
+    _verifyButtonStyle('Matr', InputButtonStyle.QUARTENARY);
+    _verifyButtonStyle('Conv', InputButtonStyle.QUARTENARY);
     _verifyButtonStyle('vars', InputButtonStyle.QUARTENARY);
     _verifyButtonStyle('a, b, c', InputButtonStyle.QUARTENARY);
     _verifyButtonStyle('list', InputButtonStyle.QUARTENARY);
