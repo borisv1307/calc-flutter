@@ -24,7 +24,7 @@ class CalculatorDisplayController extends ChangeNotifier{
   }
 
   String get inputLine{
-    return _input.map((e) => e.value).join();
+    return _input.map((e) => e.display).join();
   }
 
   List<InputItem> get inputItems{

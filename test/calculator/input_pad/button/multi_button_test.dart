@@ -19,10 +19,10 @@ void main(){
 
     testWidgets('displays items text',(WidgetTester tester) async{
       await tester.pumpWidget(MaterialApp(home:MultiButton([InputItem.COS, InputItem.SIN, InputItem.TAN, InputItem.SEC],(text){}, InputButtonStyle.PRIMARY)));
-      expect(find.text(InputItem.COS.display),findsNWidgets(1));
-      expect(find.text(InputItem.SIN.display),findsNWidgets(1));
-      expect(find.text(InputItem.TAN.display),findsNWidgets(1));
-      expect(find.text(InputItem.SEC.display),findsNWidgets(1));
+      expect(find.text(InputItem.COS.label),findsNWidgets(1));
+      expect(find.text(InputItem.SIN.label),findsNWidgets(1));
+      expect(find.text(InputItem.TAN.label),findsNWidgets(1));
+      expect(find.text(InputItem.SEC.label),findsNWidgets(1));
     });
   });
 
@@ -52,10 +52,10 @@ void main(){
     await tester.pumpWidget(MaterialApp(home:MultiButton([InputItem.COS, InputItem.SIN, InputItem.TAN, InputItem.SEC],(text){}, InputButtonStyle.PRIMARY, display: 'hello',)));
     await tester.tap(find.byType(InkWell).first);
     await tester.pumpAndSettle();
-    expect(find.text(InputItem.COS.display),findsNWidgets(1));
-    expect(find.text(InputItem.SIN.display),findsNWidgets(1));
-    expect(find.text(InputItem.TAN.display),findsNWidgets(1));
-    expect(find.text(InputItem.SEC.display),findsNWidgets(1));
+    expect(find.text(InputItem.COS.label),findsNWidgets(1));
+    expect(find.text(InputItem.SIN.label),findsNWidgets(1));
+    expect(find.text(InputItem.TAN.label),findsNWidgets(1));
+    expect(find.text(InputItem.SEC.label),findsNWidgets(1));
   });
 
   testWidgets('Click option calls input function',(WidgetTester tester) async{
@@ -65,7 +65,7 @@ void main(){
     }, InputButtonStyle.PRIMARY, display: 'hello',)));
     await tester.tap(find.byType(InkWell).first);
     await tester.pumpAndSettle();
-    await tester.tap(find.widgetWithText(Container, InputItem.COS.display).first);
+    await tester.tap(find.widgetWithText(Container, InputItem.COS.label).first);
     await tester.pumpAndSettle();
     expect(actualItem,InputItem.COS);
   });

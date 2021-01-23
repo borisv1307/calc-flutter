@@ -1,23 +1,20 @@
-import 'package:advanced_calculation/calculation_options.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:open_calc/calculator/input_pad/command_item.dart';
-import 'package:open_calc/calculator/input_pad/pad/primary_pad.dart';
-import 'package:open_calc/calculator/input_pad/pad/secondary_pad.dart';
 import 'package:open_calc/calculator/input_pad/input_item.dart';
+import 'package:open_calc/calculator/input_pad/input_pad.dart';
 import 'package:open_calc/calculator/input_pad/input_variables.dart';
+import 'package:open_calc/calculator/input_pad/pad/secondary_pad.dart';
 import 'package:open_calc/calculator/input_pad/pad/variable_screen.dart';
+import 'package:open_calc/graph/function_screen/input_pad/pad/graph_primary_pad.dart';
 
-
-class InputPad extends StatelessWidget{
+class GraphInputPad extends StatelessWidget{
 
   final Function(InputItem input) inputFunction;
   final Function(CommandItem command) commandFunction;
   final VariableStorage storage;
-  final CalculationOptions options;
 
-  InputPad(this.storage,this.inputFunction,this.commandFunction, this.options);
-
+  GraphInputPad(this.storage, this.inputFunction, this.commandFunction);
 
   @override
   Widget build(BuildContext context){
@@ -27,10 +24,10 @@ class InputPad extends StatelessWidget{
         WidgetBuilder builder;
         switch (settings.name) {
           case 'inputPadOne':
-            builder = (BuildContext context) => PrimaryPad(this.inputFunction, this.commandFunction);
+            builder = (BuildContext context) => GraphPrimaryPad(this.inputFunction, this.commandFunction);
             break;
           case 'inputPadTwo':
-            builder = (BuildContext context) => SecondaryPad(this.inputFunction, this.commandFunction, this.options);
+            builder = (BuildContext context) => SecondaryPad(this.inputFunction, this.commandFunction, null);
             break;
           case 'varPad':
             builder = (BuildContext context) => VariableScreen(this.inputFunction, this.storage);
@@ -39,20 +36,6 @@ class InputPad extends StatelessWidget{
         return NoTransitionRoute(builder: builder, settings: settings);
       },
     );
-  }
-}
-
-
-class NoTransitionRoute<T> extends MaterialPageRoute<T> {
-  NoTransitionRoute({ WidgetBuilder builder, RouteSettings settings })
-      : super(builder: builder, settings: settings);
-
-  @override
-  Widget buildTransitions(BuildContext context,
-      Animation<double> animation,
-      Animation<double> secondaryAnimation,
-      Widget child) {
-    return child;  // route change without any transition
   }
 }
 

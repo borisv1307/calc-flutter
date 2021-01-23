@@ -21,25 +21,25 @@ class MultiButton extends PadButton {
         padding: EdgeInsets.symmetric(horizontal:HORIZONTAL_PADDING),
         child:Column(
           children: [
-            Row(
+            Expanded(child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                _generateMultiText(displayItems[0].display)
+                _generateMultiText(displayItems[0].label)
               ]
-            ),
-            Row(
+            )),
+            Expanded(child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                _generateMultiText(displayItems[1].display),
-                _generateMultiText(displayItems[2].display)
+                _generateMultiText(displayItems[1].label),
+                _generateMultiText(displayItems[2].label)
               ]
-            ),
-            Row(
+            )),
+            Expanded(child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                _generateMultiText(displayItems[3].display)
+                _generateMultiText(displayItems[3].label)
               ]
-            )
+            ))
           ],
         )
     );
@@ -50,51 +50,52 @@ class MultiButton extends PadButton {
         padding: EdgeInsets.symmetric(horizontal:HORIZONTAL_PADDING),
         child:Column(
           children: [
-            Row(
+            Expanded(child: Row(
               children: [
                 Text('', style: TextStyle(fontSize: 15, fontWeight: style.fontWeight, color: style.textColor, height: 0.9))
               ]
-            ),
-            Row(
+            )),
+            Expanded(child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                _generateMultiText(displayItems[0].display),
-                _generateMultiText(displayItems[1].display)
+                _generateMultiText(displayItems[0].label),
+                _generateMultiText(displayItems[1].label)
               ]
-            ),
-            Row(
+            )),
+            Expanded(child: Row(
               children: [
                 Text('', style: TextStyle(fontSize: 15, fontWeight: style.fontWeight, color: style.textColor,height: 0.9))
               ]
-            )
+            ))
           ],
         )
     );
   }
-
+  
   Widget _buildThreeLabel(final List<InputItem> displayItems){
     return Container(
         padding: EdgeInsets.symmetric(horizontal:HORIZONTAL_PADDING),
         child:Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Row(
+            Expanded(child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                _generateMultiText(displayItems[0].display)
+                _generateMultiText(displayItems[0].label)
               ]
-            ),
-            Row(
+            )),
+            Expanded(child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                _generateMultiText(displayItems[1].display)
+                _generateMultiText(displayItems[1].label)
               ]
-            ),
-            Row(
+            )),
+            Expanded(child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                _generateMultiText(displayItems[2].display)
+                _generateMultiText(displayItems[2].label)
               ]
-            )
+            ))
           ],
         )
     );
@@ -142,7 +143,7 @@ class MultiButton extends PadButton {
               value: item,
               child: Container(
                 alignment: Alignment.center,
-                child: Text(item.display, style: TextStyle(fontSize: 20, fontWeight: style.fontWeight, color: style.textColor))
+                child: Text(item.label, style: TextStyle(fontSize: 20, fontWeight: style.fontWeight, color: style.textColor))
               )
             )).toList(),
           onSelected: (value) {

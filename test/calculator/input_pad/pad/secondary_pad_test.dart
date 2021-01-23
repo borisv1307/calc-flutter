@@ -1,3 +1,4 @@
+import 'package:advanced_calculation/calculation_options.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:open_calc/calculator/input_pad/button/input_button.dart';
@@ -15,7 +16,7 @@ void main(){
 
     return MaterialApp(home:MediaQuery(
         data:MediaQueryData(size: Size(400,700), devicePixelRatio: 2.5),
-        child:SecondaryPad(null,inputFunction,commandFunction)));
+        child:SecondaryPad(inputFunction,commandFunction, CalculationOptions())));
   }
 
 
@@ -29,32 +30,33 @@ void main(){
     };
 
     _verifyButtonLocation('Back', 0,);
-    _verifyButtonLocation(InputItem.OPEN_PARENTHESIS.display, 1);
-    _verifyButtonLocation(InputItem.CLOSE_PARENTHESIS.display, 2);
+    _verifyButtonLocation(InputItem.OPEN_PARENTHESIS.label, 1);
+    _verifyButtonLocation(InputItem.CLOSE_PARENTHESIS.label, 2);
     _verifyButtonLocation(CommandItem.DELETE.display, 3);
     _verifyButtonLocation(CommandItem.CLEAR.display, 4);
-    _verifyButtonLocation(InputItem.SEC.display, 5);
-    _verifyButtonLocation(InputItem.CSC.display, 5);
-    _verifyButtonLocation(InputItem.COT.display, 5);
-    _verifyButtonLocation(InputItem.COSH.display, 6);
-    _verifyButtonLocation(InputItem.SINH.display, 6);
-    _verifyButtonLocation(InputItem.TANH.display, 6);
-    _verifyButtonLocation(InputItem.ACOS.display, 7);
-    _verifyButtonLocation(InputItem.ASIN.display, 7);
-    _verifyButtonLocation(InputItem.ATAN.display, 7);
-    _verifyButtonLocation(InputItem.ASINH.display, 8);
-    _verifyButtonLocation(InputItem.ACOSH.display, 8);
-    _verifyButtonLocation(InputItem.ATANH.display, 8);
-    _verifyButtonLocation(InputItem.DIVIDE.display, 9);
-    _verifyButtonLocation(InputItem.SQUARE_ROOT.display, 10);
-    _verifyButtonLocation(InputItem.E_POWER_X.display, 11);
-    _verifyButtonLocation(InputItem.MULTIPLY.display, 14);
-    _verifyButtonLocation(InputItem.SUBTRACT.display, 19);
-    _verifyButtonLocation(InputItem.COMMA.display, 20);
-    _verifyButtonLocation(InputItem.ADD.display, 24);
+    _verifyButtonLocation(InputItem.SEC.label, 5);
+    _verifyButtonLocation(InputItem.CSC.label, 5);
+    _verifyButtonLocation(InputItem.COT.label, 5);
+    _verifyButtonLocation(InputItem.COSH.label, 6);
+    _verifyButtonLocation(InputItem.SINH.label, 6);
+    _verifyButtonLocation(InputItem.TANH.label, 6);
+    _verifyButtonLocation(InputItem.ACOS.label, 7);
+    _verifyButtonLocation(InputItem.ASIN.label, 7);
+    _verifyButtonLocation(InputItem.ATAN.label, 7);
+    _verifyButtonLocation(InputItem.ASINH.label, 8);
+    _verifyButtonLocation(InputItem.ACOSH.label, 8);
+    _verifyButtonLocation(InputItem.ATANH.label, 8);
+    _verifyButtonLocation(InputItem.DIVIDE.label, 9);
+    _verifyButtonLocation(InputItem.SQUARE_ROOT.label, 10);
+    _verifyButtonLocation(InputItem.E_POWER_X.label, 11);
+    _verifyButtonLocation(InputItem.MULTIPLY.label, 14);
+    _verifyButtonLocation(InputItem.SUBTRACT.label, 19);
+    _verifyButtonLocation(InputItem.COMMA.label, 20);
+    _verifyButtonLocation(InputItem.ADD.label, 24);
     _verifyButtonLocation('vars', 25);
     _verifyButtonLocation('a, b, c', 26);
     _verifyButtonLocation('list', 27);
+    _verifyButtonLocation('mode', 28);
     _verifyButtonLocation(CommandItem.ENTER.display, 29);
     expect(allButtons.length,30);
   });
@@ -68,32 +70,33 @@ void main(){
     };
 
     _verifyButtonStyle('Back', InputButtonStyle.SECONDARY);
-    _verifyButtonStyle(InputItem.OPEN_PARENTHESIS.display, InputButtonStyle.TERTIARY);
-    _verifyButtonStyle(InputItem.CLOSE_PARENTHESIS.display, InputButtonStyle.TERTIARY);
+    _verifyButtonStyle(InputItem.OPEN_PARENTHESIS.label, InputButtonStyle.TERTIARY);
+    _verifyButtonStyle(InputItem.CLOSE_PARENTHESIS.label, InputButtonStyle.TERTIARY);
     _verifyButtonStyle(CommandItem.DELETE.display, InputButtonStyle.TERTIARY);
     _verifyButtonStyle(CommandItem.CLEAR.display, InputButtonStyle.TERTIARY);
-    _verifyButtonStyle(InputItem.SEC.display, InputButtonStyle.TERTIARY);
-    _verifyButtonStyle(InputItem.CSC.display, InputButtonStyle.TERTIARY);
-    _verifyButtonStyle(InputItem.COT.display, InputButtonStyle.TERTIARY);
-    _verifyButtonStyle(InputItem.COSH.display, InputButtonStyle.TERTIARY);
-    _verifyButtonStyle(InputItem.SINH.display, InputButtonStyle.TERTIARY);
-    _verifyButtonStyle(InputItem.TANH.display, InputButtonStyle.TERTIARY);
-    _verifyButtonStyle(InputItem.ACOS.display, InputButtonStyle.TERTIARY);
-    _verifyButtonStyle(InputItem.ASIN.display, InputButtonStyle.TERTIARY);
-    _verifyButtonStyle(InputItem.ATAN.display, InputButtonStyle.TERTIARY);
-    _verifyButtonStyle(InputItem.ASINH.display, InputButtonStyle.TERTIARY);
-    _verifyButtonStyle(InputItem.ACOSH.display, InputButtonStyle.TERTIARY);
-    _verifyButtonStyle(InputItem.ATANH.display, InputButtonStyle.TERTIARY);
-    _verifyButtonStyle(InputItem.DIVIDE.display, InputButtonStyle.SECONDARY);
-    _verifyButtonStyle(InputItem.SQUARE_ROOT.display, InputButtonStyle.TERTIARY);
-    _verifyButtonStyle(InputItem.E_POWER_X.display, InputButtonStyle.TERTIARY);
-    _verifyButtonStyle(InputItem.MULTIPLY.display, InputButtonStyle.SECONDARY);
-    _verifyButtonStyle(InputItem.SUBTRACT.display, InputButtonStyle.SECONDARY);
-    _verifyButtonStyle(InputItem.COMMA.display, InputButtonStyle.TERTIARY);
-    _verifyButtonStyle(InputItem.ADD.display, InputButtonStyle.SECONDARY);
+    _verifyButtonStyle(InputItem.SEC.label, InputButtonStyle.TERTIARY);
+    _verifyButtonStyle(InputItem.CSC.label, InputButtonStyle.TERTIARY);
+    _verifyButtonStyle(InputItem.COT.label, InputButtonStyle.TERTIARY);
+    _verifyButtonStyle(InputItem.COSH.label, InputButtonStyle.TERTIARY);
+    _verifyButtonStyle(InputItem.SINH.label, InputButtonStyle.TERTIARY);
+    _verifyButtonStyle(InputItem.TANH.label, InputButtonStyle.TERTIARY);
+    _verifyButtonStyle(InputItem.ACOS.label, InputButtonStyle.TERTIARY);
+    _verifyButtonStyle(InputItem.ASIN.label, InputButtonStyle.TERTIARY);
+    _verifyButtonStyle(InputItem.ATAN.label, InputButtonStyle.TERTIARY);
+    _verifyButtonStyle(InputItem.ASINH.label, InputButtonStyle.TERTIARY);
+    _verifyButtonStyle(InputItem.ACOSH.label, InputButtonStyle.TERTIARY);
+    _verifyButtonStyle(InputItem.ATANH.label, InputButtonStyle.TERTIARY);
+    _verifyButtonStyle(InputItem.DIVIDE.label, InputButtonStyle.SECONDARY);
+    _verifyButtonStyle(InputItem.SQUARE_ROOT.label, InputButtonStyle.TERTIARY);
+    _verifyButtonStyle(InputItem.E_POWER_X.label, InputButtonStyle.TERTIARY);
+    _verifyButtonStyle(InputItem.MULTIPLY.label, InputButtonStyle.SECONDARY);
+    _verifyButtonStyle(InputItem.SUBTRACT.label, InputButtonStyle.SECONDARY);
+    _verifyButtonStyle(InputItem.COMMA.label, InputButtonStyle.TERTIARY);
+    _verifyButtonStyle(InputItem.ADD.label, InputButtonStyle.SECONDARY);
     _verifyButtonStyle('vars', InputButtonStyle.QUARTENARY);
     _verifyButtonStyle('a, b, c', InputButtonStyle.QUARTENARY);
     _verifyButtonStyle('list', InputButtonStyle.QUARTENARY);
+    _verifyButtonStyle('mode', InputButtonStyle.QUARTENARY);
     _verifyButtonStyle(CommandItem.ENTER.display, InputButtonStyle.SECONDARY);
   });
 }

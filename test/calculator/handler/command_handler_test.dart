@@ -1,3 +1,4 @@
+import 'package:advanced_calculation/calculation_options.dart';
 import 'package:advanced_calculation/syntax_exception.dart';
 import 'package:mockito/mockito.dart';
 import 'package:open_calc/calculator/calculator_display/calculator_display_controller.dart';
@@ -23,15 +24,16 @@ void main(){
       List<DisplayHistory> history;
 
       setUpAll((){
+        CalculationOptions options;
         history = [];
         controller = MockCalculatorDisplayController();
         when(controller.inputItems).thenReturn([InputItem.A]);
         when(controller.history).thenReturn(history);
 
         evaluator = MockInputEvaluator();
-        when(evaluator.evaluate([InputItem.A], history)).thenReturn(DisplayHistory([InputItem.B], '72'));
+        when(evaluator.evaluate([InputItem.A], history,options)).thenReturn(DisplayHistory([InputItem.B], '72'));
 
-        CommandHandler handler = CommandHandler(controller, MockVariableStorage(), evaluator);
+        CommandHandler handler = CommandHandler(controller, MockVariableStorage(), options, evaluator);
         handler.handle(CommandItem.ENTER);
       });
 
@@ -52,15 +54,16 @@ void main(){
       List<DisplayHistory> history;
 
       setUpAll((){
+        CalculationOptions options;
         history = [];
         controller = MockCalculatorDisplayController();
         when(controller.inputItems).thenReturn([InputItem.A]);
         when(controller.history).thenReturn(history);
 
         evaluator = MockInputEvaluator();
-        when(evaluator.evaluate([InputItem.A], history)).thenThrow(new SyntaxException(1));
+        when(evaluator.evaluate([InputItem.A], history,options)).thenThrow(new SyntaxException(1));
 
-        CommandHandler handler = CommandHandler(controller, MockVariableStorage(), evaluator);
+        CommandHandler handler = CommandHandler(controller, MockVariableStorage(), options, evaluator);
         handler.handle(CommandItem.ENTER);
       });
 
@@ -77,7 +80,7 @@ void main(){
   group('Delete',(){
     test('deletes input',(){
       MockCalculatorDisplayController controller = MockCalculatorDisplayController();
-      CommandHandler handler = CommandHandler(controller, MockVariableStorage(), MockInputEvaluator());
+      CommandHandler handler = CommandHandler(controller, MockVariableStorage(), CalculationOptions(), MockInputEvaluator());
 
       handler.handle(CommandItem.DELETE);
       verify(controller.delete()).called(1);
@@ -88,7 +91,7 @@ void main(){
     MockCalculatorDisplayController controller;
     setUpAll((){
       controller = MockCalculatorDisplayController();
-      CommandHandler handler = CommandHandler(controller, MockVariableStorage(), MockInputEvaluator());
+      CommandHandler handler = CommandHandler(controller, MockVariableStorage(), CalculationOptions(), MockInputEvaluator());
       handler.handle(CommandItem.CLEAR);
     });
 

@@ -12,7 +12,7 @@ void main(){
     void assertLocation(WidgetTester tester, InputItem item, int index) async{
       await tester.pumpWidget(MaterialApp(home:CatalogDialog((InputItem item){})));
       List<Widget> allItems = tester.widgetList(find.byType(ItemTags)).toList();
-      expect((allItems[index] as ItemTags).title, item.display);
+      expect((allItems[index] as ItemTags).title, item.label);
     }
 
     testWidgets('add',(WidgetTester tester) async{
@@ -148,7 +148,7 @@ void main(){
       })));
 
       InputItem expectedItem = InputItem.COS;
-      await tester.tap(find.byWidgetPredicate((widget) => widget is ItemTags && widget.title == expectedItem.display));
+      await tester.tap(find.byWidgetPredicate((widget) => widget is ItemTags && widget.title == expectedItem.label));
 
       expect(actualItem, expectedItem);
     });
@@ -158,7 +158,7 @@ void main(){
       
       await tester.pumpWidget(MaterialApp(home:CatalogDialog((InputItem item){}),navigatorObservers: [observer],));
       
-      await tester.tap(find.byWidgetPredicate((widget) => widget is ItemTags && widget.title == InputItem.COS.display));
+      await tester.tap(find.byWidgetPredicate((widget) => widget is ItemTags && widget.title == InputItem.COS.label));
 
       verify(observer.didPop(any, any));
     });

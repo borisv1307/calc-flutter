@@ -1,4 +1,5 @@
 import 'package:advanced_calculation/advanced_calculator.dart';
+import 'package:advanced_calculation/calculation_options.dart';
 import 'package:advanced_calculation/syntax_exception.dart';
 import 'package:open_calc/calculator/calculator_display/display_history.dart';
 import 'package:open_calc/calculator/input_pad/input_item.dart';
@@ -10,38 +11,39 @@ class InputEvaluator{
   InputEvaluator(this.storage, [AdvancedCalculator calculator]):
       calculator = calculator ?? AdvancedCalculator();
 
-  DisplayHistory evaluate(final List<InputItem> input, final List<DisplayHistory> history) {
+  DisplayHistory evaluate(final List<InputItem> input, final List<DisplayHistory> history, final CalculationOptions options) {
     String resultString = '';
-
+    List<InputItem> evaluatedInput = input;
     if(input.contains(InputItem.STORAGE)){
-      resultString = _evaluateStorage(input, resultString, history);
-    }else if(input.isEmpty && history.isNotEmpty){
-      resultString = history.last.result;
+      resultString = _evaluateStorage(input, resultString, history, options);
     }else{
-      resultString = _calculate(input, history);
+      if(input.isEmpty && history.isNotEmpty){
+        evaluatedInput = history.last.evaluatedInput;
+      }
+      resultString = _calculate(evaluatedInput, history, options);
     }
-    DisplayHistory newEntry = new DisplayHistory(input, resultString);
+    DisplayHistory newEntry = new DisplayHistory(input, resultString, evaluatedInput);
 
     return newEntry;
   }
 
-  String _evaluateStorage(List<InputItem> input, String resultString, List<DisplayHistory> history) {
+  String _evaluateStorage(List<InputItem> input, String resultString, List<DisplayHistory> history, final CalculationOptions options) {
     InputItem variable = input.last;
     int stoIndex = input.indexOf(InputItem.STORAGE);
     if(variable.variable && stoIndex == input.length - 2){
       int stoIndex = input.indexOf(InputItem.STORAGE);
       List<InputItem> expression = input.sublist(0,stoIndex);
-      resultString = _calculate(expression, history);
-      storage.addVariable(variable.display, resultString);
+      resultString = _calculate(expression, history, options);
+      storage.addVariable(variable.label, resultString);
     }else{
       throw new SyntaxException(stoIndex + 1);
     }
     return resultString;
   }
 
-  String _calculate(final List<InputItem> input, final List<DisplayHistory> history){
+  String _calculate(final List<InputItem> input, final List<DisplayHistory> history, final CalculationOptions options){
     String inputString = _translateInput(input, history);
-    String resultString = calculator.calculate(inputString);
+    String resultString = calculator.calculate(inputString, options);
 
     return resultString;
   }

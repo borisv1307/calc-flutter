@@ -1,3 +1,4 @@
+import 'package:advanced_calculation/calculation_options.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:open_calc/calculator/calculator_display/calculator_display.dart';
@@ -7,26 +8,28 @@ import 'package:open_calc/calculator/handler/input_handler.dart';
 import 'package:open_calc/calculator/input_pad/input_pad.dart';
 import 'package:open_calc/calculator/input_pad/input_variables.dart';
 
-class CalculatorScreen extends StatefulWidget {
+class CalculatorTab extends StatefulWidget {
   final VariableStorage storage;
 
-  CalculatorScreen(this.storage);
+  CalculatorTab(this.storage);
   @override
-  State<StatefulWidget> createState() => CalculatorScreenState(storage);
+  State<StatefulWidget> createState() => CalculatorTabState(storage);
 }
 
-class CalculatorScreenState extends State<CalculatorScreen>{
+class CalculatorTabState extends State<CalculatorTab>{
 
   final VariableStorage storage;
 
   CalculatorDisplayController controller;
   InputHandler inputHandler;
   CommandHandler commandHandler;
+  CalculationOptions options;
 
-  CalculatorScreenState(this.storage) {
+  CalculatorTabState(this.storage) {
     controller = CalculatorDisplayController();
+    options = CalculationOptions();
     inputHandler= InputHandler(controller);
-    commandHandler = CommandHandler(controller, storage);
+    commandHandler = CommandHandler(controller, storage,options);
   }
   
   @override
@@ -41,7 +44,7 @@ class CalculatorScreenState extends State<CalculatorScreen>{
             numLines: 8
           ),
           Expanded(
-            child: InputPad(storage, inputHandler.handle, commandHandler.handle)
+            child: InputPad(storage, inputHandler.handle, commandHandler.handle, options)
           ),
         ],
       )
