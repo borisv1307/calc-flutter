@@ -76,6 +76,8 @@ class FunctionScreenState extends State<FunctionScreen> {
   @override
   Widget build(BuildContext context) {
     inputHandler = GraphInputHandler(widget.controller, context, _formKey);
+    double screenHeight = MediaQuery.of(context).size.height;
+    double height = (screenHeight - 373) / 1.43;
 
     return Scaffold(
         body: Center(
@@ -84,7 +86,7 @@ class FunctionScreenState extends State<FunctionScreen> {
             child: Column(
               children: <Widget>[
                 Container(
-                  height: 265,
+                  height: height,
                   margin: EdgeInsets.symmetric( vertical: 10, horizontal: 10),
                   child: SingleChildScrollView(
                     child: Column(
