@@ -53,7 +53,7 @@ void main(){
     controller.input(InputItem.TWO);
     controller.input(InputItem.X);
     expect(controller.notified, 2);
-    expect(controller.getDisplayText(0), "2x");
+    expect(controller.getDisplayText(0), "2𝑥");
   });
 
   test('new field can be added',() {

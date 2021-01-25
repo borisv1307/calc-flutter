@@ -3,6 +3,7 @@ import 'package:open_calc/calculator/input_pad/input_item.dart';
 import 'package:open_calc/calculator/input_pad/input_variables.dart';
 import 'package:open_calc/graph/graph_screen/graph_input_evaluator.dart';
 
+
 void main() {
 
   test('list of input strings is returned',() {
@@ -12,7 +13,7 @@ void main() {
       [InputItem.TWO, InputItem.X],
       [InputItem.LOG, InputItem.X, InputItem.CLOSE_PARENTHESIS]
     ];
-    expect(evaluator.translateInputs(inputList), ["5/x", "2x", "log(x)"]);
+    expect(evaluator.translateInputs(inputList), ["5/𝑥", "2𝑥", "log(𝑥)"]);
   });
 
   test('variables are translated',() {
@@ -20,7 +21,7 @@ void main() {
     storage.addVariable("A", "123");
     GraphInputEvaluator evaluator = GraphInputEvaluator(storage);
     var inputList = [[InputItem.A, InputItem.ADD, InputItem.X]];
-    expect(evaluator.translateInputs(inputList), ["123+x"]);
+    expect(evaluator.translateInputs(inputList), ["123+𝑥"]);
   });
 
 }
