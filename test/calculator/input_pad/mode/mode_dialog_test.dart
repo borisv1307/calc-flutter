@@ -1,3 +1,4 @@
+import 'package:advanced_calculation/angular_unit.dart';
 import 'package:advanced_calculation/calculation_options.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -39,8 +40,29 @@ void main(){
       await tester.pumpWidget(MaterialApp(home:ModeDialog(options)));
       await tester.tap(find.text('max'));
       await tester.pumpAndSettle();
-      await tester.tap(find.text('3').first);
+      await tester.tap(find.text('3').last);
       expect(options.decimalPlaces,3);
+    });
+  });
+
+  group('Angular unit',(){
+    testWidgets('are displayed', (WidgetTester tester) async{
+      await tester.pumpWidget(MaterialApp(home:ModeDialog(CalculationOptions())));
+      await tester.tap(find.text('radian'));
+      await tester.pumpAndSettle();
+      expect(find.text('Angular unit'), findsWidgets);
+      expect(find.text('radian'), findsWidgets);
+      expect(find.text('degree'), findsWidgets);
+    });
+
+    testWidgets('can be updated', (WidgetTester tester) async{
+      CalculationOptions options = CalculationOptions();
+      await tester.pumpWidget(MaterialApp(home:ModeDialog(options)));
+      await tester.tap(find.text('radian'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('degree').last);
+      await tester.pumpAndSettle();
+      expect(options.angularUnit,AngularUnit.DEGREE);
     });
   });
 }
