@@ -1,17 +1,21 @@
+import 'package:advanced_calculation/advanced_calculator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/mockito.dart';
 import 'package:open_calc/calculator/input_pad/input_item.dart';
 import 'package:open_calc/graph/function_screen/function_display_controller.dart';
 import 'package:open_calc/graph/function_screen/function_text_field.dart';
 
+class MockAdvancedCalculator extends Mock implements AdvancedCalculator{}
 
 void main() {
 
   testWidgets("text field can be created", (WidgetTester tester) async {
+    MockAdvancedCalculator calculator = MockAdvancedCalculator();
     // pump the widget wrapped in a MaterialApp Scaffold
     await tester.pumpWidget(MaterialApp(
       home: Scaffold(
-        body: FunctionTextField(0, FunctionDisplayController())
+        body: FunctionTextField(0, FunctionDisplayController(), calculator)
       )
     ));
     // use a finder to find the widget
@@ -21,10 +25,11 @@ void main() {
   });
 
   testWidgets("text is updated from controller", (WidgetTester tester) async {
+    MockAdvancedCalculator calculator = MockAdvancedCalculator();
     FunctionDisplayController controller = FunctionDisplayController();
     await tester.pumpWidget(MaterialApp(
       home: Scaffold(
-        body: FunctionTextField(0, controller)
+        body: FunctionTextField(0, controller, calculator)
       )
     ));
     controller.input(InputItem.THREE);
