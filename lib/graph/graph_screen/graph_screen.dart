@@ -57,11 +57,10 @@ class GraphScreenState extends State<GraphScreen>{
   @override
   Widget build(BuildContext context) {
     this.inputEquations = widget.evaluator.translateInputs(widget.controller.inputs);
-
     return Scaffold(
       key: _scaffoldKey,
       resizeToAvoidBottomInset: false,
-      body: SingleChildScrollView(
+      body: Center(
         child: Column(
           children: <Widget>[
             ConstrainedBox(
@@ -130,26 +129,31 @@ class GraphScreenState extends State<GraphScreen>{
                 ],
               ),
             ),
-
             Container(
-              margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-              child: ListView.separated(
-                shrinkWrap: true,
-                physics: const ClampingScrollPhysics(),
-                padding: const EdgeInsets.all(8),
-                itemCount: inputEquations.length + 1,
-                itemBuilder: (context, int index) {
-                  if (index == inputEquations.length) {
-                    return ListTile();
-                  }
-                  return ListTile(
-                    leading: Text("y"+ (index+1).toString() + "=", style: titleStyle),
-                    title: Text(inputEquations[index], style: mainStyle)
-                  );
-                },
-                separatorBuilder: (BuildContext context, int index) => Divider(thickness: 1.5),
+              // padding: EdgeInsets.only(bottom: 100),
+              child: Expanded(
+                // margin: EdgeInsets.only(bottom: 100),
+                child: ListView.separated(
+                  shrinkWrap: true,
+                  physics: const ClampingScrollPhysics(),
+                  padding: const EdgeInsets.all(8),
+                  itemCount: inputEquations.length + 1,
+                  itemBuilder: (context, int index) {
+                    if (index == inputEquations.length) {
+                      return ListTile();
+                    }
+                    return ListTile(
+                      leading: Text("y"+ (index+1).toString() + "=", style: titleStyle),
+                      title: Text(inputEquations[index], style: mainStyle)
+                    );
+                  },
+                  separatorBuilder: (BuildContext context, int index) => Divider(thickness: 1.5),
+                ),
               ),
             ),
+            SizedBox(
+              height: 75,
+            )
           ],
         ),
       ),

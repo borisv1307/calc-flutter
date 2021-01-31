@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
         // closer together (more dense) than on mobile platforms.
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: HomeScreen(title: 'Graphing Demo'),
+      home: HomeScreen(title: 'Graphing Calculator'),
     );
   }
 }

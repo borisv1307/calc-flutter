@@ -14,12 +14,14 @@ class FunctionTextField extends StatefulWidget {
 class _FunctionTextFieldState extends State<FunctionTextField> {
 
   TextEditingController textController;
+  FocusNode focusNode;
 
   @override
   void initState() {
     super.initState();
     textController = TextEditingController();
     widget.controller?.addListener(_updateFunction);
+    focusNode = FocusNode();
     _updateFunction();
   }
 
@@ -27,6 +29,7 @@ class _FunctionTextFieldState extends State<FunctionTextField> {
   void dispose() {
     widget.controller?.removeListener(_updateFunction);
     textController.dispose();
+    focusNode.dispose();
     super.dispose();
   }
 
@@ -36,17 +39,19 @@ class _FunctionTextFieldState extends State<FunctionTextField> {
         textController.text = widget.controller.getInput(widget.index);
       }
     });
+    focusNode.requestFocus();
   }
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      focusNode: focusNode,
       controller: textController,
       showCursor: false,
       readOnly: true,
       onTap: () => widget.controller.currentField = widget.index,
       decoration: InputDecoration(
-          labelText: 'y' + (widget.index + 1).toString() + '= '
+          labelText: 'y' + (widget.index + 1).toString() + ' = '
       ),
       validator: (v){
         if(v.trim().isEmpty) return 'Please enter something';

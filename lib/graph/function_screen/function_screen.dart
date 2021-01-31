@@ -42,7 +42,6 @@ class FunctionScreenState extends State<FunctionScreen> {
             children: [
               Expanded(child: FunctionTextField(i, widget.controller)),
               SizedBox(width: 16,),
-              // we need add button at last friends row only
               _removeButton(false, i),
             ],
           ),
@@ -60,14 +59,14 @@ class FunctionScreenState extends State<FunctionScreen> {
         });
       },
       child: Container(
-        width: 30,
-        height: 30,
+        width: 20,
+        height: 20,
         decoration: BoxDecoration(
           color: (add) ? Colors.green : Colors.red,
           borderRadius: BorderRadius.circular(15),
         ),
         child: Icon(
-          Icons.remove, color: Colors.white,
+          Icons.remove, color: Colors.white, size: 20,
         ),
       ),
     );
@@ -84,14 +83,14 @@ class FunctionScreenState extends State<FunctionScreen> {
             child: Column(
               children: <Widget>[
                 Container(
-                  height: 265,
+                  height: 340,
                   margin: EdgeInsets.symmetric( vertical: 10, horizontal: 10),
                   child: SingleChildScrollView(
                     child: Column(
                       children: <Widget>[
                         ..._getFunctions(),
                         ButtonTheme(
-                          minWidth: 200.0,
+                          minWidth: 100.0,
                           height: 40,
                           child: RaisedButton(
                             onPressed: () {
