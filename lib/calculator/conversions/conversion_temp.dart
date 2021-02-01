@@ -1,22 +1,25 @@
+import 'package:advanced_calculation/advanced_calculator.dart';
 import 'package:flutter/material.dart';
 import 'package:open_calc/calculator/conversions/conversion_options.dart';
+import 'package:advanced_calculation/calculation_options.dart';
 
 
-class DistanceConvert extends StatefulWidget{
+class TempConvert extends StatefulWidget{
 
-  DistanceConvert();
-  State<StatefulWidget> createState() => DistanceConvertState();
+  TempConvert();
+  State<StatefulWidget> createState() => TempConvertState();
 }
 
-class DistanceConvertState extends State<DistanceConvert>{
+class TempConvertState extends State<TempConvert>{
 
-  DistanceConvertState();
+  TempConvertState();
 
   ConversionOptions convert = new ConversionOptions();
+  final AdvancedCalculator calculator = new AdvancedCalculator();
 
-  String defaultDropVal = 'meters';
-  String defaultDropVal2 = 'kilometers';
-  String locationalDropVal = 'Distance';
+  String defaultDropVal = 'Celsius';
+  String defaultDropVal2 = 'Fahrenheit';
+  String locationalDropVal = 'Temps';
 
   TextEditingController _textFieldController = TextEditingController();
   TextEditingController _textFieldController2 = TextEditingController();
@@ -43,15 +46,15 @@ class DistanceConvertState extends State<DistanceConvert>{
         child:
           InkWell(child: Icon(Icons.arrow_back,color: Colors.black,size: 30.0,),
             onTap: () {setState((){
-              Navigator.of(context).pushNamed("Temp");
+              Navigator.of(context).pushNamed("Weights");
             });
             })),
-        Text('Distance', textAlign: TextAlign.center),
+        Text('Temp', textAlign: TextAlign.center),
         Container(
         child:
           InkWell(child: Icon(Icons.arrow_forward,color: Colors.black,size: 30.0,),
             onTap: () {setState((){
-              Navigator.of(context).pushNamed("Temp");
+              Navigator.of(context).pushNamed("Weights");
             });
             })),
       ],),
@@ -79,7 +82,7 @@ class DistanceConvertState extends State<DistanceConvert>{
               defaultDropVal = newValue;
             });
           },
-          items: convert.distanceList.map<DropdownMenuItem<String>>((String value){
+          items: convert.tempList.map<DropdownMenuItem<String>>((String value){
             return DropdownMenuItem<String>(value: value, child: Text(value),
             );
           }).toList(),
@@ -109,12 +112,19 @@ class DistanceConvertState extends State<DistanceConvert>{
         )]),
         Row(mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-        Icon(
-          Icons.transform,
-          color: Colors.black,
-          size: 30.0,
-        ),
-        ]),
+        InkWell(
+          onTap: (){
+            setState((){
+              var input = defaultDropVal + "," + defaultDropVal2 + "," +_textFieldController.text;
+              print(calculator.calculateConversion(input));
+            });
+          },
+          child:Icon(
+            Icons.transform,
+            color: Colors.black,
+            size: 30.0,
+          ),
+        )]),
         Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
@@ -139,7 +149,7 @@ class DistanceConvertState extends State<DistanceConvert>{
               defaultDropVal2 = newValue;
             });
           },
-          items: convert.distanceList.map<DropdownMenuItem<String>>((String value){
+          items: convert.tempList.map<DropdownMenuItem<String>>((String value){
             return DropdownMenuItem<String>(value: value, child: Text(value),
             );
           }).toList(),
