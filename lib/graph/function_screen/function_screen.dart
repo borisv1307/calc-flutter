@@ -1,3 +1,4 @@
+import 'package:advanced_calculation/advanced_calculator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:open_calc/calculator/input_pad/input_variables.dart';
@@ -9,7 +10,8 @@ import 'package:open_calc/graph/function_screen/input_pad/graph_input_pad.dart';
 class FunctionScreen extends StatefulWidget {
   final VariableStorage storage;
   final FunctionDisplayController controller;
-  FunctionScreen(this.storage, this.controller);
+  final AdvancedCalculator calculator;
+  FunctionScreen(this.storage, this.controller, [this.calculator]);
 
   @override
   State<StatefulWidget> createState() => FunctionScreenState();
@@ -40,7 +42,7 @@ class FunctionScreenState extends State<FunctionScreen> {
           padding: const EdgeInsets.symmetric(vertical: 5.0),
           child: Row(
             children: [
-              Expanded(child: FunctionTextField(i, widget.controller)),
+              Expanded(child: FunctionTextField(i, widget.controller, widget.calculator)),
               SizedBox(width: 16,),
               // we need add button at last friends row only
               _removeButton(false, i),
@@ -76,6 +78,8 @@ class FunctionScreenState extends State<FunctionScreen> {
   @override
   Widget build(BuildContext context) {
     inputHandler = GraphInputHandler(widget.controller, context, _formKey);
+    double screenHeight = MediaQuery.of(context).size.height;
+    double height = (screenHeight - 373) / 1.43;
 
     return Scaffold(
         body: Center(
@@ -84,7 +88,7 @@ class FunctionScreenState extends State<FunctionScreen> {
             child: Column(
               children: <Widget>[
                 Container(
-                  height: 265,
+                  height: height,
                   margin: EdgeInsets.symmetric( vertical: 10, horizontal: 10),
                   child: SingleChildScrollView(
                     child: Column(

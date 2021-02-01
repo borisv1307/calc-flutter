@@ -3,7 +3,7 @@ import 'package:cartesian_graph/cartesian_graph.dart';
 import 'package:cartesian_graph/coordinates.dart';
 import 'package:open_calc/calculator/input_pad/input_variables.dart';
 import 'package:open_calc/graph/function_screen/function_display_controller.dart';
-import 'package:open_calc/graph/function_screen/input_pad/graph_input_evaluator.dart';
+import 'package:open_calc/graph/graph_screen/graph_input_evaluator.dart';
 import 'package:open_calc/graph/graph_screen/graph_table.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
