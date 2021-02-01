@@ -116,7 +116,7 @@ class TempConvertState extends State<TempConvert>{
           onTap: (){
             setState((){
               var input = defaultDropVal + "," + defaultDropVal2 + "," +_textFieldController.text;
-              print(calculator.calculateConversion(input));
+              print("");
             });
           },
           child:Icon(
