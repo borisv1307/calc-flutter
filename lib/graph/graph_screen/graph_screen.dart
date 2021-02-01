@@ -1,3 +1,4 @@
+import 'package:advanced_calculation/advanced_calculator.dart';
 import 'package:cartesian_graph/bounds.dart';
 import 'package:cartesian_graph/cartesian_graph.dart';
 import 'package:cartesian_graph/coordinates.dart';
@@ -26,6 +27,7 @@ class GraphScreen extends StatefulWidget {
 class GraphScreenState extends State<GraphScreen>{
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   final _scaleFormKey = GlobalKey<FormState>();
+  
   GraphCursor cursor;
   List<String> inputEquations;
   int _xMin = -10,
@@ -37,7 +39,9 @@ class GraphScreenState extends State<GraphScreen>{
   TextStyle mainStyle = TextStyle(fontFamily: 'RobotoMono', fontSize: 20);
   TextStyle titleStyle = TextStyle(fontFamily: 'RobotoMono', fontSize: 23);
   List<Coordinates> coordinates;
-
+  AdvancedCalculator calculator = AdvancedCalculator();
+  int selectedIndex = -1;
+  
   @override
   void initState() {
     cursor = GraphCursor(X_PIXELS, Y_PIXELS, Bounds(_xMin, _xMax, _yMin, _yMax));
@@ -46,12 +50,33 @@ class GraphScreenState extends State<GraphScreen>{
 
   void moveCursor(String direction) {
     setState(() {
-      cursor.move(direction);
+      if (selectedIndex != -1) {  // trace mode
+        if (direction == "LEFT") {
+          trace(cursor.getXValue() - 1, selectedIndex);
+        } else if (direction == "RIGHT") {
+          trace(cursor.getXValue() + 1, selectedIndex);
+        }
+      } else {
+        cursor.move(direction);
+      }
     });
   }
 
-  void trace(double x, [int equationIndex = 0]) {
-    // TODO
+  void trace(double x, int equationIndex) {
+    setState(() {
+      double y = calculator.calculateEquation(inputEquations[equationIndex], x);
+      cursor.moveToCoordinates(x, y);
+    });
+  }
+
+  void _beginTrace(int index) {
+    if (selectedIndex == index) {  // exit trace mode
+      selectedIndex = -1;
+      cursor.moveToCoordinates(0, 0);
+    } else {
+      selectedIndex = index;
+      trace(0, index);
+    } 
   }
 
   void _openDrawer() {
@@ -146,9 +171,19 @@ class GraphScreenState extends State<GraphScreen>{
                   if (index == inputEquations.length) {
                     return ListTile();
                   }
-                  return ListTile(
-                    leading: Text("y"+ (index+1).toString() + "=", style: titleStyle),
-                    title: Text(inputEquations[index], style: mainStyle)
+                  return ListTileTheme(
+                    selectedColor: Colors.black,
+                    selectedTileColor: Colors.blue[100],
+                    child: ListTile(
+                      leading: Text("y"+ (index+1).toString() + "=", style: titleStyle),
+                      title: Text(inputEquations[index], style: mainStyle),
+                      selected: index == selectedIndex,
+                      onTap: () { 
+                        setState(() {
+                          _beginTrace(index);
+                        }); 
+                      }
+                    )
                   );
                 },
                 separatorBuilder: (BuildContext context, int index) => Divider(thickness: 1.5),

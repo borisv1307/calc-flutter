@@ -24,17 +24,25 @@ class GraphCursor {
       moveToCoordinates(xValue, yValue);  // update cursor position for new bounds
     }
 
+    get xWidth {
+      return _graphBounds.xMax - _graphBounds.xMin;
+    }
+
+    get yWidth {
+      return _graphBounds.yMax - _graphBounds.yMin;
+    }
+
     // calculate graph x value of cursor
     double getXValue() {
-      double value = x - (_xPixels / 2);
-      double scale = _xPixels / (_graphBounds.xMax - _graphBounds.xMin);
+      double value = x - _xPixels / (xWidth / (0 - _graphBounds.xMin));
+      double scale = _xPixels / xWidth;
       return num.parse((value/scale).toStringAsFixed(4));
     }
 
     // calculate graph y value of cursor
     double getYValue() {
-      double value = y - (_yPixels / 2);
-      double scale = _yPixels / (_graphBounds.yMax - _graphBounds.yMin);
+      double value = y - _yPixels / (yWidth / (0 - _graphBounds.yMin));
+      double scale = _yPixels / yWidth;
       return num.parse((value/scale).toStringAsFixed(4));
     }
 
@@ -59,13 +67,13 @@ class GraphCursor {
 
   // calculate pixel location for given x value
   double _xPixelValue(double newX) {
-    double pixelValue = newX * (_xPixels / (_graphBounds.xMax - _graphBounds.xMin));
-    return pixelValue + (_xPixels / 2);
+    double pixelValue = newX * (_xPixels / xWidth);
+    return pixelValue + _xPixels / (xWidth/ (0 - _graphBounds.xMin));
   }
 
   // calculate pixel location for given y value
   double _yPixelValue(double newY) {
-    double pixelValue = newY * (_yPixels / (_graphBounds.yMax - _graphBounds.yMin));
-    return pixelValue + (_yPixels / 2);
+    double pixelValue = newY * (_yPixels / yWidth);
+    return pixelValue + _yPixels / (yWidth / (0 - _graphBounds.yMin));
   }
 }
