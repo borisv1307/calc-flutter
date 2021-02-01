@@ -34,6 +34,8 @@ class CalculatorTabState extends State<CalculatorTab>{
   
   @override
   Widget build(BuildContext context) {
+    double screenHeight = MediaQuery.of(context).size.height;
+    int lines = (screenHeight - 373) ~/ 38;
     return Container(
       color: Colors.black38, 
       child: Column(
@@ -41,7 +43,7 @@ class CalculatorTabState extends State<CalculatorTab>{
         children: <Widget>[
           CalculatorDisplay(
             controller,
-            numLines: 8
+            numLines: lines
           ),
           Expanded(
             child: InputPad(storage, inputHandler.handle, commandHandler.handle, options)

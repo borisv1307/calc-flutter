@@ -1,11 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../function_screen/function_display_controller.dart';
+import 'package:open_calc/calculator/input_pad/input_item.dart';
+import 'package:open_calc/graph/function_screen/function_display_controller.dart';
+import 'package:advanced_calculation/advanced_calculator.dart';
 
 class FunctionTextField extends StatefulWidget { 
   final int index;
   final FunctionDisplayController controller;
-  FunctionTextField(this.index, this.controller);
+  final AdvancedCalculator calculator;
+  FunctionTextField(this.index, this.controller, [AdvancedCalculator calculator]) :
+    calculator = calculator ?? AdvancedCalculator();
 
   @override
   _FunctionTextFieldState createState() => _FunctionTextFieldState();
@@ -13,6 +17,7 @@ class FunctionTextField extends StatefulWidget {
 
 class _FunctionTextFieldState extends State<FunctionTextField> {
 
+  List<InputItem> inputItems;
   TextEditingController textController;
   FocusNode focusNode;
 
@@ -36,7 +41,8 @@ class _FunctionTextFieldState extends State<FunctionTextField> {
   void _updateFunction() {
     setState(() {
       if (widget.index < widget.controller.inputs.length) {
-        textController.text = widget.controller.getInput(widget.index);
+        inputItems = widget.controller.getInputItems(widget.index);
+        textController.text = inputItems.map((e) => e.display).join();
       }
     });
     focusNode.requestFocus();
@@ -44,6 +50,8 @@ class _FunctionTextFieldState extends State<FunctionTextField> {
 
   @override
   Widget build(BuildContext context) {
+    String backendString = inputItems.map((e) => e.value).join();
+
     return TextFormField(
       focusNode: focusNode,
       controller: textController,
@@ -55,6 +63,7 @@ class _FunctionTextFieldState extends State<FunctionTextField> {
       ),
       validator: (v){
         if(v.trim().isEmpty) return 'Please enter something';
+        if(!widget.calculator.validateEquation(backendString)) return 'Syntax Error';
         return null;
       },
     );

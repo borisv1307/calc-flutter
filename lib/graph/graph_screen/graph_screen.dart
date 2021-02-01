@@ -3,15 +3,20 @@ import 'package:cartesian_graph/cartesian_graph.dart';
 import 'package:cartesian_graph/coordinates.dart';
 import 'package:open_calc/calculator/input_pad/input_variables.dart';
 import 'package:open_calc/graph/function_screen/function_display_controller.dart';
-import 'package:open_calc/graph/function_screen/input_pad/graph_input_evaluator.dart';
+import 'package:open_calc/graph/graph_screen/graph_cursor.dart';
+import 'package:open_calc/graph/graph_screen/graph_input_evaluator.dart';
 import 'package:open_calc/graph/graph_screen/graph_table.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
+const double X_PIXELS = 270;
+const double Y_PIXELS = 163;
 
 class GraphScreen extends StatefulWidget {
   final FunctionDisplayController controller;
   final VariableStorage storage;
   final GraphInputEvaluator evaluator;
+
   GraphScreen(this.storage, this.controller) : evaluator = GraphInputEvaluator(storage);
 
   @override
@@ -21,6 +26,7 @@ class GraphScreen extends StatefulWidget {
 class GraphScreenState extends State<GraphScreen>{
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   final _scaleFormKey = GlobalKey<FormState>();
+  GraphCursor cursor;
   List<String> inputEquations;
   int _xMin = -10,
       _xMax = 10,
@@ -30,24 +36,22 @@ class GraphScreenState extends State<GraphScreen>{
   double drawerHeight = 305;
   TextStyle mainStyle = TextStyle(fontFamily: 'RobotoMono', fontSize: 20);
   TextStyle titleStyle = TextStyle(fontFamily: 'RobotoMono', fontSize: 23);
-  Coordinates cursorLocation = Coordinates(135, 81);
   List<Coordinates> coordinates;
+
+  @override
+  void initState() {
+    cursor = GraphCursor(X_PIXELS, Y_PIXELS, Bounds(_xMin, _xMax, _yMin, _yMax));
+    super.initState();
+  }
 
   void moveCursor(String direction) {
     setState(() {
-      double updatedX = cursorLocation.x;
-      double updatedY = cursorLocation.y;
-      if (direction == "UP") {
-        updatedY += 3;
-      } else if (direction == "DOWN") {
-        updatedY -= 3;
-      } else if (direction == "RIGHT") {
-        updatedX += 3;
-      } else if (direction == "LEFT") {
-        updatedX -= 3;
-      }
-      this.cursorLocation = Coordinates(updatedX, updatedY);
+      cursor.move(direction);
     });
+  }
+
+  void trace(double x, [int equationIndex = 0]) {
+    // TODO
   }
 
   void _openDrawer() {
@@ -70,7 +74,7 @@ class GraphScreenState extends State<GraphScreen>{
               child: CartesianGraph(
                 Bounds(_xMin, _xMax, _yMin, _yMax),
                 equations: inputEquations,
-                cursorLocation: this.cursorLocation,
+                cursorLocation: cursor.coordinates(),
               ),
             ),
             Container(
@@ -85,8 +89,8 @@ class GraphScreenState extends State<GraphScreen>{
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text("x = " + (cursorLocation.x - 135).toString(), style: mainStyle),
-                        Text("y = " + (cursorLocation.y - 81).toString(), style: mainStyle),
+                        Text("x = " + cursor.getXValue().toString(), style: mainStyle),
+                        Text("y = " + cursor.getYValue().toString(), style: mainStyle),
                       ],
                     )
                   ),
@@ -213,7 +217,9 @@ class GraphScreenState extends State<GraphScreen>{
                     onPressed: () {
                       _scaleFormKey.currentState.save();
                       Navigator.of(context).pop();  // close drawer
-                      setState(() {});
+                      setState(() {
+                        cursor.bounds = Bounds(_xMin, _xMax, _yMin, _yMax);
+                      });
                     },
                     child: Text("Save"),
                   ),
