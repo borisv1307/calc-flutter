@@ -4,15 +4,11 @@ import 'package:cartesian_graph/cartesian_graph.dart';
 import 'package:cartesian_graph/coordinates.dart';
 import 'package:open_calc/calculator/input_pad/input_variables.dart';
 import 'package:open_calc/graph/function_screen/function_display_controller.dart';
-import 'package:open_calc/graph/graph_screen/graph_bounds.dart';
 import 'package:open_calc/graph/graph_screen/graph_cursor.dart';
 import 'package:open_calc/graph/graph_screen/graph_input_evaluator.dart';
 import 'package:open_calc/graph/graph_screen/graph_table.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
-const double X_PIXELS = 270;
-const double Y_PIXELS = 163;
 
 class GraphScreen extends StatefulWidget {
   final FunctionDisplayController controller;
@@ -29,7 +25,7 @@ class GraphScreenState extends State<GraphScreen>{
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   final _scaleFormKey = GlobalKey<FormState>();
   
-  GraphCursor cursor;
+  GraphCursor cursor = GraphCursor();
   List<String> inputEquations;
   int _xMin = -10,
       _xMax = 10,
@@ -44,19 +40,13 @@ class GraphScreenState extends State<GraphScreen>{
   AdvancedCalculator calculator = AdvancedCalculator();
   int selectedIndex = -1;
   
-  @override
-  void initState() {
-    cursor = GraphCursor(X_PIXELS, Y_PIXELS, GraphBounds(_xMin, _xMax, _yMin, _yMax, _step));
-    super.initState();
-  }
-
   void moveCursor(String direction) {
     setState(() {
       if (selectedIndex != -1) {  // trace mode
         if (direction == "LEFT") {
-          trace(cursor.getXValue() - _step, selectedIndex);
+          trace(cursor.x - _step, selectedIndex);
         } else if (direction == "RIGHT") {
-          trace(cursor.getXValue() + _step, selectedIndex);
+          trace(cursor.y + _step, selectedIndex);
         }
       } else {
         cursor.move(direction);
@@ -118,8 +108,8 @@ class GraphScreenState extends State<GraphScreen>{
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text("x = " + cursor.getXValue().toString(), style: mainStyle),
-                        Text("y = " + cursor.getYValue().toString(), style: mainStyle),
+                        Text("x = " + cursor.x.toString(), style: mainStyle),
+                        Text("y = " + cursor.y.toString(), style: mainStyle),
                       ],
                     )
                   ),
@@ -261,7 +251,7 @@ class GraphScreenState extends State<GraphScreen>{
                       _scaleFormKey.currentState.save();
                       Navigator.of(context).pop();  // close drawer
                       setState(() {
-                        cursor.bounds = GraphBounds(_xMin, _xMax, _yMin, _yMax, _step);
+                        cursor.step = _step;
                       });
                     },
                     child: Text("Save"),

@@ -1,80 +1,32 @@
-import 'graph_bounds.dart';
 import 'package:cartesian_graph/coordinates.dart';
 
 
 class GraphCursor {
-    double x;  // pixel coordinates of cursor
-    double y;
-    GraphBounds _graphBounds; 
-    final double _xPixels;  // graph dimensions in pixel units
-    final double _yPixels;
+  double x;
+  double y;
+  double step;
 
-    GraphCursor(this._xPixels, this._yPixels, this._graphBounds) {
-      moveToCoordinates(0, 0);
-    }
+  GraphCursor([this.x = 0, this.y = 0, this.step = 1]);
 
-    Coordinates coordinates() {
-      return Coordinates(x, y);
-    }
-
-    // update bounds and move cursor to new position
-    set bounds(GraphBounds newBounds) {
-      double xValue = getXValue();
-      double yValue = getYValue();
-      _graphBounds = newBounds;
-      moveToCoordinates(xValue, yValue);  // update cursor position for new bounds
-    }
-
-    get xWidth {
-      return _graphBounds.xMax - _graphBounds.xMin;
-    }
-
-    get yWidth {
-      return _graphBounds.yMax - _graphBounds.yMin;
-    }
-
-    // calculate graph x value of cursor
-    double getXValue() {
-      double value = x - _xPixels / (xWidth / (0 - _graphBounds.xMin));
-      double scale = _xPixels / xWidth;
-      return num.parse((value/scale).toStringAsFixed(4));
-    }
-
-    // calculate graph y value of cursor
-    double getYValue() {
-      double value = y - _yPixels / (yWidth / (0 - _graphBounds.yMin));
-      double scale = _yPixels / yWidth;
-      return num.parse((value/scale).toStringAsFixed(4));
-    }
-
-    // move 1 unit in a given direction
-    void move(String direction) {
-      if (direction == "UP") {
-        y += _graphBounds.step * (_yPixels / yWidth);
-      } else if (direction == "DOWN") {
-        y -= _graphBounds.step * (_yPixels / yWidth);
-      } else if (direction == "RIGHT") {
-        x += _graphBounds.step * (_xPixels / xWidth);
-      } else if (direction == "LEFT") {
-        x -= _graphBounds.step * (_xPixels / xWidth);
-      }
+  Coordinates coordinates() {
+    return Coordinates(x, y);
   }
 
-  // move cursor to given x,y graph coordinates
-  void moveToCoordinates(double newX, double newY) {
-    this.x = _xPixelValue(newX);
-    this.y = _yPixelValue(newY);
+  // move 1 step in a given direction
+  void move(String direction) {
+    if (direction == "UP") {
+      y += step;
+    } else if (direction == "DOWN") {
+      y -= step;
+    } else if (direction == "RIGHT") {
+      x += step;
+    } else if (direction == "LEFT") {
+      x -= step;
+    }
   }
 
-  // calculate pixel location for given x value
-  double _xPixelValue(double newX) {
-    double pixelValue = newX * (_xPixels / xWidth);
-    return pixelValue + _xPixels / (xWidth/ (0 - _graphBounds.xMin));
-  }
-
-  // calculate pixel location for given y value
-  double _yPixelValue(double newY) {
-    double pixelValue = newY * (_yPixels / yWidth);
-    return pixelValue + _yPixels / (yWidth / (0 - _graphBounds.yMin));
+  void moveToCoordinates(double x, double y) {
+    this.x = x;
+    this.y = y;
   }
 }
