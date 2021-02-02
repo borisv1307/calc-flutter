@@ -50,11 +50,17 @@ class _FunctionTextFieldState extends State<FunctionTextField> {
 
     return TextFormField(
       controller: textController,
+      style: TextStyle(fontFamily: 'RobotoMono', fontSize: 23),
       showCursor: false,
       readOnly: true,
       onTap: () => widget.controller.currentField = widget.index,
       decoration: InputDecoration(
-          labelText: 'y' + (widget.index + 1).toString() + '= '
+        prefix: Text(""),
+        contentPadding: new EdgeInsets.only(bottom: 14, top: 14, left: 20, right: 20),
+        border: OutlineInputBorder(borderRadius: new BorderRadius.circular(10)),
+        fillColor: Colors.white,
+        filled: true,
+        errorStyle: TextStyle(fontSize: 14)
       ),
       validator: (v){
         if(v.trim().isEmpty) return 'Please enter something';

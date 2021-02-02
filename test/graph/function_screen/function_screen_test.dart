@@ -100,7 +100,7 @@ void main() {
       await tester.pumpWidget(MaterialApp(
         home: Scaffold(body: FunctionScreen(storage, controller, calculator)))
       );
-      await tester.tap(find.text("y1= "));
+      await tester.tap(find.text("y1="));
       await tester.pumpAndSettle();
       Finder buttonFinder = find.text("𝑥");
       await tester.tap(buttonFinder);
@@ -142,7 +142,7 @@ void main() {
       Finder addButton = find.byIcon(Icons.add);
       await tester.tap(addButton);
       await tester.pumpAndSettle();
-      await tester.tap(find.text("y2= "));
+      await tester.tap(find.byType(FunctionTextField).last);
       await tester.pumpAndSettle();
       TextField secondField = find.byType(TextField).evaluate().last.widget as TextField;
       await tester.tap(find.text("2"));
@@ -163,9 +163,9 @@ void main() {
       TextField firstField = find.byType(TextField).evaluate().first.widget as TextField;
       TextField secondField = find.byType(TextField).evaluate().last.widget as TextField;
       await tester.tap(find.text("1"));
-      await tester.tap(find.text("y2= "));
+      await tester.tap(find.byType(FunctionTextField).last);
       await tester.tap(find.text("2"));
-      await tester.tap(find.text("y1= "));
+      await tester.tap(find.byType(FunctionTextField).first);
       await tester.tap(find.text("3"));
       expect(firstField.controller.text, "13");
       expect(secondField.controller.text, "2");
@@ -180,7 +180,7 @@ void main() {
       await tester.tap(addButton);
       await tester.pumpAndSettle();
       await tester.tap(find.text("1"));
-      await tester.tap(find.text("y2= "));
+      await tester.tap(find.byType(FunctionTextField).last);
       await tester.tap(find.text("2"));
       Finder removeButton1 = find.byIcon(Icons.remove).first;
       await tester.tap(removeButton1);

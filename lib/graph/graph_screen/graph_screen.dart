@@ -1,8 +1,10 @@
+import 'package:advanced_calculation/advanced_calculator.dart';
 import 'package:cartesian_graph/bounds.dart';
 import 'package:cartesian_graph/cartesian_graph.dart';
 import 'package:cartesian_graph/coordinates.dart';
 import 'package:open_calc/calculator/input_pad/input_variables.dart';
 import 'package:open_calc/graph/function_screen/function_display_controller.dart';
+import 'package:open_calc/graph/graph_screen/graph_cursor.dart';
 import 'package:open_calc/graph/graph_screen/graph_input_evaluator.dart';
 import 'package:open_calc/graph/graph_screen/graph_table.dart';
 import 'package:flutter/cupertino.dart';
@@ -12,6 +14,7 @@ class GraphScreen extends StatefulWidget {
   final FunctionDisplayController controller;
   final VariableStorage storage;
   final GraphInputEvaluator evaluator;
+
   GraphScreen(this.storage, this.controller) : evaluator = GraphInputEvaluator(storage);
 
   @override
@@ -21,33 +24,51 @@ class GraphScreen extends StatefulWidget {
 class GraphScreenState extends State<GraphScreen>{
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   final _scaleFormKey = GlobalKey<FormState>();
+  
+  GraphCursor cursor = GraphCursor();
   List<String> inputEquations;
   int _xMin = -10,
       _xMax = 10,
       _yMin = -10,
       _yMax = 10;
+  double _step = 1;
   double drawerWidth = 200;
-  double drawerHeight = 305;
+  double drawerHeight = 365;
   TextStyle mainStyle = TextStyle(fontFamily: 'RobotoMono', fontSize: 20);
   TextStyle titleStyle = TextStyle(fontFamily: 'RobotoMono', fontSize: 23);
-  Coordinates cursorLocation = Coordinates(135, 81);
   List<Coordinates> coordinates;
-
+  AdvancedCalculator calculator = AdvancedCalculator();
+  int selectedIndex = -1;
+  
   void moveCursor(String direction) {
     setState(() {
-      double updatedX = cursorLocation.x;
-      double updatedY = cursorLocation.y;
-      if (direction == "UP") {
-        updatedY += 3;
-      } else if (direction == "DOWN") {
-        updatedY -= 3;
-      } else if (direction == "RIGHT") {
-        updatedX += 3;
-      } else if (direction == "LEFT") {
-        updatedX -= 3;
+      if (selectedIndex != -1) {  // trace mode
+        if (direction == "LEFT") {
+          trace(cursor.x - _step, selectedIndex);
+        } else if (direction == "RIGHT") {
+          trace(cursor.y + _step, selectedIndex);
+        }
+      } else {
+        cursor.move(direction);
       }
-      this.cursorLocation = Coordinates(updatedX, updatedY);
     });
+  }
+
+  void trace(double x, int equationIndex) {
+    setState(() {
+      double y = calculator.calculateEquation(inputEquations[equationIndex], x);
+      cursor.moveToCoordinates(x, y);
+    });
+  }
+
+  void _beginTrace(int index) {
+    if (selectedIndex == index) {  // exit trace mode
+      selectedIndex = -1;
+      cursor.moveToCoordinates(0, 0);
+    } else {
+      selectedIndex = index;
+      trace(0, index);
+    } 
   }
 
   void _openDrawer() {
@@ -71,7 +92,7 @@ class GraphScreenState extends State<GraphScreen>{
               child: CartesianGraph(
                 Bounds(_xMin, _xMax, _yMin, _yMax),
                 equations: inputEquations,
-                cursorLocation: this.cursorLocation,
+                cursorLocation: cursor.coordinates(),
               ),
             ),
             Container(
@@ -85,9 +106,10 @@ class GraphScreenState extends State<GraphScreen>{
                     height: 72,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text("x = " + (cursorLocation.x - 135).toString(), style: mainStyle),
-                        Text("y = " + (cursorLocation.y - 81).toString(), style: mainStyle),
+                        Text("x = " + cursor.x.toString(), style: mainStyle),
+                        Text("y = " + cursor.y.toString(), style: mainStyle),
                       ],
                     )
                   ),
@@ -142,9 +164,19 @@ class GraphScreenState extends State<GraphScreen>{
                   if (index == inputEquations.length) {
                     return ListTile();
                   }
-                  return ListTile(
-                    leading: Text("y"+ (index+1).toString() + "=", style: titleStyle),
-                    title: Text(inputEquations[index], style: mainStyle)
+                  return ListTileTheme(
+                    selectedColor: Colors.black,
+                    selectedTileColor: Colors.green[100],
+                    child: ListTile(
+                      leading: Text("y"+ (index+1).toString() + "=", style: titleStyle),
+                      title: Text(inputEquations[index], style: mainStyle),
+                      selected: index == selectedIndex,
+                      onTap: () { 
+                        setState(() {
+                          _beginTrace(index);
+                        }); 
+                      }
+                    )
                   );
                 },
                 separatorBuilder: (BuildContext context, int index) => Divider(thickness: 1.5),
@@ -202,6 +234,15 @@ class GraphScreenState extends State<GraphScreen>{
                       _yMin = int.parse(input),
                     },
                   ),
+                  TextFormField(
+                    keyboardType: TextInputType.number,
+                    initialValue: '$_step',
+                    decoration:
+                    InputDecoration(labelText: 'Step:'),
+                    onSaved: (input) => {
+                      _step = double.parse(input),
+                    },
+                  ),
                   SizedBox(
                     height: 5,
                   ),
@@ -209,7 +250,9 @@ class GraphScreenState extends State<GraphScreen>{
                     onPressed: () {
                       _scaleFormKey.currentState.save();
                       Navigator.of(context).pop();  // close drawer
-                      setState(() {});
+                      setState(() {
+                        cursor.step = _step;
+                      });
                     },
                     child: Text("Save"),
                   ),
