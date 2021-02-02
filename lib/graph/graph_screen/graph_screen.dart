@@ -4,6 +4,7 @@ import 'package:cartesian_graph/cartesian_graph.dart';
 import 'package:cartesian_graph/coordinates.dart';
 import 'package:open_calc/calculator/input_pad/input_variables.dart';
 import 'package:open_calc/graph/function_screen/function_display_controller.dart';
+import 'package:open_calc/graph/graph_screen/graph_bounds.dart';
 import 'package:open_calc/graph/graph_screen/graph_cursor.dart';
 import 'package:open_calc/graph/graph_screen/graph_input_evaluator.dart';
 import 'package:open_calc/graph/graph_screen/graph_table.dart';
@@ -34,8 +35,9 @@ class GraphScreenState extends State<GraphScreen>{
       _xMax = 10,
       _yMin = -10,
       _yMax = 10;
+  double _step = 1;
   double drawerWidth = 200;
-  double drawerHeight = 305;
+  double drawerHeight = 365;
   TextStyle mainStyle = TextStyle(fontFamily: 'RobotoMono', fontSize: 20);
   TextStyle titleStyle = TextStyle(fontFamily: 'RobotoMono', fontSize: 23);
   List<Coordinates> coordinates;
@@ -44,7 +46,7 @@ class GraphScreenState extends State<GraphScreen>{
   
   @override
   void initState() {
-    cursor = GraphCursor(X_PIXELS, Y_PIXELS, Bounds(_xMin, _xMax, _yMin, _yMax));
+    cursor = GraphCursor(X_PIXELS, Y_PIXELS, GraphBounds(_xMin, _xMax, _yMin, _yMax, _step));
     super.initState();
   }
 
@@ -52,9 +54,9 @@ class GraphScreenState extends State<GraphScreen>{
     setState(() {
       if (selectedIndex != -1) {  // trace mode
         if (direction == "LEFT") {
-          trace(cursor.getXValue() - 1, selectedIndex);
+          trace(cursor.getXValue() - _step, selectedIndex);
         } else if (direction == "RIGHT") {
-          trace(cursor.getXValue() + 1, selectedIndex);
+          trace(cursor.getXValue() + _step, selectedIndex);
         }
       } else {
         cursor.move(direction);
@@ -114,6 +116,7 @@ class GraphScreenState extends State<GraphScreen>{
                     height: 72,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text("x = " + cursor.getXValue().toString(), style: mainStyle),
                         Text("y = " + cursor.getYValue().toString(), style: mainStyle),
@@ -173,7 +176,7 @@ class GraphScreenState extends State<GraphScreen>{
                   }
                   return ListTileTheme(
                     selectedColor: Colors.black,
-                    selectedTileColor: Colors.blue[100],
+                    selectedTileColor: Colors.green[100],
                     child: ListTile(
                       leading: Text("y"+ (index+1).toString() + "=", style: titleStyle),
                       title: Text(inputEquations[index], style: mainStyle),
@@ -241,6 +244,15 @@ class GraphScreenState extends State<GraphScreen>{
                       _yMin = int.parse(input),
                     },
                   ),
+                  TextFormField(
+                    keyboardType: TextInputType.number,
+                    initialValue: '$_step',
+                    decoration:
+                    InputDecoration(labelText: 'Step:'),
+                    onSaved: (input) => {
+                      _step = double.parse(input),
+                    },
+                  ),
                   SizedBox(
                     height: 5,
                   ),
@@ -249,7 +261,7 @@ class GraphScreenState extends State<GraphScreen>{
                       _scaleFormKey.currentState.save();
                       Navigator.of(context).pop();  // close drawer
                       setState(() {
-                        cursor.bounds = Bounds(_xMin, _xMax, _yMin, _yMax);
+                        cursor.bounds = GraphBounds(_xMin, _xMax, _yMin, _yMax, _step);
                       });
                     },
                     child: Text("Save"),

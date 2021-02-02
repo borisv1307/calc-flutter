@@ -1,10 +1,11 @@
-import 'package:cartesian_graph/bounds.dart';
+import 'graph_bounds.dart';
 import 'package:cartesian_graph/coordinates.dart';
+
 
 class GraphCursor {
     double x;  // pixel coordinates of cursor
     double y;
-    Bounds _graphBounds; 
+    GraphBounds _graphBounds; 
     final double _xPixels;  // graph dimensions in pixel units
     final double _yPixels;
 
@@ -17,7 +18,7 @@ class GraphCursor {
     }
 
     // update bounds and move cursor to new position
-    set bounds(Bounds newBounds) {
+    set bounds(GraphBounds newBounds) {
       double xValue = getXValue();
       double yValue = getYValue();
       _graphBounds = newBounds;
@@ -49,13 +50,13 @@ class GraphCursor {
     // move 1 unit in a given direction
     void move(String direction) {
       if (direction == "UP") {
-        y += _yPixels / (_graphBounds.yMax - _graphBounds.yMin);
+        y += _graphBounds.step * (_yPixels / yWidth);
       } else if (direction == "DOWN") {
-        y -= _yPixels / (_graphBounds.yMax - _graphBounds.yMin);
+        y -= _graphBounds.step * (_yPixels / yWidth);
       } else if (direction == "RIGHT") {
-        x += _xPixels / (_graphBounds.xMax - _graphBounds.xMin);
+        x += _graphBounds.step * (_xPixels / xWidth);
       } else if (direction == "LEFT") {
-        x -= _xPixels / (_graphBounds.xMax - _graphBounds.xMin);
+        x -= _graphBounds.step * (_xPixels / xWidth);
       }
   }
 
