@@ -1,9 +1,11 @@
 import 'package:cartesian_graph/bounds.dart';
 import 'package:cartesian_graph/cartesian_graph.dart';
 import 'package:cartesian_graph/coordinates.dart';
+import 'package:cartesian_graph/pixel_location.dart';
 import 'package:open_calc/calculator/input_pad/input_variables.dart';
 import 'package:open_calc/graph/function_screen/function_display_controller.dart';
 import 'package:open_calc/graph/function_screen/input_pad/graph_input_evaluator.dart';
+import 'package:open_calc/graph/graph_screen/graph_navigator/graph_navigator.dart';
 import 'package:open_calc/graph/graph_screen/graph_table.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -30,23 +32,13 @@ class GraphScreenState extends State<GraphScreen>{
   double drawerHeight = 305;
   TextStyle mainStyle = TextStyle(fontFamily: 'RobotoMono', fontSize: 20);
   TextStyle titleStyle = TextStyle(fontFamily: 'RobotoMono', fontSize: 23);
-  Coordinates cursorLocation = Coordinates(135, 81);
   List<Coordinates> coordinates;
+  static const double GRAPH_HEIGHT = 652;
+  Coordinates cursorLocation = Coordinates(0, 0);
 
-  void moveCursor(String direction) {
+  void moveCursor(Coordinates updatedLocation) {
     setState(() {
-      double updatedX = cursorLocation.x;
-      double updatedY = cursorLocation.y;
-      if (direction == "UP") {
-        updatedY += 3;
-      } else if (direction == "DOWN") {
-        updatedY -= 3;
-      } else if (direction == "RIGHT") {
-        updatedX += 3;
-      } else if (direction == "LEFT") {
-        updatedX -= 3;
-      }
-      this.cursorLocation = Coordinates(updatedX, updatedY);
+      cursorLocation = updatedLocation;
     });
   }
 
@@ -56,8 +48,15 @@ class GraphScreenState extends State<GraphScreen>{
 
   @override
   Widget build(BuildContext context) {
-    this.inputEquations = widget.evaluator.translateInputs(widget.controller.inputs);
 
+    this.inputEquations = widget.evaluator.translateInputs(widget.controller.inputs);
+    double devicePixelRatio = MediaQuery.of(context).devicePixelRatio;
+
+    CartesianGraph graph = CartesianGraph(
+      Bounds(_xMin, _xMax, _yMin, _yMax),
+      equations: inputEquations,
+      cursorLocation: this.cursorLocation,
+    );
     return Scaffold(
       key: _scaffoldKey,
       resizeToAvoidBottomInset: false,
@@ -66,70 +65,20 @@ class GraphScreenState extends State<GraphScreen>{
           children: <Widget>[
             ConstrainedBox(
               constraints: BoxConstraints(
-                maxHeight: 652,
+                maxHeight: GRAPH_HEIGHT,
               ),
-              child: CartesianGraph(
-                Bounds(_xMin, _xMax, _yMin, _yMax),
-                equations: inputEquations,
-                cursorLocation: this.cursorLocation,
-              ),
+              child: GestureDetector(
+                child: graph,
+                onTapDown: (TapDownDetails details){
+                  setState(() {
+                    double y = GRAPH_HEIGHT - (details.localPosition.dy * devicePixelRatio);
+                    double x = details.localPosition.dx * devicePixelRatio;
+                    this.cursorLocation = graph.calculateCoordinates(PixelLocation(x.toInt(), y.toInt()));
+                  });
+                },
+              )
             ),
-            Container(
-              color: Colors.black26,
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    padding: EdgeInsets.all(10),
-                    height: 72,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text("x = " + (cursorLocation.x - 135).toString(), style: mainStyle),
-                        Text("y = " + (cursorLocation.y - 81).toString(), style: mainStyle),
-                      ],
-                    )
-                  ),
-                  Column(
-                    children: [
-                      InkWell(
-                        onTap: () {
-                          moveCursor('UP');
-                        },
-                        child: Icon(Icons.arrow_upward)
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.only(right: 25),
-                            child: InkWell(
-                              onTap: () {
-                                moveCursor('LEFT');
-                              },
-                              child: Icon(Icons.arrow_back)
-                            )
-                          ),
-                          InkWell(
-                            onTap: () {
-                              moveCursor('RIGHT');
-                            },
-                            child: Icon(Icons.arrow_forward)
-                          )
-                        ],
-                      ),
-                      InkWell(
-                        onTap: () {
-                          moveCursor('DOWN');
-                        },
-                        child: Icon(Icons.arrow_downward)
-                      ),
-                    ]
-                  )
-                ],
-              ),
-            ),
+            GraphNavigator(this.cursorLocation,this.moveCursor),
 
             Container(
               margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
