@@ -1,20 +1,21 @@
 import 'package:advanced_calculation/advanced_calculator.dart';
 import 'package:cartesian_graph/bounds.dart';
-import 'package:cartesian_graph/cartesian_graph.dart';
 import 'package:cartesian_graph/coordinates.dart';
 import 'package:open_calc/calculator/input_pad/input_variables.dart';
 import 'package:open_calc/graph/function_screen/function_display_controller.dart';
 import 'package:open_calc/graph/graph_screen/graph_cursor.dart';
-import 'package:open_calc/graph/graph_screen/graph_input_evaluator.dart';
+import 'package:open_calc/graph/graph_screen/graph_navigator/graph_navigator.dart';
 import 'package:open_calc/graph/graph_screen/graph_table.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:open_calc/graph/graph_screen/interactive_graph/interactive_graph.dart';
+
+import 'graph_input_evaluator.dart';
 
 class GraphScreen extends StatefulWidget {
   final FunctionDisplayController controller;
   final VariableStorage storage;
   final GraphInputEvaluator evaluator;
-
   GraphScreen(this.storage, this.controller) : evaluator = GraphInputEvaluator(storage);
 
   @override
@@ -24,51 +25,39 @@ class GraphScreen extends StatefulWidget {
 class GraphScreenState extends State<GraphScreen>{
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   final _scaleFormKey = GlobalKey<FormState>();
-  
-  GraphCursor cursor = GraphCursor();
   List<String> inputEquations;
   int _xMin = -10,
       _xMax = 10,
       _yMin = -10,
       _yMax = 10;
-  double _step = 1;
   double drawerWidth = 200;
   double drawerHeight = 365;
   TextStyle mainStyle = TextStyle(fontFamily: 'RobotoMono', fontSize: 20);
   TextStyle titleStyle = TextStyle(fontFamily: 'RobotoMono', fontSize: 23);
-  List<Coordinates> coordinates;
+  List<Coordinates> coordinates = [];
   AdvancedCalculator calculator = AdvancedCalculator();
   int selectedIndex = -1;
-  
-  void moveCursor(String direction) {
-    setState(() {
-      if (selectedIndex != -1) {  // trace mode
-        if (direction == "LEFT") {
-          trace(cursor.x - _step, selectedIndex);
-        } else if (direction == "RIGHT") {
-          trace(cursor.y + _step, selectedIndex);
-        }
-      } else {
-        cursor.move(direction);
-      }
-    });
-  }
 
-  void trace(double x, int equationIndex) {
+  GraphCursor cursorDetails = GraphCursor();
+
+  void moveCursor(Coordinates requestedLocation) {
+    Coordinates updatedLocation = requestedLocation;
     setState(() {
-      double y = calculator.calculateEquation(inputEquations[equationIndex], x);
-      cursor.moveToCoordinates(x, y);
+      if(selectedIndex != -1){
+        double y = calculator.calculateEquation(inputEquations[selectedIndex], requestedLocation.x);
+        updatedLocation = Coordinates(requestedLocation.x, y);
+      }
+      cursorDetails.location = updatedLocation;
     });
   }
 
   void _beginTrace(int index) {
     if (selectedIndex == index) {  // exit trace mode
       selectedIndex = -1;
-      cursor.moveToCoordinates(0, 0);
     } else {
       selectedIndex = index;
-      trace(0, index);
-    } 
+      moveCursor(cursorDetails.location);
+    }
   }
 
   void _openDrawer() {
@@ -85,74 +74,8 @@ class GraphScreenState extends State<GraphScreen>{
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
-            ConstrainedBox(
-              constraints: BoxConstraints(
-                maxHeight: 652,
-              ),
-              child: CartesianGraph(
-                Bounds(_xMin, _xMax, _yMin, _yMax),
-                equations: inputEquations,
-                cursorLocation: cursor.coordinates(),
-              ),
-            ),
-            Container(
-              color: Colors.black26,
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    padding: EdgeInsets.all(10),
-                    height: 72,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text("x = " + cursor.x.toString(), style: mainStyle),
-                        Text("y = " + cursor.y.toString(), style: mainStyle),
-                      ],
-                    )
-                  ),
-                  Column(
-                    children: [
-                      InkWell(
-                        onTap: () {
-                          moveCursor('UP');
-                        },
-                        child: Icon(Icons.arrow_upward)
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.only(right: 25),
-                            child: InkWell(
-                              onTap: () {
-                                moveCursor('LEFT');
-                              },
-                              child: Icon(Icons.arrow_back)
-                            )
-                          ),
-                          InkWell(
-                            onTap: () {
-                              moveCursor('RIGHT');
-                            },
-                            child: Icon(Icons.arrow_forward)
-                          )
-                        ],
-                      ),
-                      InkWell(
-                        onTap: () {
-                          moveCursor('DOWN');
-                        },
-                        child: Icon(Icons.arrow_downward)
-                      ),
-                    ]
-                  )
-                ],
-              ),
-            ),
-
+            InteractiveGraph(this.inputEquations,Bounds(_xMin, _xMax, _yMin, _yMax),this.cursorDetails.location,this.moveCursor),
+            GraphNavigator(this.cursorDetails,this.moveCursor),
             Container(
               margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
               child: ListView.separated(
@@ -171,10 +94,10 @@ class GraphScreenState extends State<GraphScreen>{
                       leading: Text("y"+ (index+1).toString() + "=", style: titleStyle),
                       title: Text(inputEquations[index], style: mainStyle),
                       selected: index == selectedIndex,
-                      onTap: () { 
+                      onTap: () {
                         setState(() {
                           _beginTrace(index);
-                        }); 
+                        });
                       }
                     )
                   );
@@ -236,11 +159,11 @@ class GraphScreenState extends State<GraphScreen>{
                   ),
                   TextFormField(
                     keyboardType: TextInputType.number,
-                    initialValue: '$_step',
+                    initialValue: '${cursorDetails.step}',
                     decoration:
                     InputDecoration(labelText: 'Step:'),
                     onSaved: (input) => {
-                      _step = double.parse(input),
+                      cursorDetails.step = double.parse(input),
                     },
                   ),
                   SizedBox(
@@ -251,7 +174,7 @@ class GraphScreenState extends State<GraphScreen>{
                       _scaleFormKey.currentState.save();
                       Navigator.of(context).pop();  // close drawer
                       setState(() {
-                        cursor.step = _step;
+                        cursorDetails.step = cursorDetails.step;
                       });
                     },
                     child: Text("Save"),
