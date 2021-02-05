@@ -14,8 +14,8 @@ class FunctionDisplayController extends ChangeNotifier{
     return _inputs[index];
   }
 
-  String getInput(int index){
-    return _inputs[index].map((e) => e.value).join();
+  String getDisplayText(int index){
+    return _inputs[index].map((e) => e.display).join();
   }
 
   void addField() {

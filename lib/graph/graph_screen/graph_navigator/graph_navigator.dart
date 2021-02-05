@@ -1,21 +1,22 @@
 import 'package:cartesian_graph/coordinates.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:open_calc/graph/graph_screen/graph_cursor.dart';
 
 enum CursorDirection {
   UP,DOWN,LEFT,RIGHT
 }
 class GraphNavigator extends StatelessWidget {
   final Function(Coordinates updatedLocation) moveCursor;
-  final Coordinates cursorLocation;
+  final GraphCursor cursorDetails;
 
-  GraphNavigator(this.cursorLocation, this.moveCursor);
+  GraphNavigator(this.cursorDetails, this.moveCursor);
   
   final TextStyle mainStyle = TextStyle(fontFamily: 'RobotoMono', fontSize: 20);
 
   void _moveCursor(CursorDirection direction){
-    double updatedX = cursorLocation.x;
-    double updatedY = cursorLocation.y;
+    double updatedX = cursorDetails.location.x;
+    double updatedY = cursorDetails.location.y;
     if (direction == CursorDirection.UP) {
       updatedY += 3;
     } else if (direction == CursorDirection.DOWN) {
@@ -54,8 +55,8 @@ class GraphNavigator extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text("x = " + (cursorLocation.x).toString(), style: mainStyle),
-                  Text("y = " + (cursorLocation.y).toString(), style: mainStyle),
+                  Text("x = " + (cursorDetails.location.x).toString(), style: mainStyle),
+                  Text("y = " + (cursorDetails.location.y).toString(), style: mainStyle),
                 ],
               )
           ),

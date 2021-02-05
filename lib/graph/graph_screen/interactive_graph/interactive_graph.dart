@@ -34,14 +34,9 @@ class InteractiveGraph extends StatelessWidget{
         child: GestureDetector(
           child: this.graph,
           onTapDown: (TapDownDetails details){
-            print('YOOO');
             double y = GRAPH_HEIGHT - (details.localPosition.dy * devicePixelRatio);
             double x = details.localPosition.dx * devicePixelRatio;
-            print(PixelLocation(x.toInt(), y.toInt()));
             Coordinates updatedLocation = analyzer.calculateCoordinates(PixelLocation(x.toInt(), y.toInt()));
-            print(details.localPosition.dy);
-            print(details.localPosition.dx);
-            print(updatedLocation);
             this.moveCursor(updatedLocation);
           },
         )

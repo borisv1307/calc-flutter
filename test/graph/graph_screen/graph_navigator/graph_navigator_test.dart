@@ -1,11 +1,14 @@
 import 'package:cartesian_graph/coordinates.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:open_calc/graph/graph_screen/graph_cursor.dart';
 import 'package:open_calc/graph/graph_screen/graph_navigator/graph_navigator.dart';
 
 void main(){
   Widget _buildTestableNavigator(Coordinates cursorLocation,Function(Coordinates updatedLocation) moveCursor){
-    return MaterialApp(home:GraphNavigator(cursorLocation, moveCursor));
+    GraphCursor cursor = GraphCursor();
+    cursor.location = cursorLocation;
+    return MaterialApp(home:GraphNavigator(cursor, moveCursor));
   }
 
   group('Legend',(){
