@@ -8,6 +8,7 @@ void main(){
   Widget _buildTestableNavigator(Coordinates cursorLocation,Function(Coordinates updatedLocation) moveCursor){
     GraphCursor cursor = GraphCursor();
     cursor.location = cursorLocation;
+    cursor.step = 3;
     return MaterialApp(home:GraphNavigator(cursor, moveCursor));
   }
 

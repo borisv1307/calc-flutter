@@ -18,13 +18,13 @@ class GraphNavigator extends StatelessWidget {
     double updatedX = cursorDetails.location.x;
     double updatedY = cursorDetails.location.y;
     if (direction == CursorDirection.UP) {
-      updatedY += 3;
+      updatedY += cursorDetails.step;
     } else if (direction == CursorDirection.DOWN) {
-      updatedY -= 3;
+      updatedY -= cursorDetails.step;
     } else if (direction == CursorDirection.RIGHT) {
-      updatedX += 3;
+      updatedX += cursorDetails.step;
     } else if (direction == CursorDirection.LEFT) {
-      updatedX -= 3;
+      updatedX -= cursorDetails.step;
     }
     moveCursor(Coordinates(updatedX, updatedY));
   }
