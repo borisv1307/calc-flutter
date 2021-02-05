@@ -1,7 +1,5 @@
 import 'package:cartesian_graph/bounds.dart';
-import 'package:cartesian_graph/cartesian_graph.dart';
 import 'package:cartesian_graph/coordinates.dart';
-import 'package:cartesian_graph/pixel_location.dart';
 import 'package:open_calc/calculator/input_pad/input_variables.dart';
 import 'package:open_calc/graph/function_screen/function_display_controller.dart';
 import 'package:open_calc/graph/function_screen/input_pad/graph_input_evaluator.dart';
@@ -9,6 +7,7 @@ import 'package:open_calc/graph/graph_screen/graph_navigator/graph_navigator.dar
 import 'package:open_calc/graph/graph_screen/graph_table.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:open_calc/graph/graph_screen/interactive_graph/interactive_graph.dart';
 
 class GraphScreen extends StatefulWidget {
   final FunctionDisplayController controller;
@@ -50,36 +49,15 @@ class GraphScreenState extends State<GraphScreen>{
   Widget build(BuildContext context) {
 
     this.inputEquations = widget.evaluator.translateInputs(widget.controller.inputs);
-    double devicePixelRatio = MediaQuery.of(context).devicePixelRatio;
 
-    CartesianGraph graph = CartesianGraph(
-      Bounds(_xMin, _xMax, _yMin, _yMax),
-      equations: inputEquations,
-      cursorLocation: this.cursorLocation,
-    );
     return Scaffold(
       key: _scaffoldKey,
       resizeToAvoidBottomInset: false,
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
-            ConstrainedBox(
-              constraints: BoxConstraints(
-                maxHeight: GRAPH_HEIGHT,
-              ),
-              child: GestureDetector(
-                child: graph,
-                onTapDown: (TapDownDetails details){
-                  setState(() {
-                    double y = GRAPH_HEIGHT - (details.localPosition.dy * devicePixelRatio);
-                    double x = details.localPosition.dx * devicePixelRatio;
-                    this.cursorLocation = graph.calculateCoordinates(PixelLocation(x.toInt(), y.toInt()));
-                  });
-                },
-              )
-            ),
+            InteractiveGraph(this.inputEquations,Bounds(_xMin, _xMax, _yMin, _yMax),this.cursorLocation,this.moveCursor),
             GraphNavigator(this.cursorLocation,this.moveCursor),
-
             Container(
               margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
               child: ListView.separated(
