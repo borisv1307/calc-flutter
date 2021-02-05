@@ -30,7 +30,6 @@ class GraphScreenState extends State<GraphScreen>{
       _xMax = 10,
       _yMin = -10,
       _yMax = 10;
-  double _step = 1;
   double drawerWidth = 200;
   double drawerHeight = 365;
   TextStyle mainStyle = TextStyle(fontFamily: 'RobotoMono', fontSize: 20);
@@ -160,11 +159,11 @@ class GraphScreenState extends State<GraphScreen>{
                   ),
                   TextFormField(
                     keyboardType: TextInputType.number,
-                    initialValue: '$_step',
+                    initialValue: '${cursorDetails.step}',
                     decoration:
                     InputDecoration(labelText: 'Step:'),
                     onSaved: (input) => {
-                      _step = double.parse(input),
+                      cursorDetails.step = double.parse(input),
                     },
                   ),
                   SizedBox(
@@ -175,7 +174,7 @@ class GraphScreenState extends State<GraphScreen>{
                       _scaleFormKey.currentState.save();
                       Navigator.of(context).pop();  // close drawer
                       setState(() {
-                        cursorDetails.step = _step;
+                        cursorDetails.step = cursorDetails.step;
                       });
                     },
                     child: Text("Save"),
