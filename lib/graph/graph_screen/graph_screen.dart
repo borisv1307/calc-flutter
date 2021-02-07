@@ -32,10 +32,11 @@ class GraphScreenState extends State<GraphScreen>{
       _xMax = 10,
       _yMin = -10,
       _yMax = 10;
+  int chosenEquationIndex = 0;
   double drawerWidth = 200;
   double drawerHeight = 305;
   TextStyle mainStyle = TextStyle(fontFamily: 'RobotoMono', fontSize: 20);
-  TextStyle titleStyle = TextStyle(fontFamily: 'RobotoMono', fontSize: 23);
+  TextStyle titleStyle = TextStyle(fontFamily: 'RobotoMono', fontSize: 17);
   List<Coordinates> coordinates;
 
   @override
@@ -75,6 +76,8 @@ class GraphScreenState extends State<GraphScreen>{
                 Bounds(_xMin, _xMax, _yMin, _yMax),
                 equations: inputEquations,
                 cursorLocation: cursor.coordinates(),
+                chosenEquationIndex: chosenEquationIndex,
+                // lineColor: Colors.black,
               ),
             ),
             Container(
@@ -147,8 +150,15 @@ class GraphScreenState extends State<GraphScreen>{
                       return ListTile();
                     }
                     return ListTile(
-                      leading: Text("y"+ (index+1).toString() + "=", style: titleStyle),
-                      title: Text(inputEquations[index], style: mainStyle)
+                      leading: Text("y"+ (index+1).toString() + " =", style: titleStyle),
+                      title: Text(inputEquations[index], style: mainStyle),
+                      selected: index == chosenEquationIndex,
+                      onTap: () {
+                        setState(() {
+                          chosenEquationIndex = index;
+                        });
+                      },
+
                     );
                   },
                   separatorBuilder: (BuildContext context, int index) => Divider(thickness: 1.5),
