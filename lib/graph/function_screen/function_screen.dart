@@ -42,8 +42,11 @@ class FunctionScreenState extends State<FunctionScreen> {
           padding: const EdgeInsets.symmetric(vertical: 5.0),
           child: Row(
             children: [
+              Text('y' + (i + 1).toString() + '=', style: TextStyle(fontFamily: 'RobotoMono', fontSize: 20)),
+              SizedBox(width: 10),
               Expanded(child: FunctionTextField(i, widget.controller, widget.calculator)),
               SizedBox(width: 16,),
+              // we need add button at last friends row only
               _removeButton(false, i),
             ],
           ),
@@ -78,7 +81,7 @@ class FunctionScreenState extends State<FunctionScreen> {
   Widget build(BuildContext context) {
     inputHandler = GraphInputHandler(widget.controller, context, _formKey);
     double screenHeight = MediaQuery.of(context).size.height;
-    double height = (screenHeight - 373) / 1.43;
+    double height = (screenHeight - 353) / 1.43;
 
     return Scaffold(
         body: Center(
@@ -87,14 +90,15 @@ class FunctionScreenState extends State<FunctionScreen> {
             child: Column(
               children: <Widget>[
                 Container(
+                  color: Color.fromRGBO(170, 200, 154, 1),
                   height: height,
-                  margin: EdgeInsets.symmetric( vertical: 10, horizontal: 10),
+                  padding: EdgeInsets.symmetric( vertical: 10, horizontal: 10),
                   child: SingleChildScrollView(
                     child: Column(
                       children: <Widget>[
                         ..._getFunctions(),
                         ButtonTheme(
-                          minWidth: 100.0,
+                          minWidth: 150.0,
                           height: 40,
                           child: RaisedButton(
                             onPressed: () {
