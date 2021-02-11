@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:open_calc/graph/graph_screen/graph_cursor.dart';
-import 'file:///C:/Users/Greg/IdeaProjects/se-calc/calc-flutter/lib/graph/graph_screen/interactive_graph/interactive_graph.dart';
+import 'package:open_calc/graph/graph_screen/interactive_graph/interactive_graph.dart';
 
 
 
