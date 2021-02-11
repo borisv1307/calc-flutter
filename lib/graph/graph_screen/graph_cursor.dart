@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 
 class GraphCursor extends ChangeNotifier{
   Coordinates _location = Coordinates(0, 0);
-  double _step = 1;
   Color _color = Colors.blue;
 
   get location{

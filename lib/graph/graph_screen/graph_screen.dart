@@ -7,7 +7,6 @@ import 'package:open_calc/graph/graph_screen/graph_details/graph_details.dart';
 import 'package:open_calc/graph/graph_screen/graph_details/scale_settings/scale_settings.dart';
 import 'package:open_calc/graph/graph_screen/graph_navigator/graph_navigator.dart';
 import 'package:open_calc/graph/graph_screen/graph_navigator/text_toggle_selection.dart';
-import 'package:open_calc/graph/graph_screen/graph_table.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:open_calc/graph/graph_screen/interactive_graph/interactive_graph.dart';
@@ -54,19 +53,6 @@ class GraphScreenState extends State<GraphScreen>{
       }
       cursorDetails.location = Coordinates(_roundToInterval(updatedLocation.x,scaleSettings.step),_roundToInterval(updatedLocation.y,scaleSettings.step));
     });
-  }
-
-  List<List<Coordinates>> _getCoordinates() {
-    List<List<Coordinates>> allCoordinates = [];
-    for (int i = 0; i < inputEquations.length; i++) {
-      List<Coordinates> coords = [];
-      for (double x = scaleSettings.xMin.toDouble(); x <= scaleSettings.xMax; x += scaleSettings.step) {
-        double y = calculator.calculateEquation(inputEquations[i], x);
-        coords.add(Coordinates(x, y));
-      }
-      allCoordinates.add(coords);
-    }
-     return allCoordinates;
   }
 
   void _traceEquation(int index) {

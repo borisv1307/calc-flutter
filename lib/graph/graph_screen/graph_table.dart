@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cartesian_graph/coordinates.dart';
 import 'package:open_calc/graph/graph_screen/graph_details/scale_settings/scale_settings.dart';
-import 'package:open_calc/graph/graph_screen/interactive_graph/interactive_graph.dart';
 
 
 class GraphTable extends StatefulWidget {
