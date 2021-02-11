@@ -1,16 +1,19 @@
 import 'package:advanced_calculation/advanced_calculator.dart';
-import 'package:cartesian_graph/bounds.dart';
 import 'package:cartesian_graph/coordinates.dart';
 import 'package:open_calc/calculator/input_pad/input_variables.dart';
 import 'package:open_calc/graph/function_screen/function_display_controller.dart';
 import 'package:open_calc/graph/graph_screen/graph_cursor.dart';
 import 'package:open_calc/graph/graph_screen/graph_details/graph_details.dart';
+import 'package:open_calc/graph/graph_screen/graph_details/scale_settings/scale_settings.dart';
 import 'package:open_calc/graph/graph_screen/graph_navigator/graph_navigator.dart';
 import 'package:open_calc/graph/graph_screen/graph_navigator/text_toggle_selection.dart';
 import 'package:open_calc/graph/graph_screen/graph_table.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:open_calc/graph/graph_screen/interactive_graph/interactive_graph.dart';
+import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
+
+
 
 import 'graph_input_evaluator.dart';
 
@@ -26,12 +29,8 @@ class GraphScreen extends StatefulWidget {
 
 class GraphScreenState extends State<GraphScreen>{
   final _scaffoldKey = GlobalKey<ScaffoldState>();
-  final _scaleFormKey = GlobalKey<FormState>();
   List<String> inputEquations;
-  int _xMin = -10,
-      _xMax = 10,
-      _yMin = -10,
-      _yMax = 10;
+  ScaleSettings scaleSettings = ScaleSettings();
   double drawerWidth = 200;
   double drawerHeight = 365;
   TextStyle mainStyle = TextStyle(fontFamily: 'RobotoMono', fontSize: 20);
@@ -42,7 +41,8 @@ class GraphScreenState extends State<GraphScreen>{
   GraphCursor cursorDetails = GraphCursor();
 
   double _roundToInterval(double coordinate, double interval){
-    return (coordinate/interval).round()/interval;
+    return (coordinate/interval).round() * interval;
+
   }
 
   void moveCursor(Coordinates requestedLocation) {
@@ -69,10 +69,6 @@ class GraphScreenState extends State<GraphScreen>{
     });
   }
 
-  void _openDrawer() {
-    _scaffoldKey.currentState.openEndDrawer();
-  }
-
   @override
   Widget build(BuildContext context) {
     this.inputEquations = widget.evaluator.translateInputs(widget.controller.inputs);
@@ -80,91 +76,19 @@ class GraphScreenState extends State<GraphScreen>{
     return Scaffold(
       key: _scaffoldKey,
       resizeToAvoidBottomInset: false,
-      body: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            InteractiveGraph(this.inputEquations,Bounds(_xMin, _xMax, _yMin, _yMax),this.cursorDetails,this.moveCursor),
-            GraphNavigator(this.cursorDetails,this.moveCursor,selection),
-            GraphDetails(this.inputEquations,this.selectedIndex,this._traceEquation,selection)
-          ]
+      body: KeyboardVisibilityBuilder(
+        builder:(context, isKeyboardVisible){
+          return Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                if(!isKeyboardVisible)
+                  InteractiveGraph(this.inputEquations,this.scaleSettings,this.cursorDetails,this.moveCursor),
+                GraphNavigator(this.cursorDetails,this.moveCursor,selection),
+                GraphDetails(this.inputEquations,this.selectedIndex,this._traceEquation,selection,this.scaleSettings,this.cursorDetails)
+              ]
+          );
+        }
       ),
-      endDrawer: SingleChildScrollView(
-        scrollDirection: Axis.vertical,
-        child: Container(
-          color: Colors.white,
-          width: drawerWidth,
-          height: drawerHeight,
-          child: Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Form(
-              key: _scaleFormKey,
-              child: Column(
-                children: <Widget>[
-                  TextFormField(
-                    keyboardType: TextInputType.number,
-                    initialValue: '$_xMax',
-                    decoration:
-                    InputDecoration(labelText: 'X max:'),
-                    onSaved: (input) => {
-                      _xMax = int.parse(input),
-                    },
-                  ),
-                  TextFormField(
-                    keyboardType: TextInputType.number,
-                    initialValue: '$_xMin',
-                    decoration:
-                    InputDecoration(labelText: 'X min:'),
-                    onSaved: (input) => {
-                      _xMin = int.parse(input),
-                    },
-                  ),
-                  TextFormField(
-                    keyboardType: TextInputType.number,
-                    initialValue: '$_yMax',
-                    decoration:
-                    InputDecoration(labelText: 'Y max:'),
-                    onSaved: (input) => {
-                      _yMax = int.parse(input),
-                    },
-                  ),
-                  TextFormField(
-                    keyboardType: TextInputType.number,
-                    initialValue: '$_yMin',
-                    decoration:
-                    InputDecoration(labelText: 'Y min:'),
-                    onSaved: (input) => {
-                      _yMin = int.parse(input),
-                    },
-                  ),
-                  TextFormField(
-                    keyboardType: TextInputType.number,
-                    initialValue: '${cursorDetails.step}',
-                    decoration:
-                    InputDecoration(labelText: 'Step:'),
-                    onSaved: (input) => {
-                      cursorDetails.step = double.parse(input),
-                    },
-                  ),
-                  SizedBox(
-                    height: 5,
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      _scaleFormKey.currentState.save();
-                      Navigator.of(context).pop();  // close drawer
-                      setState(() {
-                        cursorDetails.step = cursorDetails.step;
-                      });
-                    },
-                    child: Text("Save"),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ),
-
       floatingActionButton: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -192,15 +116,7 @@ class GraphScreenState extends State<GraphScreen>{
                 }
               );
             }
-          ),
-          FloatingActionButton.extended(
-            onPressed: () {
-              _openDrawer();
-            },
-            label: Text('Scale'),
-            icon: Icon(Icons.crop),
-            heroTag: 3
-          ),
+          )
         ],
       )
     );
