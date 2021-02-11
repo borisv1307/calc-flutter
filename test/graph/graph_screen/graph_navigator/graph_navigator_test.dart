@@ -3,26 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:open_calc/graph/graph_screen/graph_cursor.dart';
 import 'package:open_calc/graph/graph_screen/graph_navigator/graph_navigator.dart';
+import 'package:open_calc/graph/graph_screen/graph_navigator/text_toggle_selection.dart';
 
 void main(){
   Widget _buildTestableNavigator(Coordinates cursorLocation,Function(Coordinates updatedLocation) moveCursor){
     GraphCursor cursor = GraphCursor();
     cursor.location = cursorLocation;
     cursor.step = 3;
-    return MaterialApp(home:GraphNavigator(cursor, moveCursor));
+    return MaterialApp(home:GraphNavigator(cursor, moveCursor,TextToggleSelection('equations')));
   }
-
-  group('Legend',(){
-    testWidgets("x coordinate displayed ", (WidgetTester tester) async {
-      await tester.pumpWidget(_buildTestableNavigator(Coordinates(5,7),(Coordinates u){}));
-      expect(find.text('x = 5.0'), findsOneWidget);
-    });
-
-    testWidgets("y coordinate displayed ", (WidgetTester tester) async {
-      await tester.pumpWidget(_buildTestableNavigator(Coordinates(5,7),(Coordinates u){}));
-      expect(find.text('y = 7.0'), findsOneWidget);
-    });
-  });
 
   group('Arrows',(){
     testWidgets("can navigate cursor up", (WidgetTester tester) async {

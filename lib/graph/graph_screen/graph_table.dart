@@ -14,7 +14,7 @@ class GraphTable extends StatelessWidget {
     double devicePixelRatio = MediaQuery.of(context).devicePixelRatio;
     double screenHeight = MediaQuery.of(context).size.height * devicePixelRatio;
     double appBarHeight = Scaffold.of(context).appBarMaxHeight * devicePixelRatio;
-    double tableHeight = (screenHeight - (InteractiveGraph.GRAPH_HEIGHT + appBarHeight)) / devicePixelRatio;
+    double tableHeight = (screenHeight - (InteractiveGraphState.GRAPH_HEIGHT + appBarHeight)) / devicePixelRatio;
     
     
     return Stack(
@@ -59,7 +59,7 @@ class GraphTable extends StatelessWidget {
                 Expanded(
                   child: Container(
                     child: ListView.separated(
-                      controller: ScrollController(initialScrollOffset: 135*72.1),
+                      // controller: ScrollController(initialScrollOffset: 135*72.1),
                       shrinkWrap: true,
                       padding: const EdgeInsets.all(8),
                       itemCount: coordinates[0].length,
