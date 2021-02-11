@@ -52,9 +52,9 @@ class ScaleSettingsSection extends StatelessWidget{
           )),
           Expanded(child: Column(
             children: [
-              _buildFormField('step', graphCursor.step,
+              _buildFormField('step', scaleSettings.step,
                 (input){
-                  graphCursor.step = double.parse(input);
+                  scaleSettings.step = double.parse(input);
                 }),
             ],
           ),)

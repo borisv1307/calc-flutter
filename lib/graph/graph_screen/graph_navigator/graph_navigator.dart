@@ -2,6 +2,7 @@ import 'package:cartesian_graph/coordinates.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:open_calc/graph/graph_screen/graph_cursor.dart';
+import 'package:open_calc/graph/graph_screen/graph_details/scale_settings/scale_settings.dart';
 import 'package:open_calc/graph/graph_screen/graph_navigator/text_toggle_selection.dart';
 import 'package:open_calc/graph/graph_screen/graph_navigator/text_toggle_selector.dart';
 
@@ -12,8 +13,9 @@ class GraphNavigator extends StatelessWidget {
   final Function(Coordinates updatedLocation) moveCursor;
   final GraphCursor cursorDetails;
   final TextToggleSelection selection;
+  final ScaleSettings scaleSettings;
 
-  GraphNavigator(this.cursorDetails, this.moveCursor, this.selection);
+  GraphNavigator(this.cursorDetails, this.moveCursor, this.selection, this.scaleSettings);
   
   final TextStyle mainStyle = TextStyle(fontFamily: 'RobotoMono', fontSize: 20,color: Colors.white);
 
@@ -21,13 +23,13 @@ class GraphNavigator extends StatelessWidget {
     double updatedX = cursorDetails.location.x;
     double updatedY = cursorDetails.location.y;
     if (direction == CursorDirection.UP) {
-      updatedY += cursorDetails.step;
+      updatedY += scaleSettings.step;
     } else if (direction == CursorDirection.DOWN) {
-      updatedY -= cursorDetails.step;
+      updatedY -= scaleSettings.step;
     } else if (direction == CursorDirection.RIGHT) {
-      updatedX += cursorDetails.step;
+      updatedX += scaleSettings.step;
     } else if (direction == CursorDirection.LEFT) {
-      updatedX -= cursorDetails.step;
+      updatedX -= scaleSettings.step;
     }
     moveCursor(Coordinates(updatedX, updatedY));
   }

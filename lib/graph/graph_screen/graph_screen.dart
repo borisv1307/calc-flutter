@@ -52,7 +52,7 @@ class GraphScreenState extends State<GraphScreen>{
         double y = calculator.calculateEquation(inputEquations[selectedIndex], requestedLocation.x);
         updatedLocation = Coordinates(requestedLocation.x, y);
       }
-      cursorDetails.location = Coordinates(_roundToInterval(updatedLocation.x,cursorDetails.step),_roundToInterval(updatedLocation.y,cursorDetails.step));
+      cursorDetails.location = Coordinates(_roundToInterval(updatedLocation.x,scaleSettings.step),_roundToInterval(updatedLocation.y,scaleSettings.step));
     });
   }
 
@@ -60,7 +60,7 @@ class GraphScreenState extends State<GraphScreen>{
     List<List<Coordinates>> allCoordinates = [];
     for (int i = 0; i < inputEquations.length; i++) {
       List<Coordinates> coords = [];
-      for (double x = scaleSettings.xMin.toDouble(); x <= scaleSettings.xMax; x += cursorDetails.step) {
+      for (double x = scaleSettings.xMin.toDouble(); x <= scaleSettings.xMax; x += scaleSettings.step) {
         double y = calculator.calculateEquation(inputEquations[i], x);
         coords.add(Coordinates(x, y));
       }
@@ -96,42 +96,18 @@ class GraphScreenState extends State<GraphScreen>{
               children: <Widget>[
                 if(!isKeyboardVisible)
                   InteractiveGraph(this.inputEquations,this.scaleSettings,this.cursorDetails,this.moveCursor),
-                  GraphNavigator(this.cursorDetails,this.moveCursor,selection),
-                  GraphDetails(this.inputEquations,this.selectedIndex,this._traceEquation,selection,this.scaleSettings,this.cursorDetails)
+                  GraphNavigator(this.cursorDetails,this.moveCursor,selection,this.scaleSettings),
+                  GraphDetails(this.inputEquations,this.selectedIndex,this._traceEquation,selection,this.scaleSettings,this.cursorDetails,calculator.calculateEquation)
               ]
           );
         }
       ),
-      floatingActionButton: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          Container(
-            margin: EdgeInsets.only(left: 34),
-            child: FloatingActionButton.extended(
-              onPressed: () { Navigator.of(context).pop(); },
-              icon: Icon(Icons.arrow_back),
-              label: Text("Back"),
-              backgroundColor: Colors.red,
-              heroTag: 1,
-            ),
-          ),
-          FloatingActionButton.extended(
-            backgroundColor: Colors.green,
-            label: Text('Table'),
-            icon: Icon(Icons.menu_book),
-            heroTag: 2,
-            onPressed: () {
-              showBottomSheet<void>(
-                context: context,
-                builder: (BuildContext context) {
-                  return GraphTable(coordinates: _getCoordinates());
-                }
-              );
-            }
-          )
-        ],
-      )
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () { Navigator.of(context).pop(); },
+        icon: Icon(Icons.arrow_back),
+        label: Text("Back"),
+        backgroundColor: Colors.red,
+      ),
     );
   }
 }

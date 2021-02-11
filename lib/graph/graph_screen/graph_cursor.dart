@@ -15,15 +15,6 @@ class GraphCursor extends ChangeNotifier{
     notifyListeners();
   }
 
-  get step{
-    return _step;
-  }
-
-  set step(double step){
-    this._step = step;
-    notifyListeners();
-  }
-
   get color{
     return _color;
   }
