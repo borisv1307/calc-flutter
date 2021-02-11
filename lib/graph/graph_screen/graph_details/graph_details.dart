@@ -45,7 +45,17 @@ class GraphDetailsState extends State<GraphDetails>{
 
   @override
   Widget build(BuildContext context) {
-    return EquationSelector(this.widget.inputEquations, this.widget.selectedIndex, this.widget.traceEquation);
+    return Expanded(
+      child:Navigator(
+          pages:[
+            MaterialPage(
+                key: ValueKey('equations'),
+                child: EquationSelector(this.widget.inputEquations, this.widget.selectedIndex, this.widget.traceEquation)
+            )
+          ],
+          onPopPage: (route, result) => route.didPop(result)
+      )
+    );
   }
 
 }

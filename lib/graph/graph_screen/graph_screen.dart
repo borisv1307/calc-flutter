@@ -81,16 +81,14 @@ class GraphScreenState extends State<GraphScreen>{
     return Scaffold(
       key: _scaffoldKey,
       resizeToAvoidBottomInset: false,
-      body: SingleChildScrollView(
-        child: Column(
+      body: Column(
+          mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             InteractiveGraph(this.inputEquations,Bounds(_xMin, _xMax, _yMin, _yMax),this.cursorDetails,this.moveCursor),
             GraphNavigator(this.cursorDetails,this.moveCursor,selection),
             GraphDetails(this.inputEquations,this.selectedIndex,this._traceEquation,selection)
           ]
-        )
       ),
-
       endDrawer: SingleChildScrollView(
         scrollDirection: Axis.vertical,
         child: Container(
