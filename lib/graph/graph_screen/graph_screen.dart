@@ -30,11 +30,11 @@ class GraphScreenState extends State<GraphScreen>{
       _xMax = 10,
       _yMin = -10,
       _yMax = 10;
+  double _step = 1;
   double drawerWidth = 200;
   double drawerHeight = 365;
   TextStyle mainStyle = TextStyle(fontFamily: 'RobotoMono', fontSize: 20);
   TextStyle titleStyle = TextStyle(fontFamily: 'RobotoMono', fontSize: 23);
-  List<Coordinates> coordinates = [];
   AdvancedCalculator calculator = AdvancedCalculator();
   int selectedIndex = -1;
 
@@ -49,6 +49,19 @@ class GraphScreenState extends State<GraphScreen>{
       }
       cursorDetails.location = updatedLocation;
     });
+  }
+
+  List<List<Coordinates>> _getCoordinates() {
+    List<List<Coordinates>> allCoordinates = [];
+    for (int i = 0; i < inputEquations.length; i++) {
+      List<Coordinates> coords = [];
+      for (double x = _xMin.toDouble(); x <= _xMax; x += _step) {
+        double y = calculator.calculateEquation(inputEquations[i], x);
+        coords.add(Coordinates(x, y));
+      }
+      allCoordinates.add(coords);
+    }
+     return allCoordinates;
   }
 
   void _beginTrace(int index) {
@@ -163,7 +176,7 @@ class GraphScreenState extends State<GraphScreen>{
                     decoration:
                     InputDecoration(labelText: 'Step:'),
                     onSaved: (input) => {
-                      cursorDetails.step = double.parse(input),
+                      _step = double.parse(input),
                     },
                   ),
                   SizedBox(
@@ -174,7 +187,7 @@ class GraphScreenState extends State<GraphScreen>{
                       _scaleFormKey.currentState.save();
                       Navigator.of(context).pop();  // close drawer
                       setState(() {
-                        cursorDetails.step = cursorDetails.step;
+                        cursorDetails.step = _step;
                       });
                     },
                     child: Text("Save"),
@@ -206,10 +219,10 @@ class GraphScreenState extends State<GraphScreen>{
             icon: Icon(Icons.menu_book),
             heroTag: 2,
             onPressed: () {
-              showModalBottomSheet<void>(
+              showBottomSheet<void>(
                 context: context,
                 builder: (BuildContext context) {
-                  return GraphTable(coordinates: this.coordinates);
+                  return GraphTable(coordinates: _getCoordinates());
                 }
               );
             }
