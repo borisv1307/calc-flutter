@@ -13,18 +13,6 @@ void main(){
     return MaterialApp(home:GraphNavigator(cursor, moveCursor,TextToggleSelection('equations')));
   }
 
-  group('Legend',(){
-    testWidgets("x coordinate displayed ", (WidgetTester tester) async {
-      await tester.pumpWidget(_buildTestableNavigator(Coordinates(5,7),(Coordinates u){}));
-      expect(find.text('x = 5.0'), findsOneWidget);
-    });
-
-    testWidgets("y coordinate displayed ", (WidgetTester tester) async {
-      await tester.pumpWidget(_buildTestableNavigator(Coordinates(5,7),(Coordinates u){}));
-      expect(find.text('y = 7.0'), findsOneWidget);
-    });
-  });
-
   group('Arrows',(){
     testWidgets("can navigate cursor up", (WidgetTester tester) async {
       Coordinates updatedCoordinates;
