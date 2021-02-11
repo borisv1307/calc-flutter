@@ -4,7 +4,9 @@ import 'package:cartesian_graph/coordinates.dart';
 import 'package:open_calc/calculator/input_pad/input_variables.dart';
 import 'package:open_calc/graph/function_screen/function_display_controller.dart';
 import 'package:open_calc/graph/graph_screen/graph_cursor.dart';
+import 'package:open_calc/graph/graph_screen/graph_details/graph_details.dart';
 import 'package:open_calc/graph/graph_screen/graph_navigator/graph_navigator.dart';
+import 'package:open_calc/graph/graph_screen/graph_navigator/text_toggle_selection.dart';
 import 'package:open_calc/graph/graph_screen/graph_table.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -33,12 +35,15 @@ class GraphScreenState extends State<GraphScreen>{
   double drawerWidth = 200;
   double drawerHeight = 365;
   TextStyle mainStyle = TextStyle(fontFamily: 'RobotoMono', fontSize: 20);
-  TextStyle titleStyle = TextStyle(fontFamily: 'RobotoMono', fontSize: 23);
   List<Coordinates> coordinates = [];
   AdvancedCalculator calculator = AdvancedCalculator();
   int selectedIndex = -1;
-
+  TextToggleSelection selection = TextToggleSelection('equations');
   GraphCursor cursorDetails = GraphCursor();
+
+  double _roundToInterval(double coordinate, double interval){
+    return (coordinate/interval).round()/interval;
+  }
 
   void moveCursor(Coordinates requestedLocation) {
     Coordinates updatedLocation = requestedLocation;
@@ -47,17 +52,21 @@ class GraphScreenState extends State<GraphScreen>{
         double y = calculator.calculateEquation(inputEquations[selectedIndex], requestedLocation.x);
         updatedLocation = Coordinates(requestedLocation.x, y);
       }
-      cursorDetails.location = updatedLocation;
+      cursorDetails.location = Coordinates(_roundToInterval(updatedLocation.x,cursorDetails.step),_roundToInterval(updatedLocation.y,cursorDetails.step));
     });
   }
 
-  void _beginTrace(int index) {
-    if (selectedIndex == index) {  // exit trace mode
-      selectedIndex = -1;
-    } else {
-      selectedIndex = index;
-      moveCursor(cursorDetails.location);
-    }
+  void _traceEquation(int index) {
+    setState(() {
+      if (selectedIndex == index) {  // exit trace mode
+        selectedIndex = -1;
+        cursorDetails.color = Colors.blue;
+      } else {
+        selectedIndex = index;
+        cursorDetails.color = Colors.red;
+        moveCursor(cursorDetails.location);
+      }
+    });
   }
 
   void _openDrawer() {
@@ -71,44 +80,14 @@ class GraphScreenState extends State<GraphScreen>{
     return Scaffold(
       key: _scaffoldKey,
       resizeToAvoidBottomInset: false,
-      body: SingleChildScrollView(
-        child: Column(
+      body: Column(
+          mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            InteractiveGraph(this.inputEquations,Bounds(_xMin, _xMax, _yMin, _yMax),this.cursorDetails.location,this.moveCursor),
-            GraphNavigator(this.cursorDetails,this.moveCursor),
-            Container(
-              margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-              child: ListView.separated(
-                shrinkWrap: true,
-                physics: const ClampingScrollPhysics(),
-                padding: const EdgeInsets.all(8),
-                itemCount: inputEquations.length + 1,
-                itemBuilder: (context, int index) {
-                  if (index == inputEquations.length) {
-                    return ListTile();
-                  }
-                  return ListTileTheme(
-                    selectedColor: Colors.black,
-                    selectedTileColor: Colors.green[100],
-                    child: ListTile(
-                      leading: Text("y"+ (index+1).toString() + "=", style: titleStyle),
-                      title: Text(inputEquations[index], style: mainStyle),
-                      selected: index == selectedIndex,
-                      onTap: () {
-                        setState(() {
-                          _beginTrace(index);
-                        });
-                      }
-                    )
-                  );
-                },
-                separatorBuilder: (BuildContext context, int index) => Divider(thickness: 1.5),
-              ),
-            ),
-          ],
-        ),
+            InteractiveGraph(this.inputEquations,Bounds(_xMin, _xMax, _yMin, _yMax),this.cursorDetails,this.moveCursor),
+            GraphNavigator(this.cursorDetails,this.moveCursor,selection),
+            GraphDetails(this.inputEquations,this.selectedIndex,this._traceEquation,selection)
+          ]
       ),
-
       endDrawer: SingleChildScrollView(
         scrollDirection: Axis.vertical,
         child: Container(
