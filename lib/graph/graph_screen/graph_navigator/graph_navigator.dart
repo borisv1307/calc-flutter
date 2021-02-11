@@ -1,9 +1,6 @@
 import 'package:cartesian_graph/coordinates.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:open_calc/calculator/input_pad/button/input_button.dart';
-import 'package:open_calc/calculator/input_pad/button/pad_button.dart';
-import 'package:open_calc/calculator/input_pad/input_button_style.dart';
 import 'package:open_calc/graph/graph_screen/graph_cursor.dart';
 import 'package:open_calc/graph/graph_screen/graph_navigator/text_toggle_selection.dart';
 import 'package:open_calc/graph/graph_screen/graph_navigator/text_toggle_selector.dart';

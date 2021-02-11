@@ -7,11 +7,10 @@ import 'package:open_calc/graph/graph_screen/graph_cursor.dart';
 import 'package:open_calc/graph/graph_screen/graph_details/graph_details.dart';
 import 'package:open_calc/graph/graph_screen/graph_navigator/graph_navigator.dart';
 import 'package:open_calc/graph/graph_screen/graph_navigator/text_toggle_selection.dart';
-import 'package:open_calc/graph/graph_screen/graph_navigator/text_toggle_selector.dart';
 import 'package:open_calc/graph/graph_screen/graph_table.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'file:///C:/Users/Greg/IdeaProjects/se-calc/calc-flutter/lib/graph/graph_screen/interactive_graph/interactive_graph.dart';
+import 'package:open_calc/graph/graph_screen/interactive_graph/interactive_graph.dart';
 
 import 'graph_input_evaluator.dart';
 
