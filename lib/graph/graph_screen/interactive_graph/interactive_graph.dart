@@ -14,11 +14,12 @@ class InteractiveGraph extends StatelessWidget{
 
   InteractiveGraph._internal(this.graph,this.moveCursor, this.analyzer);
 
-  factory InteractiveGraph(List<String> inputEquations,  Bounds bounds, Coordinates cursorLocation, Function(Coordinates updatedLocation) moveCursor,[CartesianGraphAnalyzer specifiedAnalyzer]){
+  factory InteractiveGraph(List<String> inputEquations, int chosenEquationIndex,  Bounds bounds, Coordinates cursorLocation, Function(Coordinates updatedLocation) moveCursor,[CartesianGraphAnalyzer specifiedAnalyzer]){
     CartesianGraph graph = CartesianGraph(
       bounds,
       equations: inputEquations,
       cursorLocation: cursorLocation,
+      chosenEquationIndex: chosenEquationIndex,
     );
     CartesianGraphAnalyzer analyzer = specifiedAnalyzer ?? CartesianGraphAnalyzer(graph);
     return InteractiveGraph._internal(graph, moveCursor, analyzer);

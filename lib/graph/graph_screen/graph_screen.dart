@@ -30,7 +30,7 @@ class GraphScreenState extends State<GraphScreen>{
       _xMax = 10,
       _yMin = -10,
       _yMax = 10;
-  int chosenEquationIndex = 0;
+  int chosenEquationIndex = -1;
   double drawerWidth = 200;
   double drawerHeight = 365;
   TextStyle mainStyle = TextStyle(fontFamily: 'RobotoMono', fontSize: 20);
@@ -55,6 +55,7 @@ class GraphScreenState extends State<GraphScreen>{
   void _beginTrace(int index) {
     if (selectedIndex == index) {  // exit trace mode
       selectedIndex = -1;
+      chosenEquationIndex = -1;
     } else {
       selectedIndex = index;
       moveCursor(cursorDetails.location);
@@ -72,40 +73,160 @@ class GraphScreenState extends State<GraphScreen>{
     return Scaffold(
         key: _scaffoldKey,
         resizeToAvoidBottomInset: false,
-        body: SingleChildScrollView(
+        body: Center(
           child: Column(
             children: <Widget>[
-              InteractiveGraph(this.inputEquations,Bounds(_xMin, _xMax, _yMin, _yMax),this.cursorDetails.location,this.moveCursor),
-              GraphNavigator(this.cursorDetails,this.moveCursor),
+              Stack(
+                alignment: AlignmentDirectional.center,
+                children: <Widget>[
+                  InteractiveGraph(this.inputEquations, chosenEquationIndex,Bounds(_xMin, _xMax, _yMin, _yMax),this.cursorDetails.location,this.moveCursor),
+                  Opacity(
+                    opacity: 0.3,
+                    child: Container(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Material(
+                            color: Colors.transparent,
+                            child: InkWell(
+                                onTap: () {
+                                  setState(() {
+                                    _yMax++;
+                                    _yMin++;
+                                  });
+                                },
+                                child: Icon(Icons.keyboard_arrow_up, size: 36,)
+                            ),
+                          ),
+                          SizedBox(
+                            height: 110,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                Material(
+                                  color: Colors.transparent,
+                                  child: InkWell(
+                                      onTap: () {
+                                        setState(() {
+                                          _xMax--;
+                                          _xMin--;
+                                        });
+                                      },
+                                      child: Icon(Icons.chevron_left, size: 36,)
+                                  ),
+                                ),
+                                Material(
+                                  color: Colors.transparent,
+                                  child: InkWell(
+                                      onTap: () {
+                                        setState(() {
+                                          _xMax++;
+                                          _xMin++;
+                                        });
+                                      },
+                                      child: Icon(Icons.chevron_right, size: 36,)
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Material(
+                            color: Colors.transparent,
+                            child: InkWell(
+                                onTap: () {
+                                  setState(() {
+                                    _yMax--;
+                                    _yMin--;
+                                  });
+                                },
+                                child: Icon(Icons.keyboard_arrow_down, size: 36,)
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  )
+                ],
+              ),
+
               Container(
-                margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                child: ListView.separated(
-                  shrinkWrap: true,
-                  physics: const ClampingScrollPhysics(),
-                  padding: const EdgeInsets.all(8),
-                  itemCount: inputEquations.length + 1,
-                  itemBuilder: (context, int index) {
-                    if (index == inputEquations.length) {
-                      return ListTile();
-                    }
-                    return ListTileTheme(
-                        selectedColor: Colors.black,
-                        selectedTileColor: Colors.green[100],
-                        child: ListTile(
-                            leading: Text("y"+ (index+1).toString() + "=", style: titleStyle),
-                            title: Text(inputEquations[index], style: mainStyle),
-                            selected: index == selectedIndex,
-                            onTap: () {
-                              setState(() {
-                                _beginTrace(index);
-                              });
-                            }
-                        )
-                    );
-                  },
-                  separatorBuilder: (BuildContext context, int index) => Divider(thickness: 1.5),
+                child: Row(
+                  children: <Widget>[
+                    Expanded(child: GraphNavigator(this.cursorDetails,this.moveCursor)),
+                    Container(
+                      width: 40,
+                      color: Colors.black26,
+                      child: Column(
+                        children: <Widget>[
+                          Material(
+                            color: Colors.transparent,
+                            child: InkWell(
+                                onTap: () {
+                                  setState(() {
+                                    _xMax--;
+                                    _yMax--;
+                                    _xMin++;
+                                    _yMin++;
+                                  });
+                                },
+                                child: Icon(Icons.zoom_in, size: 36,)
+                            ),
+                          ),
+                          Material(
+                            color: Colors.transparent,
+                            child: InkWell(
+                                onTap: () {
+                                  setState(() {
+                                    _xMax++;
+                                    _yMax++;
+                                    _xMin--;
+                                    _yMin--;
+                                  });
+                                },
+                                child: Icon(Icons.zoom_out, size: 36,)
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
               ),
+              Container(
+                // margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                child: Expanded(
+                  child: ListView.separated(
+                    shrinkWrap: true,
+                    physics: const ClampingScrollPhysics(),
+                    padding: const EdgeInsets.all(8),
+                    itemCount: inputEquations.length + 1,
+                    itemBuilder: (context, int index) {
+                      if (index == inputEquations.length) {
+                        return ListTile();
+                      }
+                      return ListTileTheme(
+                          selectedColor: Colors.black,
+                          selectedTileColor: Colors.green[100],
+                          child: ListTile(
+                              leading: Text("y"+ (index+1).toString() + "=", style: titleStyle),
+                              title: Text(inputEquations[index], style: mainStyle),
+                              selected: index == selectedIndex,
+                              onTap: () {
+                                setState(() {
+                                  chosenEquationIndex = index;
+                                  _beginTrace(index);
+                                });
+                              }
+                          )
+                      );
+                    },
+                    separatorBuilder: (BuildContext context, int index) => Divider(thickness: 1.5),
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 75,
+              )
             ],
           ),
         ),
@@ -228,4 +349,3 @@ class GraphScreenState extends State<GraphScreen>{
     );
   }
 }
-

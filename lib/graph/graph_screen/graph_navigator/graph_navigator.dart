@@ -37,7 +37,8 @@ class GraphNavigator extends StatelessWidget {
             this._moveCursor(command);
           },
           child: Icon(iconData)
-    ));
+        ),
+    );
   }
 
 
@@ -75,7 +76,7 @@ class GraphNavigator extends StatelessWidget {
                 ),
                 _buildArrow(CursorDirection.DOWN, Icons.arrow_downward),
               ]
-          )
+          ),
         ],
       ),
     );
