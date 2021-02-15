@@ -4,7 +4,7 @@ import 'package:open_calc/graph/graph_screen/graph_details/equation_selector/equ
 import 'package:open_calc/graph/graph_screen/graph_details/scale_settings/scale_settings.dart';
 import 'package:open_calc/graph/graph_screen/graph_details/scale_settings/scale_settings_section.dart';
 import 'package:open_calc/graph/graph_screen/graph_navigator/text_toggle_selection.dart';
-import 'package:open_calc/graph/graph_screen/graph_table.dart';
+import 'package:open_calc/graph/graph_screen/graph_details/graph_table/graph_table.dart';
 
 class GraphDetails extends StatefulWidget {
   final TextToggleSelection selection;
