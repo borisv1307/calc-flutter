@@ -13,9 +13,10 @@ class InteractiveGraph extends StatefulWidget {
   final GraphCursor cursor;
   final List<String> inputEquations;
   final ScaleSettings scaleSettings;
+  final int chosenEquationIndex;
 
 
-  InteractiveGraph(this.inputEquations,this.scaleSettings,this.cursor, this.moveCursor);
+  InteractiveGraph(this.inputEquations,this.scaleSettings,this.cursor, this.moveCursor, this.chosenEquationIndex);
 
   @override
   State<StatefulWidget> createState() => InteractiveGraphState();
@@ -67,6 +68,7 @@ class InteractiveGraphState extends State<InteractiveGraph>{
       equations: this.widget.inputEquations,
       cursorLocation: this.widget.cursor.location,
       cursorColor: this.widget.cursor.color,
+      chosenEquationIndex: this.widget.chosenEquationIndex,
     );
     CartesianGraphAnalyzer analyzer = CartesianGraphAnalyzer(graph);
 
@@ -79,19 +81,79 @@ class InteractiveGraphState extends State<InteractiveGraph>{
           child: Stack(
             alignment: Alignment.bottomLeft,
             children: [
-                graph,
-                Text(
-                ' X=${this.widget.cursor.location.x}   Y=${this.widget.cursor.location.y}',
-                  style:TextStyle(fontFamily: 'RobotoMono',
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                      shadows: [
-                        _buildShadow(-1.5,-1.5),
-                        _buildShadow(1.5,-1.5),
-                        _buildShadow(1.5,1.5),
-                        _buildShadow(-1.5,1.5)
-                      ])
-                )
+              graph,
+              Text(
+              ' X=${this.widget.cursor.location.x}   Y=${this.widget.cursor.location.y}',
+                style:TextStyle(fontFamily: 'RobotoMono',
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                    shadows: [
+                      _buildShadow(-1.5,-1.5),
+                      _buildShadow(1.5,-1.5),
+                      _buildShadow(1.5,1.5),
+                      _buildShadow(-1.5,1.5)
+                    ])
+              ),
+              // Container(
+              //   child: Column(
+              //     // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //     children: <Widget>[
+              //       Material(
+              //         color: Colors.transparent,
+              //         child: InkWell(
+              //             onTap: () {
+              //               setState(() {
+              //                 widget.scaleSettings.yMax++;
+              //                 widget.scaleSettings.yMin++;
+              //               });
+              //             },
+              //             child: Icon(Icons.keyboard_arrow_up, size: 36,)
+              //         ),
+              //       ),
+              //       Row(
+              //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //         children: <Widget>[
+              //           Material(
+              //             color: Colors.transparent,
+              //             child: InkWell(
+              //                 onTap: () {
+              //                   setState(() {
+              //                     widget.scaleSettings.xMax--;
+              //                     widget.scaleSettings.xMin--;
+              //                   });
+              //                 },
+              //                 child: Icon(Icons.chevron_left, size: 36,)
+              //             ),
+              //           ),
+              //           Material(
+              //             color: Colors.transparent,
+              //             child: InkWell(
+              //                 onTap: () {
+              //                   setState(() {
+              //                     widget.scaleSettings.xMax++;
+              //                     widget.scaleSettings.xMin++;
+              //                   });
+              //                 },
+              //                 child: Icon(Icons.chevron_right, size: 36,)
+              //             ),
+              //           ),
+              //         ],
+              //       ),
+              //       Material(
+              //         color: Colors.transparent,
+              //         child: InkWell(
+              //             onTap: () {
+              //               setState(() {
+              //                 widget.scaleSettings.yMax--;
+              //                 widget.scaleSettings.yMin--;
+              //               });
+              //             },
+              //             child: Icon(Icons.keyboard_arrow_down, size: 36,)
+              //         ),
+              //       ),
+              //     ],
+              //   ),
+              // )
              ],
           ),
           onTapDown: (TapDownDetails details){
