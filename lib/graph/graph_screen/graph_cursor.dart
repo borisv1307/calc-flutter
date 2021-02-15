@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 
 class GraphCursor extends ChangeNotifier{
   Coordinates _location = Coordinates(0, 0);
-  double _step = 1;
   Color _color = Colors.blue;
 
   get location{
@@ -12,15 +11,6 @@ class GraphCursor extends ChangeNotifier{
 
   set location(Coordinates location){
     this._location = location;
-    notifyListeners();
-  }
-
-  get step{
-    return _step;
-  }
-
-  set step(double step){
-    this._step = step;
     notifyListeners();
   }
 

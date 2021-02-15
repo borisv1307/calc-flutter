@@ -6,7 +6,7 @@ class EquationSelector extends StatelessWidget{
   final List<String> inputEquations;
   final int selectedIndex;
   final Function(int) traceEquation;
-  final TextStyle mainStyle = TextStyle(fontFamily: 'RobotoMono', fontSize: 18);
+  final TextStyle mainStyle = TextStyle(fontFamily: 'RobotoMono', fontSize: 22);
 
 
 

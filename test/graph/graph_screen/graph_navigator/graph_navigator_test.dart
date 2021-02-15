@@ -2,6 +2,7 @@ import 'package:cartesian_graph/coordinates.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:open_calc/graph/graph_screen/graph_cursor.dart';
+import 'package:open_calc/graph/graph_screen/graph_details/scale_settings/scale_settings.dart';
 import 'package:open_calc/graph/graph_screen/graph_navigator/graph_navigator.dart';
 import 'package:open_calc/graph/graph_screen/graph_navigator/text_toggle_selection.dart';
 
@@ -9,8 +10,9 @@ void main(){
   Widget _buildTestableNavigator(Coordinates cursorLocation,Function(Coordinates updatedLocation) moveCursor){
     GraphCursor cursor = GraphCursor();
     cursor.location = cursorLocation;
-    cursor.step = 3;
-    return MaterialApp(home:GraphNavigator(cursor, moveCursor,TextToggleSelection('equations')));
+    ScaleSettings scaleSettings = ScaleSettings();
+    scaleSettings.step = 3;
+    return MaterialApp(home:GraphNavigator(cursor, moveCursor,TextToggleSelection('equations'), scaleSettings));
   }
 
   group('Arrows',(){
