@@ -9,13 +9,10 @@ import 'package:open_calc/graph/graph_screen/graph_details/graph_table/graph_tab
 class GraphDetails extends StatefulWidget {
   final TextToggleSelection selection;
   final List<String> inputEquations;
-  final int selectedIndex;
-  final Function(int) traceEquation;
   final ScaleSettings scaleSettings;
   final GraphCursor graphCursor;
-  final Function(String, double) calculateEquation;
 
-  GraphDetails(this.inputEquations, this.selectedIndex, this.traceEquation, this.selection, this.scaleSettings,this.graphCursor, this.calculateEquation);
+  GraphDetails(this.inputEquations, this.selection, this.scaleSettings,this.graphCursor);
 
   @override
   State<StatefulWidget> createState() => GraphDetailsState();
@@ -63,8 +60,8 @@ class GraphDetailsState extends State<GraphDetails>{
       child:IndexedStack(
           index: index,
           children: <Widget>[
-            EquationSelector(this.widget.inputEquations, this.widget.selectedIndex, this.widget.traceEquation),
-            GraphTable(this.widget.inputEquations, this.widget.scaleSettings, this.widget.calculateEquation),
+            EquationSelector(this.widget.inputEquations, this.widget.graphCursor),
+            GraphTable(this.widget.inputEquations, this.widget.scaleSettings),
             ScaleSettingsSection(this.widget.scaleSettings, this.widget.graphCursor)
           ],
       )

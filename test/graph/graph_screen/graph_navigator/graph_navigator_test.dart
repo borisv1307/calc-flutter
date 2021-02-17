@@ -12,7 +12,7 @@ void main(){
     cursor.location = cursorLocation;
     ScaleSettings scaleSettings = ScaleSettings();
     scaleSettings.step = 3;
-    return MaterialApp(home:GraphNavigator(cursor, moveCursor,TextToggleSelection('equations'), scaleSettings));
+    return MaterialApp(home:GraphNavigator(cursor, TextToggleSelection('equations'), scaleSettings));
   }
 
   group('Arrows',(){
