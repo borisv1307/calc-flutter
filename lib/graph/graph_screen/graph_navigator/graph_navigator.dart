@@ -6,44 +6,67 @@ import 'package:open_calc/graph/graph_screen/graph_details/scale_settings/scale_
 import 'package:open_calc/graph/graph_screen/graph_navigator/text_toggle_selection.dart';
 import 'package:open_calc/graph/graph_screen/graph_navigator/text_toggle_selector.dart';
 
-enum CursorDirection {
-  UP,DOWN,LEFT,RIGHT
-}
-class GraphNavigator extends StatelessWidget {
+enum CursorDirection { UP, DOWN, LEFT, RIGHT }
+
+class GraphNavigator extends StatefulWidget {
   final GraphCursor cursorDetails;
   final TextToggleSelection selection;
   final ScaleSettings scaleSettings;
 
   GraphNavigator(this.cursorDetails, this.selection, this.scaleSettings);
-  
-  final TextStyle mainStyle = TextStyle(fontFamily: 'RobotoMono', fontSize: 20,color: Colors.white);
 
-  void _moveCursor(CursorDirection direction){
-    double updatedX = cursorDetails.location.x;
-    double updatedY = cursorDetails.location.y;
-    if (direction == CursorDirection.UP) {
-      updatedY += scaleSettings.step;
-    } else if (direction == CursorDirection.DOWN) {
-      updatedY -= scaleSettings.step;
-    } else if (direction == CursorDirection.RIGHT) {
-      updatedX += scaleSettings.step;
-    } else if (direction == CursorDirection.LEFT) {
-      updatedX -= scaleSettings.step;
-    }
-    this.cursorDetails.location = Coordinates(updatedX, updatedY);
+  final TextStyle mainStyle =
+      TextStyle(fontFamily: 'RobotoMono', fontSize: 20, color: Colors.white);
+  @override
+  _GraphNavigatorState createState() => _GraphNavigatorState();
+}
+
+class _GraphNavigatorState extends State<GraphNavigator> {
+  final TextStyle mainStyle =
+      TextStyle(fontFamily: 'RobotoMono', fontSize: 20, color: Colors.white);
+
+  void _zoomIn() {
+    setState(() {
+      widget.scaleSettings.xMax--;
+      widget.scaleSettings.yMax--;
+      widget.scaleSettings.xMin++;
+      widget.scaleSettings.yMin++;
+    });
   }
 
-  Widget _buildArrow(CursorDirection command, IconData iconData){
+  void _zoomOut() {
+    setState(() {
+      widget.scaleSettings.xMax++;
+      widget.scaleSettings.yMax++;
+      widget.scaleSettings.xMin--;
+      widget.scaleSettings.yMin--;
+    });
+  }
+
+  void _moveCursor(CursorDirection direction) {
+    double updatedX = widget.cursorDetails.location.x;
+    double updatedY = widget.cursorDetails.location.y;
+    if (direction == CursorDirection.UP) {
+      updatedY += widget.scaleSettings.step;
+    } else if (direction == CursorDirection.DOWN) {
+      updatedY -= widget.scaleSettings.step;
+    } else if (direction == CursorDirection.RIGHT) {
+      updatedX += widget.scaleSettings.step;
+    } else if (direction == CursorDirection.LEFT) {
+      updatedX -= widget.scaleSettings.step;
+    }
+    widget.cursorDetails.location = Coordinates(updatedX, updatedY);
+  }
+
+  Widget _buildArrow(CursorDirection command, IconData iconData) {
     return Material(
         color: Colors.transparent,
         child: InkWell(
-          onTap: () {
-            this._moveCursor(command);
-          },
-          child: Icon(iconData,color:Colors.black)
-    ));
+            onTap: () {
+              this._moveCursor(command);
+            },
+            child: Icon(iconData, color: Colors.black)));
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -52,26 +75,51 @@ class GraphNavigator extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Expanded(child: TextToggleSelector(selection)),
-          Column(
+          Expanded(child: TextToggleSelector(widget.selection)),
+          Column(children: [
+            _buildArrow(CursorDirection.UP, Icons.arrow_upward),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                _buildArrow(CursorDirection.UP, Icons.arrow_upward),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Padding(
-                        padding: EdgeInsets.only(right: 25),
-                        child: _buildArrow(CursorDirection.LEFT, Icons.arrow_back),
-                    ),
-                    _buildArrow(CursorDirection.RIGHT, Icons.arrow_forward),
-                  ],
+                Padding(
+                  padding: EdgeInsets.only(right: 25),
+                  child: _buildArrow(CursorDirection.LEFT, Icons.arrow_back),
                 ),
-                _buildArrow(CursorDirection.DOWN, Icons.arrow_downward),
-              ]
-          )
+                _buildArrow(CursorDirection.RIGHT, Icons.arrow_forward),
+              ],
+            ),
+            _buildArrow(CursorDirection.DOWN, Icons.arrow_downward),
+          ]),
+          Container(
+              width: 40,
+              child: Column(
+                children: <Widget>[
+                  Material(
+                    color: Colors.transparent,
+                    child: InkWell(
+                        onTap: () {
+                          _zoomIn();
+                        },
+                        child: Icon(
+                          Icons.zoom_in,
+                          size: 36,
+                        )),
+                  ),
+                  Material(
+                    color: Colors.transparent,
+                    child: InkWell(
+                        onTap: () {
+                          _zoomOut();
+                        },
+                        child: Icon(
+                          Icons.zoom_out,
+                          size: 36,
+                        )),
+                  )
+                ],
+              ))
         ],
       ),
     );
   }
-
 }

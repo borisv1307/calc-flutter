@@ -45,7 +45,7 @@ class FunctionScreenState extends State<FunctionScreen> {
               Text('y' + (i + 1).toString() + '=', style: TextStyle(fontFamily: 'RobotoMono', fontSize: 20)),
               SizedBox(width: 10),
               Expanded(child: FunctionTextField(i, widget.controller, widget.calculator)),
-              SizedBox(width: 10),
+              SizedBox(width: 16,),
               // we need add button at last friends row only
               _removeButton(false, i),
             ],
@@ -64,14 +64,14 @@ class FunctionScreenState extends State<FunctionScreen> {
         });
       },
       child: Container(
-        width: 30,
-        height: 30,
+        width: 20,
+        height: 20,
         decoration: BoxDecoration(
           color: (add) ? Colors.green : Colors.red,
           borderRadius: BorderRadius.circular(15),
         ),
         child: Icon(
-          Icons.remove, color: Colors.white,
+          Icons.remove, color: Colors.white, size: 20,
         ),
       ),
     );
