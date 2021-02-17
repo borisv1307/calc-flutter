@@ -1,3 +1,4 @@
+import 'package:advanced_calculation/advanced_calculator.dart';
 import 'package:flutter/material.dart';
 import 'package:cartesian_graph/coordinates.dart';
 import 'package:open_calc/graph/graph_screen/graph_details/scale_settings/scale_settings.dart';
@@ -8,7 +9,8 @@ class GraphTable extends StatefulWidget {
   final ScaleSettings scaleSettings;
   final Function(String, double) calculateEquation;
 
-  GraphTable(this.equations, this.scaleSettings, this.calculateEquation);
+  GraphTable(this.equations, this.scaleSettings, [Function(String, double) calculateEquation]):
+      this.calculateEquation = calculateEquation ?? AdvancedCalculator().calculateEquation;
 
   @override
   State<StatefulWidget> createState() => GraphTableState();

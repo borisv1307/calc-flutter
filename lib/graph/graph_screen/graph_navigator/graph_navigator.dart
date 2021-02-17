@@ -10,12 +10,11 @@ enum CursorDirection {
   UP,DOWN,LEFT,RIGHT
 }
 class GraphNavigator extends StatelessWidget {
-  final Function(Coordinates updatedLocation) moveCursor;
   final GraphCursor cursorDetails;
   final TextToggleSelection selection;
   final ScaleSettings scaleSettings;
 
-  GraphNavigator(this.cursorDetails, this.moveCursor, this.selection, this.scaleSettings);
+  GraphNavigator(this.cursorDetails, this.selection, this.scaleSettings);
   
   final TextStyle mainStyle = TextStyle(fontFamily: 'RobotoMono', fontSize: 20,color: Colors.white);
 
@@ -31,7 +30,7 @@ class GraphNavigator extends StatelessWidget {
     } else if (direction == CursorDirection.LEFT) {
       updatedX -= scaleSettings.step;
     }
-    moveCursor(Coordinates(updatedX, updatedY));
+    this.cursorDetails.location = Coordinates(updatedX, updatedY);
   }
 
   Widget _buildArrow(CursorDirection command, IconData iconData){

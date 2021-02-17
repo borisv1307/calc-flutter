@@ -1,4 +1,5 @@
 
+import 'package:advanced_calculation/advanced_calculator.dart';
 import 'package:cartesian_graph/bounds.dart';
 import 'package:cartesian_graph/cartesian_graph.dart';
 import 'package:cartesian_graph/cartesian_graph_analyzer.dart';
@@ -9,31 +10,47 @@ import 'package:open_calc/graph/graph_screen/graph_cursor.dart';
 import 'package:open_calc/graph/graph_screen/graph_details/scale_settings/scale_settings.dart';
 
 class InteractiveGraph extends StatefulWidget {
-  final Function(Coordinates updatedLocation) moveCursor;
   final GraphCursor cursor;
   final List<String> inputEquations;
   final ScaleSettings scaleSettings;
 
 
-  InteractiveGraph(this.inputEquations,this.scaleSettings,this.cursor, this.moveCursor);
+  InteractiveGraph(this.inputEquations,this.scaleSettings,this.cursor);
 
   @override
   State<StatefulWidget> createState() => InteractiveGraphState();
 }
 class InteractiveGraphState extends State<InteractiveGraph>{
   static const double GRAPH_HEIGHT = 652;
+  GraphCursor displayCursor = GraphCursor();
+  AdvancedCalculator calculator = AdvancedCalculator();
 
 
-  void _updateScale(){
+  double _roundToInterval(double coordinate, double interval){
+    return (coordinate/interval).round() * interval;
+
+  }
+
+  void _moveCursor() {
     setState(() {
-
+      Coordinates updatedLocation = this.widget.cursor.location;
+      if(this.widget.cursor.equation != null){
+        double y = calculator.calculateEquation(this.widget.cursor.equation, this.widget.cursor.location.x);
+        updatedLocation = Coordinates(this.widget.cursor.location.x, y);
+      }
+      displayCursor.location = Coordinates(_roundToInterval(updatedLocation.x,this.widget.scaleSettings.step),_roundToInterval(updatedLocation.y,this.widget.scaleSettings.step));
+      displayCursor.color = this.widget.cursor.color;
     });
   }
 
   @override
   void initState() {
     super.initState();
-    widget.scaleSettings.addListener(_updateScale);
+    this.displayCursor.location = this.widget.cursor.location;
+    this.displayCursor.color = this.widget.cursor.color;
+
+    this.widget.scaleSettings.addListener(_moveCursor);
+    this.widget.cursor.addListener(_moveCursor);
   }
 
   @override
@@ -41,14 +58,20 @@ class InteractiveGraphState extends State<InteractiveGraph>{
     super.didUpdateWidget(oldWidget);
 
     if(oldWidget.scaleSettings != widget.scaleSettings) {
-      oldWidget.scaleSettings.removeListener(_updateScale);
-      widget.scaleSettings.addListener(_updateScale);
+      oldWidget.scaleSettings.removeListener(_moveCursor);
+      widget.scaleSettings.addListener(_moveCursor);
+    }
+
+    if(oldWidget.cursor != widget.cursor) {
+      oldWidget.cursor.removeListener(_moveCursor);
+      widget.cursor.addListener(_moveCursor);
     }
   }
 
   @override
   void dispose(){
-    widget.scaleSettings.removeListener(_updateScale);
+    this.widget.scaleSettings.removeListener(_moveCursor);
+    this.widget.cursor.removeListener(_moveCursor);
     super.dispose();
   }
 
@@ -65,8 +88,8 @@ class InteractiveGraphState extends State<InteractiveGraph>{
     CartesianGraph graph = CartesianGraph(
       Bounds(this.widget.scaleSettings.xMin, this.widget.scaleSettings.xMax, this.widget.scaleSettings.yMin,this.widget.scaleSettings.yMax),
       equations: this.widget.inputEquations,
-      cursorLocation: this.widget.cursor.location,
-      cursorColor: this.widget.cursor.color,
+      cursorLocation: displayCursor.location,
+      cursorColor: displayCursor.color,
     );
     CartesianGraphAnalyzer analyzer = CartesianGraphAnalyzer(graph);
 
@@ -81,7 +104,7 @@ class InteractiveGraphState extends State<InteractiveGraph>{
             children: [
                 graph,
                 Text(
-                ' X=${this.widget.cursor.location.x}   Y=${this.widget.cursor.location.y}',
+                ' X=${displayCursor.location.x}   Y=${displayCursor.location.y}',
                   style:TextStyle(fontFamily: 'RobotoMono',
                       fontWeight: FontWeight.bold,
                       color: Colors.black,
@@ -97,8 +120,7 @@ class InteractiveGraphState extends State<InteractiveGraph>{
           onTapDown: (TapDownDetails details){
             double y = GRAPH_HEIGHT - (details.localPosition.dy * devicePixelRatio);
             double x = details.localPosition.dx * devicePixelRatio;
-            Coordinates updatedLocation = analyzer.calculateCoordinates(PixelLocation(x.toInt(), y.toInt()));
-            this.widget.moveCursor(updatedLocation);
+            this.widget.cursor.location = analyzer.calculateCoordinates(PixelLocation(x.toInt(), y.toInt()));
           },
         )
     );
