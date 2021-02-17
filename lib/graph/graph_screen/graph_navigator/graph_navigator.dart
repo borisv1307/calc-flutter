@@ -9,14 +9,14 @@ import 'package:open_calc/graph/graph_screen/graph_navigator/text_toggle_selecto
 enum CursorDirection { UP, DOWN, LEFT, RIGHT }
 
 class GraphNavigator extends StatefulWidget {
-  final Function(Coordinates updatedLocation) moveCursor;
   final GraphCursor cursorDetails;
   final TextToggleSelection selection;
   final ScaleSettings scaleSettings;
 
-  GraphNavigator(
-      this.cursorDetails, this.moveCursor, this.selection, this.scaleSettings);
+  GraphNavigator(this.cursorDetails, this.selection, this.scaleSettings);
 
+  final TextStyle mainStyle =
+      TextStyle(fontFamily: 'RobotoMono', fontSize: 20, color: Colors.white);
   @override
   _GraphNavigatorState createState() => _GraphNavigatorState();
 }
@@ -47,15 +47,15 @@ class _GraphNavigatorState extends State<GraphNavigator> {
     double updatedX = widget.cursorDetails.location.x;
     double updatedY = widget.cursorDetails.location.y;
     if (direction == CursorDirection.UP) {
-      updatedY += widget.cursorDetails.step;
+      updatedY += widget.scaleSettings.step;
     } else if (direction == CursorDirection.DOWN) {
-      updatedY -= widget.cursorDetails.step;
+      updatedY -= widget.scaleSettings.step;
     } else if (direction == CursorDirection.RIGHT) {
-      updatedX += widget.cursorDetails.step;
+      updatedX += widget.scaleSettings.step;
     } else if (direction == CursorDirection.LEFT) {
-      updatedX -= widget.cursorDetails.step;
+      updatedX -= widget.scaleSettings.step;
     }
-    widget.moveCursor(Coordinates(updatedX, updatedY));
+    widget.cursorDetails.location = Coordinates(updatedX, updatedY);
   }
 
   Widget _buildArrow(CursorDirection command, IconData iconData) {

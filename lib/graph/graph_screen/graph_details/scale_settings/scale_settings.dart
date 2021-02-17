@@ -5,8 +5,9 @@ class ScaleSettings extends ChangeNotifier{
   int _xMax;
   int _yMin;
   int _yMax;
+  double _step;
 
-  ScaleSettings([this._xMin=-10,this._xMax=10,this._yMin=-10,this._yMax=10]);
+  ScaleSettings([this._xMin=-10,this._xMax=10,this._yMin=-10,this._yMax=10,this._step=1]);
 
   get xMin{
     return _xMin;
@@ -41,6 +42,15 @@ class ScaleSettings extends ChangeNotifier{
 
   set yMax(int yMax){
     this._yMax = yMax;
+    notifyListeners();
+  }
+  
+  get step{
+    return _step;
+  }
+
+  set step(double step){
+    this._step = step;
     notifyListeners();
   }
 }
