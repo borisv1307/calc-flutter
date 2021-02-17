@@ -8,6 +8,7 @@ import 'package:open_calc/graph/function_screen/function_display_controller.dart
 import 'package:open_calc/graph/graph_screen/graph_cursor.dart';
 import 'package:open_calc/graph/graph_screen/graph_details/graph_details.dart';
 import 'package:open_calc/graph/graph_screen/graph_details/scale_settings/scale_settings.dart';
+import 'package:open_calc/graph/graph_screen/graph_navigator/graph_display_navigator.dart';
 import 'package:open_calc/graph/graph_screen/graph_navigator/graph_navigator.dart';
 import 'package:open_calc/graph/graph_screen/graph_navigator/text_toggle_selection.dart';
 import 'package:open_calc/graph/graph_screen/graph_table.dart';
@@ -78,6 +79,12 @@ class GraphScreenState extends State<GraphScreen> {
   Widget build(BuildContext context) {
     this.inputEquations =
         widget.evaluator.translateInputs(widget.controller.inputs);
+    InteractiveGraph interactiveGraph = InteractiveGraph(
+        this.inputEquations,
+        this.scaleSettings,
+        this.cursorDetails,
+        this.moveCursor,
+        this.chosenEquationIndex = chosenEquationIndex);
 
     return Scaffold(
         key: _scaffoldKey,
@@ -86,130 +93,14 @@ class GraphScreenState extends State<GraphScreen> {
           return Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
             if (!isKeyboardVisible)
               Stack(alignment: AlignmentDirectional.center, children: <Widget>[
-                InteractiveGraph(
-                    this.inputEquations,
-                    this.scaleSettings,
-                    this.cursorDetails,
-                    this.moveCursor,
-                    this.chosenEquationIndex = chosenEquationIndex),
-                Opacity(
-                  opacity: 0.3,
-                  child: Container(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Material(
-                          color: Colors.transparent,
-                          child: InkWell(
-                              onTap: () {
-                                setState(() {
-                                  scaleSettings.yMax++;
-                                  scaleSettings.yMin++;
-                                });
-                              },
-                              child: Icon(
-                                Icons.keyboard_arrow_up,
-                                size: 36,
-                              )),
-                        ),
-                        SizedBox(
-                          height: 110,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              Material(
-                                color: Colors.transparent,
-                                child: InkWell(
-                                    onTap: () {
-                                      setState(() {
-                                        scaleSettings.xMax--;
-                                        scaleSettings.xMin--;
-                                      });
-                                    },
-                                    child: Icon(
-                                      Icons.chevron_left,
-                                      size: 36,
-                                    )),
-                              ),
-                              Material(
-                                color: Colors.transparent,
-                                child: InkWell(
-                                    onTap: () {
-                                      setState(() {
-                                        scaleSettings.xMax++;
-                                        scaleSettings.xMin++;
-                                      });
-                                    },
-                                    child: Icon(
-                                      Icons.chevron_right,
-                                      size: 36,
-                                    )),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Material(
-                          color: Colors.transparent,
-                          child: InkWell(
-                              onTap: () {
-                                setState(() {
-                                  scaleSettings.yMax--;
-                                  scaleSettings.yMin--;
-                                });
-                              },
-                              child: Icon(
-                                Icons.keyboard_arrow_down,
-                                size: 36,
-                              )),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
+                interactiveGraph,
+                GraphDisplayNavigator(scaleSettings),
               ]),
             Row(
               children: <Widget>[
                 Expanded(
-                    child: GraphNavigator(
-                        this.cursorDetails, this.moveCursor, selection)),
-                Container(
-                    width: 40,
-                    child: Column(
-                      children: <Widget>[
-                        Material(
-                          color: Colors.transparent,
-                          child: InkWell(
-                              onTap: () {
-                                setState(() {
-                                  scaleSettings.xMax--;
-                                  scaleSettings.yMax--;
-                                  scaleSettings.xMin++;
-                                  scaleSettings.yMin++;
-                                });
-                              },
-                              child: Icon(
-                                Icons.zoom_in,
-                                size: 36,
-                              )),
-                        ),
-                        Material(
-                          color: Colors.transparent,
-                          child: InkWell(
-                              onTap: () {
-                                setState(() {
-                                  scaleSettings.xMax++;
-                                  scaleSettings.yMax++;
-                                  scaleSettings.xMin--;
-                                  scaleSettings.yMin--;
-                                });
-                              },
-                              child: Icon(
-                                Icons.zoom_out,
-                                size: 36,
-                              )),
-                        )
-                      ],
-                    ))
+                    child: GraphNavigator(this.cursorDetails, this.moveCursor,
+                        selection, this.scaleSettings)),
               ],
             ),
             GraphDetails(

@@ -1,4 +1,3 @@
-
 import 'package:cartesian_graph/bounds.dart';
 import 'package:cartesian_graph/cartesian_graph.dart';
 import 'package:cartesian_graph/cartesian_graph_analyzer.dart';
@@ -15,20 +14,18 @@ class InteractiveGraph extends StatefulWidget {
   final ScaleSettings scaleSettings;
   final int chosenEquationIndex;
 
-
-  InteractiveGraph(this.inputEquations,this.scaleSettings,this.cursor, this.moveCursor, this.chosenEquationIndex);
+  InteractiveGraph(this.inputEquations, this.scaleSettings, this.cursor,
+      this.moveCursor, this.chosenEquationIndex);
 
   @override
   State<StatefulWidget> createState() => InteractiveGraphState();
 }
-class InteractiveGraphState extends State<InteractiveGraph>{
+
+class InteractiveGraphState extends State<InteractiveGraph> {
   static const double GRAPH_HEIGHT = 652;
 
-
-  void _updateScale(){
-    setState(() {
-
-    });
+  void _updateScale() {
+    setState(() {});
   }
 
   @override
@@ -41,30 +38,27 @@ class InteractiveGraphState extends State<InteractiveGraph>{
   void didUpdateWidget(InteractiveGraph oldWidget) {
     super.didUpdateWidget(oldWidget);
 
-    if(oldWidget.scaleSettings != widget.scaleSettings) {
+    if (oldWidget.scaleSettings != widget.scaleSettings) {
       oldWidget.scaleSettings.removeListener(_updateScale);
       widget.scaleSettings.addListener(_updateScale);
     }
   }
 
   @override
-  void dispose(){
+  void dispose() {
     widget.scaleSettings.removeListener(_updateScale);
     super.dispose();
   }
 
-  Shadow _buildShadow(double min, double max){
-    return Shadow(
-        blurRadius: 5,
-        offset: Offset(min, max),
-        color: Colors.white
-    );
+  Shadow _buildShadow(double min, double max) {
+    return Shadow(blurRadius: 5, offset: Offset(min, max), color: Colors.white);
   }
 
   @override
   Widget build(BuildContext context) {
     CartesianGraph graph = CartesianGraph(
-      Bounds(this.widget.scaleSettings.xMin, this.widget.scaleSettings.xMax, this.widget.scaleSettings.yMin,this.widget.scaleSettings.yMax),
+      Bounds(this.widget.scaleSettings.xMin, this.widget.scaleSettings.xMax,
+          this.widget.scaleSettings.yMin, this.widget.scaleSettings.yMax),
       equations: this.widget.inputEquations,
       cursorLocation: this.widget.cursor.location,
       cursorColor: this.widget.cursor.color,
@@ -83,87 +77,27 @@ class InteractiveGraphState extends State<InteractiveGraph>{
             children: [
               graph,
               Text(
-              ' X=${this.widget.cursor.location.x}   Y=${this.widget.cursor.location.y}',
-                style:TextStyle(fontFamily: 'RobotoMono',
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                    shadows: [
-                      _buildShadow(-1.5,-1.5),
-                      _buildShadow(1.5,-1.5),
-                      _buildShadow(1.5,1.5),
-                      _buildShadow(-1.5,1.5)
-                    ])
-              ),
-              // Container(
-              //   child: Column(
-              //     // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //     children: <Widget>[
-              //       Material(
-              //         color: Colors.transparent,
-              //         child: InkWell(
-              //             onTap: () {
-              //               setState(() {
-              //                 widget.scaleSettings.yMax++;
-              //                 widget.scaleSettings.yMin++;
-              //               });
-              //             },
-              //             child: Icon(Icons.keyboard_arrow_up, size: 36,)
-              //         ),
-              //       ),
-              //       Row(
-              //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //         children: <Widget>[
-              //           Material(
-              //             color: Colors.transparent,
-              //             child: InkWell(
-              //                 onTap: () {
-              //                   setState(() {
-              //                     widget.scaleSettings.xMax--;
-              //                     widget.scaleSettings.xMin--;
-              //                   });
-              //                 },
-              //                 child: Icon(Icons.chevron_left, size: 36,)
-              //             ),
-              //           ),
-              //           Material(
-              //             color: Colors.transparent,
-              //             child: InkWell(
-              //                 onTap: () {
-              //                   setState(() {
-              //                     widget.scaleSettings.xMax++;
-              //                     widget.scaleSettings.xMin++;
-              //                   });
-              //                 },
-              //                 child: Icon(Icons.chevron_right, size: 36,)
-              //             ),
-              //           ),
-              //         ],
-              //       ),
-              //       Material(
-              //         color: Colors.transparent,
-              //         child: InkWell(
-              //             onTap: () {
-              //               setState(() {
-              //                 widget.scaleSettings.yMax--;
-              //                 widget.scaleSettings.yMin--;
-              //               });
-              //             },
-              //             child: Icon(Icons.keyboard_arrow_down, size: 36,)
-              //         ),
-              //       ),
-              //     ],
-              //   ),
-              // )
-             ],
+                  ' X=${this.widget.cursor.location.x}   Y=${this.widget.cursor.location.y}',
+                  style: TextStyle(
+                      fontFamily: 'RobotoMono',
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                      shadows: [
+                        _buildShadow(-1.5, -1.5),
+                        _buildShadow(1.5, -1.5),
+                        _buildShadow(1.5, 1.5),
+                        _buildShadow(-1.5, 1.5)
+                      ])),
+            ],
           ),
-          onTapDown: (TapDownDetails details){
-            double y = GRAPH_HEIGHT - (details.localPosition.dy * devicePixelRatio);
+          onTapDown: (TapDownDetails details) {
+            double y =
+                GRAPH_HEIGHT - (details.localPosition.dy * devicePixelRatio);
             double x = details.localPosition.dx * devicePixelRatio;
-            Coordinates updatedLocation = analyzer.calculateCoordinates(PixelLocation(x.toInt(), y.toInt()));
+            Coordinates updatedLocation = analyzer
+                .calculateCoordinates(PixelLocation(x.toInt(), y.toInt()));
             this.widget.moveCursor(updatedLocation);
           },
-        )
-    );
+        ));
   }
-
 }
