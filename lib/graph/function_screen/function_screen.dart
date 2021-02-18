@@ -19,20 +19,7 @@ class FunctionScreen extends StatefulWidget {
 
 class FunctionScreenState extends State<FunctionScreen> {
   final _formKey = GlobalKey<FormState>();
-  TextEditingController _functionController;
   GraphInputHandler inputHandler;
-
-  @override
-  void initState() {
-    super.initState();
-    _functionController = new TextEditingController();
-  }
-
-  @override
-  void dispose() {
-    _functionController.dispose();
-    super.dispose();
-  }
 
   List<Widget> _getFunctions(){
     List<Widget> functions = [];
