@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:open_calc/graph/graph_screen/graph_navigator/text_toggle_selection.dart';
+import 'package:open_calc/graph/graph_screen/graph_navigator/text_toggle/text_toggle_selection.dart';
 
 class TextToggleSelector extends StatefulWidget {
   final TextToggleSelection selection;

@@ -1,44 +1,28 @@
-import 'package:cartesian_graph/coordinates.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:open_calc/graph/graph_screen/graph_cursor.dart';
 import 'package:open_calc/graph/graph_screen/graph_details/scale_settings/scale_settings.dart';
-import 'package:open_calc/graph/graph_screen/graph_navigator/text_toggle_selection.dart';
-import 'package:open_calc/graph/graph_screen/graph_navigator/text_toggle_selector.dart';
+import 'package:open_calc/graph/graph_screen/graph_navigator/cursor_direction.dart';
+import 'package:open_calc/graph/graph_screen/graph_navigator/cursor_movement_calculator.dart';
+import 'package:open_calc/graph/graph_screen/graph_navigator/text_toggle/text_toggle_selection.dart';
+import 'package:open_calc/graph/graph_screen/graph_navigator/text_toggle/text_toggle_selector.dart';
 
-enum CursorDirection {
-  UP,DOWN,LEFT,RIGHT
-}
 class GraphNavigator extends StatelessWidget {
   final GraphCursor cursorDetails;
   final TextToggleSelection selection;
   final ScaleSettings scaleSettings;
+  final CursorMovementCalculator cursorMovementCalculator;
 
-  GraphNavigator(this.cursorDetails, this.selection, this.scaleSettings);
-  
-  final TextStyle mainStyle = TextStyle(fontFamily: 'RobotoMono', fontSize: 20,color: Colors.white);
+  GraphNavigator(this.cursorDetails, this.selection, this.scaleSettings,{CursorMovementCalculator cursorMovementCalculator}):
+      this.cursorMovementCalculator = cursorMovementCalculator ?? CursorMovementCalculator();
 
-  void _moveCursor(CursorDirection direction){
-    double updatedX = cursorDetails.location?.x ?? 0;
-    double updatedY = cursorDetails.location?.y ?? 0;
-    if (direction == CursorDirection.UP) {
-      updatedY += scaleSettings.step;
-    } else if (direction == CursorDirection.DOWN) {
-      updatedY -= scaleSettings.step;
-    } else if (direction == CursorDirection.RIGHT) {
-      updatedX += scaleSettings.step;
-    } else if (direction == CursorDirection.LEFT) {
-      updatedX -= scaleSettings.step;
-    }
-    this.cursorDetails.location = Coordinates(updatedX, updatedY);
-  }
 
-  Widget _buildArrow(CursorDirection command, IconData iconData){
+  Widget _buildArrow(CursorDirection direction, IconData iconData){
     return Material(
         color: Colors.transparent,
         child: InkWell(
           onTap: () {
-            this._moveCursor(command);
+            this.cursorDetails.location = cursorMovementCalculator.calculateMove(this.cursorDetails.location, direction, scaleSettings.step);
           },
           child: Icon(iconData,color:Colors.black)
     ));
