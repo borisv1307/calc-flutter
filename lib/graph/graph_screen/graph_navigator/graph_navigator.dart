@@ -3,8 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:open_calc/graph/graph_screen/graph_cursor.dart';
 import 'package:open_calc/graph/graph_screen/graph_details/scale_settings/scale_settings.dart';
-import 'package:open_calc/graph/graph_screen/graph_navigator/text_toggle_selection.dart';
-import 'package:open_calc/graph/graph_screen/graph_navigator/text_toggle_selector.dart';
+import 'package:open_calc/graph/graph_screen/graph_navigator/text_toggle/text_toggle_selection.dart';
+import 'package:open_calc/graph/graph_screen/graph_navigator/text_toggle/text_toggle_selector.dart';
 
 enum CursorDirection { UP, DOWN, LEFT, RIGHT }
 
