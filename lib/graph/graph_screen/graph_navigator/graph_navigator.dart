@@ -19,8 +19,8 @@ class GraphNavigator extends StatelessWidget {
   final TextStyle mainStyle = TextStyle(fontFamily: 'RobotoMono', fontSize: 20,color: Colors.white);
 
   void _moveCursor(CursorDirection direction){
-    double updatedX = cursorDetails.location.x;
-    double updatedY = cursorDetails.location.y;
+    double updatedX = cursorDetails.location?.x ?? 0;
+    double updatedY = cursorDetails.location?.y ?? 0;
     if (direction == CursorDirection.UP) {
       updatedY += scaleSettings.step;
     } else if (direction == CursorDirection.DOWN) {

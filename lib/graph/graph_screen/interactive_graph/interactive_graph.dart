@@ -103,18 +103,19 @@ class InteractiveGraphState extends State<InteractiveGraph>{
             alignment: Alignment.bottomLeft,
             children: [
                 graph,
-                Text(
-                ' X=${displayCursor.location.x}   Y=${displayCursor.location.y}',
-                  style:TextStyle(fontFamily: 'RobotoMono',
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                      shadows: [
-                        _buildShadow(-1.5,-1.5),
-                        _buildShadow(1.5,-1.5),
-                        _buildShadow(1.5,1.5),
-                        _buildShadow(-1.5,1.5)
-                      ])
-                )
+                if(displayCursor.location != null)
+                  Text(
+                  ' X=${displayCursor.location.x}   Y=${displayCursor.location.y}',
+                    style:TextStyle(fontFamily: 'RobotoMono',
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                        shadows: [
+                          _buildShadow(-1.5,-1.5),
+                          _buildShadow(1.5,-1.5),
+                          _buildShadow(1.5,1.5),
+                          _buildShadow(-1.5,1.5)
+                        ])
+                  )
              ],
           ),
           onTapDown: (TapDownDetails details){
