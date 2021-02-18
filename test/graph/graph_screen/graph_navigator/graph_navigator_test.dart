@@ -4,7 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:open_calc/graph/graph_screen/graph_cursor.dart';
 import 'package:open_calc/graph/graph_screen/graph_details/scale_settings/scale_settings.dart';
 import 'package:open_calc/graph/graph_screen/graph_navigator/graph_navigator.dart';
-import 'package:open_calc/graph/graph_screen/graph_navigator/text_toggle_selection.dart';
+import 'package:open_calc/graph/graph_screen/graph_navigator/text_toggle/text_toggle_selection.dart';
 
 void main(){
   Widget _buildTestableNavigator(GraphCursor cursor){

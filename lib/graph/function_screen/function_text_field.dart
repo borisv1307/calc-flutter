@@ -31,6 +31,15 @@ class _FunctionTextFieldState extends State<FunctionTextField> {
   }
 
   @override
+  void didUpdateWidget(FunctionTextField oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if(oldWidget.controller != widget.controller) {
+      oldWidget.controller.removeListener(_updateFunction);
+      widget.controller.addListener(_updateFunction);
+    }
+  }
+
+  @override
   void dispose() {
     widget.controller?.removeListener(_updateFunction);
     textController.dispose();

@@ -8,10 +8,10 @@ import 'package:open_calc/graph/graph_screen/graph_details/graph_details.dart';
 import 'package:open_calc/graph/graph_screen/graph_details/scale_settings/scale_settings.dart';
 import 'package:open_calc/graph/graph_screen/graph_navigator/graph_display_navigator.dart';
 import 'package:open_calc/graph/graph_screen/graph_navigator/graph_navigator.dart';
-import 'package:open_calc/graph/graph_screen/graph_navigator/text_toggle_selection.dart';
 import 'package:open_calc/graph/graph_screen/interactive_graph/interactive_graph.dart';
 
 import 'graph_input_evaluator.dart';
+import 'graph_navigator/text_toggle/text_toggle_selection.dart';
 
 class GraphScreen extends StatefulWidget {
   final FunctionDisplayController controller;
