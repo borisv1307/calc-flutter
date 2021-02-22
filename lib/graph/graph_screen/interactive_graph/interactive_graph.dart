@@ -32,7 +32,7 @@ class InteractiveGraphState extends State<InteractiveGraph> {
 
   void _moveCursor() {
     setState(() {
-      Coordinates updatedLocation = this.widget.cursor.location;
+      Coordinates updatedLocation = this.widget.cursor.location ?? Coordinates(0, 0);
       if (this.widget.cursor.equation != null) {
         double y = calculator.calculateEquation(
             this.widget.cursor.equation, this.widget.cursor.location.x);
