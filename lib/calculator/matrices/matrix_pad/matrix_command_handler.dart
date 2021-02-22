@@ -11,15 +11,17 @@ class MatrixCommandHandler{
   final int xIndex;
   final int yIndex;
   final BuildContext context;
+  final Function func;
 
 
-  MatrixCommandHandler(this.controller, this.matrix, this.xIndex, this.yIndex, this.context);
+  MatrixCommandHandler(this.controller, this.matrix, this.xIndex, this.yIndex, this.context, this.func);
 
   void handle(CommandItem command) {
     if (command == CommandItem.ENTER) {
       try{
         matrix[xIndex][yIndex] = controller.inputLine;
         Navigator.pop(context);
+        func();
       } on SyntaxException catch(e){
         controller.cursorIndex = e.index;
         controller.pushAlert(SYNTAX_ERROR);

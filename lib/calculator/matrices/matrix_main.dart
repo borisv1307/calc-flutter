@@ -29,6 +29,11 @@ class MatrixHomeState extends State<MatrixHome>{
 
   MatrixHomeState(this.matrixStorage, this.inputFunction, this.commandFunction, this.storage);
 //--------------Add new Matrix Dialogs--------------------------------------
+
+  void _refresh(){
+    setState((){});
+  }
+
   Future _collectColsRows() {
 
   TextEditingController _textFieldController = TextEditingController();
@@ -77,7 +82,7 @@ class MatrixHomeState extends State<MatrixHome>{
     int i = 0;
     for(i=0; i < matrixStorage.length; i++){
       matrixAccessorWidgets.add(
-        MatrixAccessor((i+1).toString(), matrixStorage[i], InputButtonStyle.TERTIARY, this.inputFunction, format, commandFunction, storage, matrixStorage)
+        MatrixAccessor((i+1).toString(), matrixStorage[i], InputButtonStyle.TERTIARY, this.inputFunction, format, commandFunction, storage, matrixStorage, _refresh)
       );
     }
 
@@ -156,8 +161,9 @@ class MatrixAccessor extends StatelessWidget{
   final MatrixFormatter format;
   final VariableStorage storage;
   final List<List<List<String>>> matrixStorage;
+  final Function refresh;
 
-  MatrixAccessor(this.number, this.matrix, this.style, this.inputFunction, this.format, this.commandFunction, this.storage, this.matrixStorage);
+  MatrixAccessor(this.number, this.matrix, this.style, this.inputFunction, this.format, this.commandFunction, this.storage, this.matrixStorage, this.refresh);
 
   Widget build(BuildContext context) {
     return Container(
@@ -174,7 +180,7 @@ class MatrixAccessor extends StatelessWidget{
             SizedBox(width: 350, height: 100, child:MatrDisplayWidget(matrix))]),
         ),
         onLongPress: (){
-          Navigator.push(context, MaterialPageRoute(builder: (context) => MatrixDisplay(matrix, inputFunction, commandFunction)));
+          Navigator.push(context, MaterialPageRoute(builder: (context) => MatrixDisplay(matrix, inputFunction, commandFunction, refresh)));
         },
         onTap: (){
           inputFunction(InputItem('matr' + number));

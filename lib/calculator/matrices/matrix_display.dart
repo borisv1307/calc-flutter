@@ -11,10 +11,11 @@ class MatrixDisplay extends StatefulWidget{
 
   final Function(InputItem input) inputFunction;
   final Function(CommandItem command) commandFunction;
+  final Function refresh;
 
-  MatrixDisplay(this.matrix, this.inputFunction, this.commandFunction);
+  MatrixDisplay(this.matrix, this.inputFunction, this.commandFunction, this.refresh);
   @override
-  State<StatefulWidget> createState() => MatrixDisplayState(matrix, this.inputFunction, this.commandFunction);
+  State<StatefulWidget> createState() => MatrixDisplayState(matrix, this.inputFunction, this.commandFunction, this.refresh);
 }
 
 class MatrixDisplayState extends State<MatrixDisplay>{
@@ -23,8 +24,9 @@ class MatrixDisplayState extends State<MatrixDisplay>{
   var editVal = '';
   final Function(InputItem input) inputFunction;
   final Function(CommandItem command) commandFunction;
+  final Function refresh;
 
-  MatrixDisplayState(this.matrix, this.inputFunction, this.commandFunction);
+  MatrixDisplayState(this.matrix, this.inputFunction, this.commandFunction, this.refresh);
 
 @override
 Widget build(BuildContext context){
@@ -33,6 +35,10 @@ Widget build(BuildContext context){
     alignment: Alignment.center,
     child: _buildMatrix(matrix),
   );
+}
+
+void _refresh(){
+  setState((){});
 }
 
 Widget _buildMatrix(List<List<String>> matrix) {
@@ -54,6 +60,7 @@ Widget _buildMatrix(List<List<String>> matrix) {
           ),
             onTap: (){
               Navigator.of(context).pop();
+              refresh();
             },
           )),
       ),
@@ -134,7 +141,7 @@ Widget _buildMatrixItems(BuildContext context, int index, List<List<String>> mat
                   ),
                   Expanded(
                     child:
-                    MatrixInputPad(controller, matrix, x, y, context)
+                    MatrixInputPad(controller, matrix, x, y, context, _refresh)
                   )
           ]))
         ));});

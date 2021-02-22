@@ -16,10 +16,11 @@ class MatrixInputPad extends StatelessWidget{
   MatrixCommandHandler handler;
   InputHandler inputHandler;
   final BuildContext context;
+  final Function func;
 
-  MatrixInputPad(this.controller,this.matrix,this.xIndex,this.yIndex,this.context){
+  MatrixInputPad(this.controller,this.matrix,this.xIndex,this.yIndex,this.context, this.func){
   
-    handler = MatrixCommandHandler(controller, matrix, xIndex, yIndex, context);
+    handler = MatrixCommandHandler(controller, matrix, xIndex, yIndex, context,func);
     inputHandler = InputHandler(controller);
   }
 
