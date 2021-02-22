@@ -27,7 +27,7 @@ class GraphInputPad extends StatelessWidget{
             builder = (BuildContext context) => GraphPrimaryPad(this.inputFunction, this.commandFunction);
             break;
           case 'inputPadTwo':
-            builder = (BuildContext context) => SecondaryPad(this.inputFunction, this.commandFunction, null);
+            builder = (BuildContext context) => SecondaryPad(this.inputFunction, this.commandFunction);
             break;
           case 'varPad':
             builder = (BuildContext context) => VariableScreen(this.inputFunction, this.storage);

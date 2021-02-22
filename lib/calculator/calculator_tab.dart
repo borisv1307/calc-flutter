@@ -7,6 +7,7 @@ import 'package:open_calc/calculator/handler/command_handler.dart';
 import 'package:open_calc/calculator/handler/input_handler.dart';
 import 'package:open_calc/calculator/input_pad/input_pad.dart';
 import 'package:open_calc/calculator/input_pad/input_variables.dart';
+import 'package:open_calc/settings/settings_controller.dart';
 
 class CalculatorTab extends StatefulWidget {
   final VariableStorage storage;
@@ -17,9 +18,7 @@ class CalculatorTab extends StatefulWidget {
 }
 
 class CalculatorTabState extends State<CalculatorTab>{
-
   final VariableStorage storage;
-
   CalculatorDisplayController controller;
   InputHandler inputHandler;
   CommandHandler commandHandler;
@@ -27,11 +26,31 @@ class CalculatorTabState extends State<CalculatorTab>{
 
   CalculatorTabState(this.storage) {
     controller = CalculatorDisplayController();
-    options = CalculationOptions();
     inputHandler= InputHandler(controller);
-    commandHandler = CommandHandler(controller, storage,options);
   }
-  
+
+  @override
+  void initState() {
+    super.initState();
+    options = CalculationOptions();
+    commandHandler = CommandHandler(controller, storage, options);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    SettingsController.of(context).addListener(_updateOptions);
+    options = SettingsController.of(context).options();
+    commandHandler.options = options;
+  }
+
+  void _updateOptions() {
+    setState(() {
+      options = SettingsController.of(context).options();
+     commandHandler.options = options;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
@@ -46,7 +65,7 @@ class CalculatorTabState extends State<CalculatorTab>{
             numLines: lines
           ),
           Expanded(
-            child: InputPad(storage, inputHandler.handle, commandHandler.handle, options)
+            child: InputPad(storage, inputHandler.handle, commandHandler.handle)
           ),
         ],
       )

@@ -11,7 +11,8 @@ class CommandHandler{
   final CalculatorDisplayController controller;
   final VariableStorage storage;
   final InputEvaluator evaluator;
-  final CalculationOptions options;
+  
+  CalculationOptions options;
 
   CommandHandler(this.controller, this.storage, this.options, [InputEvaluator evaluator]):
       evaluator = evaluator ?? InputEvaluator(storage);
