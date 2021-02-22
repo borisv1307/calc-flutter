@@ -11,11 +11,15 @@ class CommandHandler{
   final CalculatorDisplayController controller;
   final VariableStorage storage;
   final InputEvaluator evaluator;
-  
-  CalculationOptions options;
+  final CalculationOptions options;
 
   CommandHandler(this.controller, this.storage, this.options, [InputEvaluator evaluator]):
       evaluator = evaluator ?? InputEvaluator(storage);
+
+  void updateOptions(int decimals, AngularUnit unit) {
+    this.options.decimalPlaces = decimals;
+    this.options.angularUnit = unit;
+  }
 
   void handle(CommandItem command) {
     if (command == CommandItem.ENTER) {

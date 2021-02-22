@@ -4,19 +4,25 @@ import 'package:flutter/material.dart';
 import 'package:open_calc/settings/settings_controller.dart';
 
 class ModeDialog extends StatefulWidget{
-  ModeDialog();
+  final CalculationOptions options;
+
+  ModeDialog([CalculationOptions options]) :
+    this.options = options ?? CalculationOptions();
 
   @override
-  State<StatefulWidget> createState() => ModeDialogState();
+  State<StatefulWidget> createState() => ModeDialogState(options);
 }
 
 class ModeDialogState extends State<ModeDialog>{
-  CalculationOptions options;
+  final CalculationOptions options;
+
+  ModeDialogState(this.options);
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    options = SettingsController.of(context).options();
+    options.decimalPlaces = SettingsController.of(context).decimalPlaces;
+    options.angularUnit = SettingsController.of(context).angularUnit;
   }
 
   Row _buildOption({String label, DropdownButton button}){
@@ -49,7 +55,7 @@ class ModeDialogState extends State<ModeDialog>{
                 onChanged: (int updated) async {
                     await SettingsController.of(context).setDecimals(updated);
                     setState(() {
-                      options = SettingsController.of(context).options();
+                      options.decimalPlaces = SettingsController.of(context).decimalPlaces;
                     });
                   }
               )
@@ -71,7 +77,7 @@ class ModeDialogState extends State<ModeDialog>{
               onChanged: (AngularUnit updated) async {
                 await SettingsController.of(context).setAngular(updated);
                 setState(() {
-                  options = SettingsController.of(context).options();
+                  options.angularUnit = SettingsController.of(context).angularUnit;
                 });
               }
             )

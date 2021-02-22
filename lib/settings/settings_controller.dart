@@ -33,19 +33,20 @@ class SettingsController extends ChangeNotifier {
       await _prefs.setString('angularUnit', 'radian');
     notifyListeners();
   }
-
-  CalculationOptions options() {
-    CalculationOptions options = CalculationOptions();
-    options.decimalPlaces = _prefs.getInt('decimalPlaces') ?? -1;
-    String angularUnit = _prefs.getString('angularUnit') ?? 'radian';
-    if (angularUnit == 'radian')
-      options.angularUnit = AngularUnit.RADIAN;
-    else
-      options.angularUnit = AngularUnit.DEGREE;
-    return options;
+  
+  get decimalPlaces {
+    return _prefs.getInt('decimalPlaces') ?? -1;
   }
 
-    /// get the controller from any page of your app
+  get angularUnit {
+    String angularUnit = _prefs.getString('angularUnit') ?? 'radian';
+    if (angularUnit == 'radian')
+      return AngularUnit.RADIAN;
+    else
+      return AngularUnit.DEGREE;
+  }
+
+  // get the controller from any page
   static SettingsController of(BuildContext context) {
     final provider = context.dependOnInheritedWidgetOfExactType<SettingsControllerProvider>();
     return provider.controller;
@@ -53,6 +54,7 @@ class SettingsController extends ChangeNotifier {
 
 }
 
+// InheritedWidget so settings can be accessed from anywhere
 class SettingsControllerProvider extends InheritedWidget {
   const SettingsControllerProvider({Key key, this.controller, Widget child}) : super(key: key, child: child);
 

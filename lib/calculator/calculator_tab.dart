@@ -22,32 +22,25 @@ class CalculatorTabState extends State<CalculatorTab>{
   CalculatorDisplayController controller;
   InputHandler inputHandler;
   CommandHandler commandHandler;
-  CalculationOptions options;
 
   CalculatorTabState(this.storage) {
     controller = CalculatorDisplayController();
     inputHandler= InputHandler(controller);
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    options = CalculationOptions();
-    commandHandler = CommandHandler(controller, storage, options);
+    commandHandler = CommandHandler(controller, storage, CalculationOptions());
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     SettingsController.of(context).addListener(_updateOptions);
-    options = SettingsController.of(context).options();
-    commandHandler.options = options;
+    _updateOptions(); // ???????????
   }
 
   void _updateOptions() {
     setState(() {
-      options = SettingsController.of(context).options();
-     commandHandler.options = options;
+      int decimals = SettingsController.of(context).decimalPlaces;
+      AngularUnit unit = SettingsController.of(context).angularUnit;
+      commandHandler.updateOptions(decimals, unit);
     });
   }
 
