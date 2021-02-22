@@ -6,6 +6,7 @@ import 'package:open_calc/calculator/matrices/matrix_pad/matr_primary_pad.dart';
 import 'package:open_calc/calculator/matrices/matrix_pad/matr_secondary_pad.dart';
 import 'package:open_calc/calculator/matrices/matrix_pad/matrix_command_handler.dart';
 
+// ignore: must_be_immutable
 class MatrixInputPad extends StatelessWidget{
 
   final CalculatorDisplayController controller;
@@ -22,6 +23,7 @@ class MatrixInputPad extends StatelessWidget{
     inputHandler = InputHandler(controller);
   }
 
+  @override
   Widget build(BuildContext context){
     return new Navigator(
       initialRoute: 'matrPadOne',

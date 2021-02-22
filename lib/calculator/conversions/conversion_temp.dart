@@ -114,8 +114,7 @@ class TempConvertState extends State<TempConvert>{
         InkWell(
           onTap: (){
             setState((){
-              var input = defaultDropVal + "," + defaultDropVal2 + "," +_textFieldController.text;
-              print("");
+
             });
           },
           child:Icon(

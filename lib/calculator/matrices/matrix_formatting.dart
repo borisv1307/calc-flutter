@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 
 class MatrixFormatter{
 
@@ -65,21 +64,5 @@ List<List<String>> matrixStringToList(String matrixString){
 
   return mainList;
 
-}
-
-Widget widgetPrintMatrix(List<List<String>> matrix){
-
-}
-
-Widget _createCellContainer(String cell){
-
-  return Container(
-    decoration: BoxDecoration(
-      color: Colors.white,
-      border: Border.all(
-        color: Colors.black,
-      ),
-    ),
-    child: Text(cell),);
 }
 }

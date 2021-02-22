@@ -1,9 +1,6 @@
 import 'package:advanced_calculation/calculation_options.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:open_calc/calculator/conversions/conversion_distance.dart';
-import 'package:open_calc/calculator/conversions/conversion_temp.dart';
-import 'package:open_calc/calculator/conversions/conversion_weights.dart';
 import 'package:open_calc/calculator/input_pad/command_item.dart';
 import 'package:open_calc/calculator/input_pad/pad/primary_pad.dart';
 import 'package:open_calc/calculator/input_pad/pad/secondary_pad.dart';
@@ -40,18 +37,8 @@ class InputPad extends StatelessWidget{
           case 'varPad':
             builder = (BuildContext context) => VariableScreen(this.inputFunction, this.storage);
             break;
-          case 'matrPad' :
-            builder = (BuildContext context) => MatrixHome(this.matrixStorage,this.inputFunction);
-            break;
-          case 'Weight' :
-            builder = (BuildContext context) => WeightConvert();
-            break;
-          case 'Distance' :
-            builder = (BuildContext context) => DistanceConvert();
-            break;
-          case 'Temp' :
-            builder = (BuildContext context) => TempConvert();
-            break;
+          case 'matr':
+            builder = (BuildContext context) => MatrixHome(this.matrixStorage, this.inputFunction, this.commandFunction, this.storage);
         }
         return NoTransitionRoute(builder: builder, settings: settings);
       },
