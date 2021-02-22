@@ -1,21 +1,30 @@
-
 import 'package:flutter/material.dart';
+import 'package:open_calc/calculator/calculator_display/calculator_display.dart';
+import 'package:open_calc/calculator/calculator_display/calculator_display_controller.dart';
+import 'package:open_calc/calculator/input_pad/command_item.dart';
 import 'package:open_calc/calculator/input_pad/input_button_style.dart';
+import 'package:open_calc/calculator/input_pad/input_item.dart';
+import 'package:open_calc/calculator/matrices/matrix_pad/matrix_pad.dart';
 
 class MatrixDisplay extends StatefulWidget{
   final List<List<String>> matrix;
 
-  MatrixDisplay(this.matrix);
+  final Function(InputItem input) inputFunction;
+  final Function(CommandItem command) commandFunction;
+
+  MatrixDisplay(this.matrix, this.inputFunction, this.commandFunction);
   @override
-  State<StatefulWidget> createState() => MatrixDisplayState(matrix);
+  State<StatefulWidget> createState() => MatrixDisplayState(matrix, this.inputFunction, this.commandFunction);
 }
 
 class MatrixDisplayState extends State<MatrixDisplay>{
 
   final List<List<String>> matrix;
   var editVal = '';
+  final Function(InputItem input) inputFunction;
+  final Function(CommandItem command) commandFunction;
 
-  MatrixDisplayState(this.matrix);
+  MatrixDisplayState(this.matrix, this.inputFunction, this.commandFunction);
 
 @override
 Widget build(BuildContext context){
@@ -79,6 +88,12 @@ Widget _buildMatrixItems(BuildContext context, int index, List<List<String>> mat
     onTap: () => setState(() { _matrixItemSelect(x, y, matrix); }),
     child: GridTile(
       child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          border: Border.all(
+            color: Colors.black,
+          ),
+        ),
         child: Center(
           child: _buildMatrixItem(x, y, matrix),
         ),
@@ -94,30 +109,36 @@ Widget _buildMatrixItems(BuildContext context, int index, List<List<String>> mat
 
   Future _matrixItemSelect(int x, int y, List<List<String>> matrix) {
 
-  TextEditingController _textFieldController = TextEditingController();
+  CalculatorDisplayController controller = CalculatorDisplayController();
 
     return showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: Text('Enter Number'),
-            content: TextField(
-              controller: _textFieldController,
-              keyboardType: TextInputType.numberWithOptions(),
-              decoration: InputDecoration(hintText: "#"),
-            ),
-            actions: <Widget>[
-              new FlatButton(
-                child: new Text('Submit'),
-                onPressed: () {
-                  setState(() {
-                    matrix[x][y] = _textFieldController.text;
-                  });
-                  Navigator.of(context).pop();
-                },
-              )
-            ],
-          );
-        });
-    }
+      context: context,
+      builder: (BuildContext context){
+
+        return StatefulBuilder(
+          builder: (context, setState){
+          return Dialog(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+          child: 
+            SizedBox(
+              height: 530,
+            child: 
+            Container(
+              color: Colors.black38, 
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  Expanded(
+                    child:
+                    CalculatorDisplay(controller)
+                  ),
+                  Expanded(
+                    child:
+                    MatrixInputPad(controller, matrix, x, y, context)
+                  )
+          ]))
+        ));});
+      }
+    );
+  }
 }

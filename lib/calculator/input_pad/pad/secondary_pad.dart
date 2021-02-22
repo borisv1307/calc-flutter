@@ -62,8 +62,8 @@ class SecondaryPad extends StatelessWidget{
           buildInputButton(InputItem.SUBTRACT,  InputButtonStyle.SECONDARY),
           buildInputButton(InputItem.COMMA, InputButtonStyle.TERTIARY),
           buildInputButton(InputItem.EMPTY, InputButtonStyle.TERTIARY),
-          PadButton('Matr', InputButtonStyle.QUARTENARY, () {Navigator.pushReplacementNamed(context, 'matrPad');}),
-          PadButton('Conv', InputButtonStyle.QUARTENARY, () {Navigator.pushReplacementNamed(context, 'Weight');}),
+          PadButton('Matr', InputButtonStyle.QUARTENARY, () {Navigator.pushNamed(context, 'matr');}),
+          PadButton('Conv', InputButtonStyle.QUARTENARY, () {Navigator.of(context).pushNamed('converionsDisplay');}),
           buildInputButton(InputItem.ADD,  InputButtonStyle.SECONDARY),
           PadButton('vars', InputButtonStyle.QUARTENARY, () {Navigator.pushReplacementNamed(context, 'varPad');}),
           MultiButton([

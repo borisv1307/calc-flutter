@@ -1,8 +1,10 @@
+import 'package:flutter/material.dart';
+
 class MatrixFormatter{
 
 String formatMatrixString(List<List<String>> matrix){
 
-  String formattedMatrix = '';
+  String formattedMatrix = '&';
 
     for(int i=0; i < (matrix.length ); i++){
       for(int a=0; a < (matrix[0].length); a++){
@@ -14,10 +16,10 @@ String formatMatrixString(List<List<String>> matrix){
         formattedMatrix = formattedMatrix + toAdd;
       }
       if(i < (matrix.length-1)){
-        formattedMatrix = formattedMatrix + "!";
+        formattedMatrix = formattedMatrix + "@";
       }
     }
-
+  formattedMatrix = formattedMatrix + "\$";
   return formattedMatrix;
 }
 
@@ -31,12 +33,16 @@ String printMatrix(List<List<String>> matrix){
       formattedMatrix = formattedMatrix + startString;
 
       for(int a=0; a < (matrix[0].length); a++){
-        String toAdd = matrix[i][a] + " ";
+        String toAdd = "[" + matrix[i][a] + "] ";
         formattedMatrix = formattedMatrix + toAdd;
       }
 
-      String endString = "|\n";
+      String endString = "|";
       formattedMatrix = formattedMatrix + endString;
+
+      if(i < matrix.length - 1){
+        formattedMatrix = formattedMatrix + "\n";
+      }
     }
 
   return formattedMatrix;
@@ -44,7 +50,8 @@ String printMatrix(List<List<String>> matrix){
 
 List<List<String>> matrixStringToList(String matrixString){
 
-  var rowSplit = matrixString.split("!");
+  var matrixStringSlice = matrixString.substring(0, matrixString.length - 1);
+  var rowSplit = matrixStringSlice.split("@");
   List<List<String>> mainList = new List<List<String>>();
 
   for(int i = 0; i < rowSplit.length; i++){
@@ -58,5 +65,21 @@ List<List<String>> matrixStringToList(String matrixString){
 
   return mainList;
 
+}
+
+Widget widgetPrintMatrix(List<List<String>> matrix){
+
+}
+
+Widget _createCellContainer(String cell){
+
+  return Container(
+    decoration: BoxDecoration(
+      color: Colors.white,
+      border: Border.all(
+        color: Colors.black,
+      ),
+    ),
+    child: Text(cell),);
 }
 }

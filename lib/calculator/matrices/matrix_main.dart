@@ -1,50 +1,33 @@
 import 'package:flutter/material.dart';
+import 'package:open_calc/calculator/input_pad/command_item.dart';
 import 'package:open_calc/calculator/input_pad/input_button_style.dart';
 import 'package:open_calc/calculator/input_pad/input_item.dart';
+import 'package:open_calc/calculator/input_pad/input_variables.dart';
 import 'package:open_calc/calculator/matrices/matrix_display.dart';
+import 'package:open_calc/calculator/matrices/matrix_formatting.dart';
 
-class MatrixNavigator extends StatelessWidget{
-
-  final List<List<List<String>>> matrixStorage;
-  final Function(InputItem input) inputFunction;
-
-  MatrixNavigator(this.matrixStorage, this.inputFunction);
-
-  Widget build(BuildContext context){
-    return new Navigator(
-      initialRoute: '',
-      onGenerateRoute: (RouteSettings settings) {
-        WidgetBuilder builder;
-        switch (settings.name) {
-          case 'matrixHome' :
-            builder = (BuildContext context) => MatrixHome(this.matrixStorage, this.inputFunction);
-            break;
-          case 'matrixCreate' :
-            builder = (BuildContext context) => MatrixCreate(this.matrixStorage);
-            break;
-        }
-        return MaterialPageRoute(builder: builder, settings: settings);
-       },
-      );
-  }
-}
+import 'matrix_pad/matrix_display_widget.dart';
 
 class MatrixHome extends StatefulWidget{
 
   final List<List<List<String>>> matrixStorage;
   final Function(InputItem input) inputFunction;
+  final Function(CommandItem command) commandFunction;
+  final VariableStorage storage;
 
-  MatrixHome(this.matrixStorage, this.inputFunction);
+  MatrixHome(this.matrixStorage, this.inputFunction, this.commandFunction, this.storage);
   @override
-  State<StatefulWidget> createState() => MatrixHomeState(matrixStorage, inputFunction);
+  State<StatefulWidget> createState() => MatrixHomeState(matrixStorage, inputFunction, commandFunction, storage);
 }
 
 class MatrixHomeState extends State<MatrixHome>{
 
   final List<List<List<String>>> matrixStorage;
   final Function(InputItem input) inputFunction;
+  final Function(CommandItem command) commandFunction;
+  final VariableStorage storage;
 
-  MatrixHomeState(this.matrixStorage, this.inputFunction);
+  MatrixHomeState(this.matrixStorage, this.inputFunction, this.commandFunction, this.storage);
 //--------------Add new Matrix Dialogs--------------------------------------
   Future _collectColsRows() {
 
@@ -89,11 +72,12 @@ class MatrixHomeState extends State<MatrixHome>{
   List<Widget> _getMatrixList(List<List<List<String>>> matrixStorage){
 
     List matrixAccessorWidgets = List<Widget>();
+    MatrixFormatter format = new MatrixFormatter();
 
     int i = 0;
     for(i=0; i < matrixStorage.length; i++){
       matrixAccessorWidgets.add(
-        MatrixAccessor((i+1).toString(), matrixStorage[i], InputButtonStyle.TERTIARY, this.inputFunction)
+        MatrixAccessor((i+1).toString(), matrixStorage[i], InputButtonStyle.TERTIARY, this.inputFunction, format, commandFunction, storage, matrixStorage)
       );
     }
 
@@ -101,11 +85,14 @@ class MatrixHomeState extends State<MatrixHome>{
   }
 
   Widget build(BuildContext context) {
-    return Column(children:[
+    return 
+      Column(children:[
+      Expanded(child:
       Container(
       color:Colors.black38,
       alignment: Alignment.center,
-      child:ListView(
+      child:
+      ListView(
         padding: const EdgeInsets.all(8),
         shrinkWrap: true,
         children: <Widget>[
@@ -123,16 +110,18 @@ class MatrixHomeState extends State<MatrixHome>{
                 ),
                 onTap: (){
                   _collectColsRows();
+                  _getMatrixList(matrixStorage);
                   
                 },
               )),
             ),
-          
+
+          Expanded(child: 
           ListView(
             shrinkWrap: true,
             children: [
             for(var item in _getMatrixList(matrixStorage)) Container(child: item)
-          ],),
+          ],)),
 
           Container(
               margin: EdgeInsets.all(5),
@@ -153,7 +142,7 @@ class MatrixHomeState extends State<MatrixHome>{
             ),
         ]
       )
-    )]);
+    ))]);
   }
 }
 
@@ -163,12 +152,16 @@ class MatrixAccessor extends StatelessWidget{
   final List<List<String>> matrix;
   final InputButtonStyle style;
   final Function(InputItem input) inputFunction;
+  final Function(CommandItem command) commandFunction;
+  final MatrixFormatter format;
+  final VariableStorage storage;
+  final List<List<List<String>>> matrixStorage;
 
-  MatrixAccessor(this.number, this.matrix, this.style, this.inputFunction);
+  MatrixAccessor(this.number, this.matrix, this.style, this.inputFunction, this.format, this.commandFunction, this.storage, this.matrixStorage);
 
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.all(5),
+      margin: EdgeInsets.all(15),
       child:Material(
         borderRadius: style.radius,
         color: style.backgroundColor,
@@ -177,10 +170,11 @@ class MatrixAccessor extends StatelessWidget{
           borderRadius: style.radius,
           child:Container(
             alignment: Alignment.center,
-            child: Text('Matrix: ' + number, style: TextStyle(fontSize: style.fontSize, fontWeight: style.fontWeight, color: style.textColor)),
+            child: Column(children:[Text("Matrix " + number, style: TextStyle(fontSize: InputButtonStyle.SECONDARY.fontSize, fontWeight: InputButtonStyle.SECONDARY.fontWeight, color: InputButtonStyle.SECONDARY.textColor)), 
+            SizedBox(width: 350, height: 100, child:MatrDisplayWidget(matrix))]),
         ),
         onLongPress: (){
-          Navigator.push(context, MaterialPageRoute(builder: (context) => MatrixDisplay(matrix)));
+          Navigator.push(context, MaterialPageRoute(builder: (context) => MatrixDisplay(matrix, inputFunction, commandFunction)));
         },
         onTap: (){
           inputFunction(InputItem('matr' + number));
@@ -227,6 +221,7 @@ class MatrixCreateState extends State<MatrixCreate> {
           ),
             onTap: (){
               Navigator.of(context).pop();
+              
             },
           )),
       ),

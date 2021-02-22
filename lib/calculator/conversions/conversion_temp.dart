@@ -1,7 +1,6 @@
 import 'package:advanced_calculation/advanced_calculator.dart';
 import 'package:flutter/material.dart';
 import 'package:open_calc/calculator/conversions/conversion_options.dart';
-import 'package:advanced_calculation/calculation_options.dart';
 
 
 class TempConvert extends StatefulWidget{

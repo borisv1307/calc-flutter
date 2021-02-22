@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:open_calc/calculator/calculator_tab.dart';
+import 'package:open_calc/calculator/input_pad/input_item.dart';
 import 'package:open_calc/calculator/input_pad/input_variables.dart';
 import 'package:open_calc/graph/graph_tab.dart';
 
@@ -12,6 +13,9 @@ class HomeScreen extends StatelessWidget {
     
     VariableStorage storage = new VariableStorage();
     List<List<List<String>>> matrixStorage = new List<List<List<String>>>();
+    matrixStorage.add([['1','2'],['3','4']]);
+    matrixStorage.add([['2','3'],['4','5']]);
+    Function(InputItem input) inputFunction; 
 
     return MaterialApp(
         home: DefaultTabController(
@@ -32,7 +36,7 @@ class HomeScreen extends StatelessWidget {
                 ),
                 body: TabBarView(children: [
                   GraphTab(storage),
-                  CalculatorTab(storage, matrixStorage)
+                  CalculatorTab(storage, matrixStorage, inputFunction)
                 ]
             )
         )
