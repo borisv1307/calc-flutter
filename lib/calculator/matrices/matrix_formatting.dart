@@ -49,7 +49,7 @@ String printMatrix(List<List<String>> matrix){
 
 List<List<String>> matrixStringToList(String matrixString){
 
-  var matrixStringSlice = matrixString.substring(0, matrixString.length - 1);
+  var matrixStringSlice = matrixString.substring(1, matrixString.length - 1);
   var rowSplit = matrixStringSlice.split("@");
   List<List<String>> mainList = new List<List<String>>();
 

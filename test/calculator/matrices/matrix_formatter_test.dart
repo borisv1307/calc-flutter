@@ -3,10 +3,10 @@ import 'package:test/test.dart';
 
 void main(){
   
-  String testMatrixString = "1;2;3!1;2;3!1;2;3";
+  String testMatrixString = "&1;2;3@1;2;3@1;2;3\$";
   List<List<String>> testMatrixList = [['1','2','3'],['1','2','3'],['1','2','3']];
   MatrixFormatter format = new MatrixFormatter();
-  String printTest = "| 1 2 3 |\n| 1 2 3 |\n| 1 2 3 |\n";
+  String printTest = "| [1] [2] [3] |\n| [1] [2] [3] |\n| [1] [2] [3] |";
   group('matrix formatting', (){
 
     test('format string from list',(){
