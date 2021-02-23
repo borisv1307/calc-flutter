@@ -1,4 +1,3 @@
-import 'package:advanced_calculation/calculation_options.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:open_calc/calculator/input_pad/button/input_button.dart';
@@ -13,11 +12,10 @@ import 'package:open_calc/calculator/input_pad/pad/pad_grid.dart';
 
 
 class SecondaryPad extends StatelessWidget{
-  final CalculationOptions options;
   final Function(InputItem input) inputFunction;
   final Function(CommandItem command) commandFunction;
 
-  SecondaryPad(this.inputFunction, this.commandFunction, this.options);
+  SecondaryPad(this.inputFunction, this.commandFunction);
 
   Widget buildInputButton(InputItem inputItem, InputButtonStyle type){
     return InputButton(inputItem, type, inputFunction);
@@ -87,7 +85,7 @@ class SecondaryPad extends StatelessWidget{
           }),
           PadButton('mode', InputButtonStyle.QUARTENARY,(){
             showDialog(context: context,builder: (BuildContext context){
-              return ModeDialog(options);
+              return ModeDialog();
             });
           }),
           buildCommandButton(CommandItem.ENTER, InputButtonStyle.SECONDARY),
