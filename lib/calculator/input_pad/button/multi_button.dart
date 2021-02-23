@@ -20,6 +20,7 @@ class MultiButton extends PadButton {
     return Container(
         padding: EdgeInsets.symmetric(horizontal:HORIZONTAL_PADDING),
         child:Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
             Expanded(child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -49,24 +50,25 @@ class MultiButton extends PadButton {
     return Container(
         padding: EdgeInsets.symmetric(horizontal:HORIZONTAL_PADDING),
         child:Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
-            Expanded(child: Row(
+            Row(
               children: [
                 Text('', style: TextStyle(fontSize: 15, fontWeight: style.fontWeight, color: style.textColor, height: 0.9))
               ]
-            )),
-            Expanded(child: Row(
+            ),
+            Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 _generateMultiText(displayItems[0].label),
                 _generateMultiText(displayItems[1].label)
               ]
-            )),
-            Expanded(child: Row(
+            ),
+            Row(
               children: [
                 Text('', style: TextStyle(fontSize: 15, fontWeight: style.fontWeight, color: style.textColor,height: 0.9))
               ]
-            ))
+            )
           ],
         )
     );
@@ -76,26 +78,27 @@ class MultiButton extends PadButton {
     return Container(
         padding: EdgeInsets.symmetric(horizontal:HORIZONTAL_PADDING),
         child:Column(
+          mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Expanded(child: Row(
+            Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 _generateMultiText(displayItems[0].label)
               ]
-            )),
-            Expanded(child: Row(
+            ),
+            Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 _generateMultiText(displayItems[1].label)
               ]
-            )),
-            Expanded(child: Row(
+            ),
+            Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 _generateMultiText(displayItems[2].label)
               ]
-            ))
+            )
           ],
         )
     );
