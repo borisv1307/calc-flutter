@@ -1,7 +1,6 @@
-import 'package:advanced_calculation/calculation_options.dart';
+import 'package:advanced_calculation/angular_unit.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 
 
 class SettingsController extends ChangeNotifier {
@@ -10,15 +9,11 @@ class SettingsController extends ChangeNotifier {
   SettingsController(this._prefs);
 
   get isCalcScreen {
-    int tabNumber = _prefs.getInt('tabNumber') ?? 1;
-    return (tabNumber == 1) ? true : false;
+    return _prefs.getBool('isCalcScreen') ?? true;
   }
 
   Future<void> setCalcScreen(bool isCalcScreen) async {
-    if (isCalcScreen)
-      await _prefs.setInt('tabNumber', 1);
-    else
-      await _prefs.setInt('tabNumber', 0);
+    await _prefs.setBool('isCalcScreen', isCalcScreen);
   }
 
   Future<void> setDecimals(int x) async {
@@ -51,7 +46,6 @@ class SettingsController extends ChangeNotifier {
     final provider = context.dependOnInheritedWidgetOfExactType<SettingsControllerProvider>();
     return provider.controller;
   }
-
 }
 
 // InheritedWidget so settings can be accessed from anywhere

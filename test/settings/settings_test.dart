@@ -1,19 +1,13 @@
-
-import 'package:advanced_calculation/calculation_options.dart';
+import 'package:advanced_calculation/angular_unit.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:open_calc/settings/settings_controller.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-
-
 void main() {
-
   SharedPreferences preferences;
-  
   group("settings controller", () {
-
     setUpAll(() async {
-      SharedPreferences.setMockInitialValues({'angularUnit': 'radian', 'decimalPlaces': -1, 'tabNumber': 1}); 
+      SharedPreferences.setMockInitialValues({'angularUnit': 'radian', 'decimalPlaces': -1, 'isCalcScreen': true}); 
       preferences = await SharedPreferences.getInstance();
     });
 
@@ -29,7 +23,7 @@ void main() {
       await settingsController.setCalcScreen(false);
       SharedPreferences prefs = await SharedPreferences.getInstance();
       expect(settingsController.isCalcScreen, false);
-      expect(prefs.getInt('tabNumber'), 0);
+      expect(prefs.getBool('isCalcScreen'), false);
     });
 
     test("angular unit can be updated", () async {
