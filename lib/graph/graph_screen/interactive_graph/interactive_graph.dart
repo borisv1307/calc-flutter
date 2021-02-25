@@ -7,7 +7,8 @@ import 'package:cartesian_graph/pixel_location.dart';
 import 'package:flutter/material.dart';
 import 'package:open_calc/graph/graph_screen/graph_cursor.dart';
 import 'package:open_calc/graph/graph_screen/graph_details/scale_settings/scale_settings.dart';
-import 'file:///C:/Users/Greg/IdeaProjects/se-calc/calc-flutter/lib/graph/graph_screen/interactive_graph/graph_display_navigator.dart';
+
+import 'graph_display_navigator.dart';
 
 class InteractiveGraph extends StatefulWidget {
   final GraphCursor cursor;
