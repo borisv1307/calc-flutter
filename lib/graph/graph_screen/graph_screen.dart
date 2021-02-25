@@ -6,7 +6,6 @@ import 'package:open_calc/graph/function_screen/function_display_controller.dart
 import 'package:open_calc/graph/graph_screen/graph_cursor.dart';
 import 'package:open_calc/graph/graph_screen/graph_details/graph_details.dart';
 import 'package:open_calc/graph/graph_screen/graph_details/scale_settings/scale_settings.dart';
-import 'package:open_calc/graph/graph_screen/graph_navigator/graph_display_navigator.dart';
 import 'package:open_calc/graph/graph_screen/graph_navigator/graph_navigator.dart';
 import 'package:open_calc/graph/graph_screen/interactive_graph/interactive_graph.dart';
 
@@ -46,23 +45,19 @@ class GraphScreenState extends State<GraphScreen> {
       key: _scaffoldKey,
       resizeToAvoidBottomInset: false,
       body: KeyboardVisibilityBuilder(builder: (context, isKeyboardVisible) {
-        return Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
-          if (!isKeyboardVisible)
-            Stack(alignment: AlignmentDirectional.center, children: <Widget>[
-              interactiveGraph,
-              GraphDisplayNavigator(scaleSettings),
-            ]),
-          Row(
+        return Column(
             children: <Widget>[
-              Expanded(
-                  child: GraphNavigator(
-                      this.cursorDetails, selection, this.scaleSettings)),
-            ],
+          if (!isKeyboardVisible)
+            Expanded(
+              flex:3,
+              child: interactiveGraph
+            ),
+          Flexible(
+              child: GraphNavigator(this.cursorDetails, selection, this.scaleSettings)
           ),
-          GraphDetails(this.inputEquations, selection, this.scaleSettings,
-              this.cursorDetails),
-          SizedBox(
-            height: 70,
+          Expanded(
+            flex:4,
+            child: GraphDetails(this.inputEquations, selection, this.scaleSettings, this.cursorDetails)
           )
         ]);
       }),

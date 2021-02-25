@@ -77,34 +77,32 @@ class _GraphNavigatorState extends State<GraphNavigator> {
             ),
             _buildArrow(CursorDirection.DOWN, Icons.arrow_downward),
           ]),
-          Container(
-              width: 40,
-              child: Column(
-                children: <Widget>[
-                  Material(
-                    color: Colors.transparent,
-                    child: InkWell(
-                        onTap: () {
-                          _zoomIn();
-                        },
-                        child: Icon(
-                          Icons.zoom_in,
-                          size: 36,
-                        )),
-                  ),
-                  Material(
-                    color: Colors.transparent,
-                    child: InkWell(
-                        onTap: () {
-                          _zoomOut();
-                        },
-                        child: Icon(
-                          Icons.zoom_out,
-                          size: 36,
-                        )),
-                  )
-                ],
-              ))
+          Column(
+            children: <Widget>[
+              Material(
+                color: Colors.transparent,
+                child: InkWell(
+                    onTap: () {
+                      _zoomIn();
+                    },
+                    child: Icon(
+                      Icons.zoom_in,
+                      size: 36,
+                    )),
+              ),
+              Material(
+                color: Colors.transparent,
+                child: InkWell(
+                    onTap: () {
+                      _zoomOut();
+                    },
+                    child: Icon(
+                      Icons.zoom_out,
+                      size: 36,
+                    )),
+              )
+            ],
+          )
         ],
       ),
     );
