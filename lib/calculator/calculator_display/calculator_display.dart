@@ -8,11 +8,8 @@ import 'package:open_calc/calculator/calculator_display/calculator_display_contr
 import 'package:open_calc/calculator/calculator_display/display_history.dart';
 
 class CalculatorDisplay extends StatefulWidget {
-  final int numLines;
   final CalculatorDisplayController controller;
-  CalculatorDisplay(this.controller,{
-    this.numLines = 8,
-  }) : assert(numLines>1);
+  CalculatorDisplay(this.controller);
 
   @override
   State<StatefulWidget> createState() => _CalculatorDisplayState();
@@ -113,6 +110,7 @@ class _CalculatorDisplayState extends State<CalculatorDisplay> {
     return rows;
   }
 
+
   @override
   Widget build(BuildContext context) {
     List<Widget> history = this.widget.controller.history.map(generateRows).expand((i) => i).toList();
@@ -142,21 +140,20 @@ class _CalculatorDisplayState extends State<CalculatorDisplay> {
       controller.jumpTo(controller.position.maxScrollExtent);
     });
 
-    return Stack(
-        children:[
-          GestureDetector(
-              onVerticalDragEnd: (DragEndDetails details){
-                if(details.primaryVelocity < 0){
-                  this.widget.controller.browseForwards();
-                }else if(details.primaryVelocity > 0){
-                  this.widget.controller.browseBackwards();
-                }
-              },
-              child:Container(
-                  color: GREEN,
-                  padding: EdgeInsets.all(12),
-                  child: SizedBox(
-                      height: LINE_HEIGHT * FONT_SIZE * this.widget.numLines,
+    return Container(
+        color: GREEN,
+        child:Stack(
+          children:[
+            GestureDetector(
+                onVerticalDragEnd: (DragEndDetails details){
+                  if(details.primaryVelocity < 0){
+                    this.widget.controller.browseForwards();
+                  }else if(details.primaryVelocity > 0){
+                    this.widget.controller.browseBackwards();
+                  }
+                },
+                child:Container(
+                    padding: EdgeInsets.all(12),
                       child: SingleChildScrollView(
                         //reverse: true,
                           controller: controller,
@@ -168,18 +165,18 @@ class _CalculatorDisplayState extends State<CalculatorDisplay> {
                               )
                           )
                       )
-                  )
-              )
-          ),
-          if(_alert != null)
-            Positioned.fill(
-                child:Container(
-                        color: GREEN.withOpacity(0.9),
-                        alignment: Alignment.center,
-                        child: Text(_alert.toUpperCase(),style: ALERT_TEXT_STYLE)
-                    )
                 )
-        ]
+            ),
+            if(_alert != null)
+              Positioned.fill(
+                  child:Container(
+                          color: GREEN.withOpacity(0.9),
+                          alignment: Alignment.center,
+                          child: Text(_alert.toUpperCase(),style: ALERT_TEXT_STYLE)
+                      )
+                  )
+          ]
+      )
     );
   }
 }

@@ -8,6 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:open_calc/graph/graph_screen/graph_cursor.dart';
 import 'package:open_calc/graph/graph_screen/graph_details/scale_settings/scale_settings.dart';
 
+import 'graph_display_navigator.dart';
+
 class InteractiveGraph extends StatefulWidget {
   final GraphCursor cursor;
   final List<String> inputEquations;
@@ -94,15 +96,21 @@ class InteractiveGraphState extends State<InteractiveGraph> {
     CartesianGraphAnalyzer analyzer = CartesianGraphAnalyzer(graph);
 
     double devicePixelRatio = MediaQuery.of(context).devicePixelRatio;
-    return ConstrainedBox(
-        constraints: BoxConstraints(
-          maxHeight: GRAPH_HEIGHT,
-        ),
-        child: GestureDetector(
-          child: Stack(
-            alignment: Alignment.bottomLeft,
-            children: [
-              graph,
+    return Container(
+        child: Stack(
+          alignment: Alignment.bottomLeft,
+          children: [
+              GestureDetector(
+                  child: graph,
+                  onTapDown: (TapDownDetails details) {
+                    double y =
+                        GRAPH_HEIGHT - (details.localPosition.dy * devicePixelRatio);
+                    double x = details.localPosition.dx * devicePixelRatio;
+                    this.widget.cursor.location = analyzer
+                        .calculateCoordinates(PixelLocation(x.toInt(), y.toInt()));
+                  }
+              ),
+              GraphDisplayNavigator(this.widget.scaleSettings),
               if(displayCursor.location != null)
                 Text(
                     ' X=${displayCursor.location.x}   Y=${displayCursor.location.y}',
@@ -116,15 +124,8 @@ class InteractiveGraphState extends State<InteractiveGraph> {
                           _buildShadow(1.5, 1.5),
                           _buildShadow(-1.5, 1.5)
                         ]))
-            ],
-          ),
-          onTapDown: (TapDownDetails details) {
-            double y =
-                GRAPH_HEIGHT - (details.localPosition.dy * devicePixelRatio);
-            double x = details.localPosition.dx * devicePixelRatio;
-            this.widget.cursor.location = analyzer
-                .calculateCoordinates(PixelLocation(x.toInt(), y.toInt()));
-          },
-        ));
+        ],
+      ),
+    );
   }
 }
