@@ -67,8 +67,6 @@ class FunctionScreenState extends State<FunctionScreen> {
   @override
   Widget build(BuildContext context) {
     inputHandler = GraphInputHandler(widget.controller, context, _formKey);
-    double screenHeight = MediaQuery.of(context).size.height;
-    double height = (screenHeight - 353) / 1.43;
 
     return Scaffold(
         body: Center(
@@ -76,41 +74,41 @@ class FunctionScreenState extends State<FunctionScreen> {
             key: _formKey,
             child: Column(
               children: <Widget>[
-                Container(
-                  color: Color.fromRGBO(170, 200, 154, 1),
-                  height: height,
-                  padding: EdgeInsets.symmetric( vertical: 10, horizontal: 10),
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: <Widget>[
-                        ..._getFunctions(),
-                        ButtonTheme(
-                          minWidth: 150.0,
-                          height: 40,
-                          child: RaisedButton(
-                            onPressed: () {
-                              setState((){
-                                widget.controller.addField();
-                              });
-                            },
-                            child: Container(
-                              width: 30,
-                              height: 30,
-                              decoration: BoxDecoration(
-                                // color: Colors.green,
-                                // borderRadius: BorderRadius.circular(15),
+                Expanded(
+                  flex: 2,
+                  child: Container(
+                        color: Color.fromRGBO(170, 200, 154, 1),
+                        padding: EdgeInsets.symmetric( vertical: 10, horizontal: 10),
+                        child: SingleChildScrollView(
+                          child: Column(
+                            children: <Widget>[
+                              ..._getFunctions(),
+                              ButtonTheme(
+                                minWidth: 150.0,
+                                child: RaisedButton(
+                                  onPressed: () {
+                                    setState((){
+                                      widget.controller.addField();
+                                    });
+                                  },
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      // color: Colors.green,
+                                      // borderRadius: BorderRadius.circular(15),
+                                    ),
+                                    child: Icon(
+                                      Icons.add, color: Colors.white,
+                                    ),
+                                  ),
+                                ),
                               ),
-                              child: Icon(
-                                Icons.add, color: Colors.white,
-                              ),
-                            ),
+                            ],
                           ),
                         ),
-                      ],
-                    ),
-                  ),
+                      )
                 ),
                 Expanded(
+                  flex: 3,
                   child: Container(
                     // height: 333,
                     color: Colors.black38,
