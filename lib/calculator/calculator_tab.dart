@@ -1,3 +1,4 @@
+import 'package:advanced_calculation/angular_unit.dart';
 import 'package:advanced_calculation/calculation_options.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +8,7 @@ import 'package:open_calc/calculator/handler/command_handler.dart';
 import 'package:open_calc/calculator/handler/input_handler.dart';
 import 'package:open_calc/calculator/input_pad/input_pad.dart';
 import 'package:open_calc/calculator/input_pad/input_variables.dart';
+import 'package:open_calc/settings/settings_controller.dart';
 
 class CalculatorTab extends StatefulWidget {
   final VariableStorage storage;
@@ -17,21 +19,32 @@ class CalculatorTab extends StatefulWidget {
 }
 
 class CalculatorTabState extends State<CalculatorTab>{
-
   final VariableStorage storage;
-
   CalculatorDisplayController controller;
   InputHandler inputHandler;
   CommandHandler commandHandler;
-  CalculationOptions options;
 
   CalculatorTabState(this.storage) {
     controller = CalculatorDisplayController();
-    options = CalculationOptions();
     inputHandler= InputHandler(controller);
-    commandHandler = CommandHandler(controller, storage,options);
+    commandHandler = CommandHandler(controller, storage, CalculationOptions());
   }
-  
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    SettingsController.of(context).addListener(_updateOptions);
+    _updateOptions();
+  }
+
+  void _updateOptions() {
+    setState(() {
+      int decimals = SettingsController.of(context).decimalPlaces;
+      AngularUnit unit = SettingsController.of(context).angularUnit;
+      commandHandler.updateOptions(decimals, unit);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -47,7 +60,7 @@ class CalculatorTabState extends State<CalculatorTab>{
           ),
           Expanded(
             flex: 3,
-            child: InputPad(storage, inputHandler.handle, commandHandler.handle, options)
+            child: InputPad(storage, inputHandler.handle, commandHandler.handle)
           ),
         ],
       )
