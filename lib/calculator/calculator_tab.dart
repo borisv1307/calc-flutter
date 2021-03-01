@@ -106,7 +106,7 @@ class MainCalculatorState extends State<MainCalculator> {
           ),
           Expanded(
             flex: 3,
-            child: InputPad(storage, inputHandler.handle, commandHandler.handle, options, matrixStorage)
+            child: InputPad(storage, inputHandler.handle, commandHandler.handle, CalculationOptions(), matrixStorage)
 
           ),
         ],
