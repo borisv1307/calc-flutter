@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:open_calc/calculator/calculator_tab.dart';
+import 'package:open_calc/calculator/input_pad/input_item.dart';
 import 'package:open_calc/calculator/input_pad/input_variables.dart';
 import 'package:open_calc/graph/graph_tab.dart';
 import 'package:open_calc/settings/settings_controller.dart';
@@ -21,7 +22,12 @@ class HomeScreenState extends State<HomeScreen>{
   @override
   Widget build(BuildContext context) {
     VariableStorage storage = new VariableStorage();
+
+    List<List<List<String>>> matrixStorage = new List<List<List<String>>>();
+    Function(InputItem input) inputFunction; 
+
     isCalculate = SettingsController.of(context).isCalcScreen;
+
 
     return MaterialApp(
         home: DefaultTabController(
@@ -48,7 +54,7 @@ class HomeScreenState extends State<HomeScreen>{
                   pages:[
                     MaterialPage(child: GraphTab(storage)),
                     if(isCalculate)
-                      MaterialPage(child: CalculatorTab(storage))
+                      MaterialPage(child: CalculatorTab(storage, matrixStorage, inputFunction))
                   ],
                   onPopPage: (route, result) => route.didPop(result),
                 )
