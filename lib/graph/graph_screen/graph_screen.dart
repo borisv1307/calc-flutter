@@ -1,230 +1,74 @@
-import 'package:advanced_calculation/advanced_calculator.dart';
-import 'package:cartesian_graph/bounds.dart';
-import 'package:cartesian_graph/coordinates.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:open_calc/calculator/input_pad/input_variables.dart';
 import 'package:open_calc/graph/function_screen/function_display_controller.dart';
 import 'package:open_calc/graph/graph_screen/graph_cursor.dart';
+import 'package:open_calc/graph/graph_screen/graph_details/graph_details.dart';
+import 'package:open_calc/graph/graph_screen/graph_details/scale_settings/scale_settings.dart';
 import 'package:open_calc/graph/graph_screen/graph_navigator/graph_navigator.dart';
-import 'package:open_calc/graph/graph_screen/graph_table.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:open_calc/graph/graph_screen/interactive_graph/interactive_graph.dart';
+import 'package:open_calc/graph/graph_screen/graph_input_evaluator.dart';
+import 'package:open_calc/graph/graph_screen/graph_navigator/text_toggle/text_toggle_selection.dart';
 
-import 'graph_input_evaluator.dart';
 
 class GraphScreen extends StatefulWidget {
   final FunctionDisplayController controller;
   final VariableStorage storage;
   final GraphInputEvaluator evaluator;
-  GraphScreen(this.storage, this.controller) : evaluator = GraphInputEvaluator(storage);
+  GraphScreen(this.storage, this.controller)
+      : evaluator = GraphInputEvaluator(storage);
 
   @override
   State<StatefulWidget> createState() => GraphScreenState();
 }
 
-class GraphScreenState extends State<GraphScreen>{
+class GraphScreenState extends State<GraphScreen> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
-  final _scaleFormKey = GlobalKey<FormState>();
   List<String> inputEquations;
-  int _xMin = -10,
-      _xMax = 10,
-      _yMin = -10,
-      _yMax = 10;
-  double drawerWidth = 200;
-  double drawerHeight = 365;
-  TextStyle mainStyle = TextStyle(fontFamily: 'RobotoMono', fontSize: 20);
-  TextStyle titleStyle = TextStyle(fontFamily: 'RobotoMono', fontSize: 23);
-  List<Coordinates> coordinates = [];
-  AdvancedCalculator calculator = AdvancedCalculator();
-  int selectedIndex = -1;
-
+  ScaleSettings scaleSettings = ScaleSettings();
+  TextToggleSelection selection = TextToggleSelection('equations');
   GraphCursor cursorDetails = GraphCursor();
-
-  void moveCursor(Coordinates requestedLocation) {
-    Coordinates updatedLocation = requestedLocation;
-    setState(() {
-      if(selectedIndex != -1){
-        double y = calculator.calculateEquation(inputEquations[selectedIndex], requestedLocation.x);
-        updatedLocation = Coordinates(requestedLocation.x, y);
-      }
-      cursorDetails.location = updatedLocation;
-    });
-  }
-
-  void _beginTrace(int index) {
-    if (selectedIndex == index) {  // exit trace mode
-      selectedIndex = -1;
-    } else {
-      selectedIndex = index;
-      moveCursor(cursorDetails.location);
-    }
-  }
-
-  void _openDrawer() {
-    _scaffoldKey.currentState.openEndDrawer();
-  }
+  int chosenEquationIndex = -1;
 
   @override
   Widget build(BuildContext context) {
-    this.inputEquations = widget.evaluator.translateInputs(widget.controller.inputs);
+    this.inputEquations =
+        widget.evaluator.translateInputs(widget.controller.inputs);
+    InteractiveGraph interactiveGraph = InteractiveGraph(
+        this.inputEquations,
+        this.scaleSettings,
+        this.cursorDetails,
+        this.chosenEquationIndex = chosenEquationIndex);
 
     return Scaffold(
       key: _scaffoldKey,
       resizeToAvoidBottomInset: false,
-      body: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            InteractiveGraph(this.inputEquations,Bounds(_xMin, _xMax, _yMin, _yMax),this.cursorDetails.location,this.moveCursor),
-            GraphNavigator(this.cursorDetails,this.moveCursor),
-            Container(
-              margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-              child: ListView.separated(
-                shrinkWrap: true,
-                physics: const ClampingScrollPhysics(),
-                padding: const EdgeInsets.all(8),
-                itemCount: inputEquations.length + 1,
-                itemBuilder: (context, int index) {
-                  if (index == inputEquations.length) {
-                    return ListTile();
-                  }
-                  return ListTileTheme(
-                    selectedColor: Colors.black,
-                    selectedTileColor: Colors.green[100],
-                    child: ListTile(
-                      leading: Text("y"+ (index+1).toString() + "=", style: titleStyle),
-                      title: Text(inputEquations[index], style: mainStyle),
-                      selected: index == selectedIndex,
-                      onTap: () {
-                        setState(() {
-                          _beginTrace(index);
-                        });
-                      }
-                    )
-                  );
-                },
-                separatorBuilder: (BuildContext context, int index) => Divider(thickness: 1.5),
-              ),
+      body: KeyboardVisibilityBuilder(builder: (context, isKeyboardVisible) {
+        return Column(
+            children: <Widget>[
+          if (!isKeyboardVisible)
+            Expanded(
+              flex:3,
+              child: interactiveGraph
             ),
-          ],
-        ),
+          Flexible(
+              child: GraphNavigator(this.cursorDetails, selection, this.scaleSettings)
+          ),
+          Expanded(
+            flex:4,
+            child: GraphDetails(this.inputEquations, selection, this.scaleSettings, this.cursorDetails)
+          )
+        ]);
+      }),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {
+          Navigator.of(context).pop();
+        },
+        icon: Icon(Icons.arrow_back),
+        label: Text("Back"),
+        backgroundColor: Colors.red,
       ),
-
-      endDrawer: SingleChildScrollView(
-        scrollDirection: Axis.vertical,
-        child: Container(
-          color: Colors.white,
-          width: drawerWidth,
-          height: drawerHeight,
-          child: Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Form(
-              key: _scaleFormKey,
-              child: Column(
-                children: <Widget>[
-                  TextFormField(
-                    keyboardType: TextInputType.number,
-                    initialValue: '$_xMax',
-                    decoration:
-                    InputDecoration(labelText: 'X max:'),
-                    onSaved: (input) => {
-                      _xMax = int.parse(input),
-                    },
-                  ),
-                  TextFormField(
-                    keyboardType: TextInputType.number,
-                    initialValue: '$_xMin',
-                    decoration:
-                    InputDecoration(labelText: 'X min:'),
-                    onSaved: (input) => {
-                      _xMin = int.parse(input),
-                    },
-                  ),
-                  TextFormField(
-                    keyboardType: TextInputType.number,
-                    initialValue: '$_yMax',
-                    decoration:
-                    InputDecoration(labelText: 'Y max:'),
-                    onSaved: (input) => {
-                      _yMax = int.parse(input),
-                    },
-                  ),
-                  TextFormField(
-                    keyboardType: TextInputType.number,
-                    initialValue: '$_yMin',
-                    decoration:
-                    InputDecoration(labelText: 'Y min:'),
-                    onSaved: (input) => {
-                      _yMin = int.parse(input),
-                    },
-                  ),
-                  TextFormField(
-                    keyboardType: TextInputType.number,
-                    initialValue: '${cursorDetails.step}',
-                    decoration:
-                    InputDecoration(labelText: 'Step:'),
-                    onSaved: (input) => {
-                      cursorDetails.step = double.parse(input),
-                    },
-                  ),
-                  SizedBox(
-                    height: 5,
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      _scaleFormKey.currentState.save();
-                      Navigator.of(context).pop();  // close drawer
-                      setState(() {
-                        cursorDetails.step = cursorDetails.step;
-                      });
-                    },
-                    child: Text("Save"),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ),
-
-      floatingActionButton: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          Container(
-            margin: EdgeInsets.only(left: 34),
-            child: FloatingActionButton.extended(
-              onPressed: () { Navigator.of(context).pop(); },
-              icon: Icon(Icons.arrow_back),
-              label: Text("Back"),
-              backgroundColor: Colors.red,
-              heroTag: 1,
-            ),
-          ),
-          FloatingActionButton.extended(
-            backgroundColor: Colors.green,
-            label: Text('Table'),
-            icon: Icon(Icons.menu_book),
-            heroTag: 2,
-            onPressed: () {
-              showModalBottomSheet<void>(
-                context: context,
-                builder: (BuildContext context) {
-                  return GraphTable(coordinates: this.coordinates);
-                }
-              );
-            }
-          ),
-          FloatingActionButton.extended(
-            onPressed: () {
-              _openDrawer();
-            },
-            label: Text('Scale'),
-            icon: Icon(Icons.crop),
-            heroTag: 3
-          ),
-        ],
-      )
     );
   }
 }
-

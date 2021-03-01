@@ -1,4 +1,3 @@
-import 'package:advanced_calculation/calculation_options.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:open_calc/calculator/input_pad/command_item.dart';
@@ -21,6 +20,7 @@ class InputPad extends StatelessWidget{
   InputPad(this.storage,this.inputFunction,this.commandFunction, this.options, this.matrixStorage);
 
 
+
   @override
   Widget build(BuildContext context){
     return new Navigator(
@@ -32,7 +32,7 @@ class InputPad extends StatelessWidget{
             builder = (BuildContext context) => PrimaryPad(this.inputFunction, this.commandFunction);
             break;
           case 'inputPadTwo':
-            builder = (BuildContext context) => SecondaryPad(this.inputFunction, this.commandFunction, this.options);
+            builder = (BuildContext context) => SecondaryPad(this.inputFunction, this.commandFunction);
             break;
           case 'varPad':
             builder = (BuildContext context) => VariableScreen(this.inputFunction, this.storage);

@@ -1,4 +1,3 @@
-import 'package:advanced_calculation/calculation_options.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:open_calc/calculator/input_pad/button/input_button.dart';
@@ -16,7 +15,7 @@ void main(){
 
     return MaterialApp(home:MediaQuery(
         data:MediaQueryData(size: Size(400,700), devicePixelRatio: 2.5),
-        child:SecondaryPad(inputFunction,commandFunction, CalculationOptions())));
+        child:SecondaryPad(inputFunction,commandFunction)));
   }
 
 

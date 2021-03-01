@@ -20,6 +20,7 @@ class PadButton extends StatelessWidget{
             borderRadius: style.radius,
             child:Container(
               alignment: Alignment.center,
+              padding: this.style.padding,
               child: Text(this.display, style: TextStyle(fontSize: style.fontSize, fontWeight: style.fontWeight, color: style.textColor)),
             ),
             onTap: this.onTap
