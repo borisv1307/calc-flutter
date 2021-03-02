@@ -48,7 +48,7 @@ class CalculatorTabState extends State<CalculatorTab>{
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.black38, 
+      color: Theme.of(context).colorScheme.background, 
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[

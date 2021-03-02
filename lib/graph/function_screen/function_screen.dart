@@ -34,7 +34,7 @@ class FunctionScreenState extends State<FunctionScreen> {
               Expanded(child: FunctionTextField(i, widget.controller, widget.calculator)),
               SizedBox(width: 16,),
               // we need add button at last friends row only
-              _removeButton(false, i),
+              _removeButton(i),
             ],
           ),
         )
@@ -43,7 +43,7 @@ class FunctionScreenState extends State<FunctionScreen> {
     return functions;
   }
   
-  Widget _removeButton(bool add, int index) {
+  Widget _removeButton(int index) {
     return InkWell(
       onTap: (){
         setState((){
@@ -54,7 +54,7 @@ class FunctionScreenState extends State<FunctionScreen> {
         width: 20,
         height: 20,
         decoration: BoxDecoration(
-          color: (add) ? Colors.green : Colors.red,
+          color: Colors.red,
           borderRadius: BorderRadius.circular(15),
         ),
         child: Icon(
@@ -77,7 +77,7 @@ class FunctionScreenState extends State<FunctionScreen> {
                 Expanded(
                   flex: 2,
                   child: Container(
-                        color: Color.fromRGBO(170, 200, 154, 1),
+                        color: Theme.of(context).colorScheme.secondaryVariant,
                         padding: EdgeInsets.symmetric( vertical: 10, horizontal: 10),
                         child: SingleChildScrollView(
                           child: Column(
@@ -86,16 +86,13 @@ class FunctionScreenState extends State<FunctionScreen> {
                               ButtonTheme(
                                 minWidth: 150.0,
                                 child: RaisedButton(
+                                  color: Theme.of(context).primaryColor,
                                   onPressed: () {
                                     setState((){
                                       widget.controller.addField();
                                     });
                                   },
                                   child: Container(
-                                    decoration: BoxDecoration(
-                                      // color: Colors.green,
-                                      // borderRadius: BorderRadius.circular(15),
-                                    ),
                                     child: Icon(
                                       Icons.add, color: Colors.white,
                                     ),
@@ -111,7 +108,7 @@ class FunctionScreenState extends State<FunctionScreen> {
                   flex: 3,
                   child: Container(
                     // height: 333,
-                    color: Colors.black38,
+                    color: Theme.of(context).colorScheme.background,
                     child: GraphInputPad(widget.storage, inputHandler.handleInput, inputHandler.handleCommand)
                   )
                 ),

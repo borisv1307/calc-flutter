@@ -16,7 +16,7 @@ class ModeDialog extends StatefulWidget{
 
 class ModeDialogState extends State<ModeDialog>{
   final CalculationOptions options;
-
+  String theme;
   ModeDialogState(this.options);
 
   @override
@@ -24,6 +24,7 @@ class ModeDialogState extends State<ModeDialog>{
     super.didChangeDependencies();
     options.decimalPlaces = SettingsController.of(context).decimalPlaces;
     options.angularUnit = SettingsController.of(context).angularUnit;
+    theme = SettingsController.of(context).currentTheme;
   }
 
   Row _buildOption({String label, DropdownButton button}){
@@ -83,12 +84,42 @@ class ModeDialogState extends State<ModeDialog>{
               }
             )
           ),
+          _buildOption(
+            label:'Theme',
+            button: DropdownButton<String>(
+              value: theme,
+              items:  [
+                DropdownMenuItem<String>(
+                  value: 'default',
+                  child: Text('default')
+                ),
+                DropdownMenuItem<String>(
+                    value: 'orange',
+                    child: Text('orange')
+                ),
+                DropdownMenuItem<String>(
+                    value: 'midnight',
+                    child: Text('midnight')
+                ),
+                DropdownMenuItem<String>(
+                    value: 'dark',
+                    child: Text('dark')
+                ),
+              ],
+              onChanged: (String updated) async {
+                await SettingsController.of(context).setTheme(updated);
+                setState(() {
+                  theme = SettingsController.of(context).currentTheme;
+                });
+              }
+            )
+          ),
         ]
       ),
       actions:[
         FlatButton(onPressed: (){
           Navigator.pop(context);
-        }, child: Text('Close'))
+        }, child: Text('Close'), textColor: Colors.blue,)
       ]
     );
   }
