@@ -60,7 +60,7 @@ class GraphDetailsState extends State<GraphDetails>{
           index: index,
           children: <Widget>[
             EquationSelector(this.widget.inputEquations, this.widget.graphCursor),
-            GraphTable(this.widget.inputEquations, this.widget.scaleSettings),
+            GraphTable(this.widget.inputEquations, this.widget.scaleSettings, this.widget.graphCursor),
             ScaleSettingsSection(this.widget.scaleSettings, this.widget.graphCursor)
           ],
     );

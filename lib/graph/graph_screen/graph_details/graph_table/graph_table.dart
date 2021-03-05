@@ -1,6 +1,7 @@
 import 'package:advanced_calculation/advanced_calculator.dart';
 import 'package:flutter/material.dart';
 import 'package:cartesian_graph/coordinates.dart';
+import 'package:open_calc/graph/graph_screen/graph_cursor.dart';
 import 'package:open_calc/graph/graph_screen/graph_details/scale_settings/scale_settings.dart';
 
 
@@ -8,8 +9,9 @@ class GraphTable extends StatefulWidget {
   final List<String> equations;
   final ScaleSettings scaleSettings;
   final Function(String, double) calculateEquation;
+  final GraphCursor graphCursor;
 
-  GraphTable(this.equations, this.scaleSettings, [Function(String, double) calculateEquation]):
+  GraphTable(this.equations, this.scaleSettings, this.graphCursor, [Function(String, double) calculateEquation]):
       this.calculateEquation = calculateEquation ?? AdvancedCalculator().calculateEquation;
 
   @override
@@ -153,10 +155,18 @@ class GraphTableState extends State<GraphTable> {
                         for (int i = 0; i < coordinates.length && i < 3; i++) {
                           row.add(Flexible(
                             child: ListTile(
-                              title: Center(child: Text('${parseNumber(coordinates[i][index].y)}', style: TextStyle(fontSize: 20),
+                              title: Center(child: Text('${parseNumber(coordinates[i][index].y)}', style: TextStyle(fontSize: 20, color: Colors.black),
                                 overflow: TextOverflow.clip,
                                 maxLines: 1,
-                              ))
+                              )),
+                              selectedTileColor: Colors.blue,
+                              selected: this.widget.graphCursor.location == coordinates[i][index],
+                              focusColor: Colors.blue,
+                              onTap: (){
+                                setState(() {
+                                  this.widget.graphCursor.location = coordinates[i][index];
+                                });
+                              },
                             ),
                           ));
                         }
