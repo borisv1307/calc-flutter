@@ -102,7 +102,7 @@ class ModeDialogState extends State<ModeDialog>{
         ]
       ),
       actions:[
-        FlatButton(onPressed: (){
+        TextButton(onPressed: (){
           Navigator.pop(context);
         }, child: Text('Close'))
       ]
