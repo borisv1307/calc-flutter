@@ -1,4 +1,3 @@
-import 'package:advanced_calculation/angular_unit.dart';
 import 'package:advanced_calculation/calculation_options.dart';
 import 'package:advanced_calculation/syntax_exception.dart';
 import 'package:open_calc/calculator/calculator_display/calculator_display_controller.dart';
@@ -16,11 +15,6 @@ class CommandHandler{
 
   CommandHandler(this.controller, this.storage, this.options, [InputEvaluator evaluator]):
       evaluator = evaluator ?? InputEvaluator(storage);
-
-  void updateOptions(int decimals, AngularUnit unit) {
-    this.options.decimalPlaces = decimals;
-    this.options.angularUnit = unit;
-  }
 
   void handle(CommandItem command) {
     if (command == CommandItem.ENTER) {

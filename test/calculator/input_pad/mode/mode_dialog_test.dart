@@ -1,5 +1,6 @@
 import 'package:advanced_calculation/angular_unit.dart';
 import 'package:advanced_calculation/calculation_options.dart';
+import 'package:advanced_calculation/display_style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
@@ -19,7 +20,7 @@ void main(){
         return SettingsControllerProvider(
           controller: settingsController,
           child: MaterialApp(
-            home: ModeDialog(options),
+            home: ModeDialog(options ?? CalculationOptions()),
             navigatorObservers: [observer],
           )
         );
@@ -90,6 +91,28 @@ void main(){
         await tester.tap(find.text('degree').last);
         await tester.pumpAndSettle();
         expect(options.angularUnit,AngularUnit.DEGREE);
+      });
+    });
+
+    group('Display style',(){
+      testWidgets('are displayed', (WidgetTester tester) async{
+        await tester.pumpWidget(buildDialog());
+        await tester.tap(find.text('normal'));
+        await tester.pumpAndSettle();
+        expect(find.text('Display style'), findsWidgets);
+        expect(find.text('normal'), findsWidgets);
+        expect(find.text('scientific'), findsWidgets);
+        expect(find.text('engineering'), findsWidgets);
+      });
+
+      testWidgets('can be updated', (WidgetTester tester) async{
+        CalculationOptions options = CalculationOptions();
+        await tester.pumpWidget(buildDialog(options: options));
+        await tester.tap(find.text('normal'));
+        await tester.pumpAndSettle();
+        await tester.tap(find.text('scientific').last);
+        await tester.pumpAndSettle();
+        expect(options.displayStyle,DisplayStyle.SCIENTIFIC);
       });
     });
   });
