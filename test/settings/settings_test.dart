@@ -1,4 +1,5 @@
 import 'package:advanced_calculation/angular_unit.dart';
+import 'package:advanced_calculation/display_style.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:open_calc/settings/settings_controller.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -41,6 +42,31 @@ void main() {
       expect(settingsController.decimalPlaces, 1);
       expect(prefs.getInt('decimalPlaces'), 1);
     });
+  });
 
+  group('Display style',(){
+    test("Normal", () async {
+      SettingsController settingsController = SettingsController(preferences);
+      await settingsController.setDisplayStyle(DisplayStyle.NORMAL);
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      expect(settingsController.displayStyle, DisplayStyle.NORMAL);
+      expect(prefs.getString('displayStyle'), 'normal');
+    });
+
+    test("Scientific", () async {
+      SettingsController settingsController = SettingsController(preferences);
+      await settingsController.setDisplayStyle(DisplayStyle.SCIENTIFIC);
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      expect(settingsController.displayStyle, DisplayStyle.SCIENTIFIC);
+      expect(prefs.getString('displayStyle'), 'scientific');
+    });
+
+    test("Engineering", () async {
+      SettingsController settingsController = SettingsController(preferences);
+      await settingsController.setDisplayStyle(DisplayStyle.ENGINEERING);
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      expect(settingsController.displayStyle, DisplayStyle.ENGINEERING);
+      expect(prefs.getString('displayStyle'), 'engineering');
+    });
   });
 }
