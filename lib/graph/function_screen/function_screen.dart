@@ -85,8 +85,8 @@ class FunctionScreenState extends State<FunctionScreen> {
                               ..._getFunctions(),
                               ButtonTheme(
                                 minWidth: 150.0,
-                                child: RaisedButton(
-                                  color: Theme.of(context).primaryColor,
+                                child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(primary: Theme.of(context).primaryColor),
                                   onPressed: () {
                                     setState((){
                                       widget.controller.addField();
