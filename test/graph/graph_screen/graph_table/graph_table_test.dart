@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:open_calc/graph/graph_screen/graph_cursor.dart';
 import 'package:open_calc/graph/graph_screen/graph_details/scale_settings/scale_settings.dart';
 import 'package:open_calc/graph/graph_screen/graph_details/graph_table/graph_table.dart';
 
@@ -11,7 +12,7 @@ void main() {
 
   Widget _buildTestableTable(List<String> equations) {
     ScaleSettings scaleSettings = ScaleSettings(-1, 1, -1, 1, 1);
-    return MaterialApp(home: Scaffold(body: GraphTable(equations, scaleSettings, calculateEquation)));
+    return MaterialApp(home: Scaffold(body: GraphTable(equations, scaleSettings, GraphCursor(), calculateEquation)));
   }
 
 

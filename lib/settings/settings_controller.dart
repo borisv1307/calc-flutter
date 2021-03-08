@@ -1,4 +1,6 @@
 import 'package:advanced_calculation/angular_unit.dart';
+import 'package:advanced_calculation/calculation_options.dart';
+import 'package:advanced_calculation/display_style.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -27,9 +29,34 @@ class SettingsController extends ChangeNotifier {
   Future<void> setAngular(AngularUnit unit) async {
     if (unit == AngularUnit.DEGREE)
       await _prefs.setString('angularUnit', 'degree');
-    else 
+    else
       await _prefs.setString('angularUnit', 'radian');
     notifyListeners();
+  }
+
+  Future<void> setDisplayStyle(DisplayStyle style) async {
+    if (style == DisplayStyle.SCIENTIFIC) {
+      await _prefs.setString('displayStyle', 'scientific');
+    } else if(style == DisplayStyle.ENGINEERING) {
+      await _prefs.setString('displayStyle', 'engineering');
+    } else{
+      await _prefs.setString('displayStyle', 'normal');
+    }
+    notifyListeners();
+  }
+
+  get displayStyle {
+    String style = _prefs.getString('displayStyle') ?? 'normal';
+    DisplayStyle displayStyle;
+    if (style == 'engineering') {
+      displayStyle = DisplayStyle.ENGINEERING;
+    }else if(style == 'scientific') {
+      displayStyle = DisplayStyle.SCIENTIFIC;
+    }else{
+      displayStyle = DisplayStyle.NORMAL;
+    }
+
+    return displayStyle;
   }
   
   get decimalPlaces {
@@ -52,6 +79,15 @@ class SettingsController extends ChangeNotifier {
     _currentTheme = theme;
     notifyListeners();
     await _prefs.setString('theme', theme);
+  }
+  
+  get calculationOptions{
+    CalculationOptions options = CalculationOptions();
+    options.angularUnit = angularUnit;
+    options.displayStyle = displayStyle;
+    options.decimalPlaces = decimalPlaces;
+
+    return options;
   }
 
   // get the controller from any page

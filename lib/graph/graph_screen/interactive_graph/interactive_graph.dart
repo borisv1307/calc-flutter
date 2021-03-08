@@ -37,8 +37,8 @@ class InteractiveGraphState extends State<InteractiveGraph> {
       Coordinates updatedLocation = this.widget.cursor.location ?? Coordinates(0, 0);
       if (this.widget.cursor.equation != null) {
         double y = calculator.calculateEquation(
-            this.widget.cursor.equation, this.widget.cursor.location.x);
-        updatedLocation = Coordinates(this.widget.cursor.location.x, y);
+            this.widget.cursor.equation, updatedLocation.x);
+        updatedLocation = Coordinates(updatedLocation.x, y);
       }
       displayCursor.location = Coordinates(
           _roundToInterval(updatedLocation.x, this.widget.scaleSettings.step),

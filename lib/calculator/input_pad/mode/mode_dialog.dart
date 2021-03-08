@@ -1,5 +1,6 @@
 import 'package:advanced_calculation/angular_unit.dart';
 import 'package:advanced_calculation/calculation_options.dart';
+import 'package:advanced_calculation/display_style.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:open_calc/settings/settings_controller.dart';
@@ -7,25 +8,14 @@ import 'package:open_calc/settings/settings_controller.dart';
 class ModeDialog extends StatefulWidget{
   final CalculationOptions options;
 
-  ModeDialog([CalculationOptions options]) :
-    this.options = options ?? CalculationOptions();
+  ModeDialog(this.options);
 
   @override
-  State<StatefulWidget> createState() => ModeDialogState(options);
+  State<StatefulWidget> createState() => ModeDialogState();
 }
 
 class ModeDialogState extends State<ModeDialog>{
-  final CalculationOptions options;
   String theme;
-  ModeDialogState(this.options);
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    options.decimalPlaces = SettingsController.of(context).decimalPlaces;
-    options.angularUnit = SettingsController.of(context).angularUnit;
-    theme = SettingsController.of(context).currentTheme;
-  }
 
   Row _buildOption({String label, DropdownButton button}){
     return  Row(
@@ -39,6 +29,7 @@ class ModeDialogState extends State<ModeDialog>{
 
   @override
   Widget build(BuildContext context) {
+    theme = SettingsController.of(context).currentTheme;
     return AlertDialog(
       title: Text('Select options'),
       content:Column(
@@ -47,7 +38,7 @@ class ModeDialogState extends State<ModeDialog>{
           _buildOption(
               label:'Decimal places',
               button: DropdownButton<int>(
-                value: options.decimalPlaces,
+                value: this.widget.options.decimalPlaces,
                 items:  Iterable<int>.generate(11).map((number) {
                     return DropdownMenuItem<int>(
                         value: number - 1,
@@ -55,9 +46,9 @@ class ModeDialogState extends State<ModeDialog>{
                     );
                   }).toList(),
                 onChanged: (int updated) async {
-                    await SettingsController.of(context).setDecimals(updated);
+                    SettingsController.of(context).setDecimals(updated);
                     setState(() {
-                      options.decimalPlaces = SettingsController.of(context).decimalPlaces;
+                      this.widget.options.decimalPlaces = updated;
                     });
                   }
               )
@@ -65,7 +56,7 @@ class ModeDialogState extends State<ModeDialog>{
           _buildOption(
             label:'Angular unit',
             button: DropdownButton<AngularUnit>(
-              value: options.angularUnit,
+              value: this.widget.options.angularUnit,
               items:  [
                 DropdownMenuItem<AngularUnit>(
                   value: AngularUnit.RADIAN,
@@ -77,12 +68,38 @@ class ModeDialogState extends State<ModeDialog>{
                 )
               ],
               onChanged: (AngularUnit updated) async {
-                await SettingsController.of(context).setAngular(updated);
+                SettingsController.of(context).setAngular(updated);
                 setState(() {
-                  options.angularUnit = SettingsController.of(context).angularUnit;
+                  this.widget.options.angularUnit = updated;
                 });
               }
             )
+          ),
+          _buildOption(
+              label:'Display style',
+              button: DropdownButton<DisplayStyle>(
+                  value: this.widget.options.displayStyle,
+                  items:  [
+                    DropdownMenuItem<DisplayStyle>(
+                        value: DisplayStyle.NORMAL,
+                        child: Text('normal')
+                    ),
+                    DropdownMenuItem<DisplayStyle>(
+                        value: DisplayStyle.SCIENTIFIC,
+                        child: Text('scientific')
+                    ),
+                    DropdownMenuItem<DisplayStyle>(
+                        value: DisplayStyle.ENGINEERING,
+                        child: Text('engineering')
+                    ),
+                  ],
+                  onChanged: (DisplayStyle updated) async {
+                    SettingsController.of(context).setDisplayStyle(updated);
+                    setState(() {
+                      this.widget.options.displayStyle = updated;
+                    });
+                  }
+              )
           ),
           _buildOption(
             label:'Theme',
@@ -107,9 +124,9 @@ class ModeDialogState extends State<ModeDialog>{
                 ),
               ],
               onChanged: (String updated) async {
-                await SettingsController.of(context).setTheme(updated);
+                SettingsController.of(context).setTheme(updated);
                 setState(() {
-                  theme = SettingsController.of(context).currentTheme;
+                  theme = updated;
                 });
               }
             )
@@ -117,9 +134,13 @@ class ModeDialogState extends State<ModeDialog>{
         ]
       ),
       actions:[
-        FlatButton(onPressed: (){
-          Navigator.pop(context);
-        }, child: Text('Close'), textColor: Colors.blue,)
+        TextButton(
+          onPressed: (){
+            Navigator.pop(context);
+          }, 
+          child: Text('Close'), 
+          style: TextButton.styleFrom(primary: Colors.blue)
+        )
       ]
     );
   }

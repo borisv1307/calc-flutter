@@ -1,4 +1,3 @@
-import 'package:advanced_calculation/angular_unit.dart';
 import 'package:advanced_calculation/calculation_options.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -24,29 +23,16 @@ class CalculatorTabState extends State<CalculatorTab>{
   InputHandler inputHandler;
   CommandHandler commandHandler;
 
+
   CalculatorTabState(this.storage) {
     controller = CalculatorDisplayController();
     inputHandler= InputHandler(controller);
-    commandHandler = CommandHandler(controller, storage, CalculationOptions());
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    SettingsController.of(context).addListener(_updateOptions);
-    _updateOptions();
-  }
-
-  void _updateOptions() {
-    setState(() {
-      int decimals = SettingsController.of(context).decimalPlaces;
-      AngularUnit unit = SettingsController.of(context).angularUnit;
-      commandHandler.updateOptions(decimals, unit);
-    });
   }
 
   @override
   Widget build(BuildContext context) {
+    CalculationOptions options = SettingsController.of(context).calculationOptions;
+    commandHandler = CommandHandler(controller, storage, options);
     return Container(
       color: Theme.of(context).colorScheme.background, 
       child: Column(
@@ -60,7 +46,7 @@ class CalculatorTabState extends State<CalculatorTab>{
           ),
           Expanded(
             flex: 3,
-            child: InputPad(storage, inputHandler.handle, commandHandler.handle)
+            child: InputPad(options, storage, inputHandler.handle, commandHandler.handle)
           ),
         ],
       )
