@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:open_calc/calculator/calculator_display/calculator_display_controller.dart';
 import 'package:open_calc/calculator/calculator_display/display_history.dart';
+import 'package:open_calc/settings/settings_controller.dart';
 
 class CalculatorDisplay extends StatefulWidget {
   final CalculatorDisplayController controller;
@@ -31,6 +32,7 @@ class _CalculatorDisplayState extends State<CalculatorDisplay> {
 
 
   void _updateDisplay(){
+    SettingsController.of(context).setCalcHistory(this.widget.controller.history);
     setState(() {
       this.inputLineController.text = _inputLineWithCursor();
       _alert = this.widget.controller.popAlert();
@@ -67,6 +69,12 @@ class _CalculatorDisplayState extends State<CalculatorDisplay> {
       oldWidget.controller?.removeListener(_updateDisplay);
       widget.controller?.addListener(_updateDisplay);
     }
+  }
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    List<DisplayHistory> loadedHistory = SettingsController.of(context).calcHistory;
+    widget.controller.history = loadedHistory;
   }
 
   @override
@@ -113,6 +121,7 @@ class _CalculatorDisplayState extends State<CalculatorDisplay> {
   @override
   Widget build(BuildContext context) {
     List<Widget> history = this.widget.controller.history.map(generateRows).expand((i) => i).toList();
+
     history.add(Align(alignment:Alignment.centerLeft,
         child: Material(
             color: Colors.transparent,

@@ -2,12 +2,14 @@ import 'package:advanced_calculation/angular_unit.dart';
 import 'package:advanced_calculation/calculation_options.dart';
 import 'package:advanced_calculation/display_style.dart';
 import 'package:flutter/material.dart';
+import 'package:open_calc/calculator/calculator_display/display_history.dart';
 import 'package:open_calc/calculator/input_pad/input_item.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 
 
 class SettingsController extends ChangeNotifier {
+  static const int MAX_MEMORY_ITEMS = 10;
   final SharedPreferences _prefs;
   String _currentTheme;
 
@@ -60,8 +62,17 @@ class SettingsController extends ChangeNotifier {
     }
     Map<String, dynamic> jsonData = Map<String, dynamic>();
     jsonData['data'] = jsonFunctions;
-
     await _prefs.setString('functions', json.encode(jsonData));
+  }
+
+  Future<void> setCalcHistory(List<DisplayHistory> history) async {
+    List<Map<String, dynamic>> jsonHistoryItems = [];
+    for (int i = 0; i < history.length && i < MAX_MEMORY_ITEMS; i++) {
+      jsonHistoryItems.add(history[i].toJson());
+    }
+    Map<String, dynamic> jsonData = Map<String, dynamic>();
+    jsonData['data'] = jsonHistoryItems;
+    await _prefs.setString('calcHistory', json.encode(jsonData));
   }
   
   get isCalcScreen {
@@ -122,6 +133,20 @@ class SettingsController extends ChangeNotifier {
       loadedFunctions.add(currentFunction);
     }
     return loadedFunctions;
+  }
+
+  get calcHistory {
+    String jsonData = _prefs.getString('calcHistory');
+    List jsonHistoryItems = [];
+    if (jsonData != null) {
+      jsonHistoryItems = json.decode(jsonData)['data'] ?? [];
+    }
+    List<DisplayHistory> history = [];
+    for (Map<String, dynamic> jsonItem in jsonHistoryItems) {
+      DisplayHistory d = DisplayHistory.fromJson(jsonItem);
+      history.add(d);
+    }
+    return history;
   }
 
   // get the controller from any page

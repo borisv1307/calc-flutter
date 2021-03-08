@@ -40,9 +40,7 @@ class CalculatorTabState extends State<CalculatorTab>{
         children: <Widget>[
           Expanded(
             flex: 2,
-            child: CalculatorDisplay(
-                controller,
-            ),
+            child: CalculatorDisplay(controller),
           ),
           Expanded(
             flex: 3,
