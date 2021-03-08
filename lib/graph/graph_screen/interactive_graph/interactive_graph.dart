@@ -22,7 +22,9 @@ class InteractiveGraph extends StatefulWidget {
 }
 
 class InteractiveGraphState extends State<InteractiveGraph> {
+  static double graphHeight = 652;
   static const double GRAPH_HEIGHT = 652;
+
   GraphCursor displayCursor = GraphCursor();
   AdvancedCalculator calculator = AdvancedCalculator();
 
@@ -96,14 +98,14 @@ class InteractiveGraphState extends State<InteractiveGraph> {
     double devicePixelRatio = MediaQuery.of(context).devicePixelRatio;
     return ConstrainedBox(
         constraints: BoxConstraints(
-          maxHeight: GRAPH_HEIGHT,
+          maxHeight: graphHeight,
         ),
         child: GestureDetector(
           child: Stack(
             alignment: Alignment.bottomLeft,
             children: [
               graph,
-              if(displayCursor.location != null)
+              if (displayCursor.location != null)
                 Text(
                     ' X=${displayCursor.location.x}   Y=${displayCursor.location.y}',
                     style: TextStyle(
@@ -120,7 +122,7 @@ class InteractiveGraphState extends State<InteractiveGraph> {
           ),
           onTapDown: (TapDownDetails details) {
             double y =
-                GRAPH_HEIGHT - (details.localPosition.dy * devicePixelRatio);
+                graphHeight - (details.localPosition.dy * devicePixelRatio);
             double x = details.localPosition.dx * devicePixelRatio;
             this.widget.cursor.location = analyzer
                 .calculateCoordinates(PixelLocation(x.toInt(), y.toInt()));

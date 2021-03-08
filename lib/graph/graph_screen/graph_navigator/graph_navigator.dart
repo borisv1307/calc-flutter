@@ -7,7 +7,6 @@ import 'package:open_calc/graph/graph_screen/graph_navigator/cursor_movement_cal
 import 'package:open_calc/graph/graph_screen/graph_navigator/text_toggle/text_toggle_selection.dart';
 import 'package:open_calc/graph/graph_screen/graph_navigator/text_toggle/text_toggle_selector.dart';
 
-
 class GraphNavigator extends StatefulWidget {
   final GraphCursor cursorDetails;
   final TextToggleSelection selection;
@@ -26,22 +25,21 @@ class _GraphNavigatorState extends State<GraphNavigator> {
       TextStyle(fontFamily: 'RobotoMono', fontSize: 20, color: Colors.white);
   CursorMovementCalculator _movementCalculator = CursorMovementCalculator();
 
-
   void _zoomIn() {
     setState(() {
-      widget.scaleSettings.xMax--;
-      widget.scaleSettings.yMax--;
-      widget.scaleSettings.xMin++;
-      widget.scaleSettings.yMin++;
+      this.widget.scaleSettings.xMax--;
+      this.widget.scaleSettings.yMax--;
+      this.widget.scaleSettings.xMin++;
+      this.widget.scaleSettings.yMin++;
     });
   }
 
   void _zoomOut() {
     setState(() {
-      widget.scaleSettings.xMax++;
-      widget.scaleSettings.yMax++;
-      widget.scaleSettings.xMin--;
-      widget.scaleSettings.yMin--;
+      this.widget.scaleSettings.xMax++;
+      this.widget.scaleSettings.yMax++;
+      this.widget.scaleSettings.xMin--;
+      this.widget.scaleSettings.yMin--;
     });
   }
 
@@ -50,7 +48,10 @@ class _GraphNavigatorState extends State<GraphNavigator> {
         color: Colors.transparent,
         child: InkWell(
             onTap: () {
-              widget.cursorDetails.location = _movementCalculator.calculateMove(widget.cursorDetails.location, command, widget.scaleSettings.step);
+              widget.cursorDetails.location = _movementCalculator.calculateMove(
+                  widget.cursorDetails.location,
+                  command,
+                  widget.scaleSettings.step);
             },
             child: Icon(iconData, color: Colors.black)));
   }

@@ -30,17 +30,36 @@ class GraphScreenState extends State<GraphScreen> {
   ScaleSettings scaleSettings = ScaleSettings();
   TextToggleSelection selection = TextToggleSelection('equations');
   GraphCursor cursorDetails = GraphCursor();
-  int chosenEquationIndex = -1;
+  static int chosenEquationIndex = -1;
+  bool _isExpanded = false;
+
+  void _toggleExpand(double height) {
+    if (_isExpanded == false) {
+      setState(() {
+        scaleSettings.yMax *= height ~/ 652;
+        scaleSettings.yMin *= height ~/ 652;
+        InteractiveGraphState.graphHeight = height;
+      });
+    } else {
+      setState(() {
+        scaleSettings.yMax = 10;
+        scaleSettings.yMin = -10;
+        InteractiveGraphState.graphHeight = 652;
+      });
+    }
+    _isExpanded = !_isExpanded;
+  }
 
   @override
   Widget build(BuildContext context) {
     this.inputEquations =
         widget.evaluator.translateInputs(widget.controller.inputs);
-    InteractiveGraph interactiveGraph = InteractiveGraph(
-        this.inputEquations,
-        this.scaleSettings,
-        this.cursorDetails,
-        this.chosenEquationIndex = chosenEquationIndex);
+    InteractiveGraph interactiveGraph = InteractiveGraph(this.inputEquations,
+        this.scaleSettings, this.cursorDetails, chosenEquationIndex);
+    double screenHeight = MediaQuery.of(context).size.height *
+            MediaQuery.of(context).devicePixelRatio -
+        MediaQuery.of(context).padding.top -
+        378;
 
     return Scaffold(
       key: _scaffoldKey,
@@ -51,18 +70,45 @@ class GraphScreenState extends State<GraphScreen> {
             Stack(alignment: AlignmentDirectional.center, children: <Widget>[
               interactiveGraph,
               GraphDisplayNavigator(scaleSettings),
+              Positioned(
+                top: 0,
+                right: 0,
+                child: Opacity(
+                  opacity: 0.25,
+                  child: Material(
+                    color: Colors.transparent,
+                    child: InkWell(
+                        onTap: () {
+                          _toggleExpand(screenHeight);
+                        },
+                        child: Icon(
+                          Icons.aspect_ratio,
+                          size: 36,
+                        )),
+                  ),
+                ),
+              )
             ]),
-          Row(
-            children: <Widget>[
-              Expanded(
-                  child: GraphNavigator(
-                      this.cursorDetails, selection, this.scaleSettings)),
-            ],
+          Visibility(
+            visible: !_isExpanded,
+            child: Row(
+              children: <Widget>[
+                Expanded(
+                    child: GraphNavigator(
+                        this.cursorDetails, selection, this.scaleSettings)),
+              ],
+            ),
           ),
-          GraphDetails(this.inputEquations, selection, this.scaleSettings,
-              this.cursorDetails),
-          SizedBox(
-            height: 70,
+          Visibility(
+            visible: !_isExpanded,
+            child: GraphDetails(this.inputEquations, selection,
+                this.scaleSettings, this.cursorDetails),
+          ),
+          Visibility(
+            visible: !_isExpanded,
+            child: SizedBox(
+              height: 70,
+            ),
           )
         ]);
       }),
