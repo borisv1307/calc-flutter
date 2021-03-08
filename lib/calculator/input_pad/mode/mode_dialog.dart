@@ -1,19 +1,20 @@
 import 'package:advanced_calculation/angular_unit.dart';
 import 'package:advanced_calculation/calculation_options.dart';
+import 'package:advanced_calculation/display_style.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:open_calc/settings/settings_controller.dart';
 
 class ModeDialog extends StatefulWidget{
   final CalculationOptions options;
+
   ModeDialog(this.options);
 
   @override
   State<StatefulWidget> createState() => ModeDialogState();
-
 }
 
 class ModeDialogState extends State<ModeDialog>{
-
 
   Row _buildOption({String label, DropdownButton button}){
     return  Row(
@@ -42,7 +43,8 @@ class ModeDialogState extends State<ModeDialog>{
                         child: Text(number == 0 ? 'max' : (number - 1).toString())
                     );
                   }).toList(),
-                onChanged: (int updated){
+                onChanged: (int updated) async {
+                    SettingsController.of(context).setDecimals(updated);
                     setState(() {
                       this.widget.options.decimalPlaces = updated;
                     });
@@ -50,22 +52,49 @@ class ModeDialogState extends State<ModeDialog>{
               )
           ),
           _buildOption(
-              label:'Angular unit',
-              button: DropdownButton<AngularUnit>(
-                  value: this.widget.options.angularUnit,
+            label:'Angular unit',
+            button: DropdownButton<AngularUnit>(
+              value: this.widget.options.angularUnit,
+              items:  [
+                DropdownMenuItem<AngularUnit>(
+                  value: AngularUnit.RADIAN,
+                  child: Text('radian')
+                ),
+                DropdownMenuItem<AngularUnit>(
+                    value: AngularUnit.DEGREE,
+                    child: Text('degree')
+                )
+              ],
+              onChanged: (AngularUnit updated) async {
+                SettingsController.of(context).setAngular(updated);
+                setState(() {
+                  this.widget.options.angularUnit = updated;
+                });
+              }
+            )
+          ),
+          _buildOption(
+              label:'Display style',
+              button: DropdownButton<DisplayStyle>(
+                  value: this.widget.options.displayStyle,
                   items:  [
-                    DropdownMenuItem<AngularUnit>(
-                      value: AngularUnit.RADIAN,
-                      child: Text('radian')
+                    DropdownMenuItem<DisplayStyle>(
+                        value: DisplayStyle.NORMAL,
+                        child: Text('normal')
                     ),
-                    DropdownMenuItem<AngularUnit>(
-                        value: AngularUnit.DEGREE,
-                        child: Text('degree')
-                    )
+                    DropdownMenuItem<DisplayStyle>(
+                        value: DisplayStyle.SCIENTIFIC,
+                        child: Text('scientific')
+                    ),
+                    DropdownMenuItem<DisplayStyle>(
+                        value: DisplayStyle.ENGINEERING,
+                        child: Text('engineering')
+                    ),
                   ],
-                  onChanged: (AngularUnit updated){
+                  onChanged: (DisplayStyle updated) async {
+                    SettingsController.of(context).setDisplayStyle(updated);
                     setState(() {
-                      this.widget.options.angularUnit = updated;
+                      this.widget.options.displayStyle = updated;
                     });
                   }
               )
@@ -73,7 +102,7 @@ class ModeDialogState extends State<ModeDialog>{
         ]
       ),
       actions:[
-        FlatButton(onPressed: (){
+        TextButton(onPressed: (){
           Navigator.pop(context);
         }, child: Text('Close'))
       ]

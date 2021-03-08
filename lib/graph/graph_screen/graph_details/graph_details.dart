@@ -56,15 +56,13 @@ class GraphDetailsState extends State<GraphDetails>{
     if(this.widget.selection.selected == 'scale')
       index = 2;
       
-    return Expanded(
-      child:IndexedStack(
+    return IndexedStack(
           index: index,
           children: <Widget>[
             EquationSelector(this.widget.inputEquations, this.widget.graphCursor),
-            GraphTable(this.widget.inputEquations, this.widget.scaleSettings),
+            GraphTable(this.widget.inputEquations, this.widget.scaleSettings, this.widget.graphCursor),
             ScaleSettingsSection(this.widget.scaleSettings, this.widget.graphCursor)
           ],
-      )
     );
   }
 

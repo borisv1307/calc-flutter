@@ -6,12 +6,10 @@ import 'package:open_calc/graph/function_screen/function_display_controller.dart
 import 'package:open_calc/graph/graph_screen/graph_cursor.dart';
 import 'package:open_calc/graph/graph_screen/graph_details/graph_details.dart';
 import 'package:open_calc/graph/graph_screen/graph_details/scale_settings/scale_settings.dart';
-import 'package:open_calc/graph/graph_screen/graph_navigator/graph_display_navigator.dart';
+import 'package:open_calc/graph/graph_screen/graph_input_evaluator.dart';
 import 'package:open_calc/graph/graph_screen/graph_navigator/graph_navigator.dart';
+import 'package:open_calc/graph/graph_screen/graph_navigator/text_toggle/text_toggle_selection.dart';
 import 'package:open_calc/graph/graph_screen/interactive_graph/interactive_graph.dart';
-
-import 'graph_input_evaluator.dart';
-import 'graph_navigator/text_toggle/text_toggle_selection.dart';
 
 class GraphScreen extends StatefulWidget {
   final FunctionDisplayController controller;
@@ -65,50 +63,46 @@ class GraphScreenState extends State<GraphScreen> {
       key: _scaffoldKey,
       resizeToAvoidBottomInset: false,
       body: KeyboardVisibilityBuilder(builder: (context, isKeyboardVisible) {
-        return Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
+        return Column(children: <Widget>[
           if (!isKeyboardVisible)
-            Stack(alignment: AlignmentDirectional.center, children: <Widget>[
-              interactiveGraph,
-              GraphDisplayNavigator(scaleSettings),
-              Positioned(
-                top: 0,
-                right: 0,
-                child: Opacity(
-                  opacity: 0.25,
-                  child: Material(
-                    color: Colors.transparent,
-                    child: InkWell(
-                        onTap: () {
-                          _toggleExpand(screenHeight);
-                        },
-                        child: Icon(
-                          Icons.aspect_ratio,
-                          size: 36,
-                        )),
-                  ),
-                ),
-              )
-            ]),
+            Expanded(
+                flex: 3,
+                child: Stack(
+                  alignment: AlignmentDirectional.center,
+                  children: <Widget>[
+                    interactiveGraph,
+                    Positioned(
+                      top: 0,
+                      right: 0,
+                      child: Opacity(
+                        opacity: 0.25,
+                        child: Material(
+                          color: Colors.transparent,
+                          child: InkWell(
+                              onTap: () {
+                                _toggleExpand(screenHeight);
+                              },
+                              child: Icon(
+                                Icons.aspect_ratio,
+                                size: 36,
+                              )),
+                        ),
+                      ),
+                    ),
+                  ],
+                )),
           Visibility(
             visible: !_isExpanded,
-            child: Row(
-              children: <Widget>[
-                Expanded(
-                    child: GraphNavigator(
-                        this.cursorDetails, selection, this.scaleSettings)),
-              ],
-            ),
+            child: Flexible(
+                child: GraphNavigator(
+                    this.cursorDetails, selection, this.scaleSettings)),
           ),
           Visibility(
             visible: !_isExpanded,
-            child: GraphDetails(this.inputEquations, selection,
-                this.scaleSettings, this.cursorDetails),
-          ),
-          Visibility(
-            visible: !_isExpanded,
-            child: SizedBox(
-              height: 70,
-            ),
+            child: Expanded(
+                flex: 4,
+                child: GraphDetails(this.inputEquations, selection,
+                    this.scaleSettings, this.cursorDetails)),
           )
         ]);
       }),

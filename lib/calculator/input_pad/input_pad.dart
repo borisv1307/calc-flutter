@@ -16,7 +16,7 @@ class InputPad extends StatelessWidget{
   final VariableStorage storage;
   final CalculationOptions options;
 
-  InputPad(this.storage,this.inputFunction,this.commandFunction, this.options);
+  InputPad(this.options, this.storage,this.inputFunction,this.commandFunction);
 
 
   @override

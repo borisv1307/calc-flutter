@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:open_calc/calculator/calculator_tab.dart';
 import 'package:open_calc/calculator/input_pad/input_variables.dart';
 import 'package:open_calc/graph/graph_tab.dart';
+import 'package:open_calc/settings/settings_controller.dart';
+
 
 class HomeScreen extends StatefulWidget {
   final String title;
@@ -12,13 +14,14 @@ class HomeScreen extends StatefulWidget {
   State<StatefulWidget> createState() => HomeScreenState();
 
 }
+
 class HomeScreenState extends State<HomeScreen>{
   bool isCalculate = true;
-
 
   @override
   Widget build(BuildContext context) {
     VariableStorage storage = new VariableStorage();
+    isCalculate = SettingsController.of(context).isCalcScreen;
 
     return MaterialApp(
         home: DefaultTabController(
@@ -32,7 +35,8 @@ class HomeScreenState extends State<HomeScreen>{
                         padding: EdgeInsets.symmetric(horizontal: 16),
                         child: Icon(isCalculate ? Icons.call_missed_outgoing: Icons.calculate ),
                       ),
-                      onTap: (){
+                      onTap: () async {
+                        await SettingsController.of(context).setCalcScreen(!isCalculate);
                         setState(() {
                           isCalculate = !isCalculate;
                         });

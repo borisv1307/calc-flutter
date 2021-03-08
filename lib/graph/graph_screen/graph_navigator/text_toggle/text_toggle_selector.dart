@@ -36,13 +36,17 @@ class TextToggleSelectorState extends State<TextToggleSelector>{
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        child:Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: ['equations','table','scale'].map((item){
-            return _buildSelection(item);
-          }).toList()
-        ));
+    return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children:[
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: ['equations','table','scale'].map((item){
+                return _buildSelection(item);
+              }).toList()
+          )
+        ]
+    );
   }
 
 }

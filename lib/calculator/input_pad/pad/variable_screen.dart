@@ -20,7 +20,7 @@ class VariableScreen extends StatelessWidget{
     var keyList = [];
     storage.variableMap.forEach((k,v) => list.add(v));
     storage.variableMap.forEach((k,v) => keyList.add(k));
-    List variablesWidgets = List<Widget>();
+    List variablesWidgets = [];
     int i = 0;
     for(i=0; i < list.length; i++){
       variablesWidgets.add(

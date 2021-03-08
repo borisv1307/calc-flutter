@@ -1,3 +1,4 @@
+import 'package:advanced_calculation/calculation_options.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:open_calc/calculator/input_pad/command_item.dart';
@@ -27,7 +28,7 @@ class GraphInputPad extends StatelessWidget{
             builder = (BuildContext context) => GraphPrimaryPad(this.inputFunction, this.commandFunction);
             break;
           case 'inputPadTwo':
-            builder = (BuildContext context) => SecondaryPad(this.inputFunction, this.commandFunction, null);
+            builder = (BuildContext context) => SecondaryPad(this.inputFunction, this.commandFunction, CalculationOptions());
             break;
           case 'varPad':
             builder = (BuildContext context) => VariableScreen(this.inputFunction, this.storage);

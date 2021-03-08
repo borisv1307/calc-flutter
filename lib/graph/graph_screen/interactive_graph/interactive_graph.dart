@@ -8,6 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:open_calc/graph/graph_screen/graph_cursor.dart';
 import 'package:open_calc/graph/graph_screen/graph_details/scale_settings/scale_settings.dart';
 
+import 'graph_display_navigator.dart';
+
 class InteractiveGraph extends StatefulWidget {
   final GraphCursor cursor;
   final List<String> inputEquations;
@@ -23,8 +25,7 @@ class InteractiveGraph extends StatefulWidget {
 
 class InteractiveGraphState extends State<InteractiveGraph> {
   static double graphHeight = 652;
-  static const double GRAPH_HEIGHT = 652;
-
+  // static const double GRAPH_HEIGHT = 652;
   GraphCursor displayCursor = GraphCursor();
   AdvancedCalculator calculator = AdvancedCalculator();
 
@@ -34,11 +35,12 @@ class InteractiveGraphState extends State<InteractiveGraph> {
 
   void _moveCursor() {
     setState(() {
-      Coordinates updatedLocation = this.widget.cursor.location;
+      Coordinates updatedLocation =
+          this.widget.cursor.location ?? Coordinates(0, 0);
       if (this.widget.cursor.equation != null) {
         double y = calculator.calculateEquation(
-            this.widget.cursor.equation, this.widget.cursor.location.x);
-        updatedLocation = Coordinates(this.widget.cursor.location.x, y);
+            this.widget.cursor.equation, updatedLocation.x);
+        updatedLocation = Coordinates(updatedLocation.x, y);
       }
       displayCursor.location = Coordinates(
           _roundToInterval(updatedLocation.x, this.widget.scaleSettings.step),
@@ -96,37 +98,35 @@ class InteractiveGraphState extends State<InteractiveGraph> {
     CartesianGraphAnalyzer analyzer = CartesianGraphAnalyzer(graph);
 
     double devicePixelRatio = MediaQuery.of(context).devicePixelRatio;
-    return ConstrainedBox(
-        constraints: BoxConstraints(
-          maxHeight: graphHeight,
-        ),
-        child: GestureDetector(
-          child: Stack(
-            alignment: Alignment.bottomLeft,
-            children: [
-              graph,
-              if (displayCursor.location != null)
-                Text(
-                    ' X=${displayCursor.location.x}   Y=${displayCursor.location.y}',
-                    style: TextStyle(
-                        fontFamily: 'RobotoMono',
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                        shadows: [
-                          _buildShadow(-1.5, -1.5),
-                          _buildShadow(1.5, -1.5),
-                          _buildShadow(1.5, 1.5),
-                          _buildShadow(-1.5, 1.5)
-                        ]))
-            ],
-          ),
-          onTapDown: (TapDownDetails details) {
-            double y =
-                graphHeight - (details.localPosition.dy * devicePixelRatio);
-            double x = details.localPosition.dx * devicePixelRatio;
-            this.widget.cursor.location = analyzer
-                .calculateCoordinates(PixelLocation(x.toInt(), y.toInt()));
-          },
-        ));
+    return Container(
+      child: Stack(
+        alignment: Alignment.bottomLeft,
+        children: [
+          GestureDetector(
+              child: graph,
+              onTapDown: (TapDownDetails details) {
+                double y =
+                    graphHeight - (details.localPosition.dy * devicePixelRatio);
+                double x = details.localPosition.dx * devicePixelRatio;
+                this.widget.cursor.location = analyzer
+                    .calculateCoordinates(PixelLocation(x.toInt(), y.toInt()));
+              }),
+          GraphDisplayNavigator(this.widget.scaleSettings),
+          if (displayCursor.location != null)
+            Text(
+                ' X=${displayCursor.location.x}   Y=${displayCursor.location.y}',
+                style: TextStyle(
+                    fontFamily: 'RobotoMono',
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                    shadows: [
+                      _buildShadow(-1.5, -1.5),
+                      _buildShadow(1.5, -1.5),
+                      _buildShadow(1.5, 1.5),
+                      _buildShadow(-1.5, 1.5)
+                    ]))
+        ],
+      ),
+    );
   }
 }
