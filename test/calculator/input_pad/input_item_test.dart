@@ -375,4 +375,34 @@ void main() {
     expect(InputItem.EMPTY.display,'');
     expect(InputItem.EMPTY.value,'');
   });
+
+  group('Json',(){
+    test('toJson',(){
+      Map<String, dynamic> json = {
+        'label': InputItem.COS.label,
+        'display': InputItem.COS.display,
+        'value': InputItem.COS.value,
+        'lookback': InputItem.COS.lookback,
+        'variable': InputItem.COS.variable,
+        'replaceable': InputItem.COS.replaceable,
+        'function': InputItem.COS.function,
+        'name': InputItem.COS.name
+      };
+      expect(InputItem.COS.toJson(), json);
+    });
+    
+    test('fromJson',(){
+      Map<String, dynamic> json = {
+        'label': InputItem.COS.label,
+        'display': InputItem.COS.display,
+        'value': InputItem.COS.value,
+        'lookback': InputItem.COS.lookback,
+        'variable': InputItem.COS.variable,
+        'replaceable': InputItem.COS.replaceable,
+        'function': InputItem.COS.function,
+        'name': InputItem.COS.name
+      };
+      expect(InputItem.fromJson(json), InputItem.COS);
+    });
+  });
 }

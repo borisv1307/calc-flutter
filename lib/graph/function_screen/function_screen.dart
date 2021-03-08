@@ -6,6 +6,7 @@ import 'package:open_calc/graph/function_screen/function_text_field.dart';
 import 'package:open_calc/graph/function_screen/function_display_controller.dart';
 import 'package:open_calc/graph/function_screen/input_pad/graph_input_handler.dart';
 import 'package:open_calc/graph/function_screen/input_pad/graph_input_pad.dart';
+import 'package:open_calc/settings/settings_controller.dart';
 
 class FunctionScreen extends StatefulWidget {
   final VariableStorage storage;
@@ -20,6 +21,15 @@ class FunctionScreen extends StatefulWidget {
 class FunctionScreenState extends State<FunctionScreen> {
   final _formKey = GlobalKey<FormState>();
   GraphInputHandler inputHandler;
+
+  @override
+  // called after initState
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    List loadedFunctions = SettingsController.of(context).functionHistory;
+    widget.controller.load(loadedFunctions);
+  }
+
 
   List<Widget> _getFunctions(){
     List<Widget> functions = [];
@@ -48,6 +58,7 @@ class FunctionScreenState extends State<FunctionScreen> {
       onTap: (){
         setState((){
           widget.controller.removeField(index);
+          SettingsController.of(context).setFunctionList(widget.controller.inputs);
         });
       },
       child: Container(
@@ -77,32 +88,33 @@ class FunctionScreenState extends State<FunctionScreen> {
                 Expanded(
                   flex: 2,
                   child: Container(
-                        color: Theme.of(context).colorScheme.secondaryVariant,
-                        padding: EdgeInsets.symmetric( vertical: 10, horizontal: 10),
-                        child: SingleChildScrollView(
-                          child: Column(
-                            children: <Widget>[
-                              ..._getFunctions(),
-                              ButtonTheme(
-                                minWidth: 150.0,
-                                child: ElevatedButton(
-                                  style: ElevatedButton.styleFrom(primary: Theme.of(context).primaryColor),
-                                  onPressed: () {
-                                    setState((){
-                                      widget.controller.addField();
-                                    });
-                                  },
-                                  child: Container(
-                                    child: Icon(
-                                      Icons.add, color: Colors.white,
-                                    ),
-                                  ),
+                    color: Theme.of(context).colorScheme.secondaryVariant,
+                    padding: EdgeInsets.symmetric( vertical: 10, horizontal: 10),
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: <Widget>[
+                          ..._getFunctions(),
+                          ButtonTheme(
+                            minWidth: 250.0,
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(primary: Theme.of(context).primaryColor),
+                              onPressed: () {
+                                setState((){
+                                  widget.controller.addField();
+                                  SettingsController.of(context).setFunctionList(widget.controller.inputs);
+                                });
+                              },
+                              child: Container(
+                                child: Icon(
+                                  Icons.add, color: Colors.white,
                                 ),
                               ),
-                            ],
+                            ),
                           ),
-                        ),
-                      )
+                        ],
+                      ),
+                    ),
+                  )
                 ),
                 Expanded(
                   flex: 3,

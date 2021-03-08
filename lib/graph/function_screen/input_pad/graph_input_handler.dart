@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:open_calc/calculator/input_pad/command_item.dart';
 import 'package:open_calc/graph/function_screen/function_display_controller.dart';
 import 'package:open_calc/calculator/input_pad/input_item.dart';
+import 'package:open_calc/settings/settings_controller.dart';
 
 class GraphInputHandler{
   final FunctionDisplayController controller;
@@ -12,6 +13,7 @@ class GraphInputHandler{
 
   void handleInput(InputItem inputItem) {
     controller.input(inputItem);
+    SettingsController.of(context).setFunctionList(controller.inputs);
   }
 
   void handleCommand(CommandItem command) {
@@ -21,8 +23,10 @@ class GraphInputHandler{
       }
     } else if (command == CommandItem.DELETE) {
       controller.delete();
+      SettingsController.of(context).setFunctionList(controller.inputs);
     } else if(command ==CommandItem.CLEAR) {
       controller.clearInput();
+      SettingsController.of(context).setFunctionList(controller.inputs);
     }
   }
 

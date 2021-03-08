@@ -85,5 +85,15 @@ void main(){
     expect(controller.inputs, [[InputItem.X]]);
   });
 
+  test('functions can be loaded',() {
+    List<List<InputItem>> functions = [
+      [InputItem.SEVEN, InputItem.X],
+      [InputItem.THREE]
+    ];
+    TestableFunctionDisplayController controller = TestableFunctionDisplayController();
+    controller.load(functions);
+    expect(controller.inputs, functions);
+  });
+
 }
 

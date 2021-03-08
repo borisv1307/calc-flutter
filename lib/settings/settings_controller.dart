@@ -2,7 +2,9 @@ import 'package:advanced_calculation/angular_unit.dart';
 import 'package:advanced_calculation/calculation_options.dart';
 import 'package:advanced_calculation/display_style.dart';
 import 'package:flutter/material.dart';
+import 'package:open_calc/calculator/input_pad/input_item.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert';
 
 
 class SettingsController extends ChangeNotifier {
@@ -11,10 +13,6 @@ class SettingsController extends ChangeNotifier {
 
   SettingsController(this._prefs) {
     _currentTheme = _prefs.getString('theme') ?? 'default';
-  }
-
-  get isCalcScreen {
-    return _prefs.getBool('isCalcScreen') ?? true;
   }
 
   Future<void> setCalcScreen(bool isCalcScreen) async {
@@ -43,6 +41,31 @@ class SettingsController extends ChangeNotifier {
       await _prefs.setString('displayStyle', 'normal');
     }
     notifyListeners();
+  }
+  
+  Future<void> setTheme(String theme) async {
+    _currentTheme = theme;
+    notifyListeners();
+    await _prefs.setString('theme', theme);
+  }
+
+  Future<void> setFunctionList(List<List<InputItem>> functions) async {
+    List<List<Map>> jsonFunctions = [];
+    for (List<InputItem> func in functions) {
+      List<Map> currentJsonFunction = [];
+      for (InputItem item in func) {
+        currentJsonFunction.add(item.toJson());
+      }
+      jsonFunctions.add(currentJsonFunction);
+    }
+    Map<String, dynamic> jsonData = Map<String, dynamic>();
+    jsonData['data'] = jsonFunctions;
+
+    await _prefs.setString('functions', json.encode(jsonData));
+  }
+  
+  get isCalcScreen {
+    return _prefs.getBool('isCalcScreen') ?? true;
   }
 
   get displayStyle {
@@ -74,12 +97,6 @@ class SettingsController extends ChangeNotifier {
   get currentTheme {
     return _currentTheme;
   }
-
-  Future<void> setTheme(String theme) async {
-    _currentTheme = theme;
-    notifyListeners();
-    await _prefs.setString('theme', theme);
-  }
   
   get calculationOptions{
     CalculationOptions options = CalculationOptions();
@@ -88,6 +105,23 @@ class SettingsController extends ChangeNotifier {
     options.decimalPlaces = decimalPlaces;
 
     return options;
+  }
+
+  get functionHistory {
+    String jsonData = _prefs.getString('functions');
+    List jsonFunctions = [];
+    if (jsonData != null) {
+      jsonFunctions = json.decode(jsonData)['data'] ?? [];
+    }
+    List<List<InputItem>> loadedFunctions = [];
+    for (List func in jsonFunctions) {
+      List<InputItem> currentFunction = [];
+      for (Map<String, dynamic> jsonItem in func) {
+        currentFunction.add(InputItem.fromJson(jsonItem));
+      }
+      loadedFunctions.add(currentFunction);
+    }
+    return loadedFunctions;
   }
 
   // get the controller from any page

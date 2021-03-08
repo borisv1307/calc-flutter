@@ -1,6 +1,7 @@
 import 'package:advanced_calculation/angular_unit.dart';
 import 'package:advanced_calculation/display_style.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:open_calc/calculator/input_pad/input_item.dart';
 import 'package:open_calc/settings/settings_controller.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -114,4 +115,25 @@ void main() {
       expect(prefs.getString('displayStyle'), 'engineering');
     });
   });
+
+  group('Function storage', () {
+    test("default", () async {
+      SettingsController settingsController = SettingsController(preferences);
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      expect(settingsController.functionHistory, []);
+      print(prefs.getString('functions'));
+      print('');
+
+    });
+    test("loads function list", () async {
+      List<List<InputItem>> functions = [
+        [InputItem.THREE, InputItem.X],
+        [InputItem.FIVE],
+      ];
+      SettingsController settingsController = SettingsController(preferences);
+      await settingsController.setFunctionList(functions);
+      expect(settingsController.functionHistory, functions);
+    });
+  });
+
 }
