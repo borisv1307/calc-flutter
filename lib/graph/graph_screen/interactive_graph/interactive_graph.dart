@@ -1,8 +1,9 @@
 import 'package:advanced_calculation/advanced_calculator.dart';
-import 'package:cartesian_graph/bounds.dart';
 import 'package:cartesian_graph/cartesian_graph.dart';
 import 'package:cartesian_graph/cartesian_graph_analyzer.dart';
 import 'package:cartesian_graph/coordinates.dart';
+import 'package:cartesian_graph/graph_bounds.dart';
+import 'package:cartesian_graph/line.dart';
 import 'package:cartesian_graph/pixel_location.dart';
 import 'package:flutter/material.dart';
 import 'package:open_calc/graph/graph_screen/graph_cursor.dart';
@@ -85,13 +86,18 @@ class InteractiveGraphState extends State<InteractiveGraph> {
 
   @override
   Widget build(BuildContext context) {
+    List<Line> lines = [];
+    for(int i= 0; i< this.widget.inputEquations.length;i++){
+      lines.add(Line(this.widget.inputEquations[i],color:i==this.widget.chosenEquationIndex ? Colors.red : Colors.black));
+    }
+
+
     CartesianGraph graph = CartesianGraph(
-      Bounds(this.widget.scaleSettings.xMin, this.widget.scaleSettings.xMax,
+      GraphBounds(this.widget.scaleSettings.xMin, this.widget.scaleSettings.xMax,
           this.widget.scaleSettings.yMin, this.widget.scaleSettings.yMax),
-      equations: this.widget.inputEquations,
+      lines: lines,
       cursorLocation: displayCursor.location,
       cursorColor: displayCursor.color,
-      chosenEquationIndex: this.widget.chosenEquationIndex,
     );
     CartesianGraphAnalyzer analyzer = CartesianGraphAnalyzer(graph);
 
