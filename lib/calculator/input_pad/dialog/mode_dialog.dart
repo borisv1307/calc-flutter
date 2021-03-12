@@ -15,7 +15,6 @@ class ModeDialog extends StatefulWidget{
 }
 
 class ModeDialogState extends State<ModeDialog>{
-  String theme;
 
   Row _buildOption({String label, DropdownButton button}){
     return  Row(
@@ -29,7 +28,6 @@ class ModeDialogState extends State<ModeDialog>{
 
   @override
   Widget build(BuildContext context) {
-    theme = SettingsController.of(context).currentTheme;
     return AlertDialog(
       title: Text('Select options'),
       content:Column(
@@ -100,36 +98,6 @@ class ModeDialogState extends State<ModeDialog>{
                     });
                   }
               )
-          ),
-          _buildOption(
-            label:'Theme',
-            button: DropdownButton<String>(
-              value: theme,
-              items:  [
-                DropdownMenuItem<String>(
-                  value: 'default',
-                  child: Text('default')
-                ),
-                DropdownMenuItem<String>(
-                    value: 'orange',
-                    child: Text('orange')
-                ),
-                DropdownMenuItem<String>(
-                    value: 'midnight',
-                    child: Text('midnight')
-                ),
-                DropdownMenuItem<String>(
-                    value: 'dark',
-                    child: Text('dark')
-                ),
-              ],
-              onChanged: (String updated) async {
-                SettingsController.of(context).setTheme(updated);
-                setState(() {
-                  theme = updated;
-                });
-              }
-            )
           ),
         ]
       ),

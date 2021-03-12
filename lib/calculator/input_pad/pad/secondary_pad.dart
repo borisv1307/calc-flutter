@@ -2,13 +2,14 @@ import 'package:advanced_calculation/calculation_options.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:open_calc/calculator/input_pad/button/input_button.dart';
-import 'package:open_calc/calculator/input_pad/catalog/catalog_dialog.dart';
+import 'package:open_calc/calculator/input_pad/dialog/catalog_dialog.dart';
 import 'package:open_calc/calculator/input_pad/command_item.dart';
 import 'package:open_calc/calculator/input_pad/button/multi_button.dart';
 import 'package:open_calc/calculator/input_pad/button/pad_button.dart';
+import 'package:open_calc/calculator/input_pad/dialog/theme_dialog.dart';
 import 'package:open_calc/calculator/input_pad/input_button_style.dart';
 import 'package:open_calc/calculator/input_pad/input_item.dart';
-import 'package:open_calc/calculator/input_pad/mode/mode_dialog.dart';
+import 'package:open_calc/calculator/input_pad/dialog/mode_dialog.dart';
 import 'package:open_calc/calculator/input_pad/pad/pad_grid.dart';
 
 
@@ -64,8 +65,11 @@ class SecondaryPad extends StatelessWidget{
         ],
         [
           buildInputButton(InputItem.COMMA, InputButtonStyle.tertiary(context)),
-          buildInputButton(InputItem.EMPTY, InputButtonStyle.tertiary(context)),
-          buildInputButton(InputItem.EMPTY, InputButtonStyle.tertiary(context)),
+          PadButton('theme', InputButtonStyle.quartenary(context), (){
+            showDialog(context: context, builder: (BuildContext context){
+              return ThemeDialog();
+            });
+          }),          buildInputButton(InputItem.EMPTY, InputButtonStyle.tertiary(context)),
           buildInputButton(InputItem.EMPTY, InputButtonStyle.tertiary(context)),
           buildInputButton(InputItem.ADD,  InputButtonStyle.secondary(context)),
         ],
