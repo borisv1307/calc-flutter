@@ -5,11 +5,11 @@ import 'package:open_calc/graph/graph_screen/graph_details/scale_settings/scale_
 import 'package:open_calc/graph/graph_screen/graph_details/scale_settings/scale_settings_section.dart';
 import 'package:open_calc/graph/graph_screen/graph_details/graph_table/graph_table.dart';
 import 'package:open_calc/graph/graph_screen/graph_navigator/text_toggle/text_toggle_selection.dart';
-import 'package:open_calc/graph/graph_screen/interactive_graph/graph_line.dart';
+import 'package:open_calc/graph/graph_screen/interactive_graph/graph_lines.dart';
 
 class GraphDetails extends StatefulWidget {
   final TextToggleSelection selection;
-  final List<GraphLine> inputEquations;
+  final GraphLines inputEquations;
   final ScaleSettings scaleSettings;
   final GraphCursor graphCursor;
 

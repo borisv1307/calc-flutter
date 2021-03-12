@@ -1,11 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:open_calc/graph/graph_screen/graph_cursor.dart';
-import 'package:open_calc/graph/graph_screen/interactive_graph/graph_line.dart';
+import 'package:open_calc/graph/graph_screen/graph_details/equation_selector/bounds_dialog.dart';
+import 'package:open_calc/graph/graph_screen/interactive_graph/graph_lines.dart';
 
 class EquationSelector extends StatefulWidget {
 
-  final List<GraphLine> inputEquations;
+  final GraphLines inputEquations;
   final GraphCursor cursor;
 
 
@@ -63,7 +64,9 @@ class EquationSelectorState extends State<EquationSelector>{
                       _traceEquation(index);
                     },
                   onLongPress: (){
-                      print('YES');
+                    showDialog(context: context,builder: (BuildContext context){
+                      return BoundsDialog(this.widget.inputEquations[index].segmentBounds);
+                    });
                   },
                 )
             );
