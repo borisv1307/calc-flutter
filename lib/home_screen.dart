@@ -3,6 +3,7 @@ import 'package:open_calc/calculator/calculator_tab.dart';
 import 'package:open_calc/calculator/input_pad/input_variables.dart';
 import 'package:open_calc/graph/graph_tab.dart';
 import 'package:open_calc/settings/settings_controller.dart';
+import 'package:open_calc/settings/theme_builder.dart';
 
 
 class HomeScreen extends StatefulWidget {
@@ -17,43 +18,45 @@ class HomeScreen extends StatefulWidget {
 
 class HomeScreenState extends State<HomeScreen>{
   bool isCalculate = true;
-
+  
   @override
   Widget build(BuildContext context) {
     VariableStorage storage = new VariableStorage();
     isCalculate = SettingsController.of(context).isCalcScreen;
 
     return MaterialApp(
-        home: DefaultTabController(
-            length: 2,
-            child: Scaffold(
-                appBar: AppBar(
-                  title: Text(this.widget.title),
-                  actions: <Widget>[
-                    InkWell(
-                      child:Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 16),
-                        child: Icon(isCalculate ? Icons.call_missed_outgoing: Icons.calculate ),
-                      ),
-                      onTap: () async {
-                        await SettingsController.of(context).setCalcScreen(!isCalculate);
-                        setState(() {
-                          isCalculate = !isCalculate;
-                        });
-                      },
-                    )
-                  ],
+      theme: ThemeBuilder.buildTheme(SettingsController.of(context).currentTheme),
+      darkTheme: ThemeBuilder.buildTheme('dark'),
+      home: DefaultTabController(
+        length: 2,
+        child: Scaffold(
+          appBar: AppBar(
+            title: Text(this.widget.title),
+            actions: <Widget>[
+              InkWell(
+                child:Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16),
+                  child: Icon(isCalculate ? Icons.call_missed_outgoing: Icons.calculate ),
                 ),
-                body: Navigator(
-                  pages:[
-                    MaterialPage(child: GraphTab(storage)),
-                    if(isCalculate)
-                      MaterialPage(child: CalculatorTab(storage))
-                  ],
-                  onPopPage: (route, result) => route.didPop(result),
-                )
+                onTap: () async {
+                  await SettingsController.of(context).setCalcScreen(!isCalculate);
+                  setState(() {
+                    isCalculate = !isCalculate;
+                  });
+                },
+              )
+            ],
+          ),
+          body: Navigator(
+            pages:[
+              MaterialPage(child: GraphTab(storage)),
+              if(isCalculate)
+                MaterialPage(child: CalculatorTab(storage))
+            ],
+            onPopPage: (route, result) => route.didPop(result),
+          )
         )
-    ),
-  );
+      ),
+    );
   }
 }

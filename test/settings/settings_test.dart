@@ -8,7 +8,7 @@ void main() {
   SharedPreferences preferences;
   group("settings controller", () {
     setUpAll(() async {
-      SharedPreferences.setMockInitialValues({'angularUnit': 'radian', 'decimalPlaces': -1, 'isCalcScreen': true}); 
+      SharedPreferences.setMockInitialValues({'angularUnit': 'radian', 'decimalPlaces': -1, 'isCalcScreen': true, 'theme': 'default'}); 
       preferences = await SharedPreferences.getInstance();
     });
 
@@ -17,6 +17,7 @@ void main() {
       expect(settingsController.angularUnit, AngularUnit.RADIAN);
       expect(settingsController.decimalPlaces, -1);
       expect(settingsController.isCalcScreen, true);
+      expect(settingsController.currentTheme, 'default');
     });
 
     test("current tab can be updated", () async {
@@ -26,21 +27,65 @@ void main() {
       expect(settingsController.isCalcScreen, false);
       expect(prefs.getBool('isCalcScreen'), false);
     });
-
-    test("angular unit can be updated", () async {
-      SettingsController settingsController = SettingsController(preferences);
-      await settingsController.setAngular(AngularUnit.DEGREE);
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      expect(settingsController.angularUnit, AngularUnit.DEGREE);
-      expect(prefs.getString('angularUnit'), 'degree');
-    });
-
+    
     test("decimals can be updated", () async {
       SettingsController settingsController = SettingsController(preferences);
       await settingsController.setDecimals(1);
       SharedPreferences prefs = await SharedPreferences.getInstance();
       expect(settingsController.decimalPlaces, 1);
       expect(prefs.getInt('decimalPlaces'), 1);
+    });
+
+    group("angular unit", () {
+      test("degree", () async {
+        SettingsController settingsController = SettingsController(preferences);
+        await settingsController.setAngular(AngularUnit.DEGREE);
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        expect(settingsController.angularUnit, AngularUnit.DEGREE);
+        expect(prefs.getString('angularUnit'), 'degree');
+      });
+
+      test("radian", () async {
+        SettingsController settingsController = SettingsController(preferences);
+        await settingsController.setAngular(AngularUnit.RADIAN);
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        expect(settingsController.angularUnit, AngularUnit.RADIAN);
+        expect(prefs.getString('angularUnit'), 'radian');
+      });
+    });
+
+    group("theme", () {
+      test("midnight", () async {
+        SettingsController settingsController = SettingsController(preferences);
+        await settingsController.setTheme('midnight');
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        expect(settingsController.currentTheme, 'midnight');
+        expect(prefs.getString('theme'), 'midnight');
+      });
+
+      test("orange", () async {
+        SettingsController settingsController = SettingsController(preferences);
+        await settingsController.setTheme('orange');
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        expect(settingsController.currentTheme, 'orange');
+        expect(prefs.getString('theme'), 'orange');
+      });
+
+      test("dark", () async {
+        SettingsController settingsController = SettingsController(preferences);
+        await settingsController.setTheme('dark');
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        expect(settingsController.currentTheme, 'dark');
+        expect(prefs.getString('theme'), 'dark');
+      });
+
+      test("default", () async {
+        SettingsController settingsController = SettingsController(preferences);
+        await settingsController.setTheme('default');
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        expect(settingsController.currentTheme, 'default');
+        expect(prefs.getString('theme'), 'default');
+      });
     });
   });
 

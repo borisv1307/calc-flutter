@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tags/flutter_tags.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
-import 'package:open_calc/calculator/input_pad/catalog/catalog_dialog.dart';
+import 'package:open_calc/calculator/input_pad/dialog/catalog_dialog.dart';
 import 'package:open_calc/calculator/input_pad/input_item.dart';
 
 class MockNavigatorObserver extends Mock implements NavigatorObserver {}

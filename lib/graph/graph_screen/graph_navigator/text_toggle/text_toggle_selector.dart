@@ -17,7 +17,7 @@ class TextToggleSelectorState extends State<TextToggleSelector>{
   Widget _buildSelection(String display){
     return Material(
         borderRadius: BorderRadius.all(Radius.circular(20)),
-        color: display == this.widget.selection.selected ? Colors.blue : Colors.transparent,
+        color: display == this.widget.selection.selected ? Theme.of(context).primaryColor : Colors.transparent,
         child:InkWell(
             splashColor: Colors.blueGrey,
             borderRadius: BorderRadius.all(Radius.circular(20)),

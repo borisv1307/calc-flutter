@@ -7,8 +7,11 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingsController extends ChangeNotifier {
   final SharedPreferences _prefs;
+  String _currentTheme;
 
-  SettingsController(this._prefs);
+  SettingsController(this._prefs) {
+    _currentTheme = _prefs.getString('theme') ?? 'default';
+  }
 
   get isCalcScreen {
     return _prefs.getBool('isCalcScreen') ?? true;
@@ -68,6 +71,16 @@ class SettingsController extends ChangeNotifier {
       return AngularUnit.DEGREE;
   }
 
+  get currentTheme {
+    return _currentTheme;
+  }
+
+  Future<void> setTheme(String theme) async {
+    _currentTheme = theme;
+    notifyListeners();
+    await _prefs.setString('theme', theme);
+  }
+  
   get calculationOptions{
     CalculationOptions options = CalculationOptions();
     options.angularUnit = angularUnit;
