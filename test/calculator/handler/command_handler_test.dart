@@ -8,6 +8,7 @@ import 'package:open_calc/calculator/handler/input_evaluator.dart';
 import 'package:open_calc/calculator/input_pad/command_item.dart';
 import 'package:open_calc/calculator/input_pad/input_item.dart';
 import 'package:open_calc/calculator/input_pad/input_variables.dart';
+import 'package:open_calc/settings/settings_controller.dart';
 import 'package:test/test.dart';
 
 class MockCalculatorDisplayController extends Mock implements CalculatorDisplayController{
@@ -15,6 +16,7 @@ class MockCalculatorDisplayController extends Mock implements CalculatorDisplayC
 }
 class MockVariableStorage extends Mock implements VariableStorage{}
 class MockInputEvaluator extends Mock implements InputEvaluator{}
+class MockSettingsController extends Mock implements SettingsController{}
 
 void main(){
   group('Enter',(){
@@ -22,18 +24,21 @@ void main(){
       MockCalculatorDisplayController controller;
       MockInputEvaluator evaluator;
       List<DisplayHistory> history;
+      SettingsController settings;
 
       setUpAll((){
         CalculationOptions options;
         history = [];
+        settings = MockSettingsController();
+
         controller = MockCalculatorDisplayController();
         when(controller.inputItems).thenReturn([InputItem.A]);
         when(controller.history).thenReturn(history);
 
         evaluator = MockInputEvaluator();
-        when(evaluator.evaluate([InputItem.A], history,options)).thenReturn(DisplayHistory([InputItem.B], '72'));
+        when(evaluator.evaluate([InputItem.A], history, options)).thenReturn(DisplayHistory([InputItem.B], '72'));
 
-        CommandHandler handler = CommandHandler(controller, MockVariableStorage(), options, evaluator);
+        CommandHandler handler = CommandHandler(controller, MockVariableStorage(), settings, evaluator);
         handler.handle(CommandItem.ENTER);
       });
 
@@ -52,10 +57,13 @@ void main(){
       MockCalculatorDisplayController controller;
       MockInputEvaluator evaluator;
       List<DisplayHistory> history;
+      SettingsController settings;
 
       setUpAll((){
         CalculationOptions options;
         history = [];
+        settings = MockSettingsController();
+
         controller = MockCalculatorDisplayController();
         when(controller.inputItems).thenReturn([InputItem.A]);
         when(controller.history).thenReturn(history);
@@ -63,7 +71,7 @@ void main(){
         evaluator = MockInputEvaluator();
         when(evaluator.evaluate([InputItem.A], history,options)).thenThrow(new SyntaxException(1));
 
-        CommandHandler handler = CommandHandler(controller, MockVariableStorage(), options, evaluator);
+        CommandHandler handler = CommandHandler(controller, MockVariableStorage(), settings, evaluator);
         handler.handle(CommandItem.ENTER);
       });
 
@@ -80,7 +88,7 @@ void main(){
   group('Delete',(){
     test('deletes input',(){
       MockCalculatorDisplayController controller = MockCalculatorDisplayController();
-      CommandHandler handler = CommandHandler(controller, MockVariableStorage(), CalculationOptions(), MockInputEvaluator());
+      CommandHandler handler = CommandHandler(controller, MockVariableStorage(), MockSettingsController(), MockInputEvaluator());
 
       handler.handle(CommandItem.DELETE);
       verify(controller.delete()).called(1);
@@ -91,7 +99,7 @@ void main(){
     MockCalculatorDisplayController controller;
     setUpAll((){
       controller = MockCalculatorDisplayController();
-      CommandHandler handler = CommandHandler(controller, MockVariableStorage(), CalculationOptions(), MockInputEvaluator());
+      CommandHandler handler = CommandHandler(controller, MockVariableStorage(), MockSettingsController(), MockInputEvaluator());
       handler.handle(CommandItem.CLEAR);
     });
 

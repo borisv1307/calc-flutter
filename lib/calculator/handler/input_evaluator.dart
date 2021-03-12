@@ -61,17 +61,13 @@ class InputEvaluator{
       }
 
       if (item == InputItem.ANSWER) {
-        if (history.last.result[0] == '-') {
-          inputString += history.last.result.replaceFirst('-', '`');
-        } else {
-          inputString += history.last.result;
-        }
+        inputString += (history.last.result[0] == '-')
+          ? history.last.result.replaceFirst('-', '`')
+          : history.last.result;
       } else if (item.variable){
-        if (storage.fetchVariable(item.value)[0] == '-') {
-          inputString += storage.fetchVariable(item.value).replaceFirst('-', '`');
-        } else {
-          inputString += storage.fetchVariable(item.value);
-        }
+        inputString += (storage.fetchVariable(item.value)[0] == '-')
+          ? storage.fetchVariable(item.value).replaceFirst('-', '`')
+          : storage.fetchVariable(item.value);
       } else{
         inputString += item.value;
       }

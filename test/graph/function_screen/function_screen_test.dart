@@ -57,7 +57,6 @@ void main() {
     });
 
     testWidgets("function screen begins with 1 input field", (WidgetTester tester) async {
-
       await tester.pumpWidget(buildFunctionScreen());
       expect(find.byType(FunctionTextField), findsNWidgets(1));
     });

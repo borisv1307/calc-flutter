@@ -120,10 +120,7 @@ class SettingsController extends ChangeNotifier {
 
   get functionHistory {
     String jsonData = _prefs.getString('functions');
-    List jsonFunctions = [];
-    if (jsonData != null) {
-      jsonFunctions = json.decode(jsonData)['data'] ?? [];
-    }
+    List jsonFunctions = (jsonData != null) ? json.decode(jsonData)['data'] : [];
     List<List<InputItem>> loadedFunctions = [];
     for (List func in jsonFunctions) {
       List<InputItem> currentFunction = [];
@@ -137,14 +134,10 @@ class SettingsController extends ChangeNotifier {
 
   get calcHistory {
     String jsonData = _prefs.getString('calcHistory');
-    List jsonHistoryItems = [];
-    if (jsonData != null) {
-      jsonHistoryItems = json.decode(jsonData)['data'] ?? [];
-    }
+    List jsonHistoryItems = (jsonData != null) ? json.decode(jsonData)['data'] : [];
     List<DisplayHistory> history = [];
     for (Map<String, dynamic> jsonItem in jsonHistoryItems) {
-      DisplayHistory d = DisplayHistory.fromJson(jsonItem);
-      history.add(d);
+      history.add(DisplayHistory.fromJson(jsonItem));
     }
     return history;
   }

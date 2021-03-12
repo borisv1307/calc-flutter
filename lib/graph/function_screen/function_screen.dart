@@ -22,14 +22,13 @@ class FunctionScreenState extends State<FunctionScreen> {
   final _formKey = GlobalKey<FormState>();
   GraphInputHandler inputHandler;
 
+  // loads functions, called after initState
   @override
-  // called after initState
   void didChangeDependencies() {
     super.didChangeDependencies();
     List loadedFunctions = SettingsController.of(context).functionHistory;
     widget.controller.load(loadedFunctions);
   }
-
 
   List<Widget> _getFunctions(){
     List<Widget> functions = [];

@@ -47,7 +47,6 @@ class FunctionDisplayController extends ChangeNotifier{
     notifyListeners();
   }
 
-
   void load(List<List<InputItem>> functions) {
     _inputs = [];
     for (List<InputItem> func in functions) {
