@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
-import 'package:open_calc/calculator/input_pad/input_variables.dart';
 import 'package:open_calc/graph/function_screen/function_display_controller.dart';
 import 'package:open_calc/graph/graph_screen/graph_cursor.dart';
 import 'package:open_calc/graph/graph_screen/graph_details/graph_details.dart';
@@ -10,14 +9,13 @@ import 'package:open_calc/graph/graph_screen/graph_navigator/graph_navigator.dar
 import 'package:open_calc/graph/graph_screen/interactive_graph/interactive_graph.dart';
 import 'package:open_calc/graph/graph_screen/graph_input_evaluator.dart';
 import 'package:open_calc/graph/graph_screen/graph_navigator/text_toggle/text_toggle_selection.dart';
+import 'package:open_calc/settings/settings_controller.dart';
 
 
 class GraphScreen extends StatefulWidget {
   final FunctionDisplayController controller;
-  final VariableStorage storage;
   final GraphInputEvaluator evaluator;
-  GraphScreen(this.storage, this.controller)
-      : evaluator = GraphInputEvaluator(storage);
+  GraphScreen(this.controller) : evaluator = GraphInputEvaluator();
 
   @override
   State<StatefulWidget> createState() => GraphScreenState();
@@ -34,7 +32,7 @@ class GraphScreenState extends State<GraphScreen> {
   @override
   Widget build(BuildContext context) {
     this.inputEquations =
-        widget.evaluator.translateInputs(widget.controller.inputs);
+        widget.evaluator.translateInputs(widget.controller.inputs, SettingsController.of(context));
     InteractiveGraph interactiveGraph = InteractiveGraph(
         this.inputEquations,
         this.scaleSettings,

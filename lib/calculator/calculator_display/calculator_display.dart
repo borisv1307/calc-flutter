@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:open_calc/calculator/calculator_display/calculator_display_controller.dart';
 import 'package:open_calc/calculator/calculator_display/display_history.dart';
+import 'package:open_calc/main.dart';
 
 class CalculatorDisplay extends StatefulWidget {
   final CalculatorDisplayController controller;
@@ -53,7 +54,6 @@ class _CalculatorDisplayState extends State<CalculatorDisplay> {
     super.initState();
     this.inputLineController.text = _inputLineWithCursor();
     widget.controller?.addListener(_updateDisplay);
-    startCursor();
   }
 
   @override

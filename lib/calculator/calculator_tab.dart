@@ -5,25 +5,19 @@ import 'package:open_calc/calculator/calculator_display/calculator_display_contr
 import 'package:open_calc/calculator/handler/command_handler.dart';
 import 'package:open_calc/calculator/handler/input_handler.dart';
 import 'package:open_calc/calculator/input_pad/input_pad.dart';
-import 'package:open_calc/calculator/input_pad/input_variables.dart';
 import 'package:open_calc/settings/settings_controller.dart';
 
 class CalculatorTab extends StatefulWidget {
-  final VariableStorage storage;
-
-  CalculatorTab(this.storage);
   @override
-  State<StatefulWidget> createState() => CalculatorTabState(storage);
+  State<StatefulWidget> createState() => CalculatorTabState();
 }
 
 class CalculatorTabState extends State<CalculatorTab>{
-  final VariableStorage storage;
   CalculatorDisplayController controller;
   InputHandler inputHandler;
   CommandHandler commandHandler;
 
-
-  CalculatorTabState(this.storage) {
+  CalculatorTabState() {
     controller = CalculatorDisplayController();
     inputHandler= InputHandler(controller);
   }
@@ -38,7 +32,7 @@ class CalculatorTabState extends State<CalculatorTab>{
 
   @override
   Widget build(BuildContext context) {
-    commandHandler = CommandHandler(controller, storage, SettingsController.of(context));
+    commandHandler = CommandHandler(controller, SettingsController.of(context));
     return Container(
       color: Theme.of(context).colorScheme.background, 
       child: Column(
@@ -52,7 +46,6 @@ class CalculatorTabState extends State<CalculatorTab>{
             flex: 3,
             child: InputPad(
               SettingsController.of(context).calculationOptions, 
-              storage, 
               inputHandler.handle, 
               commandHandler.handle
             )

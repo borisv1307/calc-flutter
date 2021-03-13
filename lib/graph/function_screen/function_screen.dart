@@ -1,7 +1,6 @@
 import 'package:advanced_calculation/advanced_calculator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:open_calc/calculator/input_pad/input_variables.dart';
 import 'package:open_calc/graph/function_screen/function_text_field.dart';
 import 'package:open_calc/graph/function_screen/function_display_controller.dart';
 import 'package:open_calc/graph/function_screen/input_pad/graph_input_handler.dart';
@@ -9,10 +8,9 @@ import 'package:open_calc/graph/function_screen/input_pad/graph_input_pad.dart';
 import 'package:open_calc/settings/settings_controller.dart';
 
 class FunctionScreen extends StatefulWidget {
-  final VariableStorage storage;
   final FunctionDisplayController controller;
   final AdvancedCalculator calculator;
-  FunctionScreen(this.storage, this.controller, [this.calculator]);
+  FunctionScreen(this.controller, [this.calculator]);
 
   @override
   State<StatefulWidget> createState() => FunctionScreenState();
@@ -120,7 +118,7 @@ class FunctionScreenState extends State<FunctionScreen> {
                   child: Container(
                     // height: 333,
                     color: Theme.of(context).colorScheme.background,
-                    child: GraphInputPad(widget.storage, inputHandler.handleInput, inputHandler.handleCommand)
+                    child: GraphInputPad(inputHandler.handleInput, inputHandler.handleCommand)
                   )
                 ),
               ],
