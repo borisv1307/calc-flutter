@@ -54,6 +54,7 @@ class _CalculatorDisplayState extends State<CalculatorDisplay> {
     super.initState();
     this.inputLineController.text = _inputLineWithCursor();
     widget.controller?.addListener(_updateDisplay);
+    startCursor();
   }
 
   @override
