@@ -5,20 +5,20 @@ import 'package:cartesian_graph/coordinates.dart';
 import 'package:cartesian_graph/graph_bounds.dart';
 import 'package:cartesian_graph/line.dart';
 import 'package:cartesian_graph/pixel_location.dart';
+import 'package:cartesian_graph/segment_bounds.dart';
 import 'package:flutter/material.dart';
 import 'package:open_calc/graph/graph_screen/graph_cursor.dart';
 import 'package:open_calc/graph/graph_screen/graph_details/scale_settings/scale_settings.dart';
+import 'package:open_calc/graph/graph_screen/interactive_graph/graph_lines.dart';
 
 import 'graph_display_navigator.dart';
 
 class InteractiveGraph extends StatefulWidget {
   final GraphCursor cursor;
-  final List<String> inputEquations;
+  final GraphLines inputEquations;
   final ScaleSettings scaleSettings;
-  final int chosenEquationIndex;
 
-  InteractiveGraph(this.inputEquations, this.scaleSettings, this.cursor,
-      this.chosenEquationIndex);
+  InteractiveGraph(this.inputEquations, this.scaleSettings, this.cursor);
 
   @override
   State<StatefulWidget> createState() => InteractiveGraphState();
@@ -86,16 +86,13 @@ class InteractiveGraphState extends State<InteractiveGraph> {
 
   @override
   Widget build(BuildContext context) {
-    List<Line> lines = [];
-    for(int i= 0; i< this.widget.inputEquations.length;i++){
-      lines.add(Line(this.widget.inputEquations[i],color:i==this.widget.chosenEquationIndex ? Colors.red : Colors.black));
-    }
 
 
     CartesianGraph graph = CartesianGraph(
       GraphBounds(this.widget.scaleSettings.xMin, this.widget.scaleSettings.xMax,
           this.widget.scaleSettings.yMin, this.widget.scaleSettings.yMax),
-      lines: lines,
+      lines: this.widget.inputEquations.map((line) => Line(line.equation,color:line.color,
+          segmentBounds:SegmentBounds(xMin: line.segmentBounds.xMin,xMax: line.segmentBounds.xMax,yMin: line.segmentBounds.yMin,yMax: line.segmentBounds.yMax))).toList(),
       cursorLocation: displayCursor.location,
       cursorColor: displayCursor.color,
     );
