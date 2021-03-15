@@ -32,6 +32,10 @@ class SettingsController extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> clearVariables() async {
+    _storage.clearStorage();
+  }
+
   Future<void> setCalcScreen(bool isCalcScreen) async {
     await _prefs.setBool('isCalcScreen', isCalcScreen);
   }

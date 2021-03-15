@@ -20,7 +20,7 @@ class ClearDialog extends StatelessWidget{
         ListTile(
           title: Text('Clear Variables'),
           onTap: () {
-            SettingsController.of(context).setFunctionList([]);
+            SettingsController.of(context).clearVariables();
             Navigator.pop(context);
           },
         ),
