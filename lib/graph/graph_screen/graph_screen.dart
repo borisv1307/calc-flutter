@@ -34,7 +34,7 @@ class GraphScreenState extends State<GraphScreen> {
   @override
   Widget build(BuildContext context) {
     this.inputEquations =
-        GraphLines(widget.evaluator.translateInputs(widget.controller.inputs).map((equation) => GraphLine(equation)).toList());
+        GraphLines(widget.evaluator.translateInputs(widget.controller.inputs, SettingsController.of(context)).map((equation) => GraphLine(equation)).toList());
     InteractiveGraph interactiveGraph = InteractiveGraph(
         this.inputEquations,
         this.scaleSettings,
