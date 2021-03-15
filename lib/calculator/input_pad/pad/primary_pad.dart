@@ -4,6 +4,7 @@ import 'package:open_calc/calculator/input_pad/button/input_button.dart';
 import 'package:open_calc/calculator/input_pad/button/multi_button.dart';
 import 'package:open_calc/calculator/input_pad/command_item.dart';
 import 'package:open_calc/calculator/input_pad/button/pad_button.dart';
+import 'package:open_calc/calculator/input_pad/dialog/clear_dialog.dart';
 import 'package:open_calc/calculator/input_pad/input_button_style.dart';
 import 'package:open_calc/calculator/input_pad/input_item.dart';
 import 'package:open_calc/calculator/input_pad/pad/pad_grid.dart';
@@ -36,7 +37,14 @@ class PrimaryPad extends StatelessWidget{
           buildInputButton(InputItem.PI, InputButtonStyle.tertiary(context)),
           buildInputButton(InputItem.ANSWER, InputButtonStyle.tertiary(context)),
           buildCommandButton(CommandItem.DELETE,InputButtonStyle.tertiary(context)),
-          buildCommandButton(CommandItem.CLEAR,InputButtonStyle.tertiary(context)),
+          PadButton(CommandItem.CLEAR.display, InputButtonStyle.tertiary(context), 
+            () { commandFunction(CommandItem.CLEAR); },
+            onHold: () {
+              showDialog(context: context, builder: (BuildContext context) {
+                return ClearDialog((){commandFunction(CommandItem.CLEAR);});
+              });
+            }
+          )
         ],
         [
           buildInputButton(InputItem.SQUARED, InputButtonStyle.tertiary(context)),
@@ -73,7 +81,7 @@ class PrimaryPad extends StatelessWidget{
           buildInputButton(InputItem.NEGATIVE, InputButtonStyle.primary(context)),
           buildCommandButton(CommandItem.ENTER, InputButtonStyle.secondary(context)),
         ]
-        ])
-      );
+      ])
+    );
   }
 }

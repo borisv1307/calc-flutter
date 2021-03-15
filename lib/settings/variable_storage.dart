@@ -24,6 +24,14 @@ class VariableStorage {
   String getVariable(String key){
     return variableMap[key] ?? '0';
   }
+
+  void clearStorage() {
+    clearVariables();
+  }
+
+  void clearVariables() {
+    variableMap.clear();
+  }
 }
 
 

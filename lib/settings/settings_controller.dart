@@ -15,10 +15,22 @@ class SettingsController extends ChangeNotifier {
   final VariableStorage _storage;
   String _currentTheme;
 
-
   SettingsController(this._prefs, [storage]) :
       this._storage = storage ?? VariableStorage.loadFromPrefs(_prefs),
       this._currentTheme = _prefs.getString('theme') ?? 'default';
+
+
+  Future<void> reset() async {
+    _prefs.clear();
+    _storage.clearStorage();
+    await setTheme(_currentTheme);
+  }
+
+  Future<void> clearCalcHistory() async {
+    setCalcHistory([]);
+    setCalcItems(0);
+    notifyListeners();
+  }
 
   Future<void> setCalcScreen(bool isCalcScreen) async {
     await _prefs.setBool('isCalcScreen', isCalcScreen);
@@ -81,6 +93,10 @@ class SettingsController extends ChangeNotifier {
     Map<String, dynamic> jsonData = Map<String, dynamic>();
     jsonData['data'] = jsonHistoryItems;
     await _prefs.setString('calcHistory', json.encode(jsonData));
+  }
+
+  Future<void> setCalcItems(int items) async {
+    await _prefs.setInt('calcItems', items);
   }
   
   get isCalcScreen {
@@ -148,6 +164,10 @@ class SettingsController extends ChangeNotifier {
       history.add(DisplayHistory.fromJson(jsonItem));
     }
     return history;
+  }
+
+  get calcItems {
+    return _prefs.getInt('calcItems') ?? 0;
   }
 
   String fetchVariable(String key) {

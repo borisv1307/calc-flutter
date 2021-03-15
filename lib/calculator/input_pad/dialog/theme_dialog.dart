@@ -1,14 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:open_calc/settings/settings_controller.dart';
 
-class ThemeDialog extends StatefulWidget{
-
-  @override
-  State<StatefulWidget> createState() => ThemeDialogState();
-}
-
-class ThemeDialogState extends State<ThemeDialog>{
-  
+class ThemeDialog extends StatelessWidget {
   Widget _tileBuilder( BuildContext context, String themeName, Color primary, Color secondary) {
     return ListTile(
       selected: themeName == SettingsController.of(context).currentTheme,
@@ -38,6 +31,14 @@ class ThemeDialogState extends State<ThemeDialog>{
       }
     );
   }
+    
+  String _capitalize(String s) {
+    if (s.length == 1) {
+      return s.toUpperCase();
+    } else {
+      return s[0].toUpperCase() + s.substring(1);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,14 +61,6 @@ class ThemeDialogState extends State<ThemeDialog>{
         )
       ],
     );
-  }
-  
-  String _capitalize(String s) {
-    if (s.length == 1) {
-      return s.toUpperCase();
-    } else {
-      return s[0].toUpperCase() + s.substring(1);
-    }
   }
 }
    
