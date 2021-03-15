@@ -164,5 +164,35 @@ void main() {
         expect(prefs.getString('B'), '345');
       });
     });
+    
+    group('Reset', () {
+      test("all", () async {
+        SettingsController settingsController = SettingsController(preferences);
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        settingsController.reset();
+        expect(prefs.getString('calcHistory'), isNull);
+        expect(prefs.getInt('calcItems'), isNull);
+        expect(prefs.getString('A'), isNull);
+        expect(prefs.getString('displayStyle'), isNull);
+        expect(prefs.getString('angularUnit'), isNull);
+        expect(prefs.getInt('decimalPlaces'), isNull);
+        expect(prefs.getBool('isCalcScreen'), isNull);
+        expect(prefs.getString('theme'), 'default');
+      });
+
+      test("calculator history", () async {
+        SettingsController settingsController = SettingsController(preferences);
+        settingsController.setCalcHistory([
+          DisplayHistory([InputItem.TWO,InputItem.ADD,InputItem.THREE], '5')
+        ]);
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        settingsController.setCalcItems(1);
+        settingsController.clearCalcHistory();
+        expect(settingsController.calcHistory, []);
+        expect(settingsController.calcItems, 0);
+        expect(prefs.getString('calcHistory'), '{"data":[]}');
+        expect(prefs.getInt('calcItems'), 0);
+      });
+    });
   });
 }

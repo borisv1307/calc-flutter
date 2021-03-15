@@ -19,8 +19,9 @@ class CommandHandler{
       try{
         DisplayHistory newEntry = evaluator.evaluate(controller.inputItems, controller.history);
         controller.clearInput();
-        controller.history.add(newEntry);
+        controller.add(newEntry);
         settingsController.setCalcHistory(controller.history);
+        settingsController.setCalcItems(controller.itemsDisplayed);
       } on SyntaxException catch(e){
         controller.cursorIndex = e.index;
         controller.pushAlert(SYNTAX_ERROR);

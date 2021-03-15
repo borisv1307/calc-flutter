@@ -26,13 +26,16 @@ void main(){
       setUpAll((){
         history = [];
         settings = MockSettingsController();
-
+        DisplayHistory newHistory = DisplayHistory([InputItem.B], '72');
+        
         controller = MockCalculatorDisplayController();
         when(controller.inputItems).thenReturn([InputItem.A]);
+        when(controller.add(newHistory)).thenAnswer((_) => history.add(newHistory));
         when(controller.history).thenReturn(history);
+        when(controller.itemsDisplayed).thenReturn(1);
 
         evaluator = MockInputEvaluator();
-        when(evaluator.evaluate([InputItem.A], history)).thenReturn(DisplayHistory([InputItem.B], '72'));
+        when(evaluator.evaluate([InputItem.A], history)).thenReturn(newHistory);
 
         CommandHandler handler = CommandHandler(controller, settings, evaluator);
         handler.handle(CommandItem.ENTER);
@@ -47,6 +50,12 @@ void main(){
         expect(history[0].input,[InputItem.B]);
         expect(history[0].result,'72');
       });
+
+      test('updates settings',(){
+        verify(settings.setCalcHistory(any)).called(1);
+        verify(settings.setCalcItems(any)).called(1);
+      });
+
     });
 
     group('Syntax error',(){

@@ -60,9 +60,13 @@ class InputEvaluator{
       }
 
       if (item == InputItem.ANSWER) {
-        inputString += (history.last.result[0] == '-')
-          ? history.last.result.replaceFirst('-', '`')
-          : history.last.result;
+        if (history.length > 0) {
+          inputString += (history.last.result[0] == '-')
+            ? history.last.result.replaceFirst('-', '`')
+            : history.last.result;
+        } else {
+          inputString += '0';
+        }
       } else if (item.variable){
         inputString += (settingsController.fetchVariable(item.value)[0] == '-')
           ? settingsController.fetchVariable(item.value).replaceFirst('-', '`')

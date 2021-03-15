@@ -17,17 +17,13 @@ class CalculatorTabState extends State<CalculatorTab>{
   InputHandler inputHandler;
   CommandHandler commandHandler;
 
-  CalculatorTabState() {
-    controller = CalculatorDisplayController();
-    inputHandler= InputHandler(controller);
-  }
   
   // loads calculator history, called after initState
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    List loadedHistory = SettingsController.of(context).calcHistory;
-    controller.history = loadedHistory;
+    controller = CalculatorDisplayController(SettingsController.of(context));
+    inputHandler = InputHandler(controller);
   }
 
   @override

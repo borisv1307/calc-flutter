@@ -1,16 +1,35 @@
 import 'package:flutter/cupertino.dart';
 import 'package:open_calc/calculator/calculator_display/display_history.dart';
 import 'package:open_calc/calculator/input_pad/input_item.dart';
+import 'package:open_calc/settings/settings_controller.dart';
 
 class CalculatorDisplayController extends ChangeNotifier{
   List<InputItem> _input = [];
   List<DisplayHistory> _history = [];
+  int _itemsDisplayed = 0;
   int _inputIndex = 0;
   int _historyIndex = 0;
   String _alert;
 
+  CalculatorDisplayController(SettingsController settings) {
+    _history = settings.calcHistory;
+    _itemsDisplayed = settings.calcItems;
+    settings.addListener(() {
+      _history = settings.calcHistory;
+      _itemsDisplayed = settings.calcItems;
+     });
+  }
+
   List<DisplayHistory> get history{
     return _history;
+  }
+
+  List<DisplayHistory> get displayedHistory{
+    return _history.sublist(_history.length - _itemsDisplayed, _history.length);
+  }
+
+  int get itemsDisplayed {
+    return _itemsDisplayed;
   }
 
   set history(List<DisplayHistory> history){
@@ -18,8 +37,14 @@ class CalculatorDisplayController extends ChangeNotifier{
     notifyListeners();
   }
 
+  void add(DisplayHistory history) {
+    _history.add(history);
+    _itemsDisplayed++;
+    notifyListeners();
+  }
+
   void clearHistory(){
-    this._history = [];
+    this._itemsDisplayed = 0;
     notifyListeners();
   }
 
