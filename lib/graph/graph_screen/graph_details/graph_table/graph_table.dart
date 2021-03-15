@@ -3,10 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:cartesian_graph/coordinates.dart';
 import 'package:open_calc/graph/graph_screen/graph_cursor.dart';
 import 'package:open_calc/graph/graph_screen/graph_details/scale_settings/scale_settings.dart';
+import 'package:open_calc/graph/graph_screen/interactive_graph/graph_line.dart';
 
 
 class GraphTable extends StatefulWidget {
-  final List<String> equations;
+  final List<GraphLine> equations;
   final ScaleSettings scaleSettings;
   final Function(String, double) calculateEquation;
   final GraphCursor graphCursor;
@@ -52,7 +53,7 @@ class GraphTableState extends State<GraphTable> {
       for (int i = offset; i < widget.equations.length; i++) {
         List<Coordinates> coords = [];
         for (double x = widget.scaleSettings.xMin.toDouble(); x <= widget.scaleSettings.xMax; x += widget.scaleSettings.step) {
-          double y = widget.calculateEquation(widget.equations[i], x);
+          double y = widget.calculateEquation(widget.equations[i].equation, x);
           coords.add(Coordinates(x, y));
         }
         coordinates.add(coords);

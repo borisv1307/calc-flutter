@@ -6,6 +6,8 @@ import 'package:open_calc/graph/graph_screen/graph_cursor.dart';
 import 'package:open_calc/graph/graph_screen/graph_details/graph_details.dart';
 import 'package:open_calc/graph/graph_screen/graph_details/scale_settings/scale_settings.dart';
 import 'package:open_calc/graph/graph_screen/graph_navigator/graph_navigator.dart';
+import 'package:open_calc/graph/graph_screen/interactive_graph/graph_line.dart';
+import 'package:open_calc/graph/graph_screen/interactive_graph/graph_lines.dart';
 import 'package:open_calc/graph/graph_screen/interactive_graph/interactive_graph.dart';
 import 'package:open_calc/graph/graph_screen/graph_input_evaluator.dart';
 import 'package:open_calc/graph/graph_screen/graph_navigator/text_toggle/text_toggle_selection.dart';
@@ -23,7 +25,7 @@ class GraphScreen extends StatefulWidget {
 
 class GraphScreenState extends State<GraphScreen> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
-  List<String> inputEquations;
+  GraphLines inputEquations;
   ScaleSettings scaleSettings = ScaleSettings();
   TextToggleSelection selection = TextToggleSelection('equations');
   GraphCursor cursorDetails = GraphCursor();
@@ -32,12 +34,11 @@ class GraphScreenState extends State<GraphScreen> {
   @override
   Widget build(BuildContext context) {
     this.inputEquations =
-        widget.evaluator.translateInputs(widget.controller.inputs, SettingsController.of(context));
+        GraphLines(widget.evaluator.translateInputs(widget.controller.inputs).map((equation) => GraphLine(equation)).toList());
     InteractiveGraph interactiveGraph = InteractiveGraph(
         this.inputEquations,
         this.scaleSettings,
-        this.cursorDetails,
-        this.chosenEquationIndex = chosenEquationIndex);
+        this.cursorDetails);
 
     return Scaffold(
       key: _scaffoldKey,
