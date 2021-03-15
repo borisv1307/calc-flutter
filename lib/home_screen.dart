@@ -8,22 +8,26 @@ import 'package:open_calc/settings/settings_controller.dart';
 
 class HomeScreen extends StatefulWidget {
   final String title;
+  final List<List<List<String>>> matrixStorage = new List<List<List<String>>>();
+  final VariableStorage storage = new VariableStorage();
 
   HomeScreen({Key key, this.title}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => HomeScreenState();
+  State<StatefulWidget> createState() => HomeScreenState(this.storage, this.matrixStorage);
 
 }
 
 class HomeScreenState extends State<HomeScreen>{
   bool isCalculate = true;
+  final List<List<List<String>>> matrixStorage;
+  final VariableStorage storage;
+
+  HomeScreenState(this.storage, this.matrixStorage);
 
   @override
   Widget build(BuildContext context) {
-    VariableStorage storage = new VariableStorage();
 
-    List<List<List<String>>> matrixStorage = new List<List<List<String>>>();
     Function(InputItem input) inputFunction; 
 
     isCalculate = SettingsController.of(context).isCalcScreen;

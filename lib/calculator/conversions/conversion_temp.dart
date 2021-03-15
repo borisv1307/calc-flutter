@@ -113,9 +113,13 @@ class TempConvertState extends State<TempConvert>{
         children: <Widget>[
         InkWell(
           onTap: (){
-            setState((){
-
+            var input = "temperature," + defaultDropVal + "," + defaultDropVal2;
+            var x = double.parse(_textFieldController.text);
+            var result = calculator.calculateConversion(input, x);
+            setState(() {
+              _textFieldController2.text = result.toString();
             });
+
           },
           child:Icon(
             Icons.transform,
