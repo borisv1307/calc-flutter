@@ -1,4 +1,3 @@
-import 'package:advanced_calculation/calculation_options.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:open_calc/calculator/calculator_display/calculator_display.dart';
@@ -28,11 +27,18 @@ class CalculatorTabState extends State<CalculatorTab>{
     controller = CalculatorDisplayController();
     inputHandler= InputHandler(controller);
   }
+  
+  // loads calculator history, called after initState
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    List loadedHistory = SettingsController.of(context).calcHistory;
+    controller.history = loadedHistory;
+  }
 
   @override
   Widget build(BuildContext context) {
-    CalculationOptions options = SettingsController.of(context).calculationOptions;
-    commandHandler = CommandHandler(controller, storage, options);
+    commandHandler = CommandHandler(controller, storage, SettingsController.of(context));
     return Container(
       color: Theme.of(context).colorScheme.background, 
       child: Column(
@@ -40,13 +46,16 @@ class CalculatorTabState extends State<CalculatorTab>{
         children: <Widget>[
           Expanded(
             flex: 2,
-            child: CalculatorDisplay(
-                controller,
-            ),
+            child: CalculatorDisplay(controller),
           ),
           Expanded(
             flex: 3,
-            child: InputPad(options, storage, inputHandler.handle, commandHandler.handle)
+            child: InputPad(
+              SettingsController.of(context).calculationOptions, 
+              storage, 
+              inputHandler.handle, 
+              commandHandler.handle
+            )
           ),
         ],
       )

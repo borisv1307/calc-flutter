@@ -46,4 +46,18 @@ class FunctionDisplayController extends ChangeNotifier{
     this._inputs[currentField] = [];
     notifyListeners();
   }
+
+  void load(List<List<InputItem>> functions) {
+    _inputs = [];
+    for (List<InputItem> func in functions) {
+      List<InputItem> newFunction = [];
+      for (InputItem item in func) {
+        newFunction.add(item);
+      }
+      _inputs.add(newFunction);
+    }
+    if (_inputs.length == 0) {
+      _inputs.add([]);
+    }
+  }
 }

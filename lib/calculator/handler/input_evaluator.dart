@@ -61,9 +61,13 @@ class InputEvaluator{
       }
 
       if (item == InputItem.ANSWER) {
-        inputString += history.last.result;
+        inputString += (history.last.result[0] == '-')
+          ? history.last.result.replaceFirst('-', '`')
+          : history.last.result;
       } else if (item.variable){
-        inputString += storage.fetchVariable(item.value);
+        inputString += (storage.fetchVariable(item.value)[0] == '-')
+          ? storage.fetchVariable(item.value).replaceFirst('-', '`')
+          : storage.fetchVariable(item.value);
       } else{
         inputString += item.value;
       }

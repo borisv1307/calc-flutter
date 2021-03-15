@@ -261,5 +261,34 @@ void main(){
       expect(output.input,[InputItem.LOG, InputItem.A]);
       expect(output.result,'1');
     });
+
+    test('Negative variable is translated',(){
+      CalculationOptions options = CalculationOptions();
+      MockAdvancedCalculator calculator = MockAdvancedCalculator();
+      when(calculator.calculate('`5',options)).thenReturn('-5');
+
+      MockVariableStorage storage = MockVariableStorage();
+      when(storage.fetchVariable('A')).thenReturn('-5');
+
+      InputEvaluator evaluator = InputEvaluator(storage,calculator);
+
+      DisplayHistory output = evaluator.evaluate([InputItem.A], [],options);
+
+      expect(output.input,[InputItem.A]);
+      expect(output.result,'-5');
+    });
+
+    test('Negative answer is translated',(){
+      CalculationOptions options = CalculationOptions();
+      MockAdvancedCalculator calculator = MockAdvancedCalculator();
+      when(calculator.calculate('`8',options)).thenReturn('-8');
+
+      InputEvaluator evaluator = InputEvaluator(MockVariableStorage(),calculator);
+
+      DisplayHistory output = evaluator.evaluate([InputItem.ANSWER],[DisplayHistory([], '-8')],options);
+
+      expect(output.input,[InputItem.ANSWER]);
+      expect(output.result,'-8');
+    });
   });
 }

@@ -1,6 +1,8 @@
 import 'package:advanced_calculation/angular_unit.dart';
 import 'package:advanced_calculation/display_style.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:open_calc/calculator/calculator_display/display_history.dart';
+import 'package:open_calc/calculator/input_pad/input_item.dart';
 import 'package:open_calc/settings/settings_controller.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -112,6 +114,40 @@ void main() {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       expect(settingsController.displayStyle, DisplayStyle.ENGINEERING);
       expect(prefs.getString('displayStyle'), 'engineering');
+    });
+  });
+
+  group('Function storage', () {
+    test("default", () async {
+      SettingsController settingsController = SettingsController(preferences);
+      expect(settingsController.functionHistory, []);
+    });
+
+    test("loads function list", () async {
+      List<List<InputItem>> functions = [
+        [InputItem.THREE, InputItem.X],
+        [InputItem.FIVE],
+      ];
+      SettingsController settingsController = SettingsController(preferences);
+      await settingsController.setFunctionList(functions);
+      expect(settingsController.functionHistory, functions);
+    });
+  });
+
+  group('Calc history storage', () {
+    test("default", () async {
+      SettingsController settingsController = SettingsController(preferences);
+      expect(settingsController.calcHistory, []);
+    });
+
+    test("loads display history", () async {
+      List<DisplayHistory> history = [
+        DisplayHistory([InputItem.TWO,InputItem.ADD,InputItem.TWO], "4"),
+        DisplayHistory([InputItem.THREE,InputItem.SUBTRACT,InputItem.TWO], "1"),
+      ];
+      SettingsController settingsController = SettingsController(preferences);
+      await settingsController.setCalcHistory(history);
+      expect(settingsController.calcHistory, history);
     });
   });
 }
