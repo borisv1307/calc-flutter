@@ -13,9 +13,10 @@ class CommandHandler{
   final VariableStorage storage;
   final InputEvaluator evaluator;
   final CalculationOptions options;
+  final List<List<List<String>>> matrixStorage;
 
-  CommandHandler(this.controller, this.storage, this.options, [InputEvaluator evaluator]):
-      evaluator = evaluator ?? InputEvaluator(storage);
+  CommandHandler(this.controller, this.storage, this.options, this.matrixStorage, [InputEvaluator evaluator]):
+      evaluator = evaluator ?? InputEvaluator(storage, matrixStorage);
 
   void updateOptions(int decimals, AngularUnit unit) {
     this.options.decimalPlaces = decimals;

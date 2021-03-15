@@ -57,7 +57,8 @@ class SecondaryPad extends StatelessWidget{
           buildInputButton(InputItem.EMPTY, InputButtonStyle.TERTIARY),
           buildInputButton(InputItem.EMPTY, InputButtonStyle.TERTIARY),
           buildInputButton(InputItem.EMPTY, InputButtonStyle.TERTIARY),
-          buildInputButton(InputItem.EMPTY, InputButtonStyle.TERTIARY),
+          MultiButton([InputItem.DETERMINANT, InputItem.PERMANENT, InputItem.TRANSPOSE], inputFunction, InputButtonStyle.TERTIARY),
+          MultiButton([InputItem.MATR_INVERSE, InputItem.REDUCED_ROW_ECHELON], inputFunction, InputButtonStyle.TERTIARY),
           buildInputButton(InputItem.SUBTRACT,  InputButtonStyle.SECONDARY),
         ],
         [

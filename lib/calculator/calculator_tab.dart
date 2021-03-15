@@ -73,7 +73,7 @@ class MainCalculatorState extends State<MainCalculator> {
     controller = CalculatorDisplayController();
     inputHandler= InputHandler(controller);
 
-    commandHandler = CommandHandler(controller, storage, CalculationOptions());
+    commandHandler = CommandHandler(controller, storage, CalculationOptions(), matrixStorage);
   }
 
   @override

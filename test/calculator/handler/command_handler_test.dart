@@ -15,6 +15,7 @@ class MockCalculatorDisplayController extends Mock implements CalculatorDisplayC
 }
 class MockVariableStorage extends Mock implements VariableStorage{}
 class MockInputEvaluator extends Mock implements InputEvaluator{}
+final List<List<List<String>>> matrixStorage = [];
 
 void main(){
   group('Enter',(){
@@ -33,7 +34,7 @@ void main(){
         evaluator = MockInputEvaluator();
         when(evaluator.evaluate([InputItem.A], history,options)).thenReturn(DisplayHistory([InputItem.B], '72'));
 
-        CommandHandler handler = CommandHandler(controller, MockVariableStorage(), options, evaluator);
+        CommandHandler handler = CommandHandler(controller, MockVariableStorage(), options,  matrixStorage, evaluator);
         handler.handle(CommandItem.ENTER);
       });
 
@@ -63,7 +64,7 @@ void main(){
         evaluator = MockInputEvaluator();
         when(evaluator.evaluate([InputItem.A], history,options)).thenThrow(new SyntaxException(1));
 
-        CommandHandler handler = CommandHandler(controller, MockVariableStorage(), options, evaluator);
+        CommandHandler handler = CommandHandler(controller, MockVariableStorage(), options,  matrixStorage, evaluator);
         handler.handle(CommandItem.ENTER);
       });
 
@@ -80,7 +81,7 @@ void main(){
   group('Delete',(){
     test('deletes input',(){
       MockCalculatorDisplayController controller = MockCalculatorDisplayController();
-      CommandHandler handler = CommandHandler(controller, MockVariableStorage(), CalculationOptions(), MockInputEvaluator());
+      CommandHandler handler = CommandHandler(controller, MockVariableStorage(), CalculationOptions(),  matrixStorage, MockInputEvaluator());
 
       handler.handle(CommandItem.DELETE);
       verify(controller.delete()).called(1);
@@ -91,7 +92,7 @@ void main(){
     MockCalculatorDisplayController controller;
     setUpAll((){
       controller = MockCalculatorDisplayController();
-      CommandHandler handler = CommandHandler(controller, MockVariableStorage(), CalculationOptions(), MockInputEvaluator());
+      CommandHandler handler = CommandHandler(controller, MockVariableStorage(), CalculationOptions(),  matrixStorage, MockInputEvaluator());
       handler.handle(CommandItem.CLEAR);
     });
 

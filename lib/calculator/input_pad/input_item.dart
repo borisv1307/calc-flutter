@@ -70,6 +70,11 @@ class InputItem{
   static const SQUARE_ROOT = const InputItem('sqrt',display:'√(', function: true);
   static const X = const InputItem('𝑥');
   static const STORAGE = const InputItem('sto', display:'➡', lookback: true);
+  static const DETERMINANT = const InputItem('detr', display: 'determinant(', name: 'determinant', lookback: true);
+  static const PERMANENT = const InputItem('perm', display: 'permanent(', name: 'permanent', lookback: true);
+  static const TRANSPOSE = const InputItem('tran', display: 'transpose(', name: 'transpose', lookback: true);
+  static const MATR_INVERSE = const InputItem('inv', display: 'inverse(', name: 'inverse', lookback: true);
+  static const REDUCED_ROW_ECHELON = const InputItem('rre', display: 'rre(', name: 'reduced_row_echelon', lookback: true);
   static const EMPTY = const InputItem('');
 
   @override
