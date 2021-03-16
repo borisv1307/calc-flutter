@@ -184,11 +184,11 @@ Many of the future goals at this point revolve around implementing more of the a
   - Validator should support operations for more than 2 matrices 
   - The translator should support operations for more than 2 matrices 
   - The matrix function “lower upper decompose” should be supported by validator 
-  - Addition of draw functions to calculator (line, circle, etc.)
 - Cartesian Graph
   - Upgrade line drawing to optionally be smooth rather than current boxy strategy 
 - Calc Flutter
-  - Further UI support of matrix functions and any potential future backend features.
+  - Addition of draw functions to calculator (line, circle, etc.)
+  - Further UI support of matrix functions and any potential future backend features
   - Probing of efficiency and performance
 
 ## Limitations and Future Issues
