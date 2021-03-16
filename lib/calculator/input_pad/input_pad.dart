@@ -5,7 +5,6 @@ import 'package:open_calc/calculator/input_pad/command_item.dart';
 import 'package:open_calc/calculator/input_pad/pad/primary_pad.dart';
 import 'package:open_calc/calculator/input_pad/pad/secondary_pad.dart';
 import 'package:open_calc/calculator/input_pad/input_item.dart';
-import 'package:open_calc/calculator/input_pad/input_variables.dart';
 import 'package:open_calc/calculator/input_pad/pad/variable_screen.dart';
 
 
@@ -13,11 +12,9 @@ class InputPad extends StatelessWidget{
 
   final Function(InputItem input) inputFunction;
   final Function(CommandItem command) commandFunction;
-  final VariableStorage storage;
   final CalculationOptions options;
 
-  InputPad(this.options, this.storage,this.inputFunction,this.commandFunction);
-
+  InputPad(this.options,this.inputFunction,this.commandFunction);
 
   @override
   Widget build(BuildContext context){
@@ -33,7 +30,7 @@ class InputPad extends StatelessWidget{
             builder = (BuildContext context) => SecondaryPad(this.inputFunction, this.commandFunction, this.options);
             break;
           case 'varPad':
-            builder = (BuildContext context) => VariableScreen(this.inputFunction, this.storage);
+            builder = (BuildContext context) => VariableScreen(this.inputFunction);
             break;
         }
         return NoTransitionRoute(builder: builder, settings: settings);

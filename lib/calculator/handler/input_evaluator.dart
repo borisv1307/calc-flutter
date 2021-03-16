@@ -1,49 +1,48 @@
 import 'package:advanced_calculation/advanced_calculator.dart';
-import 'package:advanced_calculation/calculation_options.dart';
 import 'package:advanced_calculation/syntax_exception.dart';
 import 'package:open_calc/calculator/calculator_display/display_history.dart';
 import 'package:open_calc/calculator/input_pad/input_item.dart';
-import 'package:open_calc/calculator/input_pad/input_variables.dart';
+import 'package:open_calc/settings/settings_controller.dart';
 
 class InputEvaluator{
   final AdvancedCalculator calculator;
-  final VariableStorage storage;
-  InputEvaluator(this.storage, [AdvancedCalculator calculator]):
+  final SettingsController settingsController;
+  InputEvaluator(this.settingsController, [AdvancedCalculator calculator]):
       calculator = calculator ?? AdvancedCalculator();
 
-  DisplayHistory evaluate(final List<InputItem> input, final List<DisplayHistory> history, final CalculationOptions options) {
+  DisplayHistory evaluate(final List<InputItem> input, final List<DisplayHistory> history) {
     String resultString = '';
     List<InputItem> evaluatedInput = input;
     if(input.contains(InputItem.STORAGE)){
-      resultString = _evaluateStorage(input, resultString, history, options);
+      resultString = _evaluateStorage(input, resultString, history);
     }else{
       if(input.isEmpty && history.isNotEmpty){
         evaluatedInput = history.last.evaluatedInput;
       }
-      resultString = _calculate(evaluatedInput, history, options);
+      resultString = _calculate(evaluatedInput, history);
     }
     DisplayHistory newEntry = new DisplayHistory(input, resultString, evaluatedInput);
 
     return newEntry;
   }
 
-  String _evaluateStorage(List<InputItem> input, String resultString, List<DisplayHistory> history, final CalculationOptions options) {
+  String _evaluateStorage(List<InputItem> input, String resultString, List<DisplayHistory> history) {
     InputItem variable = input.last;
     int stoIndex = input.indexOf(InputItem.STORAGE);
     if(variable.variable && stoIndex == input.length - 2){
       int stoIndex = input.indexOf(InputItem.STORAGE);
       List<InputItem> expression = input.sublist(0,stoIndex);
-      resultString = _calculate(expression, history, options);
-      storage.addVariable(variable.label, resultString);
+      resultString = _calculate(expression, history);
+      settingsController.storeVariable(variable.label, resultString);
     }else{
       throw new SyntaxException(stoIndex + 1);
     }
     return resultString;
   }
 
-  String _calculate(final List<InputItem> input, final List<DisplayHistory> history, final CalculationOptions options){
+  String _calculate(final List<InputItem> input, final List<DisplayHistory> history){
     String inputString = _translateInput(input, history);
-    String resultString = calculator.calculate(inputString, options);
+    String resultString = calculator.calculate(inputString, settingsController.calculationOptions);
 
     return resultString;
   }
@@ -61,13 +60,17 @@ class InputEvaluator{
       }
 
       if (item == InputItem.ANSWER) {
-        inputString += (history.last.result[0] == '-')
-          ? history.last.result.replaceFirst('-', '`')
-          : history.last.result;
+        if (history.length > 0) {
+          inputString += (history.last.result[0] == '-')
+            ? history.last.result.replaceFirst('-', '`')
+            : history.last.result;
+        } else {
+          inputString += '0';
+        }
       } else if (item.variable){
-        inputString += (storage.fetchVariable(item.value)[0] == '-')
-          ? storage.fetchVariable(item.value).replaceFirst('-', '`')
-          : storage.fetchVariable(item.value);
+        inputString += (settingsController.fetchVariable(item.value)[0] == '-')
+          ? settingsController.fetchVariable(item.value).replaceFirst('-', '`')
+          : settingsController.fetchVariable(item.value);
       } else{
         inputString += item.value;
       }

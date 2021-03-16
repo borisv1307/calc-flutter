@@ -4,6 +4,7 @@ import 'package:advanced_calculation/display_style.dart';
 import 'package:flutter/material.dart';
 import 'package:open_calc/calculator/calculator_display/display_history.dart';
 import 'package:open_calc/calculator/input_pad/input_item.dart';
+import 'package:open_calc/settings/variable_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 
@@ -11,10 +12,28 @@ import 'dart:convert';
 class SettingsController extends ChangeNotifier {
   static const int MAX_MEMORY_ITEMS = 10;
   final SharedPreferences _prefs;
+  final VariableStorage _storage;
   String _currentTheme;
 
-  SettingsController(this._prefs) {
-    _currentTheme = _prefs.getString('theme') ?? 'default';
+  SettingsController(this._prefs, [storage]) :
+      this._storage = storage ?? VariableStorage.loadFromPrefs(_prefs),
+      this._currentTheme = _prefs.getString('theme') ?? 'default';
+
+
+  Future<void> reset() async {
+    _prefs.clear();
+    _storage.clearStorage();
+    await setTheme(_currentTheme);
+  }
+
+  Future<void> clearCalcHistory() async {
+    setCalcHistory([]);
+    setCalcItems(0);
+    notifyListeners();
+  }
+
+  Future<void> clearVariables() async {
+    _storage.clearStorage();
   }
 
   Future<void> setCalcScreen(bool isCalcScreen) async {
@@ -51,6 +70,11 @@ class SettingsController extends ChangeNotifier {
     await _prefs.setString('theme', theme);
   }
 
+  Future<void> storeVariable(String key, String value) async {
+    _storage.setVariable(key, value);
+    await _prefs.setString(key, value);
+  }
+
   Future<void> setFunctionList(List<List<InputItem>> functions) async {
     List<List<Map>> jsonFunctions = [];
     for (List<InputItem> func in functions) {
@@ -73,6 +97,10 @@ class SettingsController extends ChangeNotifier {
     Map<String, dynamic> jsonData = Map<String, dynamic>();
     jsonData['data'] = jsonHistoryItems;
     await _prefs.setString('calcHistory', json.encode(jsonData));
+  }
+
+  Future<void> setCalcItems(int items) async {
+    await _prefs.setInt('calcItems', items);
   }
   
   get isCalcScreen {
@@ -141,6 +169,19 @@ class SettingsController extends ChangeNotifier {
     }
     return history;
   }
+
+  get calcItems {
+    return _prefs.getInt('calcItems') ?? 0;
+  }
+
+  String fetchVariable(String key) {
+    return _storage.getVariable(key);
+  }
+
+  get variableStorage {
+    return _storage;
+  }
+
 
   // get the controller from any page
   static SettingsController of(BuildContext context) {

@@ -112,7 +112,7 @@ class _CalculatorDisplayState extends State<CalculatorDisplay> {
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> history = this.widget.controller.history.map(generateRows).expand((i) => i).toList();
+    List<Widget> history = this.widget.controller.displayedHistory.map(generateRows).expand((i) => i).toList();
     history.add(Align(alignment:Alignment.centerLeft,
         child: Material(
             color: Colors.transparent,

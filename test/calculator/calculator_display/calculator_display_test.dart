@@ -5,21 +5,29 @@ import 'package:open_calc/calculator/calculator_display/calculator_display.dart'
 import 'package:open_calc/calculator/calculator_display/calculator_display_controller.dart';
 import 'package:open_calc/calculator/calculator_display/display_history.dart';
 import 'package:open_calc/calculator/input_pad/input_item.dart';
+import 'package:open_calc/settings/settings_controller.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MockCalculatorDisplayController extends Mock implements CalculatorDisplayController{
   String inputLine = '';
   int cursorIndex = 0;
-  List<DisplayHistory> history = [];
+  List<DisplayHistory> displayedHistory = [];
 }
 
 void main(){
+  SettingsController settingsController;
 
   CalculatorDisplayController _buildController([List<InputItem> inputItems=const [],List<DisplayHistory> history = const []]){
-    CalculatorDisplayController controller = CalculatorDisplayController();
+    CalculatorDisplayController controller = CalculatorDisplayController(settingsController);
     inputItems.forEach((inputItem)=>controller.input(inputItem));
-    controller.history = history;
+    history.forEach((displayHistory)=>controller.add(displayHistory));
     return controller;
   }
+
+  setUp(() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    settingsController = SettingsController(pref);
+  });
 
   testWidgets('Calculator Display can be created',(WidgetTester tester) async{
     await tester.pumpWidget(MaterialApp(home:CalculatorDisplay(_buildController())));
@@ -97,7 +105,7 @@ void main(){
     testWidgets('after controller updates',(WidgetTester tester) async{
       CalculatorDisplayController controller = _buildController([InputItem.TWO,InputItem.ADD,InputItem.TWO]);
       await tester.pumpWidget(MaterialApp(home:CalculatorDisplay(controller)));
-      controller.history = [DisplayHistory([InputItem.THREE,InputItem.ADD,InputItem.THREE], '6')];
+      controller.add(DisplayHistory([InputItem.THREE,InputItem.ADD,InputItem.THREE], '6'));
       await tester.pumpAndSettle();
       expect(find.text('3+3'),findsNWidgets(1));
       expect(find.text('6'),findsNWidgets(1));
@@ -136,7 +144,7 @@ void main(){
 
   group('Alerts are displayed',(){
     testWidgets('when alert is provided',(WidgetTester tester) async{
-      CalculatorDisplayController controller = CalculatorDisplayController();
+      CalculatorDisplayController controller = CalculatorDisplayController(settingsController);
       await tester.pumpWidget(MaterialApp(home:CalculatorDisplay(controller)));
       controller.pushAlert('Test alert');
       await tester.pumpAndSettle();

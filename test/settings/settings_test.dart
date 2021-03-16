@@ -89,65 +89,110 @@ void main() {
         expect(prefs.getString('theme'), 'default');
       });
     });
-  });
 
-  group('Display style',(){
-    test("Normal", () async {
-      SettingsController settingsController = SettingsController(preferences);
-      await settingsController.setDisplayStyle(DisplayStyle.NORMAL);
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      expect(settingsController.displayStyle, DisplayStyle.NORMAL);
-      expect(prefs.getString('displayStyle'), 'normal');
+    group('Display style',(){
+      test("Normal", () async {
+        SettingsController settingsController = SettingsController(preferences);
+        await settingsController.setDisplayStyle(DisplayStyle.NORMAL);
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        expect(settingsController.displayStyle, DisplayStyle.NORMAL);
+        expect(prefs.getString('displayStyle'), 'normal');
+      });
+
+      test("Scientific", () async {
+        SettingsController settingsController = SettingsController(preferences);
+        await settingsController.setDisplayStyle(DisplayStyle.SCIENTIFIC);
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        expect(settingsController.displayStyle, DisplayStyle.SCIENTIFIC);
+        expect(prefs.getString('displayStyle'), 'scientific');
+      });
+
+      test("Engineering", () async {
+        SettingsController settingsController = SettingsController(preferences);
+        await settingsController.setDisplayStyle(DisplayStyle.ENGINEERING);
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        expect(settingsController.displayStyle, DisplayStyle.ENGINEERING);
+        expect(prefs.getString('displayStyle'), 'engineering');
+      });
     });
 
-    test("Scientific", () async {
-      SettingsController settingsController = SettingsController(preferences);
-      await settingsController.setDisplayStyle(DisplayStyle.SCIENTIFIC);
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      expect(settingsController.displayStyle, DisplayStyle.SCIENTIFIC);
-      expect(prefs.getString('displayStyle'), 'scientific');
+    group('Function storage', () {
+      test("default", () async {
+        SettingsController settingsController = SettingsController(preferences);
+        expect(settingsController.functionHistory, []);
+      });
+
+      test("loads function list", () async {
+        List<List<InputItem>> functions = [
+          [InputItem.THREE, InputItem.X],
+          [InputItem.FIVE],
+        ];
+        SettingsController settingsController = SettingsController(preferences);
+        await settingsController.setFunctionList(functions);
+        expect(settingsController.functionHistory, functions);
+      });
     });
 
-    test("Engineering", () async {
-      SettingsController settingsController = SettingsController(preferences);
-      await settingsController.setDisplayStyle(DisplayStyle.ENGINEERING);
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      expect(settingsController.displayStyle, DisplayStyle.ENGINEERING);
-      expect(prefs.getString('displayStyle'), 'engineering');
-    });
-  });
+    group('Calc history storage', () {
+      test("default", () async {
+        SettingsController settingsController = SettingsController(preferences);
+        expect(settingsController.calcHistory, []);
+      });
 
-  group('Function storage', () {
-    test("default", () async {
-      SettingsController settingsController = SettingsController(preferences);
-      expect(settingsController.functionHistory, []);
-    });
-
-    test("loads function list", () async {
-      List<List<InputItem>> functions = [
-        [InputItem.THREE, InputItem.X],
-        [InputItem.FIVE],
-      ];
-      SettingsController settingsController = SettingsController(preferences);
-      await settingsController.setFunctionList(functions);
-      expect(settingsController.functionHistory, functions);
-    });
-  });
-
-  group('Calc history storage', () {
-    test("default", () async {
-      SettingsController settingsController = SettingsController(preferences);
-      expect(settingsController.calcHistory, []);
+      test("loads display history", () async {
+        List<DisplayHistory> history = [
+          DisplayHistory([InputItem.TWO,InputItem.ADD,InputItem.TWO], "4"),
+          DisplayHistory([InputItem.THREE,InputItem.SUBTRACT,InputItem.TWO], "1"),
+        ];
+        SettingsController settingsController = SettingsController(preferences);
+        await settingsController.setCalcHistory(history);
+        expect(settingsController.calcHistory, history);
+      });
     });
 
-    test("loads display history", () async {
-      List<DisplayHistory> history = [
-        DisplayHistory([InputItem.TWO,InputItem.ADD,InputItem.TWO], "4"),
-        DisplayHistory([InputItem.THREE,InputItem.SUBTRACT,InputItem.TWO], "1"),
-      ];
-      SettingsController settingsController = SettingsController(preferences);
-      await settingsController.setCalcHistory(history);
-      expect(settingsController.calcHistory, history);
+    group('Variable storage', () {
+      test("is initialized", () async {
+        SettingsController settingsController = SettingsController(preferences);
+        expect(settingsController.variableStorage, isNotNull);
+      });
+
+      test("stores and loads variables", () async {
+        SettingsController settingsController = SettingsController(preferences);
+        settingsController.storeVariable('B', '345');
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        expect(settingsController.fetchVariable('B'), '345');
+        expect(prefs.getString('B'), '345');
+      });
+    });
+    
+    group('Reset', () {
+      test("all", () async {
+        SettingsController settingsController = SettingsController(preferences);
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        settingsController.reset();
+        expect(prefs.getString('calcHistory'), isNull);
+        expect(prefs.getInt('calcItems'), isNull);
+        expect(prefs.getString('A'), isNull);
+        expect(prefs.getString('displayStyle'), isNull);
+        expect(prefs.getString('angularUnit'), isNull);
+        expect(prefs.getInt('decimalPlaces'), isNull);
+        expect(prefs.getBool('isCalcScreen'), isNull);
+        expect(prefs.getString('theme'), 'default');
+      });
+
+      test("calculator history", () async {
+        SettingsController settingsController = SettingsController(preferences);
+        settingsController.setCalcHistory([
+          DisplayHistory([InputItem.TWO,InputItem.ADD,InputItem.THREE], '5')
+        ]);
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        settingsController.setCalcItems(1);
+        settingsController.clearCalcHistory();
+        expect(settingsController.calcHistory, []);
+        expect(settingsController.calcItems, 0);
+        expect(prefs.getString('calcHistory'), '{"data":[]}');
+        expect(prefs.getInt('calcItems'), 0);
+      });
     });
   });
 }
