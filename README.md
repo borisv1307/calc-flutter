@@ -64,12 +64,6 @@ android/app/src/main
 When advanced_calculation is built within github actions, esoteric_nonsense is also built and the newly generated `.so` file is committed to the appropriate path.  Esoteric_nonsense may also be built locally by running the same commands that are seen in the github actions file within the project. 
 
 ## Repository Overviews 
-This project consists of 4 respositories which are responsible for different portions of the application. The repos are:
-
-- [calc-flutter](https://github.com/SE-691-Graphing-Calculator/calc-flutter) (here)
-- [advanced-calculation](https://github.com/SE-691-Graphing-Calculator/advanced_calculation)
-- [cartesian-graph](https://github.com/SE-691-Graphing-Calculator/cartesian_graph)
-- [esoteric-nonsense](https://github.com/SE-691-Graphing-Calculator/esoteric_nonsense)
 
 ### calc_flutter 
 The calc_flutter repository the front-end user interface. As mentioned in the name of the repository, the front-end for the application is created in Flutter. There are two main components of the calc-flutter repo: The Calculator tab and Graph tab.  
