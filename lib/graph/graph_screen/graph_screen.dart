@@ -30,6 +30,36 @@ class GraphScreenState extends State<GraphScreen> {
   GraphCursor cursorDetails = GraphCursor();
   static int chosenEquationIndex = -1;
   bool _isExpanded = false;
+  double x1;
+  double x2;
+
+  void _recordFinalPosition() {
+    double delta = x2 - x1;
+    if (delta < 0) {
+      setState(() {
+        scaleSettings.xMax += 1;
+        scaleSettings.xMin += 1;
+      });
+    } else {
+      setState(() {
+        scaleSettings.xMax -= 1;
+        scaleSettings.xMin -= 1;
+      });
+    }
+  }
+
+  void _swipeToNavigate(DragEndDetails details) {
+    print(details.velocity.pixelsPerSecond.dx.floorToDouble());
+    double maxVelocity = 500;
+    double minVelocity = -500;
+    double velocity = details.velocity.pixelsPerSecond.dx.floorToDouble();
+    if (velocity > maxVelocity)
+      velocity = maxVelocity;
+    else if (velocity < minVelocity) velocity = minVelocity;
+    int distance = velocity ~/ 100;
+    scaleSettings.xMax -= distance;
+    scaleSettings.xMin -= distance;
+  }
 
   void _toggleExpand(double height) {
     if (_isExpanded == false) {
@@ -67,29 +97,42 @@ class GraphScreenState extends State<GraphScreen> {
           if (!isKeyboardVisible)
             Expanded(
                 flex: 3,
-                child: Stack(
-                  alignment: AlignmentDirectional.center,
-                  children: <Widget>[
-                    interactiveGraph,
-                    Positioned(
-                      top: 0,
-                      right: 0,
-                      child: Opacity(
-                        opacity: 0.25,
-                        child: Material(
-                          color: Colors.transparent,
-                          child: InkWell(
-                              onTap: () {
-                                _toggleExpand(screenHeight);
-                              },
-                              child: Icon(
-                                Icons.aspect_ratio,
-                                size: 36,
-                              )),
+                // child: interactiveGraph,
+                child: GestureDetector(
+                  // onTapDown: _recordInitialPosition,
+                  // onHorizontalDragUpdate: (DragUpdateDetails details) {
+                  //   x1 = details.localPosition.dx;
+                  // },
+                  // onHorizontalDragEnd: _recordFinalPosition,
+                  // onHorizontalDragStart: (DragStartDetails details) {
+                  //   // print(details.localPosition.direction);
+                  //
+                  // },
+                  onHorizontalDragEnd: _swipeToNavigate,
+                  child: Stack(
+                    alignment: AlignmentDirectional.center,
+                    children: <Widget>[
+                      interactiveGraph,
+                      Positioned(
+                        top: 0,
+                        right: 0,
+                        child: Opacity(
+                          opacity: 0.25,
+                          child: Material(
+                            color: Colors.transparent,
+                            child: InkWell(
+                                onTap: () {
+                                  _toggleExpand(screenHeight);
+                                },
+                                child: Icon(
+                                  Icons.aspect_ratio,
+                                  size: 36,
+                                )),
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 )),
           Visibility(
             visible: !_isExpanded,

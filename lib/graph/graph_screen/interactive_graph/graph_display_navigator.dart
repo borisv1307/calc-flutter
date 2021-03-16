@@ -24,10 +24,27 @@ class GraphDisplayNavigatorState extends State<GraphDisplayNavigator> {
   @override
   Widget build(BuildContext context) {
     return Container(
-        child:Opacity(
-          opacity: 0.3,
-          child: Container(
-            child: Column(
+        child: Opacity(
+      opacity: 0.3,
+      child: Container(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Material(
+              color: Colors.transparent,
+              child: InkWell(
+                  onTap: () {
+                    setState(() {
+                      this.widget.scaleSettings.yMax++;
+                      this.widget.scaleSettings.yMin++;
+                    });
+                  },
+                  child: Icon(
+                    Icons.keyboard_arrow_up,
+                    size: 36,
+                  )),
+            ),
+            Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Material(
@@ -35,67 +52,48 @@ class GraphDisplayNavigatorState extends State<GraphDisplayNavigator> {
                   child: InkWell(
                       onTap: () {
                         setState(() {
-                          this.widget.scaleSettings.yMax++;
-                          this.widget.scaleSettings.yMin++;
+                          this.widget.scaleSettings.xMax--;
+                          this.widget.scaleSettings.xMin--;
                         });
                       },
                       child: Icon(
-                        Icons.keyboard_arrow_up,
+                        Icons.chevron_left,
                         size: 36,
                       )),
-                ),
-
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Material(
-                      color: Colors.transparent,
-                      child: InkWell(
-                          onTap: () {
-                            setState(() {
-                              this.widget.scaleSettings.xMax--;
-                              this.widget.scaleSettings.xMin--;
-                            });
-                          },
-                          child: Icon(
-                            Icons.chevron_left,
-                            size: 36,
-                          )),
-                    ),
-                    Material(
-                      color: Colors.transparent,
-                      child: InkWell(
-                          onTap: () {
-                            setState(() {
-                              this.widget.scaleSettings.xMax++;
-                              this.widget.scaleSettings.xMin++;
-                            });
-                          },
-                          child: Icon(
-                            Icons.chevron_right,
-                            size: 36,
-                          )),
-                    ),
-                  ],
                 ),
                 Material(
                   color: Colors.transparent,
                   child: InkWell(
                       onTap: () {
                         setState(() {
-                          this.widget.scaleSettings.yMax--;
-                          this.widget.scaleSettings.yMin--;
+                          this.widget.scaleSettings.xMax++;
+                          this.widget.scaleSettings.xMin++;
                         });
                       },
                       child: Icon(
-                        Icons.keyboard_arrow_down,
+                        Icons.chevron_right,
                         size: 36,
                       )),
                 ),
               ],
             ),
-          ),
-        )
-    );
+            Material(
+              color: Colors.transparent,
+              child: InkWell(
+                  onTap: () {
+                    setState(() {
+                      this.widget.scaleSettings.yMax--;
+                      this.widget.scaleSettings.yMin--;
+                    });
+                  },
+                  child: Icon(
+                    Icons.keyboard_arrow_down,
+                    size: 36,
+                  )),
+            ),
+          ],
+        ),
+      ),
+    ));
   }
 }
