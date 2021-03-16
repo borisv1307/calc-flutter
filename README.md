@@ -2,7 +2,7 @@
 
 # Mobile Graphing Calculator Application 
 
-- [Background/Purpose](#background-purpose)
+- [Overview](#overview)
 - [Local setup](#local-setup)
 - [Architecture Overview](#architecture-overview)
 - [Repository Overviews](#repository-overviews)
@@ -14,7 +14,7 @@
 - [Limitations and Future Issues](#limitations-and-future-issues)
 
 
-## Background/Purpose 
+## Overview
 
 The Mobile Graphing Calculator brings functionality from classic graphing calculators to the modern era.  The application looks to retain the general look and feel of classic graphing calculators and bring both graphing and calculation functionality to a cross-platform mobile application. 
 
@@ -36,7 +36,7 @@ After Flutter has [been installed and set up locally](https://flutter.dev/docs/g
 
 ## Architecture Overview
 
-This project consists of 4 respositories which are responsible for different portions of the application. The repos are:
+This project consists of 4 repositories which are responsible for different portions of the application. The repos are:
 
 - [calc-flutter](https://github.com/SE-691-Graphing-Calculator/calc-flutter) (here)
 - [advanced-calculation](https://github.com/SE-691-Graphing-Calculator/advanced_calculation)
@@ -64,15 +64,9 @@ android/app/src/main
 When advanced_calculation is built within github actions, esoteric_nonsense is also built and the newly generated `.so` file is committed to the appropriate path.  Esoteric_nonsense may also be built locally by running the same commands that are seen in the github actions file within the project. 
 
 ## Repository Overviews 
-This project consists of 4 respositories which are responsible for different portions of the application. The repos are:
-
-- [calc-flutter](https://github.com/SE-691-Graphing-Calculator/calc-flutter) (here)
-- [advanced-calculation](https://github.com/SE-691-Graphing-Calculator/advanced_calculation)
-- [cartesian-graph](https://github.com/SE-691-Graphing-Calculator/cartesian_graph)
-- [esoteric-nonsense](https://github.com/SE-691-Graphing-Calculator/esoteric_nonsense)
 
 ### calc_flutter 
-The calc_flutter repository the front-end user interface. As mentioned in the name of the repository, the front-end for the application is created in Flutter. There are two main components of the calc-flutter repo: The Calculator tab and Graph tab.  
+The calc_flutter repository represents the front-end user interface. As mentioned in the name of the repository, the front-end for the application is created in Flutter. There are two main components of the calc-flutter repo: The Calculator tab and Graph tab.  
 
 The Calculator tab displays a digital calculator with numpad and pixel display, imitating the look of a graphing calculator. The numpad will have all the basic buttons to perform multiple levels of mathematical calculation from simple ones like addition, subtraction, multiplication, division…, to more advanced functions like logarithm, trigonometry, matrices, conversions.
 
@@ -103,7 +97,7 @@ In the Graph Screen, on the top half is the graph display. This is where all the
 
 The Cursor controller will allow the user to move the cursor around the graph screen. The travel distance or the distance of each step can be adjusted in the scale tab. Therefore, by adjusting the step distance, user can traverse the whole display screen by small increments or large increments. Right next to the Cursor Controller are the Magnification buttons that allow user to zoom in and out the graph screen. These button functions like the scale tab: automatically adjusting the X and Y min/max bounds to zoom in and out.  
 
-**Equations Tab**: This tab displays all the user’s input functions, which are currently displayed on the graph display. By tapping on a function, its corresponding plot line will be highlighted in a different color from the other plot lines. Besides that, when a function is chosen, the cursor will move to the plotline and allow user to trace along the line and examine the coordinates of the function.  
+**Equations Tab**: This tab displays all the user’s input functions, which are currently displayed on the graph display. When a function is chosen, the cursor will move to the plotline and allow user to trace along the line and examine the coordinates of the function.  
 
 All the input functions from the front end will be parsed to Cartesian Graph’s library to be processed, calculated, and converted into pixelated plots.  
 
@@ -190,11 +184,11 @@ Many of the future goals at this point revolve around implementing more of the a
   - Validator should support operations for more than 2 matrices 
   - The translator should support operations for more than 2 matrices 
   - The matrix function “lower upper decompose” should be supported by validator 
-  - Addition of draw functions to calculator (line, circle, etc.)
 - Cartesian Graph
   - Upgrade line drawing to optionally be smooth rather than current boxy strategy 
 - Calc Flutter
-  - Further UI support of matrix functions and any potential future backend features.
+  - Addition of draw functions to calculator (line, circle, etc.)
+  - Further UI support of matrix functions and any potential future backend features
   - Probing of efficiency and performance
 
 ## Limitations and Future Issues
