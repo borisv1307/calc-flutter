@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/mockito.dart';
 import 'package:open_calc/calculator/input_pad/button/input_button.dart';
 import 'package:open_calc/calculator/input_pad/button/multi_button.dart';
 import 'package:open_calc/calculator/input_pad/button/pad_button.dart';
@@ -8,7 +9,12 @@ import 'package:open_calc/calculator/input_pad/input_button_style.dart';
 import 'package:open_calc/calculator/input_pad/input_item.dart';
 import 'package:open_calc/calculator/input_pad/pad/primary_pad.dart';
 
+
+class MockContext extends Mock implements BuildContext{}
+
 void main(){
+  MockContext context = MockContext();  
+  
   bool Function(Widget) buttonPredicate = (widget) => widget is PadButton || widget is InputButton || widget is MultiButton;
 
   MaterialApp _buildTestable(Function(InputItem input) inputFunction, Function(CommandItem command) commandFunction){
@@ -72,38 +78,38 @@ void main(){
       expect((matching as PadButton).style, style);
     };
 
-    _verifyButtonStyle('2nd', InputButtonStyle.SECONDARY);
-    _verifyButtonStyle(InputItem.PI.label, InputButtonStyle.TERTIARY);
-    _verifyButtonStyle(InputItem.ANSWER.label, InputButtonStyle.TERTIARY);
-    _verifyButtonStyle(CommandItem.DELETE.display, InputButtonStyle.TERTIARY);
-    _verifyButtonStyle(CommandItem.CLEAR.display, InputButtonStyle.TERTIARY);
-    _verifyButtonStyle(InputItem.SQUARED.label, InputButtonStyle.TERTIARY);
-    _verifyButtonStyle(InputItem.POWER.label, InputButtonStyle.TERTIARY);
-    _verifyButtonStyle(InputItem.OPEN_PARENTHESIS.label, InputButtonStyle.TERTIARY);
-    _verifyButtonStyle(InputItem.CLOSE_PARENTHESIS.label, InputButtonStyle.TERTIARY);
-    _verifyButtonStyle(InputItem.DIVIDE.label, InputButtonStyle.SECONDARY);
-    _verifyButtonStyle(InputItem.INVERSE.label, InputButtonStyle.TERTIARY);
-    _verifyButtonStyle(InputItem.SEVEN.label, InputButtonStyle.PRIMARY);
-    _verifyButtonStyle(InputItem.EIGHT.label, InputButtonStyle.PRIMARY);
-    _verifyButtonStyle(InputItem.NINE.label, InputButtonStyle.PRIMARY);
-    _verifyButtonStyle(InputItem.MULTIPLY.label, InputButtonStyle.SECONDARY);
-    _verifyButtonStyle(InputItem.COS.label, InputButtonStyle.TERTIARY);
-    _verifyButtonStyle(InputItem.SIN.label, InputButtonStyle.TERTIARY);
-    _verifyButtonStyle(InputItem.TAN.label, InputButtonStyle.TERTIARY);
-    _verifyButtonStyle(InputItem.FOUR.label, InputButtonStyle.PRIMARY);
-    _verifyButtonStyle(InputItem.FIVE.label, InputButtonStyle.PRIMARY);
-    _verifyButtonStyle(InputItem.SIX.label, InputButtonStyle.PRIMARY);
-    _verifyButtonStyle(InputItem.SUBTRACT.label, InputButtonStyle.SECONDARY);
-    _verifyButtonStyle(InputItem.LOG.label, InputButtonStyle.TERTIARY);
-    _verifyButtonStyle(InputItem.NATURAL_LOG.label, InputButtonStyle.TERTIARY);
-    _verifyButtonStyle(InputItem.ONE.label, InputButtonStyle.PRIMARY);
-    _verifyButtonStyle(InputItem.TWO.label, InputButtonStyle.PRIMARY);
-    _verifyButtonStyle(InputItem.THREE.label, InputButtonStyle.PRIMARY);
-    _verifyButtonStyle(InputItem.ADD.label, InputButtonStyle.SECONDARY);
-    _verifyButtonStyle(InputItem.STORAGE.label, InputButtonStyle.TERTIARY);
-    _verifyButtonStyle(InputItem.ZERO.label, InputButtonStyle.PRIMARY);
-    _verifyButtonStyle(InputItem.DECIMAL.label, InputButtonStyle.PRIMARY);
-    _verifyButtonStyle(InputItem.NEGATIVE.label, InputButtonStyle.PRIMARY);
-    _verifyButtonStyle(CommandItem.ENTER.display, InputButtonStyle.SECONDARY);
+    _verifyButtonStyle('2nd', InputButtonStyle.secondary(context));
+    _verifyButtonStyle(InputItem.PI.label, InputButtonStyle.tertiary(context));
+    _verifyButtonStyle(InputItem.ANSWER.label, InputButtonStyle.tertiary(context));
+    _verifyButtonStyle(CommandItem.DELETE.display, InputButtonStyle.tertiary(context));
+    _verifyButtonStyle(CommandItem.CLEAR.display, InputButtonStyle.tertiary(context));
+    _verifyButtonStyle(InputItem.SQUARED.label, InputButtonStyle.tertiary(context));
+    _verifyButtonStyle(InputItem.POWER.label, InputButtonStyle.tertiary(context));
+    _verifyButtonStyle(InputItem.OPEN_PARENTHESIS.label, InputButtonStyle.tertiary(context));
+    _verifyButtonStyle(InputItem.CLOSE_PARENTHESIS.label, InputButtonStyle.tertiary(context));
+    _verifyButtonStyle(InputItem.DIVIDE.label, InputButtonStyle.secondary(context));
+    _verifyButtonStyle(InputItem.INVERSE.label, InputButtonStyle.tertiary(context));
+    _verifyButtonStyle(InputItem.SEVEN.label, InputButtonStyle.primary(context));
+    _verifyButtonStyle(InputItem.EIGHT.label, InputButtonStyle.primary(context));
+    _verifyButtonStyle(InputItem.NINE.label, InputButtonStyle.primary(context));
+    _verifyButtonStyle(InputItem.MULTIPLY.label, InputButtonStyle.secondary(context));
+    _verifyButtonStyle(InputItem.COS.label, InputButtonStyle.tertiary(context));
+    _verifyButtonStyle(InputItem.SIN.label, InputButtonStyle.tertiary(context));
+    _verifyButtonStyle(InputItem.TAN.label, InputButtonStyle.tertiary(context));
+    _verifyButtonStyle(InputItem.FOUR.label, InputButtonStyle.primary(context));
+    _verifyButtonStyle(InputItem.FIVE.label, InputButtonStyle.primary(context));
+    _verifyButtonStyle(InputItem.SIX.label, InputButtonStyle.primary(context));
+    _verifyButtonStyle(InputItem.SUBTRACT.label, InputButtonStyle.secondary(context));
+    _verifyButtonStyle(InputItem.LOG.label, InputButtonStyle.tertiary(context));
+    _verifyButtonStyle(InputItem.NATURAL_LOG.label, InputButtonStyle.tertiary(context));
+    _verifyButtonStyle(InputItem.ONE.label, InputButtonStyle.primary(context));
+    _verifyButtonStyle(InputItem.TWO.label, InputButtonStyle.primary(context));
+    _verifyButtonStyle(InputItem.THREE.label, InputButtonStyle.primary(context));
+    _verifyButtonStyle(InputItem.ADD.label, InputButtonStyle.secondary(context));
+    _verifyButtonStyle(InputItem.STORAGE.label, InputButtonStyle.tertiary(context));
+    _verifyButtonStyle(InputItem.ZERO.label, InputButtonStyle.primary(context));
+    _verifyButtonStyle(InputItem.DECIMAL.label, InputButtonStyle.primary(context));
+    _verifyButtonStyle(InputItem.NEGATIVE.label, InputButtonStyle.primary(context));
+    _verifyButtonStyle(CommandItem.ENTER.display, InputButtonStyle.secondary(context));
   });
 }

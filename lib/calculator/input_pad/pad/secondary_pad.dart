@@ -2,13 +2,14 @@ import 'package:advanced_calculation/calculation_options.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:open_calc/calculator/input_pad/button/input_button.dart';
-import 'package:open_calc/calculator/input_pad/catalog/catalog_dialog.dart';
+import 'package:open_calc/calculator/input_pad/dialog/catalog_dialog.dart';
 import 'package:open_calc/calculator/input_pad/command_item.dart';
 import 'package:open_calc/calculator/input_pad/button/multi_button.dart';
 import 'package:open_calc/calculator/input_pad/button/pad_button.dart';
+import 'package:open_calc/calculator/input_pad/dialog/theme_dialog.dart';
 import 'package:open_calc/calculator/input_pad/input_button_style.dart';
 import 'package:open_calc/calculator/input_pad/input_item.dart';
-import 'package:open_calc/calculator/input_pad/mode/mode_dialog.dart';
+import 'package:open_calc/calculator/input_pad/dialog/mode_dialog.dart';
 import 'package:open_calc/calculator/input_pad/pad/pad_grid.dart';
 
 
@@ -35,42 +36,45 @@ class SecondaryPad extends StatelessWidget{
       alignment: Alignment.center,
       child:PadGrid([
         [
-          PadButton('Back', InputButtonStyle.SECONDARY, () {Navigator.pushReplacementNamed(context, 'inputPadOne');}),
-          buildInputButton(InputItem.OPEN_PARENTHESIS, InputButtonStyle.TERTIARY),
-          buildInputButton(InputItem.CLOSE_PARENTHESIS, InputButtonStyle.TERTIARY),
-          buildCommandButton(CommandItem.DELETE,InputButtonStyle.TERTIARY),
-          buildCommandButton(CommandItem.CLEAR,InputButtonStyle.TERTIARY),
+          PadButton('Back', InputButtonStyle.secondary(context), () {Navigator.pushReplacementNamed(context, 'inputPadOne');}),
+          buildInputButton(InputItem.OPEN_PARENTHESIS, InputButtonStyle.tertiary(context)),
+          buildInputButton(InputItem.CLOSE_PARENTHESIS, InputButtonStyle.tertiary(context)),
+          buildCommandButton(CommandItem.DELETE,InputButtonStyle.tertiary(context)),
+          buildCommandButton(CommandItem.CLEAR,InputButtonStyle.tertiary(context)),
         ],
         [
-          MultiButton([InputItem.CSC, InputItem.SEC, InputItem.COT], inputFunction, InputButtonStyle.TERTIARY),
-          MultiButton([InputItem.SINH, InputItem.COSH, InputItem.TANH], inputFunction, InputButtonStyle.TERTIARY),
-          MultiButton([InputItem.ASIN, InputItem.ACOS, InputItem.ATAN], inputFunction, InputButtonStyle.TERTIARY),
-          MultiButton([InputItem.ASINH, InputItem.ACOSH, InputItem.ATANH], inputFunction, InputButtonStyle.TERTIARY),
-          buildInputButton(InputItem.DIVIDE, InputButtonStyle.SECONDARY),
+          MultiButton([InputItem.CSC, InputItem.SEC, InputItem.COT], inputFunction, InputButtonStyle.tertiary(context)),
+          MultiButton([InputItem.SINH, InputItem.COSH, InputItem.TANH], inputFunction, InputButtonStyle.tertiary(context)),
+          MultiButton([InputItem.ASIN, InputItem.ACOS, InputItem.ATAN], inputFunction, InputButtonStyle.tertiary(context)),
+          MultiButton([InputItem.ASINH, InputItem.ACOSH, InputItem.ATANH], inputFunction, InputButtonStyle.tertiary(context)),
+          buildInputButton(InputItem.DIVIDE, InputButtonStyle.secondary(context)),
         ],
         [
-          buildInputButton(InputItem.SQUARE_ROOT, InputButtonStyle.TERTIARY),
-          buildInputButton(InputItem.E_POWER_X, InputButtonStyle.TERTIARY),
-          buildInputButton(InputItem.EMPTY, InputButtonStyle.TERTIARY),
-          buildInputButton(InputItem.EMPTY, InputButtonStyle.TERTIARY),
-          buildInputButton(InputItem.MULTIPLY, InputButtonStyle.SECONDARY),
+          buildInputButton(InputItem.SQUARE_ROOT, InputButtonStyle.tertiary(context)),
+          buildInputButton(InputItem.E_POWER_X, InputButtonStyle.tertiary(context)),
+          buildInputButton(InputItem.EMPTY, InputButtonStyle.tertiary(context)),
+          buildInputButton(InputItem.EMPTY, InputButtonStyle.tertiary(context)),
+          buildInputButton(InputItem.MULTIPLY, InputButtonStyle.secondary(context)),
         ],
         [
-          buildInputButton(InputItem.EMPTY, InputButtonStyle.TERTIARY),
-          buildInputButton(InputItem.EMPTY, InputButtonStyle.TERTIARY),
-          buildInputButton(InputItem.EMPTY, InputButtonStyle.TERTIARY),
-          buildInputButton(InputItem.EMPTY, InputButtonStyle.TERTIARY),
-          buildInputButton(InputItem.SUBTRACT,  InputButtonStyle.SECONDARY),
+          buildInputButton(InputItem.EMPTY, InputButtonStyle.tertiary(context)),
+          buildInputButton(InputItem.EMPTY, InputButtonStyle.tertiary(context)),
+          buildInputButton(InputItem.EMPTY, InputButtonStyle.tertiary(context)),
+          buildInputButton(InputItem.EMPTY, InputButtonStyle.tertiary(context)),
+          buildInputButton(InputItem.SUBTRACT,  InputButtonStyle.secondary(context)),
         ],
         [
-          buildInputButton(InputItem.COMMA, InputButtonStyle.TERTIARY),
-          buildInputButton(InputItem.EMPTY, InputButtonStyle.TERTIARY),
-          buildInputButton(InputItem.EMPTY, InputButtonStyle.TERTIARY),
-          buildInputButton(InputItem.EMPTY, InputButtonStyle.TERTIARY),
-          buildInputButton(InputItem.ADD,  InputButtonStyle.SECONDARY),
+          buildInputButton(InputItem.COMMA, InputButtonStyle.tertiary(context)),
+          PadButton('theme', InputButtonStyle.quartenary(context), (){
+            showDialog(context: context, builder: (BuildContext context){
+              return ThemeDialog();
+            });
+          }),          buildInputButton(InputItem.EMPTY, InputButtonStyle.tertiary(context)),
+          buildInputButton(InputItem.EMPTY, InputButtonStyle.tertiary(context)),
+          buildInputButton(InputItem.ADD,  InputButtonStyle.secondary(context)),
         ],
         [
-          PadButton('vars', InputButtonStyle.QUARTENARY, () {Navigator.pushReplacementNamed(context, 'varPad');}),
+          PadButton('vars', InputButtonStyle.quartenary(context), () {Navigator.pushReplacementNamed(context, 'varPad');}),
           MultiButton([
             InputItem.A,
             InputItem.B,
@@ -79,18 +83,18 @@ class SecondaryPad extends StatelessWidget{
             InputItem.E,
             InputItem.F,
             InputItem.G
-          ], inputFunction, InputButtonStyle.QUARTENARY, display:'a, b, c'),
-          PadButton('list', InputButtonStyle.QUARTENARY,(){
+          ], inputFunction, InputButtonStyle.quartenary(context), display:'a, b, c'),
+          PadButton('list', InputButtonStyle.quartenary(context),(){
             showDialog(context: context,builder: (BuildContext context){
               return CatalogDialog(this.inputFunction);
             });
           }),
-          PadButton('mode', InputButtonStyle.QUARTENARY,(){
+          PadButton('mode', InputButtonStyle.quartenary(context),(){
             showDialog(context: context,builder: (BuildContext context){
               return ModeDialog(this.options);
             });
           }),
-          buildCommandButton(CommandItem.ENTER, InputButtonStyle.SECONDARY),
+          buildCommandButton(CommandItem.ENTER, InputButtonStyle.secondary(context)),
         ]
         ]
       )

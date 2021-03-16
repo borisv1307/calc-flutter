@@ -5,8 +5,9 @@ class PadButton extends StatelessWidget{
   final String display;
   final InputButtonStyle style;
   final Function onTap;
+  final Function onHold;
 
-  PadButton(this.display, this.style, this.onTap);
+  PadButton(this.display, this.style, this.onTap, {this.onHold});
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +24,8 @@ class PadButton extends StatelessWidget{
               padding: this.style.padding,
               child: Text(this.display, style: TextStyle(fontSize: style.fontSize, fontWeight: style.fontWeight, color: style.textColor)),
             ),
-            onTap: this.onTap
+            onTap: this.onTap,
+            onLongPress: this.onHold
           )),
     );
   }

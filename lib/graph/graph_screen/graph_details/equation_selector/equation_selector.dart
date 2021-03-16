@@ -1,10 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:open_calc/graph/graph_screen/graph_cursor.dart';
-import 'package:open_calc/graph/graph_screen/graph_screen.dart';
+import 'package:open_calc/graph/graph_screen/graph_details/equation_selector/bounds_dialog.dart';
+import 'package:open_calc/graph/graph_screen/interactive_graph/graph_lines.dart';
 
 class EquationSelector extends StatefulWidget {
-  final List<String> inputEquations;
+  final GraphLines inputEquations;
   final GraphCursor cursor;
 
   EquationSelector(this.inputEquations, this.cursor);
@@ -21,15 +22,16 @@ class EquationSelectorState extends State<EquationSelector> {
     setState(() {
       if (selectedIndex == index) {
         // exit trace mode
-        GraphScreenState.chosenEquationIndex = -1;
         selectedIndex = -1;
         this.widget.cursor.color = Colors.blue;
         this.widget.cursor.equation = null;
+        this.widget.inputEquations[index].color = Colors.black;
       } else {
-        GraphScreenState.chosenEquationIndex = index;
         selectedIndex = index;
         this.widget.cursor.color = Colors.red;
-        this.widget.cursor.equation = this.widget.inputEquations[selectedIndex];
+        this.widget.cursor.equation =
+            this.widget.inputEquations[selectedIndex].equation;
+        this.widget.inputEquations[index].color = Colors.blue;
       }
     });
   }
@@ -51,14 +53,23 @@ class EquationSelectorState extends State<EquationSelector> {
               selectedColor: Colors.black,
               selectedTileColor: Colors.green[100],
               child: ListTile(
-                  leading: Text("y" + (index + 1).toString() + "=",
-                      style: mainStyle),
-                  title:
-                      Text(this.widget.inputEquations[index], style: mainStyle),
-                  selected: index == selectedIndex,
-                  onTap: () {
-                    _traceEquation(index);
-                  }));
+                leading:
+                    Text("y" + (index + 1).toString() + "=", style: mainStyle),
+                title: Text(this.widget.inputEquations[index].equation,
+                    style: mainStyle),
+                selected: index == selectedIndex,
+                onTap: () {
+                  _traceEquation(index);
+                },
+                onLongPress: () {
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return BoundsDialog(
+                            this.widget.inputEquations[index].segmentBounds);
+                      });
+                },
+              ));
         },
         separatorBuilder: (BuildContext context, int index) =>
             Divider(thickness: 1.5),

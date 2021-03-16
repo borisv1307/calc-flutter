@@ -4,7 +4,7 @@ import 'package:advanced_calculation/display_style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
-import 'package:open_calc/calculator/input_pad/mode/mode_dialog.dart';
+import 'package:open_calc/calculator/input_pad/dialog/mode_dialog.dart';
 import 'package:open_calc/settings/settings_controller.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

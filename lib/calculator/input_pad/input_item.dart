@@ -15,6 +15,27 @@ class InputItem{
     this.replaceable = replaceable || variable,
     this.name = name ?? label;
 
+  InputItem.fromJson(Map<String, dynamic> json) : 
+    this.label = json['label'],
+    this.display = json['display'],
+    this.value = json['value'],
+    this.lookback = json['lookback'],
+    this.variable = json['variable'],
+    this.replaceable = json['replaceable'],
+    this.function = json['function'],
+    this.name = json['name'];
+
+  Map<String, dynamic> toJson() => {
+    'label': this.label,
+    'display': this.display,
+    'value': this.value,
+    'lookback': this.lookback,
+    'variable': this.variable,
+    'replaceable': this.replaceable,
+    'function': this.function,
+    'name': this.name
+  };
+
   static const ANSWER = const InputItem('Ans', replaceable: true);
   static const SIN = const InputItem('sin',display:'sin(', function: true);
   static const COS = const InputItem('cos',display:'cos(', function: true);
@@ -76,4 +97,20 @@ class InputItem{
   String toString(){
     return this.label;
   }
+
+  // override comparison for testing
+  bool operator ==(o) => 
+    o is InputItem &&
+    o.label == label &&
+    o.display == display &&
+    o.value == value &&
+    o.lookback == lookback &&
+    o.variable == variable &&
+    o.replaceable == replaceable &&
+    o.function == function &&
+    o.name == name;
+
+  int get hashCode => label.hashCode ^ display.hashCode ^ value.hashCode ^ lookback.hashCode ^ 
+      variable.hashCode ^ replaceable.hashCode ^ function.hashCode ^ name.hashCode;
+
 }
