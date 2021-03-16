@@ -2,7 +2,7 @@
 
 # Mobile Graphing Calculator Application 
 
-- [Background/Purpose](#background-purpose)
+- [Overview](#overview)
 - [Local setup](#local-setup)
 - [Architecture Overview](#architecture-overview)
 - [Repository Overviews](#repository-overviews)
@@ -14,7 +14,7 @@
 - [Limitations and Future Issues](#limitations-and-future-issues)
 
 
-## Background/Purpose 
+## Overview
 
 The Mobile Graphing Calculator brings functionality from classic graphing calculators to the modern era.  The application looks to retain the general look and feel of classic graphing calculators and bring both graphing and calculation functionality to a cross-platform mobile application. 
 
