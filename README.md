@@ -97,7 +97,7 @@ In the Graph Screen, on the top half is the graph display. This is where all the
 
 The Cursor controller will allow the user to move the cursor around the graph screen. The travel distance or the distance of each step can be adjusted in the scale tab. Therefore, by adjusting the step distance, user can traverse the whole display screen by small increments or large increments. Right next to the Cursor Controller are the Magnification buttons that allow user to zoom in and out the graph screen. These button functions like the scale tab: automatically adjusting the X and Y min/max bounds to zoom in and out.  
 
-**Equations Tab**: This tab displays all the user’s input functions, which are currently displayed on the graph display. By tapping on a function, its corresponding plot line will be highlighted in a different color from the other plot lines. Besides that, when a function is chosen, the cursor will move to the plotline and allow user to trace along the line and examine the coordinates of the function.  
+**Equations Tab**: This tab displays all the user’s input functions, which are currently displayed on the graph display. When a function is chosen, the cursor will move to the plotline and allow user to trace along the line and examine the coordinates of the function.  
 
 All the input functions from the front end will be parsed to Cartesian Graph’s library to be processed, calculated, and converted into pixelated plots.  
 
